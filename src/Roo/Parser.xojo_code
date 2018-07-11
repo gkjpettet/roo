@@ -700,6 +700,21 @@ Protected Class Parser
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Function QuitStatement() As Stmt
+		  ' QuitStmt → QUIT SEMICOLON
+		  
+		  ' Get a reference to the triggering `quit` token in case we encounter an error and need
+		  ' to inform the user of it's position in the source code.
+		  dim keyword as Token = tokens(current - 1)
+		  
+		  call Consume(TokenType.SEMICOLON, "Expected a `;` after the quit keyword.")
+		  
+		  return new QuitStmt(keyword)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Function ReturnStatement() As Stmt
 		  ' Get a reference to the `return` keyword for prettier error reporting later (if one occurs).
 		  dim keyword as Token = tokens(current - 1)
@@ -721,12 +736,14 @@ Protected Class Parser
 		  '           | BreakStmt
 		  '           | ForStmt
 		  '           | IfStmt
+		  '           | QuitStmt
 		  '           | ReturnStmt
 		  '           | WhileStmt
 		  
 		  if Match(TokenType.LCURLY) then return new BlockStmt(Block())
 		  if Match(TokenType.BREAK_KEYWORD) then return BreakStatement()
 		  if Match(TokenType.IF_KEYWORD) then return IfStatement()
+		  if Match(TokenType.QUIT_KEYWORD) then return QuitStatement()
 		  if Match(TokenType.FOR_KEYWORD) then return ForStatement()
 		  if Match(TokenType.RETURN_KEYWORD) then return ReturnStatement()
 		  if Match(TokenType.WHILE_KEYWORD) then return WhileStatement()

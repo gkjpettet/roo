@@ -144,6 +144,7 @@ Implements ExprVisitor,StmtVisitor
 		  for i = 0 to limit
 		    Execute(statements(i))
 		  next i
+		  
 		End Sub
 	#tag EndMethod
 
@@ -1022,6 +1023,17 @@ Implements ExprVisitor,StmtVisitor
 	#tag Method, Flags = &h0
 		Function VisitNumberLiteralExpr(expr as NumberLiteralExpr) As Variant
 		  return new NumberObject(expr.value)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function VisitQuitStmt(stmt as QuitStmt) As Variant
+		  ' The interpreter is visiting a quit statement.
+		  
+		  #pragma Unused stmt
+		  #pragma BreakOnExceptions False
+		  
+		  raise new QuitReturn
 		End Function
 	#tag EndMethod
 

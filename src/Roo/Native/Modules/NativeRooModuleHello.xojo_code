@@ -1,6 +1,6 @@
 #tag Class
 Protected Class NativeRooModuleHello
-Implements  Roo.Invokable,  Roo.Textable
+Implements Roo.Invokable,Roo.Textable
 	#tag Method, Flags = &h0
 		Function Arity() As Variant
 		  ' Part of the Invokable interface.

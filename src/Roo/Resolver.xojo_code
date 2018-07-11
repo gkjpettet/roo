@@ -416,6 +416,14 @@ Implements ExprVisitor,StmtVisitor
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function VisitQuitStmt(stmt as QuitStmt) As Variant
+		  #pragma Unused stmt
+		  
+		  ' Nothing to resolve.
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function VisitRegexLiteralExpr(expr as RegexLiteralExpr) As Variant
 		  ' As literal expressions don't mention variables and don't contain any subexpressions there's nothing to do.
 		  #pragma unused expr

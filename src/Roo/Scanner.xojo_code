@@ -96,6 +96,7 @@ Protected Class Scanner
 		  if StrComp(lexeme, "module", 0) = 0 then return TokenType.MODULE_KEYWORD
 		  if StrComp(lexeme, "not", 0) = 0 then return TokenType.NOT_KEYWORD
 		  if StrComp(lexeme, "or", 0) = 0 then return TokenType.OR_KEYWORD
+		  if StrComp(lexeme, "quit", 0) = 0 then return TokenType.QUIT_KEYWORD
 		  if StrComp(lexeme, "return", 0) = 0 then return TokenType.RETURN_KEYWORD
 		  if StrComp(lexeme, "static", 0) = 0 then return TokenType.STATIC_KEYWORD
 		  if StrComp(lexeme, "self", 0) = 0 then return TokenType.SELF_KEYWORD

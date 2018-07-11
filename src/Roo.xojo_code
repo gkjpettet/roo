@@ -113,6 +113,7 @@ Protected Module Roo
 		  PLUS_EQUAL
 		  PLUS_PLUS
 		  QUERY
+		  QUIT_KEYWORD
 		  RCURLY
 		  REGEX
 		  RETURN_KEYWORD

@@ -43,6 +43,12 @@ Protected Interface StmtVisitor
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function VisitQuitStmt(stmt as QuitStmt) As Variant
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function VisitReturnStmt(stmt as ReturnStmt) As Variant
 		  
 		End Function

@@ -111,6 +111,8 @@ Protected Class Token
 		    return "PLUS_PLUS"
 		  case TokenType.QUERY
 		    return "QUERY"
+		  case TokenType.QUIT_KEYWORD
+		    return "QUIT"
 		  case TokenType.RCURLY
 		    return "RCURLY"
 		  case TokenType.REGEX

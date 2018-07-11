@@ -1,6 +1,6 @@
 #tag Class
 Protected Class File
-Implements  Roo.Invokable,  Roo.Textable
+Implements Roo.Invokable,Roo.Textable
 	#tag Method, Flags = &h0
 		Function Arity() As Variant
 		  ' Return the number of parameters the function requires.
