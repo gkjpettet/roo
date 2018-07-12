@@ -1,7 +1,7 @@
 # Roo
 The reference command line interpreter for the Roo programming language
 
-### Table of contents
+## Table of contents
 1. [Installation](#installation)
 
 ## The Roo programming language
