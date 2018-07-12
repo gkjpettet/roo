@@ -177,7 +177,11 @@ Inherits ConsoleApplication
 		  do
 		    
 		    Stdout.Write(">>> ")
-		    promptInput = Input.DefineEncoding(Encodings.UTF8)
+		    promptInput = Input.DefineEncoding(Encodings.UTF8).Trim()
+		    if promptInput.Right(1) <> ";" then
+		      promptInput = promptInput + ";" ' Permit optional semicolons in REPL mode.
+		    end if
+		    
 		    Execute(promptInput)
 		    
 		  loop
