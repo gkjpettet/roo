@@ -1,9 +1,13 @@
-# roo
+# Roo
 The reference command line interpreter for the Roo programming language
 
-## <a id="installation">Installation</a>
+### Table of contents
+1. [Installation](#installation)
 
-## Installing and using
+# The Roo programming language
+Roo is a cross-platform dynamically-typed interpreted open source scripting language which takes inspiration from Ruby (everything is an object) and Javascript. It supports both object-oriented and functional programming approaches and includes closures. The reference interpreter is `roo` which is written in [Xojo][xojo].
+
+## <a id="installation">Installation</a>
 To play with Roo you'll need to install the `roo` interpreter. This is a command line tool that runs your source code. It can also be used as a REPL (much like Ruby's `irb` command). To install, you have a few choices:
 
 ### 1. Use a package manager (easiest)
@@ -84,3 +88,8 @@ Once the `roo` interpreter is installed, you can start a REPL session by typing 
 Whilst there is no interactive debugger for Roo (yet), `roo` does provide reasonably accurate and helpful error messages if a problem is encountered either during program lexing, parsing or execution.
 
 To quit a REPL session type `CTRL-C` or `CTRL-D` or `CTRL-X` (depending on your operating system). Or you can simply use the global `quit` statement.
+
+[homebrew]: https://brew.sh
+[scoop]: https://scoop.sh
+[snaps]: https://snapcraft.io
+[xojo]: https://xojo.com
