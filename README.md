@@ -4,7 +4,7 @@ The reference command line interpreter for the Roo programming language
 ### Table of contents
 1. [Installation](#installation)
 
-# The Roo programming language
+## The Roo programming language
 Roo is a cross-platform dynamically-typed interpreted open source scripting language which takes inspiration from Ruby (everything is an object) and Javascript. It supports both object-oriented and functional programming approaches and includes closures. The reference interpreter is `roo` which is written in [Xojo][xojo].
 
 ## <a id="installation">Installation</a>
