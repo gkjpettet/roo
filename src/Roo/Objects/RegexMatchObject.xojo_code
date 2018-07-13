@@ -75,6 +75,8 @@ Inherits RooInstance
 		      return new BooleanObject(False)
 		    case "start"
 		      return new NumberObject(info.start)
+		    case "to_text"
+		      return new TextObject(self.ToText)
 		    case "value"
 		      return new TextObject(info.value)
 		    end select

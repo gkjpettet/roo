@@ -136,6 +136,8 @@ Inherits RooInstance
 		      return new BooleanObject(False)
 		    case "number?"
 		      return new BooleanObject(False)
+		    case "to_text"
+		      return new TextObject(self.ToText)
 		    case "values"
 		      return DoValues()
 		    end select

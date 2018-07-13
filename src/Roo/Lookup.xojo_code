@@ -52,6 +52,7 @@ Protected Module Lookup
 		  arrayObjGetters.Value("number?") = True
 		  arrayObjGetters.Value("reverse!") = True
 		  arrayObjGetters.Value("shuffle!") = True
+		  arrayObjGetters.Value("to_text") = True
 		  arrayObjGetters.Value("unique") = True
 		  arrayObjGetters.Value("unique!") = True
 		End Sub
@@ -148,6 +149,7 @@ Protected Module Lookup
 		  hashObjGetters.Value("length") = True
 		  hashObjGetters.Value("nothing?") = True
 		  hashObjGetters.Value("number?") = True
+		  hashObjGetters.Value("to_text") = True
 		  hashObjGetters.Value("values") = True
 		End Sub
 	#tag EndMethod
@@ -185,6 +187,7 @@ Protected Module Lookup
 		  matchInfoObjGetters.Value("nothing?") = True
 		  matchInfoObjGetters.Value("number?") = True
 		  matchInfoObjGetters.Value("start") = True
+		  matchInfoObjGetters.Value("to_text") = True
 		  matchInfoObjGetters.Value("value") = True
 		End Sub
 	#tag EndMethod
@@ -262,6 +265,7 @@ Protected Module Lookup
 		  regexObjGetters = new StringToVariantHashMapMBS(True)
 		  regexObjGetters.Value("nothing?") = True
 		  regexObjGetters.Value("number?") = True
+		  regexObjGetters.Value("to_text") = True
 		End Sub
 	#tag EndMethod
 
@@ -275,6 +279,7 @@ Protected Module Lookup
 		  regexMatchObjGetters.Value("nothing?") = True
 		  regexMatchObjGetters.Value("number?") = True
 		  regexMatchObjGetters.Value("start") = True
+		  regexMatchObjGetters.Value("to_text") = True
 		  regexMatchObjGetters.Value("value") = True
 		End Sub
 	#tag EndMethod
@@ -311,6 +316,7 @@ Protected Module Lookup
 		  regexResultObjGetters.Value("matches") = True
 		  regexResultObjGetters.Value("nothing?") = True
 		  regexResultObjGetters.Value("number?") = True
+		  regexResultObjGetters.Value("to_text") = True
 		End Sub
 	#tag EndMethod
 

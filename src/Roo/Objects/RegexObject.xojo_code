@@ -51,6 +51,8 @@ Inherits RooInstance
 		      return new BooleanObject(False)
 		    case "number?"
 		      return new BooleanObject(False)
+		    case "to_text"
+		      return new TextObject(self.ToText)
 		    end select
 		  end if
 		  

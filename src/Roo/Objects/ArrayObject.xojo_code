@@ -131,6 +131,8 @@ Inherits RooInstance
 		    case "shuffle!"
 		      elements.Shuffle()
 		      return self
+		    case "to_text"
+		      return new TextObject(self.ToText)
 		    case "unique"
 		      return DoUnique(False)
 		    case "unique!"
