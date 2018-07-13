@@ -255,7 +255,6 @@ Implements ExprVisitor,StmtVisitor
 		  redim submodules(-1)
 		  redim classes(-1)
 		  methods = new StringToVariantHashMapMBS
-		  methods.Value("hello") = new NativeRooModuleHello
 		  AddNativeModule("Roo", methods, submodules, classes)
 		End Sub
 	#tag EndMethod

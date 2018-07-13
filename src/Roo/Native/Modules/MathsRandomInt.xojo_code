@@ -12,10 +12,6 @@ Implements Roo.Invokable,Roo.Textable
 
 	#tag Method, Flags = &h0
 		Function Invoke(interpreter as Interpreter, arguments() as Variant, where as Token) As Variant
-		  ' Roo.hello(what as Text) as Text
-		  ' A simple method that simply says hello. For demonstration purposes.
-		  ' E.g: Roo.hello("Garry") # "Hello Garry"
-		  
 		  #pragma Unused interpreter
 		  #pragma Unused arguments
 		  #pragma Unused where
