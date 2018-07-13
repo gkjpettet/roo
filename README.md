@@ -11,6 +11,8 @@ Roo is a cross-platform dynamically-typed interpreted open source scripting lang
 To play with Roo you'll need to install the `roo` interpreter. This is a command line tool that runs your source code. It can also be used as a REPL (much like Ruby's `irb` command). To install, you have a few choices:
 
 ### 1. Use a package manager (easiest)
+Simple installation with Homebrew and Scoop is offered for macOS and Windows users.
+
 **macOS**  
 If you're using macOS you can use the excellent [Homebrew][homebrew] package manager to quickly install Roo:
 ```
@@ -26,19 +28,6 @@ gkjpettet/roo/roo ✔
 ```
 
 Then you'll know there's a new version available. To install it simply type `brew upgrade` in the Terminal. 
-
-**Linux (64-bit)**  
-For Linux users, I've made it easy to install Roo using a [Snap][snaps]. Installing it is dead simple:
-
-```bash
-sudo snap install roo
-```
-
-To update Roo just type:
-
-```bash
-sudo snap refresh roo
-```
 
 **Windows**  
 If you're using Windows I recommend using [Scoop][scoop] to install Roo. Once You've setup Scoop, simply type the following into the Command Prompt or the Powershell:
