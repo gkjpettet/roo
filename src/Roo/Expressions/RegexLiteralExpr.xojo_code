@@ -16,6 +16,10 @@ Inherits Expr
 		  
 		  self.where = where
 		  
+		  ' Since we use `|` as a regex literal delimiter we need to convert any escaped pipe characters (`\|`) 
+		  ' with `|`
+		  value = ReplaceAll(value, "\|", "|")
+		  
 		  ' Basic sanity check.
 		  if value.Len < 2 or value.Left(1) <> "|" then
 		    raise new ParserError(where, "Invalid regex literal format: " + value + ".")
