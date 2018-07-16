@@ -6,7 +6,9 @@ Inherits Roo.CustomModule
 		  ' Override RooInstance.Get().
 		  
 		  ' Getters.
-		  if StrComp(name.lexeme, "version", 0) = 0 then
+		  if StrComp(name.lexeme, "clock", 0) = 0 then
+		    return new NumberObject(Microseconds())
+		  elseif StrComp(name.lexeme, "version", 0) = 0 then
 		    return new TextObject(Str(Roo.VERSION_MAJOR) + "." + _
 		    Str(Roo.VERSION_MINOR) + "." + _
 		    Str(Roo.VERSION_BUG))

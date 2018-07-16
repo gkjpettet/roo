@@ -256,7 +256,7 @@ Inherits ConsoleApplication
 		  Welcome()
 		  
 		  Print Colourise("Usage: roo [option]", Colour.yellow)
-		  Print "roo <file>" + TAB + TAB + ": Run a script"
+		  Print "roo <file>" + TAB + ": Run a script"
 		  Print "roo -h" + TAB + TAB + ": Display help"
 		  Print "roo -v" + TAB + TAB + ": Display the interpreter's version number"
 		End Sub
@@ -293,6 +293,17 @@ Inherits ConsoleApplication
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="promptInput"
+			Group="Behavior"
+			Type="String"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="repl"
+			Group="Behavior"
+			InitialValue="False"
+			Type="Boolean"
+		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
 #tag EndClass

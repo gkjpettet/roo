@@ -218,7 +218,6 @@ Implements ExprVisitor,StmtVisitor
 
 	#tag Method, Flags = &h21
 		Private Sub SetupNativeFunctions()
-		  DefineGlobalFunction("clock", new Roo.Native.Functions.Clock)
 		  DefineGlobalFunction("File", new Roo.Native.Functions.File)
 		  DefineGlobalFunction("input", new Roo.Native.Functions.Input)
 		  DefineGlobalFunction("print", new Roo.Native.Functions.Print)
