@@ -2,42 +2,6 @@
 Protected Class Interpreter
 Implements ExprVisitor,StmtVisitor
 	#tag Method, Flags = &h21
-		Private Sub AddNativeModule(name as String, methods as StringToVariantHashMapMBS, modules() as RooModule, classes() as RooClass)
-		  dim m as Variant
-		  
-		  ' Define the module's name in the current environment.
-		  self.environment.Define(name, self.nothing)
-		  
-		  ' Store the current environment and then immediately create a new one that will act as the 
-		  ' module's namespace.
-		  dim oldEnv as Environment = self.environment
-		  self.environment = new Environment(oldEnv)
-		  
-		  ' Create a metaclass for this module to enable the use of these methods (which are essentially static).
-		  dim metaclass as new RooClass(Nil, Nil, name + " metaclass", methods)
-		  
-		  ' Create a runtime representation of the specified module. 
-		  if StrComp(name, "Maths", 0) = 0 then
-		    m = new Roo.Native.Modules.Maths(metaclass, modules, classes, methods)
-		  elseif StrComp(name, "Roo", 0) = 0 then
-		    m = new NativeRooModule(metaclass, modules, classes, methods)
-		  else
-		    raise new RuntimeError(new Token, "Unable to setup the native module named `" + name + "`.")
-		  end if
-		  
-		  ' Store the module object in the variable we previously declared.
-		  dim modName as new Token
-		  modName.type = TokenType.IDENTIFIER
-		  modName.lexeme = name
-		  self.environment.Assign(modName, m)
-		  
-		  ' Done defining the module. Restore the environment.
-		  self.environment = oldEnv
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
 		Private Sub CheckNumberOperands(operator as Token, ParamArray operands as Variant)
 		  ' Check that the passed operands are NumberObjects. If any aren't, raise an error.
 		  
@@ -80,6 +44,34 @@ Implements ExprVisitor,StmtVisitor
 		  
 		  return False
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub DefineGlobalFunction(name as String, func as Variant)
+		  self.globals.Define(name, func)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub DefineNativeModule(m as Roo.CustomModule)
+		  ' Define this module's name in the current environment.
+		  self.environment.Define(m.name, self.nothing)
+		  
+		  ' Store the current environment and then immediately create a new one that will act as 
+		  ' the module's namespace.
+		  dim oldEnv as Environment = self.environment
+		  self.environment = new Environment(oldEnv)
+		  
+		  ' Store the module object in the variable we previously declared.
+		  dim modName as new Roo.Token
+		  modName.type = TokenType.IDENTIFIER
+		  modName.lexeme = m.name
+		  self.environment.Assign(modName, m)
+		  
+		  ' Done defining the module. Restore the environment.
+		  self.environment = oldEnv
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -226,36 +218,30 @@ Implements ExprVisitor,StmtVisitor
 
 	#tag Method, Flags = &h21
 		Private Sub SetupNativeFunctions()
-		  self.globals.Define("clock", new Roo.Native.Functions.Clock)
-		  self.globals.Define("File", new Roo.Native.Functions.File)
-		  self.globals.Define("input", new Roo.Native.Functions.Input)
-		  self.globals.Define("print", new Roo.Native.Functions.Print)
+		  DefineGlobalFunction("clock", new Roo.Native.Functions.Clock)
+		  DefineGlobalFunction("File", new Roo.Native.Functions.File)
+		  DefineGlobalFunction("input", new Roo.Native.Functions.Input)
+		  DefineGlobalFunction("print", new Roo.Native.Functions.Print)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Sub SetupNativeModules()
-		  dim submodules() as RooModule
-		  dim classes() as RooClass
 		  dim methods as StringToVariantHashMapMBS
 		  
 		  ' #######################################################
 		  ' Maths module
 		  ' #######################################################
-		  redim submodules(-1)
-		  redim classes(-1)
 		  methods = new StringToVariantHashMapMBS
 		  methods.Value("randomInt") = new Roo.Native.Modules.MathsRandomInt
-		  AddNativeModule("Maths", methods, submodules, classes)
+		  DefineNativeModule(new Roo.Native.Modules.Maths("Maths", methods))
 		  
 		  ' #######################################################
 		  ' Roo module
 		  ' #######################################################
-		  redim submodules(-1)
-		  redim classes(-1)
 		  methods = new StringToVariantHashMapMBS
-		  AddNativeModule("Roo", methods, submodules, classes)
+		  DefineNativeModule(new Roo.Native.Modules.NativeRooModule("Roo", methods))
 		End Sub
 	#tag EndMethod
 

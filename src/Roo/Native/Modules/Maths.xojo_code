@@ -1,14 +1,6 @@
 #tag Class
 Protected Class Maths
-Inherits RooModule
-	#tag Method, Flags = &h0
-		Sub Constructor(metaclass as RooClass, modules() as RooModule, classes() as RooClass, methods as StringToVariantHashMapMBS)
-		  ' Calling the overridden superclass constructor.
-		  super.Constructor(metaclass, "Maths", modules, classes, methods, True)
-		  
-		End Sub
-	#tag EndMethod
-
+Inherits Roo.CustomModule
 	#tag Method, Flags = &h0
 		Function Get(name as Token) As Variant
 		  ' Override RooInstance.Get().

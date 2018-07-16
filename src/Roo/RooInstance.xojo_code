@@ -63,8 +63,8 @@ Implements Textable
 		isNative As Boolean = False
 	#tag EndProperty
 
-	#tag Property, Flags = &h21
-		Private klass As RooClass
+	#tag Property, Flags = &h0
+		klass As RooClass
 	#tag EndProperty
 
 

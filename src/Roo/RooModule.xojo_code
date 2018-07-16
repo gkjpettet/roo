@@ -69,8 +69,8 @@ Implements Textable,Invokable
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h21
-		Private methods As StringToVariantHashMapMBS
+	#tag Property, Flags = &h0
+		methods As StringToVariantHashMapMBS
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
