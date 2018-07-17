@@ -236,7 +236,7 @@ Implements ExprVisitor,StmtVisitor
 		  ' Maths module
 		  ' #######################################################
 		  methods = new StringToVariantHashMapMBS
-		  methods.Value("randomInt") = new Roo.Native.Modules.MathsRandomInt
+		  methods.Value("random_int") = new Roo.Native.Modules.MathsRandomInt
 		  DefineNativeModule(new Roo.Native.Modules.Maths("Maths", methods))
 		  
 		  ' #######################################################

@@ -41,7 +41,7 @@ Implements Roo.Invokable,Roo.Textable
 		  ' Part of the Textable interface.
 		  ' Return this function's name.
 		  
-		  return "<function: Maths.randomInt>"
+		  return "<function: Maths.random_int>"
 		End Function
 	#tag EndMethod
 
