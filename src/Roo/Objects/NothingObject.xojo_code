@@ -23,6 +23,8 @@ Inherits RooInstance
 		      return new BooleanObject(False)
 		    case "to_text"
 		      return new TextObject("Nothing")
+		    case "type"
+		      return new TextObject("Nothing")
 		    end select
 		  end if
 		  

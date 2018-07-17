@@ -77,6 +77,8 @@ Inherits RooInstance
 		      return new NumberObject(info.start)
 		    case "to_text"
 		      return new TextObject(self.ToText)
+		    case "type"
+		      return new TextObject("RegexMatch")
 		    case "value"
 		      return new TextObject(info.value)
 		    end select

@@ -151,6 +151,8 @@ Inherits RooClass
 		      else
 		        return new TextObject(self.file.NativePath)
 		      end if
+		    case "type"
+		      return new TextObject("File")
 		    case "writeable?"
 		      return DoWriteable()
 		    end select

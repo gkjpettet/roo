@@ -24,6 +24,8 @@ Inherits RooInstance
 		      return new BooleanObject(False)
 		    case "to_text"
 		      return new TextObject(if(value, "True", "False"))
+		    case "type"
+		      return new TextObject("Boolean")
 		    end select
 		  end if
 		  

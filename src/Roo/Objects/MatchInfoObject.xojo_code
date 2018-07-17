@@ -31,6 +31,8 @@ Inherits RooInstance
 		      return new NumberObject(self.start)
 		    case "to_text"
 		      return new TextObject(self.ToText)
+		    case "type"
+		      return new TextObject("MatchInfo")
 		    case "value"
 		      return new TextObject(self.value)
 		    end select

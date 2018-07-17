@@ -53,6 +53,7 @@ Protected Module Lookup
 		  arrayObjGetters.Value("reverse!") = True
 		  arrayObjGetters.Value("shuffle!") = True
 		  arrayObjGetters.Value("to_text") = True
+		  arrayObjGetters.Value("type") = True
 		  arrayObjGetters.Value("unique") = True
 		  arrayObjGetters.Value("unique!") = True
 		End Sub
@@ -97,6 +98,7 @@ Protected Module Lookup
 		  booleanObjGetters.Value("nothing?") = True
 		  booleanObjGetters.Value("number?") = True
 		  booleanObjGetters.Value("to_text") = True
+		  booleanObjGetters.Value("type") = True
 		End Sub
 	#tag EndMethod
 
@@ -124,6 +126,7 @@ Protected Module Lookup
 		  fileObjGetters.Value("path") = True
 		  fileObjGetters.Value("readable?") = True
 		  fileObjGetters.Value("to_text") = True
+		  fileObjGetters.Value("type") = True
 		  fileObjGetters.Value("writeable?") = True
 		End Sub
 	#tag EndMethod
@@ -150,6 +153,7 @@ Protected Module Lookup
 		  hashObjGetters.Value("nothing?") = True
 		  hashObjGetters.Value("number?") = True
 		  hashObjGetters.Value("to_text") = True
+		  hashObjGetters.Value("type") = True
 		  hashObjGetters.Value("values") = True
 		End Sub
 	#tag EndMethod
@@ -188,6 +192,7 @@ Protected Module Lookup
 		  matchInfoObjGetters.Value("number?") = True
 		  matchInfoObjGetters.Value("start") = True
 		  matchInfoObjGetters.Value("to_text") = True
+		  matchInfoObjGetters.Value("type") = True
 		  matchInfoObjGetters.Value("value") = True
 		End Sub
 	#tag EndMethod
@@ -209,6 +214,7 @@ Protected Module Lookup
 		  nothingObjGetters.Value("nothing?") = True
 		  nothingObjGetters.Value("number?") = True
 		  nothingObjGetters.Value("to_text") = True
+		  nothingObjGetters.Value("type") = True
 		End Sub
 	#tag EndMethod
 
@@ -246,6 +252,7 @@ Protected Module Lookup
 		  numberObjGetters.Value("to_degrees") = True
 		  numberObjGetters.Value("to_radians") = True
 		  numberObjGetters.Value("to_text") = True
+		  numberObjGetters.Value("type") = True
 		End Sub
 	#tag EndMethod
 
@@ -266,6 +273,7 @@ Protected Module Lookup
 		  regexObjGetters.Value("nothing?") = True
 		  regexObjGetters.Value("number?") = True
 		  regexObjGetters.Value("to_text") = True
+		  regexObjGetters.Value("type") = True
 		End Sub
 	#tag EndMethod
 
@@ -280,6 +288,7 @@ Protected Module Lookup
 		  regexMatchObjGetters.Value("number?") = True
 		  regexMatchObjGetters.Value("start") = True
 		  regexMatchObjGetters.Value("to_text") = True
+		  regexMatchObjGetters.Value("type") = True
 		  regexMatchObjGetters.Value("value") = True
 		End Sub
 	#tag EndMethod
@@ -317,6 +326,7 @@ Protected Module Lookup
 		  regexResultObjGetters.Value("nothing?") = True
 		  regexResultObjGetters.Value("number?") = True
 		  regexResultObjGetters.Value("to_text") = True
+		  regexResultObjGetters.Value("type") = True
 		End Sub
 	#tag EndMethod
 
@@ -355,6 +365,7 @@ Protected Module Lookup
 		  textObjGetters.Value("swapcase") = True
 		  textObjGetters.Value("swapcase!") = True
 		  textObjGetters.Value("to_text") = True
+		  textObjGetters.Value("type") = True
 		  textObjGetters.Value("uppercase") = True
 		  textObjGetters.Value("uppercase!") = True
 		End Sub

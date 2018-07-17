@@ -68,6 +68,8 @@ Inherits RooInstance
 		      return new NumberObject(value / 57.295779513)
 		    case "to_text"
 		      return new TextObject(self.ToText())
+		    case "type"
+		      return new TextObject("Number")
 		    end select
 		  end if
 		  

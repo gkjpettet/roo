@@ -133,6 +133,8 @@ Inherits RooInstance
 		      return self
 		    case "to_text"
 		      return new TextObject(self.ToText)
+		    case "type"
+		      return new TextObject("Array")
 		    case "unique"
 		      return DoUnique(False)
 		    case "unique!"

@@ -135,6 +135,8 @@ Inherits RooInstance
 		      return DoSwapCase(True)
 		    case "to_text"
 		      return new TextObject(value)
+		    case "type"
+		      return new TextObject("Text")
 		    case "uppercase"
 		      return new TextObject(value.Uppercase)
 		    case "uppercase!"

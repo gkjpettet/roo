@@ -9,7 +9,7 @@ Implements Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Get(name as Token) As Variant
+		Function Get(name as Roo.Token) As Variant
 		  ' Return the requested property value if this instance has a property with the requested name.
 		  if fields.HasKey(name.lexeme) then return fields.Value(name.lexeme)
 		  
@@ -24,6 +24,17 @@ Implements Textable
 		    end if
 		  elseif self isA RooClass and RooClass(self).isNative then
 		    return self.klass.Get(name)
+		  end if
+		  
+		  ' Handle the generic object methods `type` and `responds_to?`.
+		  if StrComp(name.lexeme, "responds_to?", 0) = 0 then
+		    return new GenericObjectRespondsToMethod(self)
+		  elseif StrComp(name.lexeme, "type", 0) = 0 then
+		    if self.klass <> Nil then
+		      return new TextObject(self.klass.name)
+		    else
+		      return new TextObject(self.ToText)
+		    end if
 		  end if
 		  
 		  ' When looking up a property on an instance, if we don’t find a matching field, we look for a 

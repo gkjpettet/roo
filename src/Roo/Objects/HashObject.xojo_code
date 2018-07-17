@@ -138,6 +138,8 @@ Inherits RooInstance
 		      return new BooleanObject(False)
 		    case "to_text"
 		      return new TextObject(self.ToText)
+		    case "type"
+		      return new TextObject("Hash")
 		    case "values"
 		      return DoValues()
 		    end select
