@@ -135,6 +135,7 @@ Implements ExprVisitor,StmtVisitor
 		  limit = statements.Ubound
 		  for i = 0 to limit
 		    Execute(statements(i))
+		    if forceKill then return
 		  next i
 		  
 		End Sub
@@ -197,6 +198,8 @@ Implements ExprVisitor,StmtVisitor
 	#tag Method, Flags = &h0
 		Sub Reset()
 		  ' Reset the interpreter.
+		  
+		  self.forceKill = False
 		  
 		  self.globals = new Environment
 		  self.environment = globals
@@ -1206,7 +1209,7 @@ Implements ExprVisitor,StmtVisitor
 		Function VisitWhileStmt(stmt as WhileStmt) As Variant
 		  try
 		    
-		    while IsTruthy(Evaluate(stmt.condition))
+		    while IsTruthy(Evaluate(stmt.condition)) and not forceKill
 		      Execute(stmt.body)
 		    wend
 		    
@@ -1244,6 +1247,10 @@ Implements ExprVisitor,StmtVisitor
 			Tracks the current environment. Changes as the interpreter enters and exits local scopes.
 		#tag EndNote
 		Private environment As Environment
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		forceKill As Boolean = False
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -1305,6 +1312,12 @@ Implements ExprVisitor,StmtVisitor
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="forceKill"
+			Group="Behavior"
+			InitialValue="False"
+			Type="Boolean"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
