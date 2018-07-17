@@ -8,12 +8,16 @@ Inherits Stmt
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(keyword as Token)
+		Sub Constructor(keyword as Token, condition as Roo.Expr)
 		  self.keyword = keyword
-		  
+		  self.condition = condition
 		End Sub
 	#tag EndMethod
 
+
+	#tag Property, Flags = &h0
+		condition As Roo.Expr
+	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		keyword As Token

@@ -586,13 +586,19 @@ Implements ExprVisitor,StmtVisitor
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function VisitBreakStmt(stmt as BreakStmt) As Variant
+		Function VisitBreakStmt(stmt as Roo.Statements.BreakStmt) As Variant
 		  ' The interpreter is visiting a break statement.
 		  
 		  #pragma Unused stmt
 		  #pragma BreakOnExceptions False
 		  
-		  raise new BreakReturn
+		  if stmt.condition <> Nil then
+		    if IsTruthy(Evaluate(stmt.condition)) then raise new BreakReturn
+		  else
+		    ' Unconditional break.
+		    raise new BreakReturn
+		  end if
+		  
 		End Function
 	#tag EndMethod
 

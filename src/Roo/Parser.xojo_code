@@ -108,15 +108,34 @@ Protected Class Parser
 
 	#tag Method, Flags = &h21
 		Private Function BreakStatement() As Stmt
+		  ' ' BreakStmt → BREAK SEMICOLON
+		  ' 
+		  ' ' Get a reference to the triggering `break` token in case we encounter an error and need
+		  ' ' to inform the user of it's position in the source code.
+		  ' dim keyword as Token = tokens(current - 1)
+		  ' 
+		  ' call Consume(TokenType.SEMICOLON, "Expected a `;` after the break keyword.")
+		  ' 
+		  ' return new BreakStmt(keyword)
+		  
+		  
+		  
+		  
 		  ' BreakStmt → BREAK SEMICOLON
+		  ' BreakStmt → BREAK (IF Expression)? SEMICOLON
+		  
+		  dim condition as Roo.Expr
 		  
 		  ' Get a reference to the triggering `break` token in case we encounter an error and need
 		  ' to inform the user of it's position in the source code.
 		  dim keyword as Token = tokens(current - 1)
 		  
+		  ' Is there a break condition?
+		  if Match(TokenType.IF_KEYWORD) then condition = Expression()
+		  
 		  call Consume(TokenType.SEMICOLON, "Expected a `;` after the break keyword.")
 		  
-		  return new BreakStmt(keyword)
+		  return new BreakStmt(keyword, condition)
 		  
 		End Function
 	#tag EndMethod

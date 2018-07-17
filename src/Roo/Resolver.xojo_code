@@ -203,7 +203,7 @@ Implements ExprVisitor,StmtVisitor
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function VisitBreakStmt(stmt as BreakStmt) As Variant
+		Function VisitBreakStmt(stmt as Roo.Statements.BreakStmt) As Variant
 		  #pragma BreakOnExceptions False
 		  
 		  ' Make sure that `break` is only called from within a loop. Doesn't make sense otherwise.
@@ -211,6 +211,9 @@ Implements ExprVisitor,StmtVisitor
 		    hasError = True
 		    raise new ResolverError(stmt.keyword, "Cannot break when not in a loop.")
 		  end if
+		  
+		  ' Resolve the optional break condition.
+		  if stmt.condition <> Nil then Resolve(stmt.condition)
 		End Function
 	#tag EndMethod
 
