@@ -1,6 +1,6 @@
 #tag Class
 Protected Class GenericObjectRespondsToMethod
-Implements Invokable, Textable
+Implements Invokable,Textable
 	#tag Method, Flags = &h0
 		Function Arity() As Variant
 		  return 1

@@ -26,9 +26,14 @@ Implements Textable
 		    return self.klass.Get(name)
 		  end if
 		  
-		  ' Handle the generic object methods `type` and `responds_to?`.
-		  if StrComp(name.lexeme, "responds_to?", 0) = 0 then
-		    return new GenericObjectRespondsToMethod(self)
+		  ' ===========================================================================================
+		  ' Handle the generic object getters and methods.
+		  ' ===========================================================================================
+		  ' Getters
+		  if StrComp(name.lexeme, "nothing?", 0) = 0 then
+		    return if(self.klass isA NothingObject, new BooleanObject(True), new BooleanObject(False))
+		  elseif StrComp(name.lexeme, "to_text", 0) = 0 then
+		    return if(self.klass = Nil, new TextObject("No text representation"), new TextObject(self.ToText))
 		  elseif StrComp(name.lexeme, "type", 0) = 0 then
 		    if self.klass <> Nil then
 		      return new TextObject(self.klass.name)
@@ -36,6 +41,11 @@ Implements Textable
 		      return new TextObject(self.ToText)
 		    end if
 		  end if
+		  ' Methods
+		  if StrComp(name.lexeme, "responds_to?", 0) = 0 then
+		    return new GenericObjectRespondsToMethod(self)
+		  end if
+		  ' ===========================================================================================
 		  
 		  ' When looking up a property on an instance, if we don’t find a matching field, we look for a 
 		  ' method with that name on the instance’s class. If found, we return that. 

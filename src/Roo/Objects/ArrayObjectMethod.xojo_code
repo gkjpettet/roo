@@ -226,24 +226,28 @@ Implements Roo.Invokable,Roo.Textable
 		  ' Returns this array (unaltered).
 		  ' E.g: 
 		  
-		  ' function stars(e)
-		  '   print("*" + e + "*")
-		  
-		  ' function prefix(e, what)
-		  '  print(what + e)
-		  
-		  ' var a = [a", "b", "c"]
-		  ' a.each_index(stars)
+		  ' function stars(e) {
+		  '   print("*" + e + "*");
+		  ' }
+		  ' 
+		  ' function prefix(e, what) {
+		  '   print(what + e);
+		  ' }
+		  ' 
+		  ' var a = ["a", "b", "c"];
+		  ' a.each_index(stars);
 		  ' # Prints:
+		  ' # *0*
 		  ' # *1*
 		  ' # *2*
-		  ' # *3*
-		  
-		  ' a.each_index(prefix, ["->"]
+		  ' 
+		  ' a.each_index(prefix, ["->"]);
 		  ' # Prints:
+		  ' # ->0
 		  ' # ->1
 		  ' # ->2
-		  ' # ->3
+		  ' 
+		  ' print(a); # => [a", "b", "c"]. Note unaltered.
 		  
 		  dim funcArgs() as Variant
 		  dim func as Invokable
