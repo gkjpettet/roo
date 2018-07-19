@@ -16,7 +16,7 @@ Implements Roo.Invokable,Roo.Textable
 		    return 2
 		  case "find"
 		    return 1
-		  case "first"
+		  case "first", "first!"
 		    return Array(0, 1)
 		  case "insert!"
 		    return 2
@@ -396,19 +396,23 @@ Implements Roo.Invokable,Roo.Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function DoFirst(args() as Variant, where as Token) As Variant
+		Private Function DoFirst(args() as Variant, where as Token, destructive as Boolean) As Variant
 		  ' Array.first() as Object or Nothing  |  Array.first(n as Integer) as Array.
 		  ' If no arguments are passed then we return the first element of this array (or Nothing 
 		  ' if the array is empty).
 		  ' If a single argument is passed then we return the first `n` elements of this array. Returns 
 		  ' an empty array if this array is empty. Returns the original array if n > Array.length.
 		  
+		  dim limit as Integer
+		  
 		  ' No arguments passed?
 		  if args.Ubound < 0 then
 		    if parent.elements.Ubound < 0 then
 		      return new NothingObject
 		    else
-		      return parent.elements(0)
+		      dim obj as Variant = parent.elements(0)
+		      if destructive then parent.elements.Remove(0)
+		      return obj
 		    end if
 		  end if
 		  
@@ -428,13 +432,34 @@ Implements Roo.Invokable,Roo.Textable
 		  
 		  if parent.elements.Ubound < 0 then return new ArrayObject
 		  
-		  ' Has the user asked for more elements than there are? If so, return the original array.
-		  if n > (parent.elements.Ubound + 1) then return parent
+		  ' Has the user asked for more elements than there are? If so, we return this array if `first()` or 
+		  ' if `first!()` we return a copy of the original array but with all elements removed from the parent.
+		  if n > (parent.elements.Ubound + 1) then
+		    if destructive then
+		      dim newArray as new ArrayObject
+		      limit = parent.elements.Ubound
+		      for i as Integer = 0 to limit
+		        newArray.elements.Insert(0, parent.elements.Pop)
+		      next i
+		      return newArray
+		    else
+		      return parent
+		    end if
+		  end if
 		  
 		  dim result() as Variant
 		  for i as Integer = 0 to (n - 1)
 		    result.Append(parent.elements(i))
 		  next i
+		  
+		  if destructive then
+		    dim keep() as Variant
+		    limit = parent.elements.Ubound
+		    for i as Integer = n to limit
+		      keep.Append(parent.elements(i))
+		    next i
+		    parent.elements = keep
+		  end if
 		  
 		  return new ArrayObject(result)
 		End Function
@@ -939,49 +964,6 @@ Implements Roo.Invokable,Roo.Textable
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
-		Private Function DoTake(args() as Variant, where as Token, destructive as Boolean) As ArrayObject
-		  ' Array.take(n as Number) as Array  |  Array.take!(n as Number) as Array
-		  ' Returns the first `n` number of elements from the array as a new array.
-		  ' If destructive then also alters this array object.
-		  
-		  dim i, limit, n, elementsUbound as Integer
-		  dim result as ArrayObject
-		  dim tmp() as Variant
-		  
-		  ' Check that `index` is an integer.
-		  if not args(0) isA NumberObject or not NumberObject(args(0)).IsInteger then
-		    raise new RuntimeError(where, "The " + self.name + "(n) method expects an integer parameter. " + _
-		    "Instead got " + VariantType(args(0)) + ".")
-		  else
-		    n = NumberObject(args(0)).value
-		    ' Make sure that it's a positive integer.
-		    if n < 0 then
-		      raise new RuntimeError(where, "The " + self.name + "(n) method expects an integer parameter " + _
-		      "greater than zero. Instead got " + Str(n) + ".")
-		    end if
-		  end if
-		  
-		  elementsUbound = parent.elements.Ubound
-		  
-		  if n > elementsUbound + 1 then n = elementsUbound + 1
-		  
-		  ' Take the required elements.
-		  limit = n - 1
-		  for i = 0 to limit
-		    tmp.Append(parent.elements(i))
-		  next i
-		  
-		  ' Create a new array containing these taken elements.
-		  result = new ArrayObject(tmp)
-		  
-		  ' Destructive operation?
-		  if destructive then parent.elements = tmp
-		  
-		  return result
-		End Function
-	#tag EndMethod
-
 	#tag Method, Flags = &h0
 		Function Invoke(interpreter as Interpreter, arguments() as Variant, where as Token) As Variant
 		  #pragma Unused arguments
@@ -1002,7 +984,9 @@ Implements Roo.Invokable,Roo.Textable
 		  case "find"
 		    return DoFind(arguments)
 		  case "first"
-		    return DoFirst(arguments, where)
+		    return DoFirst(arguments, where, False)
+		  case "first!"
+		    return DoFirst(arguments, where, True)
 		  case "insert!"
 		    return DoInsert(arguments, where)
 		  case "join"
@@ -1031,10 +1015,6 @@ Implements Roo.Invokable,Roo.Textable
 		    return DoSlice(arguments, where, False)
 		  case "slice!"
 		    return DoSlice(arguments, where, True)
-		  case "take"
-		    return DoTake(arguments, where, False)
-		  case "take!"
-		    return DoTake(arguments, where, True)
 		  end select
 		End Function
 	#tag EndMethod

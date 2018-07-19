@@ -71,6 +71,7 @@ Protected Module Lookup
 		  arrayObjMethods.Value("fetch") = True
 		  arrayObjMethods.Value("find") = True
 		  arrayObjMethods.Value("first") = True
+		  arrayObjMethods.Value("first!") = True
 		  arrayObjMethods.Value("insert!") = True
 		  arrayObjMethods.Value("join") = True
 		  arrayObjMethods.Value("keep") = True
@@ -85,8 +86,6 @@ Protected Module Lookup
 		  arrayObjMethods.Value("shift!") = True
 		  arrayObjMethods.Value("slice") = True
 		  arrayObjMethods.Value("slice!") = True
-		  arrayObjMethods.Value("take") = True
-		  arrayObjMethods.Value("take!") = True
 		End Sub
 	#tag EndMethod
 
