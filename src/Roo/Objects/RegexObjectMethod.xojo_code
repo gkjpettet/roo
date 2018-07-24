@@ -5,7 +5,7 @@ Implements Roo.Invokable,Roo.Textable
 		Function Arity() As Variant
 		  select case self.name
 		  case "match"
-		    return 1
+		    return Array(1, 2)
 		  case "matches?"
 		    return 1
 		  case "responds_to?"

@@ -172,11 +172,11 @@ Implements Roo.Invokable,Roo.Textable
 		  ' E.g: 
 		  
 		  ' function put(key) {
-		  '   print("The key is: " + key);
+		  ' print("The key is: " + key);
 		  ' }
 		  ' 
 		  ' function putSuffix(key, suffix) {
-		  '   print("The key is: " + key + suffix);
+		  ' print("The key is: " + key + suffix);
 		  ' }
 		  ' 
 		  ' var h = {"a" => 100, "b" => 200};
@@ -264,11 +264,11 @@ Implements Roo.Invokable,Roo.Textable
 		  ' E.g: 
 		  
 		  ' function put(v) {
-		  '   print("The value is: " + v);
+		  ' print("The value is: " + v);
 		  ' }
 		  ' 
 		  ' function putSuffix(v, suffix) {
-		  '   print("The value is: " + v + suffix);
+		  ' print("The value is: " + v + suffix);
 		  ' }
 		  ' 
 		  ' var h = {"a" => 100, "b" => 200};

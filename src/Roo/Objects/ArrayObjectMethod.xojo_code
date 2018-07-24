@@ -433,7 +433,7 @@ Implements Roo.Invokable,Roo.Textable
 		  if parent.elements.Ubound < 0 then return new ArrayObject
 		  
 		  ' Has the user asked for more elements than there are? If so, we return this array if `first()` or 
-		  ' if `first!()` we return a copy of the original array but with all elements removed from the parent.
+		  ' if `first!()` we return a copy of the original array and then we remove all elements from this array.
 		  if n > (parent.elements.Ubound + 1) then
 		    if destructive then
 		      dim newArray as new ArrayObject
@@ -442,7 +442,7 @@ Implements Roo.Invokable,Roo.Textable
 		        newArray.elements.Insert(0, parent.elements.Pop)
 		      next i
 		      return newArray
-		    else
+		    else ' Non-destructive.
 		      return parent
 		    end if
 		  end if
