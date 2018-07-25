@@ -15,7 +15,7 @@ Implements Roo.Invokable,Roo.Textable
 		  case "index"
 		    return 1
 		  case "match"
-		    return 1
+		    return Array(1, 2)
 		  case "matches?"
 		    return 1
 		  case "replace_all", "replace_all!"
