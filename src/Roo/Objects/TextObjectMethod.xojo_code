@@ -338,22 +338,22 @@ Implements Roo.Invokable,Roo.Textable
 		  ' Position is zero-based.
 		  ' If `pos` > length of the text then we return Nothing.
 		  ' If destructive then we will also change the value of this Text object's value to the sliced value.
-		  ' If `pos` is greater than the length of this Text object then we return nothing
 		  
 		  dim tmp, result as String
 		  
-		  if pos+1 > parent.value.Len then
+		  if pos + 1 > parent.value.Len then
 		    parent.value = if(destructive, "", parent.value)
 		    return new NothingObject
 		  elseif pos >= 0 then
 		    try
-		      result = parent.value.Mid(pos+1, 1)
+		      result = parent.value.Mid(pos + 1, 1)
 		    catch
 		      parent.value = if(destructive, "", parent.value)
 		      return new NothingObject
 		    end try
 		  else
 		    pos = Abs(pos)
+		    if pos > parent.value.Len then return new NothingObject
 		    tmp = Reverse(parent.value)
 		    try
 		      result = tmp.Mid(pos, 1)
