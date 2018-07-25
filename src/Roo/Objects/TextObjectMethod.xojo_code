@@ -338,17 +338,16 @@ Implements Roo.Invokable,Roo.Textable
 		  ' Position is zero-based.
 		  ' If `pos` > length of the text then we return Nothing.
 		  ' If destructive then we will also change the value of this Text object's value to the sliced value.
+		  ' Whenever Nothing is returned, we leave the original text alone (even if it's a destructive operation).
 		  
 		  dim tmp, result as String
 		  
 		  if pos + 1 > parent.value.Len then
-		    parent.value = if(destructive, "", parent.value)
 		    return new NothingObject
 		  elseif pos >= 0 then
 		    try
 		      result = parent.value.Mid(pos + 1, 1)
 		    catch
-		      parent.value = if(destructive, "", parent.value)
 		      return new NothingObject
 		    end try
 		  else
@@ -358,7 +357,6 @@ Implements Roo.Invokable,Roo.Textable
 		    try
 		      result = tmp.Mid(pos, 1)
 		    catch
-		      parent.value = if(destructive, "", parent.value)
 		      return new NothingObject
 		    end try
 		  end if
@@ -376,6 +374,7 @@ Implements Roo.Invokable,Roo.Textable
 		  ' Indices are zero-based.
 		  ' Returns a new Text object of length `length` starting from position `start`. 
 		  ' If start < 0 then we count backwards from the end of the text to find the start character. 
+		  ' Whenever Nothing is returned, we leave the original text alone (even if it's a destructive operation).
 		  ' 
 		  ' E.g:
 		  ' var t = "Hello World"
@@ -390,10 +389,7 @@ Implements Roo.Invokable,Roo.Textable
 		  dim result as String
 		  
 		  ' Make sure `length` is valid.
-		  if length <= 0 then
-		    parent.value = if(destructive, "", parent.value)
-		    return new NothingObject
-		  end if
+		  if length <= 0 then return new NothingObject
 		  
 		  ' Make sure a valid start position has been passed.
 		  if Abs(start) > parent.value.Len then
@@ -412,7 +408,6 @@ Implements Roo.Invokable,Roo.Textable
 		  try
 		    result = parent.value.Mid(start+1, length)
 		  catch
-		    parent.value = if(destructive, "", parent.value)
 		    return new NothingObject
 		  end try
 		  
