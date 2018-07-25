@@ -73,7 +73,7 @@ Inherits RooInstance
 
 	#tag Method, Flags = &h0
 		Function ToText() As String
-		  return "<RegexResultObject instance>"
+		  return "<RegexResult instance>"
 		End Function
 	#tag EndMethod
 

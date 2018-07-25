@@ -57,7 +57,7 @@ Inherits RooInstance
 
 	#tag Method, Flags = &h0
 		Function ToText() As String
-		  return "<MatchInfoObject instance>"
+		  return "<MatchInfo instance>"
 		End Function
 	#tag EndMethod
 
