@@ -59,7 +59,7 @@ Protected Module Roo
 	#tag EndMethod
 
 
-	#tag Constant, Name = VERSION_BUG, Type = Double, Dynamic = False, Default = \"7", Scope = Public
+	#tag Constant, Name = VERSION_BUG, Type = Double, Dynamic = False, Default = \"8", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = VERSION_MAJOR, Type = Double, Dynamic = False, Default = \"2", Scope = Public

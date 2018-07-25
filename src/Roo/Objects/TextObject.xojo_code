@@ -77,7 +77,7 @@ Inherits RooInstance
 		  
 		  value = if(destructive, result, value)
 		  
-		  return new TextObject(value)
+		  return new TextObject(result)
 		  
 		End Function
 	#tag EndMethod

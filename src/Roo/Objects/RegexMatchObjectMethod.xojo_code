@@ -23,7 +23,7 @@ Implements Roo.Invokable,Roo.Textable
 
 	#tag Method, Flags = &h21
 		Private Function DoGroup(args() as Variant, where as Token) As Variant
-		  ' RegexMatch.group(number as Integer) as MatchInfo.
+		  ' RegexMatch.group(number as Integer) as MatchInfo or Nothing.
 		  ' Returns the MatchInfo for the specified group or Nothing if there is no capture group with the 
 		  ' specified number.
 		  
