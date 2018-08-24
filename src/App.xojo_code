@@ -42,6 +42,38 @@ Inherits ConsoleApplication
 
 
 	#tag Method, Flags = &h0
+		Sub Execute(file as FolderItem)
+		  ' Parse the source code.
+		  dim ast() as Roo.Stmt = parser.Parse(file)
+		  if self.parser.hasError then return ' No point continuing if we can't parse the script.
+		  
+		  ' Reset the interpreter (only if we're not in a REPL session).
+		  if not repl then interpreter.Reset()
+		  
+		  ' Perform static analysis and symbol resolution on the AST.
+		  resolver = new Roo.Resolver(interpreter)
+		  resolver.Resolve(ast)
+		  if resolver.hasError then return ' Don't run if the resolver failed.
+		  
+		  ' Run the code.
+		  interpreter.Interpret(ast)
+		  
+		  ' Catch any errors. Remember that scanning and parsing errors will already call this window's
+		  ' ScanningError() or ParsingError() methods if they occur.
+		  exception err as Roo.ResolverError
+		    ResolverError(err)
+		  exception err as Roo.RuntimeError
+		    RuntimeError(err)
+		  exception err as Roo.QuitReturn
+		    if repl then
+		      raise err
+		    else
+		      return
+		    end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Execute(source as String)
 		  ' Parse the source code.
 		  dim ast() as Roo.Stmt = parser.Parse(source)
@@ -79,24 +111,28 @@ Inherits ConsoleApplication
 		  
 		  using Rainbow
 		  
-		  dim source as Text
-		  dim tin as Xojo.IO.TextInputStream
-		  dim sourcefile as Xojo.IO.FolderItem
+		  dim sourcefile as FolderItem
 		  
 		  try
-		    sourceFile = new Xojo.IO.FolderItem(filePath.ToText)
+		    sourceFile = new FolderItem(filePath, FolderItem.PathTypeNative)
+		    if sourcefile = Nil or not sourcefile.Exists then
+		      Print Colourise("File does not exist: '" + filePath + "'.", Colour.Red)
+		      return
+		    end if
 		  catch
 		    Print Colourise("File does not exist: '" + filePath + "'.", Colour.Red)
 		    return
 		  end try
 		  
-		  ' Get the contents
-		  tin = Xojo.IO.TextInputStream.Open(sourceFile, Xojo.Core.TextEncoding.UTF8)
-		  source = tin.ReadAll()
-		  tin.Close()
+		  ' Is the file readable?
+		  if not sourcefile.IsReadable then
+		    Print Colourise("Unable to open file `" + sourcefile.NativePath + "` for reading.", Colour.Red)
+		    return
+		  end if
 		  
-		  ' Execute the source
-		  Execute(source)
+		  ' Run the file.
+		  Execute(sourcefile)
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -239,9 +275,7 @@ Inherits ConsoleApplication
 		  
 		  ' Report that a scanning error has occurred and its location.
 		  Print Colourise("Scanner error.", Colour.Red)
-		  if e.file <> Nil then
-		    Print("File: " + e.file.NativePath)
-		  end if
+		  if e.file <> Nil then Print("File: " + e.file.NativePath)
 		  Print("Location: line " + Str(e.line) + ", position " + Str(e.position))
 		  
 		  ' Print the actual error message.
