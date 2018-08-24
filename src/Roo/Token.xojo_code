@@ -117,6 +117,8 @@ Protected Class Token
 		    return "RCURLY"
 		  case TokenType.REGEX
 		    return "REGEX"
+		  case TokenType.REQUIRE_KEYWORD
+		    return "REQUIRE"
 		  case TokenType.RETURN_KEYWORD
 		    return "RETURN"
 		  case TokenType.RPAREN
@@ -151,6 +153,10 @@ Protected Class Token
 		End Function
 	#tag EndMethod
 
+
+	#tag Property, Flags = &h0
+		filePath As String
+	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		finish As Integer
@@ -236,6 +242,12 @@ Protected Class Token
 			Name="finish"
 			Group="Behavior"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="filePath"
+			Group="Behavior"
+			Type="String"
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

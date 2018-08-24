@@ -2,13 +2,18 @@
 Protected Class ScannerError
 Inherits RuntimeException
 	#tag Method, Flags = &h0
-		Sub Constructor(message as String, line as Integer, position as Integer)
+		Sub Constructor(file as FolderItem, message as String, line as Integer, position as Integer)
+		  self.file = file
 		  self.message = message
 		  self.line = line
 		  self.position = position
 		End Sub
 	#tag EndMethod
 
+
+	#tag Property, Flags = &h0
+		file As FolderItem
+	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		line As Integer

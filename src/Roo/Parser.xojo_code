@@ -569,11 +569,11 @@ Protected Class Parser
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Parse(source as String) As Stmt()
+		Function Parse(sourceFile as FolderItem) As Stmt()
 		  ' Builds the AST and returns it as an array of Stmts.
 		  ' If a scanning error occurs we fire the ScannerError event and return an empty array.
 		  
-		  scanner.Reset(source)
+		  scanner = new Scanner(sourceFile)
 		  redim tokens(-1)
 		  current = 0
 		  hasError = False
@@ -583,7 +583,40 @@ Protected Class Parser
 		  try
 		    tokens = scanner.Scan()
 		  catch e as ScannerError
-		    ScanningError(e.message, e.line, e.position)
+		    ScanningError(e)
+		    hasError = True
+		    return statements
+		  end try
+		  
+		  ' Bail early if there is only an EOF token.
+		  if tokens.Ubound = 0 then return statements
+		  
+		  ' Parse the tokens.
+		  while tokens(current).type <> TokenType.EOF
+		    statements.Append(Declaration())
+		  wend
+		  
+		  ' Return the AST.
+		  return statements
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Parse(source as String) As Stmt()
+		  ' Builds the AST and returns it as an array of Stmts.
+		  ' If a scanning error occurs we fire the ScannerError event and return an empty array.
+		  
+		  scanner = new Scanner(source)
+		  redim tokens(-1)
+		  current = 0
+		  hasError = False
+		  dim statements() as Stmt
+		  
+		  ' Tokenise the source code.
+		  try
+		    tokens = scanner.Scan()
+		  catch e as ScannerError
+		    ScanningError(e)
 		    hasError = True
 		    return statements
 		  end try
@@ -855,7 +888,7 @@ Protected Class Parser
 	#tag EndHook
 
 	#tag Hook, Flags = &h0
-		Event ScanningError(message as String, line as Integer, position as Integer)
+		Event ScanningError(e as Roo.ScannerError)
 	#tag EndHook
 
 

@@ -59,13 +59,13 @@ Protected Module Roo
 	#tag EndMethod
 
 
-	#tag Constant, Name = VERSION_BUG, Type = Double, Dynamic = False, Default = \"8", Scope = Public
+	#tag Constant, Name = VERSION_BUG, Type = Double, Dynamic = False, Default = \"0", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = VERSION_MAJOR, Type = Double, Dynamic = False, Default = \"2", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = VERSION_MINOR, Type = Double, Dynamic = False, Default = \"1", Scope = Public
+	#tag Constant, Name = VERSION_MINOR, Type = Double, Dynamic = False, Default = \"2", Scope = Public
 	#tag EndConstant
 
 
@@ -116,6 +116,7 @@ Protected Module Roo
 		  QUIT_KEYWORD
 		  RCURLY
 		  REGEX
+		  REQUIRE_KEYWORD
 		  RETURN_KEYWORD
 		  RPAREN
 		  RSQUARE

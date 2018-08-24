@@ -230,7 +230,7 @@ Inherits ConsoleApplication
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ScanningError(sender as Roo.Parser, message as String, line as Integer, position as Integer)
+		Sub ScanningError(sender as Roo.Parser, e as Roo.ScannerError)
 		  #pragma Unused sender
 		  
 		  ' An error has occurred during the scanning process.
@@ -238,10 +238,14 @@ Inherits ConsoleApplication
 		  using Rainbow
 		  
 		  ' Report that a scanning error has occurred and its location.
-		  Print Colourise("Scanner error (line " + Str(line) + ", pos " + Str(position) + ").", Colour.Red)
+		  Print Colourise("Scanner error.", Colour.Red)
+		  if e.file <> Nil then
+		    Print("File: " + e.file.NativePath)
+		  end if
+		  Print("Location: line " + Str(e.line) + ", position " + Str(e.position))
 		  
 		  ' Print the actual error message.
-		  Print(message)
+		  Print(e.message)
 		End Sub
 	#tag EndMethod
 
@@ -297,6 +301,7 @@ Inherits ConsoleApplication
 			Name="promptInput"
 			Group="Behavior"
 			Type="String"
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="repl"

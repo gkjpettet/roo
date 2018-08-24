@@ -26,15 +26,13 @@ Protected Class Scanner
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(sourceToScan as String)
+		Sub Constructor(sourceFile as FolderItem, doNotRequire as Xojo.Core.Dictionary = Nil)
 		  ' Define the reserved words in the language.
 		  reserved = new StringToStringHashMapMBS(True)
 		  
 		  AddReservedWord("True")
 		  AddReservedWord("False")
-		  
-		  AddReservedWord("Print") ' HACK: Our baked-in Print() function.
-		  
+		  'AddReservedWord("Print") ' HACK: Our baked-in Print() function.
 		  AddReservedWord("and")
 		  AddReservedWord("break")
 		  AddReservedWord("class")
@@ -54,8 +52,77 @@ Protected Class Scanner
 		  AddReservedWord("var")
 		  AddReservedWord("while")
 		  
-		  ' Reset properties.
-		  Reset(sourceToScan)
+		  ' Are there any files that do not need re-requiring?
+		  if doNotRequire = Nil then
+		    self.doNotRequire = new Xojo.Core.Dictionary
+		  else
+		    self.doNotRequire = doNotRequire
+		  end if
+		  
+		  ' Initialise properties.
+		  self.current = 1
+		  self.start = 1
+		  self.line = 1
+		  
+		  dim ti as TextInputStream
+		  self.sourceFile = sourceFile
+		  if sourceFile <> Nil and sourceFile.Exists and sourceFile.IsReadable then 
+		    ti = TextInputStream.Open(sourceFile)
+		    ti.Encoding = Encodings.UTF8
+		    self.source = DefineEncoding(ti.ReadAll, Encodings.UTF8) ' Only UTF-8 is supported
+		    ti.Close
+		  end if
+		  
+		  self.source = StandardiseNewlines(self.source) ' Get rid of pesky Windows newlines
+		  self.sourceLength = self.source.Len ' Cache for performance
+		  redim self.tokens(-1)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(sourceToScan as String, doNotRequire as Xojo.Core.Dictionary = Nil)
+		  ' Define the reserved words in the language.
+		  reserved = new StringToStringHashMapMBS(True)
+		  
+		  AddReservedWord("True")
+		  AddReservedWord("False")
+		  'AddReservedWord("Print") ' HACK: Our baked-in Print() function.
+		  AddReservedWord("and")
+		  AddReservedWord("break")
+		  AddReservedWord("class")
+		  AddReservedWord("else")
+		  AddReservedWord("function")
+		  AddReservedWord("if")
+		  AddReservedWord("let")
+		  AddReservedWord("module")
+		  AddReservedWord("next")
+		  AddReservedWord("not")
+		  AddReservedWord("or")
+		  AddReservedWord("return")
+		  AddReservedWord("self")
+		  AddReservedWord("static")
+		  AddReservedWord("super")
+		  AddReservedWord("then")
+		  AddReservedWord("var")
+		  AddReservedWord("while")
+		  
+		  ' Are there any files that do not need re-requiring?
+		  if doNotRequire = Nil then
+		    self.doNotRequire = new Xojo.Core.Dictionary
+		  else
+		    self.doNotRequire = doNotRequire
+		  end if
+		  
+		  ' Initialise properties.
+		  self.current = 1
+		  self.start = 1
+		  self.line = 1
+		  self.source = DefineEncoding(sourceToScan, Encodings.UTF8) ' Only UTF-8 is supported
+		  self.source = StandardiseNewlines(self.source) ' Get rid of pesky Windows newlines
+		  self.sourceLength = self.source.Len ' Cache for performance
+		  redim self.tokens(-1)
+		  self.sourceFile = Nil
 		  
 		End Sub
 	#tag EndMethod
@@ -97,6 +164,7 @@ Protected Class Scanner
 		  if StrComp(lexeme, "not", 0) = 0 then return TokenType.NOT_KEYWORD
 		  if StrComp(lexeme, "or", 0) = 0 then return TokenType.OR_KEYWORD
 		  if StrComp(lexeme, "quit", 0) = 0 then return TokenType.QUIT_KEYWORD
+		  if StrComp(lexeme, "require", 0) = 0 then return TokenType.REQUIRE_KEYWORD
 		  if StrComp(lexeme, "return", 0) = 0 then return TokenType.RETURN_KEYWORD
 		  if StrComp(lexeme, "static", 0) = 0 then return TokenType.STATIC_KEYWORD
 		  if StrComp(lexeme, "self", 0) = 0 then return TokenType.SELF_KEYWORD
@@ -155,6 +223,7 @@ Protected Class Scanner
 		  token.finish = current - 1
 		  token.lexeme = source.Mid(start, token.length)
 		  token.line = line
+		  token.filePath = if (sourceFile = Nil, "", sourceFile.NativePath)
 		  
 		  return token
 		  
@@ -217,6 +286,18 @@ Protected Class Scanner
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Function OSPathToRooPath(OSPath as String) As String
+		  ' Roo file paths are in the UNIX format (with forward slashes acting as separators). Since Roo is 
+		  ' cross-platform, we use this method to convert an OS-specific filefile path a Roo path.
+		  ' Only required on Windows.
+		  
+		  #if TargetMacOS or TargetLinux then return OSPath
+		  
+		  return OSPath.ReplaceAll("\", "/")
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Function Peek() As String
 		  ' Returns the current character at the pointer in the source code but DOESN'T consume it.
 		  ' If we've reached the end of the source code we'll return "".
@@ -238,6 +319,87 @@ Protected Class Scanner
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Function Require(requireToken as Token, path as String) As Token
+		  ' This method is called by ScanToken when a potentially valid `require` statement is encountered. 
+		  ' It takes the encountered `require` token which is subsequently returned to the calling method to 
+		  ' signify that a require statement has been handled. 
+		  ' It also takes the path of the file to require.
+		  
+		  ' ' Normalise the path to eliminate differences between UNIX and Windows systems.
+		  ' path = RooPathToOSPath(path)
+		  
+		  ' Valid require paths can be relative or absolute. 
+		  ' The .roo extension for the file to require is optional so we will add it if omitted.
+		  if path.Right(4) <> ".roo" then path = path + ".roo"
+		  
+		  ' Is `path` valid?
+		  dim requireFile as FolderItem
+		  
+		  ' Does this scanner have a source file?
+		  if self.sourceFile <> Nil then
+		    ' Yes it does. Is `path` a valid relative path?
+		    dim parentPath as String = self.sourceFile.Parent.NativePath
+		    if parentPath.Right(1) = "/" or parentPath.Right(1) = "\" then
+		      parentPath = parentPath.Left(parentPath.Len - 1)
+		    end if
+		    ' Convert the parent path into a Roo path.
+		    parentPath = RooPathToOSPath(OSPathToRooPath(parentPath) + "/" + path)
+		    try
+		      requireFile = new FolderItem(parentPath, FolderItem.PathTypeNative)
+		    catch
+		      ' Ignore - not a valid relative path.
+		    end try
+		  end if
+		  
+		  if requireFile = Nil or not requireFile.Exists then
+		    ' Not a relative path. Is it an absolute path?
+		    try
+		      requireFile = new FolderItem(RooPathToOSPath(path), FolderItem.PathTypeNative)
+		    catch
+		      ' Ignore - not a valid absolute path either.
+		    end try
+		    if requireFile = Nil or not requireFile.Exists then
+		      raise new ScannerError(sourceFile, "Invalid require path: `" + path + "`.", line, start)
+		    end if
+		  end if
+		  
+		  ' Make sure requireFile is a file and not a folder.
+		  if requireFile.Directory then 
+		    raise new ScannerError(sourceFile, "Invalid require path. Expected a file not a folder: " + _
+		    "`" + path + "`.", line, start)
+		  end if
+		  
+		  ' Check the file is readable.
+		  if not requireFile.IsReadable then
+		    raise new ScannerError(sourceFile, "Unable to open the required file for reading: `" + _
+		    path + "`.", line, start)
+		  end if
+		  
+		  ' Has this file already been required? (If so, we're done).
+		  if doNotRequire.HasKey(requireFile.NativePath) then return requireToken
+		  
+		  ' Record that the this file has been required to prevent it be re-required within the same script.
+		  doNotRequire.Value(requireFile.NativePath) = True
+		  
+		  ' Spin up a new scanner to tokenise the file.
+		  dim scanner as new Roo.Scanner(requireFile, doNotRequire)
+		  dim requireTokens() as Token = scanner.Scan()
+		  if requireTokens.Ubound >= 0 then
+		    ' Remove the EOF token if this is the last token.
+		    if requireTokens(requireTokens.Ubound).type = TokenType.EOF then call requireTokens.Pop
+		    ' Append these tokens to THIS scanner's tokens.
+		    for each t as Token in requireTokens
+		      self.tokens.Append(t)
+		    next t
+		  end if
+		  
+		  ' We must return a token of type TokenType.REQUIRE_KEYWORD to indicate to the calling function that 
+		  ' we have handled the require statement.
+		  return requireToken
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub Reset(sourceToScan as String)
 		  ' Resets the scanner with a new source string. 
@@ -249,20 +411,40 @@ Protected Class Scanner
 		  self.source = DefineEncoding(sourceToScan, Encodings.UTF8) ' Only UTF-8 is supported
 		  self.source = StandardiseNewlines(self.source) ' Get rid of pesky Windows newlines
 		  self.sourceLength = self.source.Len ' Cache for performance
-		  
+		  redim self.tokens(-1)
+		  self.sourceFile = Nil
+		  self.doNotRequire = new Xojo.Core.Dictionary
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function RooPathToOSPath(rooPath as String) As String
+		  ' Roo file paths are in the UNIX format (with forward slashes acting as separators). Since Roo is 
+		  ' cross-platform, we use this method to convert a Roo file path to the file path for the current 
+		  ' OS that Roo is running on.
+		  ' Therefore, we only need to modify the path if we're on Windows.
+		  
+		  #if TargetMacOS or TargetLinux then return rooPath
+		  
+		  ' Replace all "/" with "\".
+		  return rooPath.ReplaceAll("/", "\")
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function Scan() As Token()
 		  ' Scans the source code and either returns an array of tokens or raises a ScannerError.
 		  ' NB: If an exception occurs, it happens in ScanToken().
+		  ' NB: If a `require` statement is encountered, it is handled within the ScanToken() method but returns
+		  ' a token of type TokenType.REQUIRE_KEYWORD
 		  
-		  dim t, tokens() as Token
+		  dim t as Token
+		  
+		  redim tokens(-1)
 		  
 		  do
 		    t = ScanToken()
-		    tokens.Append(t)
+		    if t.type <> TokenType.REQUIRE_KEYWORD then tokens.Append(t)
 		  loop until t.type = TokenType.EOF
 		  
 		  return tokens
@@ -284,7 +466,29 @@ Protected Class Scanner
 		  dim c as String = Advance()
 		  
 		  ' Identifer?
-		  if IsAlpha(c) then return Identifier()
+		  if IsAlpha(c) then
+		    dim tok as Token = Identifier()
+		    if tok.type = TokenType.REQUIRE_KEYWORD then
+		      ' The next token must be Text and a semicolon in order for this to be a valid require statement.
+		      dim target as Token = ScanToken()
+		      dim semicolon as Token = ScanToken()
+		      if target.type = TokenType.TEXT and semicolon.type = TokenType.SEMICOLON then
+		        ' Handle this require statement.
+		        return Require(tok, target.lexeme)
+		      else
+		        ' Invalid require statement.
+		        if target.type <> TokenType.TEXT then
+		          raise new ScannerError(sourceFile, "Expected a Text literal after the `require` keyword.", _
+		          line, start)
+		        else
+		          raise new ScannerError(sourceFile, "Expected a semicolon after Text literal.", line, start)
+		        end if
+		      end if
+		    else
+		      ' An identifier that's NOT the require keyword.
+		      return tok
+		    end if
+		  end if
 		  
 		  ' Number?
 		  if IsDigit(c) then return Number()
@@ -376,7 +580,7 @@ Protected Class Scanner
 		        loop
 		        return MakeToken(TokenType.REGEX)
 		      elseif nextOne = "" then
-		        raise new ScannerError("Missing closing regex delimiter", line, start)
+		        raise new ScannerError(sourceFile, "Missing closing regex delimiter", line, start)
 		      end if
 		      Advance() ' Keep consuming the contents
 		    loop
@@ -384,7 +588,7 @@ Protected Class Scanner
 		  end select
 		  
 		  ' If we get to here we have a problem.
-		  raise new ScannerError("Unexpected character (" + c + ")", line, start)
+		  raise new ScannerError(sourceFile, "Unexpected character (" + c + ")", line, start)
 		  
 		End Function
 	#tag EndMethod
@@ -449,7 +653,7 @@ Protected Class Scanner
 		  wend
 		  
 		  ' Did the user terminate the text?
-		  if IsAtEnd() then raise new ScannerError("Unterminated text literal", line, start)
+		  if IsAtEnd() then raise new ScannerError(sourceFile, "Unterminated text literal", line, start)
 		  
 		  ' Consume the closing delimiter.
 		  Advance()
@@ -462,6 +666,7 @@ Protected Class Scanner
 		  token.finish = current - 1
 		  token.lexeme = source.Mid(start + 1, token.length) ' Need to remove the flanking delimiters.
 		  token.line = line
+		  token.filePath = if (sourceFile = Nil, "", sourceFile.NativePath)
 		  
 		  return token
 		End Function
@@ -474,6 +679,17 @@ Protected Class Scanner
 			NB: The first character is 1
 		#tag EndNote
 		current As Integer = 1
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		#tag Note
+			 
+			script.
+			Key = Native path of the file
+			Value = True
+			Stores files that do not need to be required again as they have previously been required already by the
+		#tag EndNote
+		Private doNotRequire As Xojo.Core.Dictionary
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -492,6 +708,14 @@ Protected Class Scanner
 		source As String
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		#tag Note
+			If the scanner is parsing source from a file then this FolderItem keeps a reference to that file.
+			Used to report the file that a token or error occurs within.
+		#tag EndNote
+		sourceFile As FolderItem
+	#tag EndProperty
+
 	#tag Property, Flags = &h21
 		Private sourceLength As Integer
 	#tag EndProperty
@@ -502,6 +726,10 @@ Protected Class Scanner
 			NB: The first character in the source string is 1
 		#tag EndNote
 		start As Integer = 1
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		tokens() As Token
 	#tag EndProperty
 
 
