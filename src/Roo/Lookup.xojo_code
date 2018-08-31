@@ -40,6 +40,26 @@ Protected Module Lookup
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h1
+		Protected Function DateTimeGetter(name as String) As Boolean
+		  ' Returns True if the DateTime Object responds to a getter with the passed name.
+		  
+		  if not initialised then Initialise()
+		  
+		  return dateTimeObjGetters.Lookup(name, False)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function DateTimeMethod(name as String) As Boolean
+		  ' Returns True if the DateTime Object responds to a method with the passed name.
+		  
+		  if not initialised then Initialise()
+		  
+		  return dateTimeObjMethods.Lookup(name, False)
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h21
 		Private Sub DefineArrayGetters()
 		  ' Define the Array object getters.
@@ -111,21 +131,90 @@ Protected Module Lookup
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Sub DefineDateTimeGetters()
+		  ' Define the DateObject getters.
+		  
+		  dateTimeObjGetters = New StringToVariantHashMapMBS(True)
+		  dateTimeObjGetters.Value("friday?") = True
+		  dateTimeObjGetters.Value("hour") = True
+		  dateTimeObjGetters.Value("leap?") = True
+		  dateTimeObjGetters.Value("mday") = True
+		  dateTimeObjGetters.Value("minute") = True
+		  dateTimeObjGetters.Value("monday?") = True
+		  dateTimeObjGetters.Value("month") = True
+		  dateTimeObjGetters.Value("nanosecond") = True
+		  dateTimeObjGetters.Value("nothing?") = True
+		  dateTimeObjGetters.Value("number?") = True
+		  dateTimeObjGetters.Value("saturday?") = True
+		  dateTimeObjGetters.Value("second") = True
+		  dateTimeObjGetters.Value("sunday?") = True
+		  dateTimeObjGetters.Value("thursday?") = True
+		  dateTimeObjGetters.Value("to_text") = True
+		  dateTimeObjGetters.Value("today?") = True
+		  dateTimeObjGetters.Value("tomorrow?") = True
+		  dateTimeObjGetters.Value("tuesday?") = True
+		  dateTimeObjGetters.Value("type") = True
+		  dateTimeObjGetters.Value("unix_time") = True
+		  dateTimeObjGetters.Value("wday") = True
+		  dateTimeObjGetters.Value("wednesday?") = True
+		  dateTimeObjGetters.Value("yday") = True
+		  dateTimeObjGetters.Value("yesterday?") = True
+		  dateTimeObjGetters.Value("year") = True
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub DefineDateTimeMethods()
+		  ' Define the DateTime object methods.
+		  
+		  dateTimeObjMethods = New StringToVariantHashMapMBS(True)
+		  dateTimeObjMethods.Value("add_days") = True
+		  dateTimeObjMethods.Value("add_hours") = True
+		  dateTimeObjMethods.Value("add_months") = True
+		  dateTimeObjMethods.Value("add_nanoseconds") = True
+		  dateTimeObjMethods.Value("add_seconds") = True
+		  dateTimeObjMethods.Value("add_years") = True
+		  dateTimeObjMethods.Value("responds_to?") = True
+		  dateTimeObjMethods.Value("sub_days") = True
+		  dateTimeObjMethods.Value("sub_hours") = True
+		  dateTimeObjMethods.Value("sub_months") = True
+		  dateTimeObjMethods.Value("sub_nanoseconds") = True
+		  dateTimeObjMethods.Value("sub_seconds") = True
+		  dateTimeObjMethods.Value("sub_years") = True
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Sub DefineFileGetters()
 		  ' Define the File object getters.
 		  
 		  fileObjGetters = new StringToVariantHashMapMBS(True)
+		  fileObjGetters.Value("close") = True
+		  fileObjGetters.Value("closed?") = True
 		  fileObjGetters.Value("count") = True
+		  fileObjGetters.Value("delete!") = True
 		  fileObjGetters.Value("directory?") = True
 		  fileObjGetters.Value("exists?") = True
 		  fileObjGetters.Value("file?") = True
+		  fileObjGetters.Value("flush") = True
 		  fileObjGetters.Value("name") = True
 		  fileObjGetters.Value("nothing?") = True
 		  fileObjGetters.Value("number?") = True
 		  fileObjGetters.Value("path") = True
+		  fileObjGetters.Value("pos") = True
+		  fileObjGetters.Value("read_all") = True
+		  fileObjGetters.Value("read_int8") = True
+		  fileObjGetters.Value("read_int16") = True
+		  fileObjGetters.Value("read_int32") = True
+		  fileObjGetters.Value("read_int64") = True
+		  fileObjGetters.Value("read_lines") = True
 		  fileObjGetters.Value("readable?") = True
 		  fileObjGetters.Value("to_text") = True
 		  fileObjGetters.Value("type") = True
+		  fileObjGetters.Value("read_uint8") = True
+		  fileObjGetters.Value("read_uint16") = True
+		  fileObjGetters.Value("read_uint32") = True
+		  fileObjGetters.Value("read_uint64") = True
 		  fileObjGetters.Value("writeable?") = True
 		End Sub
 	#tag EndMethod
@@ -135,7 +224,17 @@ Protected Module Lookup
 		  ' Define the File object methods.
 		  
 		  fileObjMethods = new StringToVariantHashMapMBS(True)
+		  fileObjMethods.Value("append") = True
+		  fileObjMethods.Value("append_line") = True
+		  fileObjMethods.Value("copy_to") = True
+		  fileObjMethods.Value("each_byte") = True
+		  fileObjMethods.Value("each_char") = True
+		  fileObjMethods.Value("each_line") = True
+		  fileObjMethods.Value("move_to") = True
+		  fileObjMethods.Value("read") = True
 		  fileObjMethods.Value("responds_to?") = True
+		  fileObjMethods.Value("write") = True
+		  fileObjMethods.Value("write_line") = True
 		End Sub
 	#tag EndMethod
 
@@ -435,44 +534,43 @@ Protected Module Lookup
 
 	#tag Method, Flags = &h21
 		Private Sub Initialise()
-		  DefineArrayGetters()
-		  DefineArrayMethods()
+		  DefineArrayGetters
+		  DefineArrayMethods
 		  
-		  DefineBooleanGetters()
-		  DefineBooleanMethods()
+		  DefineBooleanGetters
+		  DefineBooleanMethods
 		  
-		  DefineHashGetters()
-		  DefineHashMethods()
+		  DefineDateTimeGetters
+		  DefineDateTimeMethods
 		  
-		  DefineFileGetters()
-		  DefineFileMethods()
+		  DefineHashGetters
+		  DefineHashMethods
 		  
-		  DefineNothingGetters()
-		  DefineNothingMethods()
+		  DefineFileGetters
+		  DefineFileMethods
 		  
-		  DefineNumberGetters()
-		  DefineNumberMethods()
+		  DefineNothingGetters
+		  DefineNothingMethods
 		  
-		  DefineRegexGetters()
-		  DefineRegexMethods()
+		  DefineNumberGetters
+		  DefineNumberMethods
 		  
-		  DefineRegexMatchGetters()
-		  DefineRegexMatchMethods()
+		  DefineRegexGetters
+		  DefineRegexMethods
 		  
-		  DefineRegexResultGetters()
-		  DefineRegexResultMethods()
+		  DefineRegexMatchGetters
+		  DefineRegexMatchMethods
 		  
-		  DefineMatchInfoGetters()
-		  DefineMatchInfoMethods()
+		  DefineRegexResultGetters
+		  DefineRegexResultMethods
 		  
-		  DefineTextGetters()
-		  DefineTextMethods()
+		  DefineMatchInfoGetters
+		  DefineMatchInfoMethods
+		  
+		  DefineTextGetters
+		  DefineTextMethods
 		  
 		  initialised = True
-		  
-		  
-		  
-		  
 		  
 		End Sub
 	#tag EndMethod
@@ -640,6 +738,14 @@ Protected Module Lookup
 
 	#tag Property, Flags = &h21
 		Private booleanObjMethods As StringToVariantHashMapMBS
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private dateTimeObjGetters As StringToVariantHashMapMBS
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private dateTimeObjMethods As StringToVariantHashMapMBS
 	#tag EndProperty
 
 	#tag Property, Flags = &h21

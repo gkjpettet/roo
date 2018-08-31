@@ -16,6 +16,8 @@ Implements ExprVisitor,StmtVisitor
 
 	#tag Method, Flags = &h0
 		Sub Constructor()
+		  Roo.FileSystem.Initialise
+		  
 		  Reset()
 		  
 		End Sub
@@ -144,13 +146,13 @@ Implements ExprVisitor,StmtVisitor
 	#tag Method, Flags = &h21
 		Private Function IsEqual(a as Variant, b as Variant) As Boolean
 		  ' Returns True if objects `a` and `b` are considered to be equal. False if not.
-		  ' Built in data types (text, booleans, numbers) are always compared by value.
+		  ' Built in data types (text, booleans, numbers and dates) are always compared by value.
 		  ' Instances are always compared by reference.
 		  
 		  ' Same object in memory?
 		  if a = b then return True
 		  
-		  ' Handle text, numbers and booleans.
+		  ' Handle text, numbers, booleans and dates.
 		  if a isA TextObject and b isA TextObject then
 		    return if(StrComp(TextObject(a).value, TextObject(b).value, 0) = 0, True, False)
 		  end if
@@ -163,14 +165,18 @@ Implements ExprVisitor,StmtVisitor
 		    return NumberObject(a).value = NumberObject(b).value
 		  end if
 		  
+		  If a IsA DateTimeObject And b IsA DateTimeObject Then
+		    Return DateTimeObject(a).Value.SecondsFrom1970 = DateTimeObject(b).Value.SecondsFrom1970
+		  End If
+		  
 		  if a isA NothingObject and b isA NothingObject then return True
 		  
 		  return False
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
-		Private Function IsTruthy(what as Variant) As Boolean
+	#tag Method, Flags = &h0
+		Function IsTruthy(what as Variant) As Boolean
 		  ' In Roo, Nothing and False are False, everything else is True.
 		  
 		  if what = Nil then return False
@@ -221,6 +227,7 @@ Implements ExprVisitor,StmtVisitor
 
 	#tag Method, Flags = &h21
 		Private Sub SetupNativeFunctions()
+		  DefineGlobalFunction("DateTime", new Roo.Native.Functions.DateTime)
 		  DefineGlobalFunction("File", new Roo.Native.Functions.File)
 		  DefineGlobalFunction("input", new Roo.Native.Functions.Input)
 		  DefineGlobalFunction("print", new Roo.Native.Functions.Print)
@@ -232,18 +239,29 @@ Implements ExprVisitor,StmtVisitor
 		Private Sub SetupNativeModules()
 		  dim methods as StringToVariantHashMapMBS
 		  
-		  ' #######################################################
+		  ' ##########################################################################
+		  ' FileUtils module
+		  ' ##########################################################################
+		  methods = New StringToVariantHashMapMBS
+		  methods.Value("copy") = New Roo.Native.Modules.FileUtilsCopy
+		  methods.Value("delete") = New Roo.Native.Modules.FileUtilsDelete
+		  methods.Value("mkdir") = New Roo.Native.Modules.FileUtilsMkDir
+		  methods.Value("move") = New Roo.Native.Modules.FileUtilsMove
+		  DefineNativeModule(New Roo.Native.Modules.FileUtils("FileUtils", methods))
+		  
+		  ' ##########################################################################
 		  ' Maths module
-		  ' #######################################################
+		  ' ##########################################################################
 		  methods = new StringToVariantHashMapMBS
 		  methods.Value("random_int") = new Roo.Native.Modules.MathsRandomInt
 		  DefineNativeModule(new Roo.Native.Modules.Maths("Maths", methods))
 		  
-		  ' #######################################################
+		  ' ##########################################################################
 		  ' Roo module
-		  ' #######################################################
+		  ' ##########################################################################
 		  methods = new StringToVariantHashMapMBS
 		  DefineNativeModule(new Roo.Native.Modules.NativeRooModule("Roo", methods))
+		  
 		End Sub
 	#tag EndMethod
 
@@ -518,18 +536,38 @@ Implements ExprVisitor,StmtVisitor
 		    return right
 		    
 		  case TokenType.GREATER ' left > right
+		    ' DateTime?
+		    If left IsA DateTimeObject And right IsA DateTimeObject Then
+		      Return New BooleanObject(DateTimeObject(left).value.SecondsFrom1970 > DateTimeObject(right).value.SecondsFrom1970)
+		    End If
+		    ' Number?
 		    CheckNumberOperands(expr.operator, left, right)
 		    return new BooleanObject(NumberObject(left).value > NumberObject(right).value)
 		    
 		  case TokenType.GREATER_EQUAL ' left >= right
+		    ' DateTime?
+		    If left IsA DateTimeObject And right IsA DateTimeObject Then
+		      Return New BooleanObject(DateTimeObject(left).value.SecondsFrom1970 >= DateTimeObject(right).value.SecondsFrom1970)
+		    End If
+		    ' Number?
 		    CheckNumberOperands(expr.operator, left, right)
 		    return new BooleanObject(NumberObject(left).value >= NumberObject(right).value)
 		    
 		  case TokenType.LESS ' left < right
+		    ' DateTime?
+		    If left IsA DateTimeObject And right IsA DateTimeObject Then
+		      Return New BooleanObject(DateTimeObject(left).value.SecondsFrom1970 < DateTimeObject(right).value.SecondsFrom1970)
+		    End If
+		    ' Number?
 		    CheckNumberOperands(expr.operator, left, right)
 		    return new BooleanObject(NumberObject(left).value < NumberObject(right).value)
 		    
 		  case TokenType.LESS_EQUAL ' left <= right
+		    ' DateTime?
+		    If left IsA DateTimeObject And right IsA DateTimeObject Then
+		      Return New BooleanObject(DateTimeObject(left).value.SecondsFrom1970 <= DateTimeObject(right).value.SecondsFrom1970)
+		    End If
+		    ' Number?
 		    CheckNumberOperands(expr.operator, left, right)
 		    return new BooleanObject(NumberObject(left).value <= NumberObject(right).value)
 		    

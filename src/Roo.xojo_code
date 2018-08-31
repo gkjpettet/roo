@@ -19,6 +19,120 @@ Protected Module Roo
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h1
+		Protected Function RooPath(Extends f As FolderItem) As String
+		  ' Returns this FolderItem's path as a Roo path. A Roo path is essentially a UNIX path.
+		  
+		  Dim path As String
+		  
+		  Dim tmp As New FolderItem(f.NativePath, FolderItem.PathTypeNative)
+		  
+		  Do
+		    If tmp.Parent <> Nil Then
+		      path = "/" + tmp.Name + path
+		      tmp = tmp.Parent
+		    Else
+		      Exit
+		    End If
+		  Loop
+		  
+		  Return path
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function RooPathToFolderItem(rooPath As String, baseFile As FolderItem) As FolderItem
+		  ' Takes a file Roo file path and returns it as a FolderItem or Nil if it's not possible to derive a 
+		  ' valid FolderItem.
+		  ' File paths in Roo are separated by forward slashes `/`
+		  ' `../` moves up the hierarchy to the parent
+		  ' If a path starts with a `/` it is absolute, otherwise it is taken to be relative to `baseFile`.
+		  
+		  ' An empty path refers to the base file.
+		  If rooPath = "" Then Return baseFile
+		  
+		  ' Remove any superfluous trailing slash.
+		  If rooPath.Right(1) = "/" Then rooPath = rooPath.Left(rooPath.Len - 1)
+		  
+		  ' Is this an absolute path? If so it will begin with `/`.
+		  Dim absolute As Boolean = False
+		  If rooPath.Left(1) = "/" Then
+		    absolute = True
+		    rooPath = rooPath.Right(rooPath.Len - 1)
+		  End If
+		  
+		  ' Split the path into it's constituent parts.
+		  Dim chars() As String = rooPath.Split("")
+		  Dim char, part, parts() As String
+		  For Each char In chars
+		    If char = "/" Then
+		      parts.Append(part)
+		      part = ""
+		    Else
+		      part = part + char
+		    End if
+		  Next char
+		  If char <> "/" Then parts.Append(part)
+		  
+		  ' Get a FolderItem pointing to root
+		  Dim root As FolderItem = App.ExecutableFile.Parent
+		  Do
+		    if root.Parent = Nil Then Exit
+		    root = root.Parent
+		  Loop
+		  
+		  Dim result As FolderItem
+		  
+		  ' Handle absolute paths.
+		  If absolute Then
+		    result = New FolderItem(root.NativePath, FolderItem.PathTypeNative)
+		    for Each part In parts
+		      If part = ".." Then
+		        Try
+		          result = result.Parent
+		        Catch err
+		          Return Nil
+		        End Try
+		      Else
+		        Try
+		          result = result.Child(part)
+		        Catch err
+		          Return Nil
+		        End Try
+		      End If
+		    Next part
+		    Return result
+		  End If
+		  
+		  ' Handle relative paths.
+		  If baseFile = Nil Then
+		    result = App.ExecutableFile.Parent
+		  ElseIf Not baseFile.Directory Then ' Use this file's parent folder as our starting point.
+		    result = New FolderItem(baseFile.Parent.NativePath, FolderItem.PathTypeNative)
+		  Else
+		    result = New FolderItem(baseFile.NativePath, FolderItem.PathTypeNative)
+		  End If
+		  for Each part In parts
+		    If part = ".." Then
+		      Try
+		        result = result.Parent
+		      Catch err
+		        Return Nil
+		      End Try
+		    Else
+		      Try
+		        result = result.Child(part)
+		      Catch err
+		        Return Nil
+		      End Try
+		    End If
+		  Next part
+		  Return result
+		  
+		  
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Function ToBoolean(extends s as String) As Boolean
 		  return if(s = "True", True, False)
@@ -65,7 +179,7 @@ Protected Module Roo
 	#tag Constant, Name = VERSION_MAJOR, Type = Double, Dynamic = False, Default = \"2", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = VERSION_MINOR, Type = Double, Dynamic = False, Default = \"2", Scope = Public
+	#tag Constant, Name = VERSION_MINOR, Type = Double, Dynamic = False, Default = \"3", Scope = Public
 	#tag EndConstant
 
 

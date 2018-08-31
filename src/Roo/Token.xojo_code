@@ -155,7 +155,7 @@ Protected Class Token
 
 
 	#tag Property, Flags = &h0
-		filePath As String
+		File As FolderItem
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -242,12 +242,6 @@ Protected Class Token
 			Name="finish"
 			Group="Behavior"
 			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="filePath"
-			Group="Behavior"
-			Type="String"
-			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

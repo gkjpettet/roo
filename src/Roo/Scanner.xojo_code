@@ -32,7 +32,6 @@ Protected Class Scanner
 		  
 		  AddReservedWord("True")
 		  AddReservedWord("False")
-		  'AddReservedWord("Print") ' HACK: Our baked-in Print() function.
 		  AddReservedWord("and")
 		  AddReservedWord("break")
 		  AddReservedWord("class")
@@ -87,7 +86,6 @@ Protected Class Scanner
 		  
 		  AddReservedWord("True")
 		  AddReservedWord("False")
-		  'AddReservedWord("Print") ' HACK: Our baked-in Print() function.
 		  AddReservedWord("and")
 		  AddReservedWord("break")
 		  AddReservedWord("class")
@@ -223,7 +221,7 @@ Protected Class Scanner
 		  token.finish = current - 1
 		  token.lexeme = source.Mid(start, token.length)
 		  token.line = line
-		  token.filePath = if (sourceFile = Nil, "", sourceFile.NativePath)
+		  token.File = sourceFile
 		  
 		  return token
 		  
@@ -286,18 +284,6 @@ Protected Class Scanner
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function OSPathToRooPath(OSPath as String) As String
-		  ' Roo file paths are in the UNIX format (with forward slashes acting as separators). Since Roo is 
-		  ' cross-platform, we use this method to convert an OS-specific filefile path a Roo path.
-		  ' Only required on Windows.
-		  
-		  #if TargetMacOS or TargetLinux then return OSPath
-		  
-		  return OSPath.ReplaceAll("\", "/")
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
 		Private Function Peek() As String
 		  ' Returns the current character at the pointer in the source code but DOESN'T consume it.
 		  ' If we've reached the end of the source code we'll return "".
@@ -326,43 +312,19 @@ Protected Class Scanner
 		  ' signify that a require statement has been handled. 
 		  ' It also takes the path of the file to require.
 		  
-		  ' ' Normalise the path to eliminate differences between UNIX and Windows systems.
-		  ' path = RooPathToOSPath(path)
-		  
 		  ' Valid require paths can be relative or absolute. 
+		  
+		  ' Removing any superfluous trailing slash.
+		  If path.Right(1) = "/" Then path = path.Left(path.Len - 1)
+		  
 		  ' The .roo extension for the file to require is optional so we will add it if omitted.
 		  if path.Right(4) <> ".roo" then path = path + ".roo"
 		  
 		  ' Is `path` valid?
-		  dim requireFile as FolderItem
-		  
-		  ' Does this scanner have a source file?
-		  if self.sourceFile <> Nil then
-		    ' Yes it does. Is `path` a valid relative path?
-		    dim parentPath as String = self.sourceFile.Parent.NativePath
-		    if parentPath.Right(1) = "/" or parentPath.Right(1) = "\" then
-		      parentPath = parentPath.Left(parentPath.Len - 1)
-		    end if
-		    ' Convert the parent path into a Roo path.
-		    parentPath = RooPathToOSPath(OSPathToRooPath(parentPath) + "/" + path)
-		    try
-		      requireFile = new FolderItem(parentPath, FolderItem.PathTypeNative)
-		    catch
-		      ' Ignore - not a valid relative path.
-		    end try
-		  end if
-		  
-		  if requireFile = Nil or not requireFile.Exists then
-		    ' Not a relative path. Is it an absolute path?
-		    try
-		      requireFile = new FolderItem(RooPathToOSPath(path), FolderItem.PathTypeNative)
-		    catch
-		      ' Ignore - not a valid absolute path either.
-		    end try
-		    if requireFile = Nil or not requireFile.Exists then
-		      raise new ScannerError(sourceFile, "Invalid require path: `" + path + "`.", line, start)
-		    end if
-		  end if
+		  Dim requireFile As FolderItem = Roo.RooPathToFolderItem(path, Self.sourceFile)
+		  If requireFile = Nil Or Not requireFile.Exists Then
+		    Raise New ScannerError(sourceFile, "Invalid require path: `" + path + "`.", line, start)
+		  End If
 		  
 		  ' Make sure requireFile is a file and not a folder.
 		  if requireFile.Directory then 
@@ -415,20 +377,6 @@ Protected Class Scanner
 		  self.sourceFile = Nil
 		  self.doNotRequire = new Xojo.Core.Dictionary
 		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Function RooPathToOSPath(rooPath as String) As String
-		  ' Roo file paths are in the UNIX format (with forward slashes acting as separators). Since Roo is 
-		  ' cross-platform, we use this method to convert a Roo file path to the file path for the current 
-		  ' OS that Roo is running on.
-		  ' Therefore, we only need to modify the path if we're on Windows.
-		  
-		  #if TargetMacOS or TargetLinux then return rooPath
-		  
-		  ' Replace all "/" with "\".
-		  return rooPath.ReplaceAll("/", "\")
-		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -666,7 +614,7 @@ Protected Class Scanner
 		  token.finish = current - 1
 		  token.lexeme = source.Mid(start + 1, token.length) ' Need to remove the flanking delimiters.
 		  token.line = line
-		  token.filePath = if (sourceFile = Nil, "", sourceFile.NativePath)
+		  token.File = sourceFile
 		  
 		  return token
 		End Function
@@ -683,7 +631,7 @@ Protected Class Scanner
 
 	#tag Property, Flags = &h21
 		#tag Note
-			 
+			
 			script.
 			Key = Native path of the file
 			Value = True

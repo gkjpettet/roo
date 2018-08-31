@@ -10,34 +10,32 @@ Implements Roo.Invokable,Roo.Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Invoke(interpreter as Interpreter, arguments() as Variant, where as Token) As Variant
+		Function Invoke(interpreter as Interpreter, arguments() as Variant, where as Roo.Token) As Variant
 		  ' Create a new File object instance.
 		  ' Takes as its parameter the native path to the file.
 		  
-		  #pragma Unused interpreter
+		  #Pragma Unused interpreter
 		  
-		  if not arguments(0) isA Textable then
-		    raise new RuntimeError(where, "The parameter passed to the File method must have a " + _
+		  ' Check a valid path argument has been passed.
+		  If Not arguments(0) IsA Textable Then
+		    Raise New RuntimeError(where, "The parameter passed to the File method must have a " + _
 		    "text representation.")
-		  end if
+		  End If
 		  
-		  dim path as String
-		  if arguments(0) isA Roo.Objects.TextObject then
+		  ' Get the Roo path as a String.
+		  Dim path As String
+		  If arguments(0) IsA Roo.Objects.TextObject Then
 		    path = Roo.Objects.TextObject(arguments(0)).value
-		  else
+		  Else
 		    path = Textable(arguments(0)).ToText
-		  end if
+		  End If
 		  
-		  dim file as Roo.Objects.FileObject
-		  dim f as FolderItem
-		  try
-		    f = new FolderItem(path, FolderItem.PathTypeNative)
-		    file = new Roo.Objects.FileObject(f)
-		  catch
-		    file = new Roo.Objects.FileObject(Nil)
-		  end try
+		  ' Convert this Roo path to a FolderItem
+		  Dim f As FolderItem = Roo.RooPathToFolderItem(path, where.File)
 		  
-		  return file
+		  ' Create the new FileObject and return it.
+		  Return New Roo.Objects.FileObject(f)
+		  
 		  
 		End Function
 	#tag EndMethod
@@ -46,7 +44,7 @@ Implements Roo.Invokable,Roo.Textable
 		Function ToText() As String
 		  ' Return this function's name.
 		  
-		  return "<function: input>"
+		  return "<function: File>"
 		End Function
 	#tag EndMethod
 
