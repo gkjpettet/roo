@@ -33,6 +33,31 @@ Inherits RooInstance
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Function DoDefineUTF8(destructive As Boolean) As Variant
+		  ' Text.define_utf8  |  Text.define_utf8!
+		  ' If destructive then defines this Text object as being UTF-8 encoded and returns this Text object.
+		  ' If non-destructive then returns a new Text object with the same value as this Text object but 
+		  ' with its encoding defined as UTF-8.
+		  ' If Xojo is unable to define the encoding as UTF-8 then we return Nothing.
+		  
+		  Dim result As String
+		  Try
+		    result = DefineEncoding(Self.value, Encodings.UTF8)
+		  Catch
+		    Return New NothingObject
+		  End Try
+		  
+		  If destructive Then
+		    Self.value = result
+		    Return Self
+		  Else
+		    Return New TextObject(result)
+		  End If
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Function DoReverse(destructive as Boolean) As TextObject
 		  ' Text.reverse as Text |  Text.reverse! as Text
 		  ' Returns a new Text object where the value has been reversed. 
@@ -97,6 +122,10 @@ Inherits RooInstance
 		      return new TextObject(value)
 		    case "chars"
 		      return DoChars()
+		    Case "define_utf8"
+		      Return DoDefineUTF8(False)
+		    Case "define_utf8!"
+		      Return DoDefineUTF8(True)
 		    case "empty?"
 		      return new BooleanObject(if(value = "", True, False))
 		    case "length"

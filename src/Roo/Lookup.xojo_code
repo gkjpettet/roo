@@ -446,6 +446,8 @@ Protected Module Lookup
 		  textObjGetters.Value("capitalise") = True
 		  textObjGetters.Value("capitalise!") = True
 		  textObjGetters.Value("chars") = True
+		  textObjGetters.Value("define_utf8") = True
+		  textObjGetters.Value("define_utf8!") = True
 		  textObjGetters.Value("empty?") = True
 		  textObjGetters.Value("length") = True
 		  textObjGetters.Value("lowercase") = True

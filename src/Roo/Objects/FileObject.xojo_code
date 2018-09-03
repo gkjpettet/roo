@@ -32,6 +32,7 @@ Inherits RooClass
 		  
 		  Closed = True
 		  
+		  Return New NothingObject
 		End Function
 	#tag EndMethod
 
@@ -105,6 +106,8 @@ Inherits RooClass
 		  ' Immediately sends the contents of internal write buffers to disk.
 		  
 		  If Bin <> Nil Then Bin.Flush
+		  
+		  Return New NothingObject
 		End Function
 	#tag EndMethod
 
@@ -255,6 +258,8 @@ Inherits RooClass
 		  catch
 		    self.file = Nil
 		  end try
+		  
+		  
 		End Sub
 	#tag EndMethod
 

@@ -84,12 +84,12 @@ Implements Roo.Invokable,Roo.Textable
 		  ' Hulk
 		  ' Thor
 		  
-		  ' var f = File("Users/garry/Desktop/test.txt");
-		  ' f.each_line(list)
+		  ' var f = File("/Users/garry/Desktop/test.txt");
+		  ' f.each_byte(list);
 		  ' # Prints:
 		  
 		  
-		  ' f.each_line(prefix, ["Byte Value: "]
+		  ' f.each_byte(prefix, ["Byte Value: "]);
 		  ' # Prints:
 		  
 		  
@@ -183,14 +183,14 @@ Implements Roo.Invokable,Roo.Textable
 		  ' Hulk
 		  ' Thor
 		  
-		  ' var f = File("Users/garry/Desktop/test.txt");
-		  ' f.each_line(listChar)
+		  ' var f = File("/Users/garry/Desktop/test.txt");
+		  ' f.each_char(listChar);
 		  ' # Prints:
 		  ' I
 		  ' r
 		  ' o   etc
 		  
-		  ' f.each_line(prefixChar, ["Char: "]
+		  ' f.each_char(prefixChar, ["Char: "]);
 		  ' # Prints:
 		  ' Char: I
 		  ' Char: r
@@ -285,14 +285,14 @@ Implements Roo.Invokable,Roo.Textable
 		  ' Hulk
 		  ' Thor
 		  
-		  ' var f = File("Users/garry/Desktop/test.txt");
-		  ' f.each_line(itemise)
+		  ' var f = File("/Users/garry/Desktop/test.txt");
+		  ' f.each_line(itemise);
 		  ' # Prints:
 		  ' # 1. Iron Man
 		  ' # 2. Hulk
 		  ' # 3. Thor
 		  
-		  ' f.each_line(suffix, ["!"])
+		  ' f.each_line(suffix, ["!"]);
 		  ' # Prints:
 		  ' # Iron Man!
 		  ' # Hulk!
@@ -483,7 +483,7 @@ Implements Roo.Invokable,Roo.Textable
 		  data = IF(addEOL, data + EndOfLine, data)
 		  
 		  ' Do we need to create a new BinaryStream? Yes if the file needs creating or we are NOT appending.
-		  If Not Parent.File.Exists Or Not (append And Parent.Closed)Then
+		  If Parent.File.Exists = False Or (Not append And Parent.Closed)Then
 		    ' Create a new BinaryStream.
 		    Try
 		      Parent.Bin = BinaryStream.Create(Parent.File, True) ' True = overwrite.
@@ -492,13 +492,16 @@ Implements Roo.Invokable,Roo.Textable
 		      Raise New RuntimeError(where, "Unable to create a new BinaryStream.")
 		    End Try
 		  ElseIf append Then
-		    ' Open a BinaryStream for this existing file.
-		    Try
-		      Parent.Bin = BinaryStream.Open(Parent.File, True) ' True = overwrite.
-		      Parent.Closed = False
-		    Catch err As IOException
-		      Raise New RuntimeError(where, "Unable to create a new BinaryStream.")
-		    End Try
+		    ' File exists and we are appending. Do we already have an open stream to use for writing?
+		    If Parent.Bin = Nil Then
+		      ' Open a BinaryStream for this existing file.
+		      Try
+		        Parent.Bin = BinaryStream.Open(Parent.File, True)
+		        Parent.Closed = False
+		      Catch err As IOException
+		        Raise New RuntimeError(where, "Unable to create a new BinaryStream.")
+		      End Try
+		    End If
 		  End If
 		  
 		  Dim startPos, bytesWritten As Integer

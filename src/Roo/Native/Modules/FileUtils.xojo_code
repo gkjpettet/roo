@@ -1,21 +1,44 @@
 #tag Class
 Protected Class FileUtils
 Inherits Roo.CustomModule
+	#tag Method, Flags = &h21
+		Private Function DoCwd(where As Roo.Token, textMode As Boolean) As Variant
+		  ' FileUtils.cwd as File or Nothing
+		  ' FileUtils.cwd_path as Text or Nothing
+		  ' Returns the current working directory (cwd) as either a Roo formatted path (textMode = True) 
+		  ' or a File object (textMode = False).
+		  ' If Roo is executing a script then the cwd will be the folder containing the script file.
+		  ' If Roo is in REPL mode or simply interpreting direct String input then cwd will be Nothing.
+		  
+		  If where.File = Nil Then
+		    Return New NothingObject
+		  Else
+		    If where.File.Parent <> Nil Then
+		      If textMode Then
+		        Return New TextObject(where.File.Parent.RooPath)
+		      Else
+		        Return New FileObject(New FolderItem(where.File.Parent.NativePath, FolderItem.PathTypeNative))
+		      End If
+		    Else
+		      Return New NothingObject
+		    End If
+		  End If
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Function Get(name as Roo.Token) As Variant
 		  ' Override RooInstance.Get().
 		  
 		  ' Getters.
-		  if StrComp(name.lexeme, "pwd", 0) = 0 then
-		    If name.File = Nil Then
-		      Return New NothingObject
-		    Else
-		      Return New TextObject(name.File.RooPath)
-		    End If
-		  end if
+		  If StrComp(name.lexeme, "cwd", 0) = 0 Then
+		    Return DoCwd(name, False)
+		  ElseIf StrComp(name.lexeme, "cwd_path", 0) = 0 Then
+		    Return DoCwd(name, True)
+		  End If
 		  
 		  ' Methods.
-		  return super.Get(name)
+		  Return Super.Get(name)
 		  
 		End Function
 	#tag EndMethod

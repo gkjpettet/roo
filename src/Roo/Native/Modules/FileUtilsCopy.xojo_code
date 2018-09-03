@@ -29,7 +29,7 @@ Implements Roo.Invokable,Roo.Textable
 
 	#tag Method, Flags = &h0
 		Function Invoke(interpreter as Roo.Interpreter, arguments() as Variant, where as Roo.Token) As Variant
-		  ' FileUtils.copy(source, destination, overwrite as Boolean) as Text or Nothing.
+		  ' FileUtils.copy(source, destination, overwrite as Boolean) as Boolean.
 		  ' Copies the folder/file at `source` to `destination`
 		  ' `source` and `destination` can be either a Text path or a File object.
 		  ' Returns True if OK, False if unsuccessful.
