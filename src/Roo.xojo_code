@@ -1,5 +1,30 @@
 #tag Module
 Protected Module Roo
+	#tag Method, Flags = &h1
+		Protected Function DayName(Extends d As Xojo.Core.Date) As String
+		  ' Returns the name of the passed Date (1 = Sunday, 7 = Saturday). 
+		  
+		  Select Case d.DayOfWeek
+		  Case 1
+		    Return "Sunday"
+		  Case 2
+		    Return "Monday"
+		  Case 3
+		    Return "Tuesday"
+		  Case 4
+		    Return "Wednesday"
+		  Case 5
+		    Return "Thursday"
+		  Case 6
+		    Return "Friday"
+		  Case 7
+		    Return "Saturday"
+		  Else
+		    Return "Invalid day number"
+		  End Select
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Function DoubleToString(d as Double) As String
 		  ' Converts a Double to a String. Used for prettier printing of Doubles that are Integers.
@@ -16,6 +41,42 @@ Protected Module Roo
 	#tag Method, Flags = &h0
 		Function IsInteger(extends d as Double) As Boolean
 		  return if(Round(d) = d, True, False)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function LongMonth(Extends d As Xojo.Core.Date) As Text
+		  ' Returns the passed Date's month in human-readable form.
+		  ' E.g: 1 --> "January"
+		  
+		  Select Case d.Month
+		  Case 1
+		    Return "January"
+		  Case 2
+		    Return "February"
+		  Case 3
+		    Return "March"
+		  Case 4
+		    Return "April"
+		  Case 5
+		    Return "May"
+		  Case 6
+		    Return "June"
+		  Case 7
+		    Return "July"
+		  Case 8
+		    Return "August"
+		  Case 9
+		    Return "September"
+		  Case 10
+		    Return "October"
+		  Case 11
+		    Return "November"
+		  Case 12
+		    Return "December"
+		  Else
+		    Return ""
+		  End Select
 		End Function
 	#tag EndMethod
 
@@ -133,6 +194,42 @@ Protected Module Roo
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h1
+		Protected Function ShortMonth(Extends d As Xojo.Core.Date) As Text
+		  ' Returns the passed Date's month as a three character month.
+		  ' E.g: 1 --> "Jan"
+		  
+		  Select Case d.Month
+		  Case 1
+		    Return "Jan"
+		  Case 2
+		    Return "Feb"
+		  Case 3
+		    Return "Mar"
+		  Case 4
+		    Return "Apr"
+		  Case 5
+		    Return "May"
+		  Case 6
+		    Return "Jun"
+		  Case 7
+		    Return "Jul"
+		  Case 8
+		    Return "Aug"
+		  Case 9
+		    Return "Sep"
+		  Case 10
+		    Return "Oct"
+		  Case 11
+		    Return "Nov"
+		  Case 12
+		    Return "Dec"
+		  Else
+		    Return ""
+		  End Select
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Function ToBoolean(extends s as String) As Boolean
 		  return if(s = "True", True, False)
@@ -148,6 +245,58 @@ Protected Module Roo
 	#tag Method, Flags = &h0
 		Function ToString(extends b as Boolean) As String
 		  return if(b = True, "True", "False")
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function TwoDigitDay(Extends d As Xojo.Core.Date) As Text
+		  ' Returns the passed Date's day value as a two digit String.
+		  ' E.g: 1 --> "01"
+		  
+		  If d.Day < 10 Then
+		    Return "0" + d.Day.ToText
+		  Else
+		    Return d.Day.ToText
+		  End If
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function TwoDigitHour(Extends d As Xojo.Core.Date) As Text
+		  ' Returns the passed Date's hour value as a two digit String.
+		  ' E.g: 1 --> "01"
+		  
+		  If d.Minute < 10 Then
+		    Return "0" + d.Hour.ToText
+		  Else
+		    Return d.Hour.ToText
+		  End If
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function TwoDigitMinute(Extends d As Xojo.Core.Date) As Text
+		  ' Returns the passed Date's minute value as a two digit String.
+		  ' E.g: 1 --> "01"
+		  
+		  If d.Minute < 10 Then
+		    Return "0" + d.Minute.ToText
+		  Else
+		    Return d.Minute.ToText
+		  End If
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function TwoDigitSecond(Extends d As Xojo.Core.Date) As Text
+		  ' Returns the passed Date's second value as a two digit String.
+		  ' E.g: 1 --> "01"
+		  
+		  If d.Second < 10 Then
+		    Return "0" + d.Second.ToText
+		  Else
+		    Return d.Second.ToText
+		  End If
 		End Function
 	#tag EndMethod
 
@@ -173,13 +322,13 @@ Protected Module Roo
 	#tag EndMethod
 
 
-	#tag Constant, Name = VERSION_BUG, Type = Double, Dynamic = False, Default = \"1", Scope = Public
+	#tag Constant, Name = VERSION_BUG, Type = Double, Dynamic = False, Default = \"0", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = VERSION_MAJOR, Type = Double, Dynamic = False, Default = \"2", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = VERSION_MINOR, Type = Double, Dynamic = False, Default = \"3", Scope = Public
+	#tag Constant, Name = VERSION_MINOR, Type = Double, Dynamic = False, Default = \"4", Scope = Public
 	#tag EndConstant
 
 

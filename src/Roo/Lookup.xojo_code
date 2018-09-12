@@ -135,9 +135,11 @@ Protected Module Lookup
 		  ' Define the DateObject getters.
 		  
 		  dateTimeObjGetters = New StringToVariantHashMapMBS(True)
+		  dateTimeObjGetters.Value("day_name") = True
 		  dateTimeObjGetters.Value("friday?") = True
 		  dateTimeObjGetters.Value("hour") = True
 		  dateTimeObjGetters.Value("leap?") = True
+		  dateTimeObjGetters.Value("long_month") = True
 		  dateTimeObjGetters.Value("mday") = True
 		  dateTimeObjGetters.Value("minute") = True
 		  dateTimeObjGetters.Value("monday?") = True
@@ -147,6 +149,7 @@ Protected Module Lookup
 		  dateTimeObjGetters.Value("number?") = True
 		  dateTimeObjGetters.Value("saturday?") = True
 		  dateTimeObjGetters.Value("second") = True
+		  dateTimeObjGetters.Value("short_month") = True
 		  dateTimeObjGetters.Value("sunday?") = True
 		  dateTimeObjGetters.Value("thursday?") = True
 		  dateTimeObjGetters.Value("to_text") = True
@@ -439,6 +442,70 @@ Protected Module Lookup
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Sub DefineRequestGetters()
+		  ' Define the Request object getters.
+		  
+		  requestObjGetters = New StringToVariantHashMapMBS(True)
+		  requestObjGetters.Value("content") = True
+		  requestObjGetters.Value("content_type") = True
+		  requestObjGetters.Value("cookies") = True
+		  requestObjGetters.Value("headers") = True
+		  requestObjGetters.Value("host") = True
+		  requestObjGetters.Value("if_modified_since") = True
+		  requestObjGetters.Value("method") = True
+		  requestObjGetters.Value("nothing?") = True
+		  requestObjGetters.Value("number?") = True
+		  requestObjGetters.Value("referer") = True
+		  requestObjGetters.Value("send") = True
+		  requestObjGetters.Value("timeout") = True
+		  requestObjGetters.Value("to_text") = True
+		  requestObjGetters.Value("type") = True
+		  requestObjGetters.Value("url") = True
+		  requestObjGetters.Value("user_agent") = True
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub DefineRequestMethods()
+		  ' Define the Request object methods.
+		  
+		  requestObjMethods = New StringToVariantHashMapMBS(True)
+		  requestObjMethods.Value("responds_to?") = True
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub DefineResponseGetters()
+		  ' Define the Response object getters.
+		  
+		  responseObjGetters = New StringToVariantHashMapMBS(True)
+		  responseObjGetters.Value("body") = True
+		  responseObjGetters.Value("content_disposition") = True
+		  responseObjGetters.Value("content_encoding") = True
+		  responseObjGetters.Value("content_length") = True
+		  responseObjGetters.Value("content_type") = True
+		  responseObjGetters.Value("cookies") = True
+		  responseObjGetters.Value("headers") = True
+		  responseObjGetters.Value("last_modified") = True
+		  responseObjGetters.Value("location") = True
+		  responseObjGetters.Value("nothing?") = True
+		  responseObjGetters.Value("number?") = True
+		  responseObjGetters.Value("status") = True
+		  responseObjGetters.Value("to_text") = True
+		  responseObjGetters.Value("type") = True
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub DefineResponseMethods()
+		  ' Define the Response object methods.
+		  
+		  responseObjMethods = New StringToVariantHashMapMBS(True)
+		  responseObjMethods.Value("responds_to?") = True
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Sub DefineTextGetters()
 		  ' Define the Text object getters.
 		  
@@ -464,6 +531,7 @@ Protected Module Lookup
 		  textObjGetters.Value("strip!") = True
 		  textObjGetters.Value("swapcase") = True
 		  textObjGetters.Value("swapcase!") = True
+		  textObjGetters.Value("to_date") = True
 		  textObjGetters.Value("to_text") = True
 		  textObjGetters.Value("type") = True
 		  textObjGetters.Value("uppercase") = True
@@ -551,6 +619,9 @@ Protected Module Lookup
 		  DefineFileGetters
 		  DefineFileMethods
 		  
+		  DefineMatchInfoGetters
+		  DefineMatchInfoMethods
+		  
 		  DefineNothingGetters
 		  DefineNothingMethods
 		  
@@ -566,8 +637,11 @@ Protected Module Lookup
 		  DefineRegexResultGetters
 		  DefineRegexResultMethods
 		  
-		  DefineMatchInfoGetters
-		  DefineMatchInfoMethods
+		  DefineRequestGetters
+		  DefineRequestMethods
+		  
+		  DefineResponseGetters
+		  DefineResponseMethods
 		  
 		  DefineTextGetters
 		  DefineTextMethods
@@ -698,6 +772,46 @@ Protected Module Lookup
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
+		Protected Function RequestGetter(name As String) As Boolean
+		  ' Returns True if the RequestObject responds to a getter with the passed name.
+		  
+		  If Not initialised Then Initialise()
+		  
+		  Return requestObjGetters.Lookup(name, False)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function RequestMethod(name As String) As Boolean
+		  ' Returns True if the RequestObject responds to a method with the passed name.
+		  
+		  If Not initialised Then Initialise()
+		  
+		  Return requestObjMethods.Lookup(name, False)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function ResponseGetter(name As String) As Boolean
+		  ' Returns True if the Response object responds to a getter with the passed name.
+		  
+		  If Not initialised Then Initialise()
+		  
+		  Return responseObjGetters.Lookup(name, False)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function ResponseMethod(name As String) As Boolean
+		  ' Returns True if the Response object responds to a method with the passed name.
+		  
+		  If Not initialised Then Initialise()
+		  
+		  Return responseObjMethods.Lookup(name, False)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
 		Protected Function TextGetter(name as String) As Boolean
 		  ' Returns True if the TextObject responds to a getter with the passed name.
 		  
@@ -816,6 +930,22 @@ Protected Module Lookup
 
 	#tag Property, Flags = &h21
 		Private regexResultObjMethods As StringToVariantHashMapMBS
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private requestObjGetters As StringToVariantHashMapMBS
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private requestObjMethods As StringToVariantHashMapMBS
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private responseObjGetters As StringToVariantHashMapMBS
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private responseObjMethods As StringToVariantHashMapMBS
 	#tag EndProperty
 
 	#tag Property, Flags = &h21

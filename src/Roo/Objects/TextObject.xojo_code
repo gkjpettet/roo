@@ -1,6 +1,7 @@
 #tag Class
 Protected Class TextObject
 Inherits RooInstance
+Implements Roo.Dateable
 	#tag Method, Flags = &h0
 		Sub Constructor(value as String)
 		  ' Calling the overridden superclass constructor.
@@ -107,6 +108,23 @@ Inherits RooInstance
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Function DoToDate() As Variant
+		  ' Text.to_date as DateTime or Nothing
+		  ' If this Text object is in the following formats:
+		  ' YYYY-MM-DD HH:MM
+		  ' YYYY-MM-DD
+		  ' Then this method returns a new DateTime object instantiated to that date and time. If not it 
+		  ' returns Nothing.
+		  
+		  If Self.ToDate = Nil Then
+		    Return New NothingObject
+		  Else
+		    Return New DateTimeObject(Self.ToDate)
+		  End If
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Function Get(name as Token) As Variant
 		  ' Override RooInstance.Get().
@@ -162,6 +180,8 @@ Inherits RooInstance
 		      return DoSwapcase(False)
 		    case "swapcase!"
 		      return DoSwapCase(True)
+		    Case "to_date"
+		      Return DoToDate
 		    case "to_text"
 		      return new TextObject(value)
 		    case "type"
@@ -188,6 +208,21 @@ Inherits RooInstance
 		  raise new RuntimeError(name, "Cannot create or set fields on intrinsic data types " +_ 
 		  "(Text." + name.lexeme + ").")
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToDate() As Xojo.Core.Date
+		  ' Part of the Roo.Dateable interface.
+		  ' If possible, convert this text object to a Xojo.Core.Date.
+		  ' Text is considered to be a date in the following formats: YYYY-MM-DD HH:MM or YYYY-MM-DD
+		  ' If not possible, return Nil.
+		  
+		  Try
+		    Return Xojo.Core.Date.FromText(Self.Value.ToText)
+		  Catch err
+		    Return Nil
+		  End Try
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

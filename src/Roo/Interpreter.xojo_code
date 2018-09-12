@@ -227,10 +227,12 @@ Implements ExprVisitor,StmtVisitor
 
 	#tag Method, Flags = &h21
 		Private Sub SetupNativeFunctions()
-		  DefineGlobalFunction("DateTime", new Roo.Native.Functions.DateTime)
-		  DefineGlobalFunction("File", new Roo.Native.Functions.File)
-		  DefineGlobalFunction("input", new Roo.Native.Functions.Input)
-		  DefineGlobalFunction("print", new Roo.Native.Functions.Print)
+		  DefineGlobalFunction("DateTime", New Roo.Native.Functions.DateTime)
+		  DefineGlobalFunction("File", New Roo.Native.Functions.File)
+		  DefineGlobalFunction("input",New Roo.Native.Functions.Input)
+		  DefineGlobalFunction("print", New Roo.Native.Functions.Print)
+		  DefineGlobalFunction("Request", New Roo.Native.Functions.Request)
+		  DefineGlobalFunction("Response", New Roo.Native.Functions.Response)
 		  
 		End Sub
 	#tag EndMethod
@@ -248,6 +250,24 @@ Implements ExprVisitor,StmtVisitor
 		  methods.Value("mkdir") = New Roo.Native.Modules.FileUtilsMkDir
 		  methods.Value("move") = New Roo.Native.Modules.FileUtilsMove
 		  DefineNativeModule(New Roo.Native.Modules.FileUtils("FileUtils", methods))
+		  
+		  ' ##########################################################################
+		  ' HTTP module
+		  ' ##########################################################################
+		  methods = new StringToVariantHashMapMBS
+		  methods.Value("delete") = new Roo.Native.Modules.HTTPDelete
+		  methods.Value("get") = new Roo.Native.Modules.HTTPGet
+		  methods.Value("post") = new Roo.Native.Modules.HTTPPost
+		  methods.Value("put") = new Roo.Native.Modules.HTTPPut
+		  DefineNativeModule(new Roo.Native.Modules.HTTP("HTTP", methods))
+		  
+		  ' ##########################################################################
+		  ' JSON module
+		  ' ##########################################################################
+		  methods = new StringToVariantHashMapMBS
+		  methods.Value("generate") = new Roo.Native.Modules.JSONGenerate
+		  methods.Value("parse") = new Roo.Native.Modules.JSONParse
+		  DefineNativeModule(new Roo.Native.Modules.NativeJSONModule("JSON", methods))
 		  
 		  ' ##########################################################################
 		  ' Maths module

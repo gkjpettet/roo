@@ -1,6 +1,7 @@
 #tag Class
 Protected Class DateTimeObject
 Inherits RooClass
+Implements Roo.Dateable
 	#tag Method, Flags = &h0
 		Sub Constructor(value As Xojo.Core.Date)
 		  ' Calling the overridden superclass constructor.
@@ -88,12 +89,16 @@ Inherits RooClass
 		  
 		  If Lookup.DateTimeGetter(name.lexeme) Then
 		    Select Case name.lexeme
+		    Case "day_name"
+		      Return New TextObject(Self.Value.DayName)
 		    Case "friday?"
 		      Return New BooleanObject(If(Value.DayOfWeek = 6, True, False))
 		    Case "hour"
 		      Return New NumberObject(Self.Value.Hour)
 		    Case "leap?"
 		      Return DoLeap
+		    Case "long_month"
+		      Return New TextObject(Self.Value.LongMonth)
 		    Case "mday" ' Returns the day of the month (1-31)
 		      Return New NumberObject(Self.Value.Day)
 		    Case "minute"
@@ -112,6 +117,8 @@ Inherits RooClass
 		      Return New BooleanObject(If(Value.DayOfWeek = 7, True, False))
 		    Case "second"
 		      Return New NumberObject(Self.Value.Second)
+		    Case "short_month"
+		      Return New TextObject(Self.Value.ShortMonth)
 		    Case "sunday?"
 		      Return New BooleanObject(If(Value.DayOfWeek = 1, True, False))
 		    Case "thursday?"
@@ -161,6 +168,34 @@ Inherits RooClass
 		  Raise New RuntimeError(name, "Cannot create or set fields on intrinsic data types " +_ 
 		  "(DateTime." + name.lexeme + ").")
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToDate() As Xojo.Core.Date
+		  ' Part of the Roo.Dateable interface.
+		  
+		  Return Self.Value
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToHTTPHeaderFormat() As String
+		  ' Returns this DateTime object in a Text format that can be used in HTTP headers.
+		  ' Format: <day-name>, <day> <month> <year> <hour>:<minute>:<second> GMT
+		  ' As per: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-Modified-Since
+		  
+		  Dim dayName As String = Self.Value.DayName
+		  Dim day As String = Self.Value.TwoDigitDay
+		  Dim month As String = Self.Value.ShortMonth
+		  Dim year As String = Self.Value.Year.ToText
+		  Dim hour As String = Self.Value.TwoDigitHour
+		  Dim minute As String = Self.Value.TwoDigitMinute
+		  Dim second As String = Self.Value.TwoDigitSecond
+		  
+		  Return dayName + ", " + day + " " + month + " " + year + " " + hour + ":" + minute + ":" + second + " GMT" 
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
