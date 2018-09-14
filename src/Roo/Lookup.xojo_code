@@ -152,6 +152,7 @@ Protected Module Lookup
 		  dateTimeObjGetters.Value("short_month") = True
 		  dateTimeObjGetters.Value("sunday?") = True
 		  dateTimeObjGetters.Value("thursday?") = True
+		  dateTimeObjGetters.Value("time") = True
 		  dateTimeObjGetters.Value("to_text") = True
 		  dateTimeObjGetters.Value("today?") = True
 		  dateTimeObjGetters.Value("tomorrow?") = True

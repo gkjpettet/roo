@@ -26,6 +26,24 @@ Implements Roo.Dateable
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function DoTime(where As Roo.Token) As Variant
+		  ' DateTime.time As Text
+		  ' Returns (in human-readable form with meridian) this DateTime object's time.
+		  ' E.g: 9:15 am  or  8:24 pm
+		  
+		  If Self.Value = Nil Then
+		    Raise New RuntimeError(where, "Unable to convert DateTime object to time as its internal value is Nil.")
+		  End If
+		  
+		  Dim meridian As String = If(Self.Value.Hour < 13, "AM", "PM")
+		  Dim h As String = Str(If(Self.Value.Hour < 13, Self.Value.Hour, Self.Value.Hour - 12))
+		  Dim m As String = Self.Value.TwoDigitMinute
+		  
+		  Return New TextObject(h + ":" + m + " " + meridian)
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h21
 		Private Function DoToday() As Roo.Objects.BooleanObject
 		  ' Returns a new Boolean object that is true if this date is today and False if it's not.
@@ -123,6 +141,8 @@ Implements Roo.Dateable
 		      Return New BooleanObject(If(Value.DayOfWeek = 1, True, False))
 		    Case "thursday?"
 		      Return New BooleanObject(If(Value.DayOfWeek = 5, True, False))
+		    Case "time"
+		      Return DoTime(name)
 		    Case "to_text"
 		      If Self.Value = Nil Then
 		        Return New TextObject("Nothing")
