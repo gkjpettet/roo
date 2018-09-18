@@ -36,7 +36,7 @@ Implements Roo.Dateable
 		    Raise New RuntimeError(where, "Unable to convert DateTime object to time as its internal value is Nil.")
 		  End If
 		  
-		  Dim meridian As String = If(Self.Value.Hour < 13, "AM", "PM")
+		  Dim meridian As String = If(Self.Value.Hour < 12, "AM", "PM")
 		  Dim h As String = Str(If(Self.Value.Hour < 13, Self.Value.Hour, Self.Value.Hour - 12))
 		  Dim m As String = Self.Value.TwoDigitMinute
 		  

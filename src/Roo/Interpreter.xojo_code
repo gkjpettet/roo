@@ -1304,7 +1304,7 @@ Implements ExprVisitor,StmtVisitor
 
 	#tag Property, Flags = &h0
 		#tag Note
-			Used to store arbitrary data for the interpreter. 
+			Used to store arbitrary data for the interpreter.
 			Only of use to Xojo developers.
 		#tag EndNote
 		Custom As Xojo.Core.Dictionary
