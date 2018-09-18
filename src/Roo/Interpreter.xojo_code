@@ -205,13 +205,15 @@ Implements ExprVisitor,StmtVisitor
 		Sub Reset()
 		  ' Reset the interpreter.
 		  
-		  self.forceKill = False
+		  Self.ForceKill = False
 		  
-		  self.globals = new Environment
-		  self.environment = globals
+		  Self.Custom = New Xojo.Core.Dictionary
 		  
-		  self.locals = new VariantToVariantHashMapMBS ' Stores resolution information from the Resolver
-		  self.nothing = new NothingObject ' The global Nothing object
+		  Self.Globals = New Environment
+		  Self.Environment = globals
+		  
+		  Self.Locals = New VariantToVariantHashMapMBS ' Stores resolution information from the Resolver
+		  Self.Nothing = New NothingObject ' The global Nothing object
 		  
 		  SetupNativeFunctions()
 		  SetupNativeModules()
@@ -1300,22 +1302,30 @@ Implements ExprVisitor,StmtVisitor
 	#tag EndNote
 
 
+	#tag Property, Flags = &h0
+		#tag Note
+			Used to store arbitrary data for the interpreter. 
+			Only of use to Xojo developers.
+		#tag EndNote
+		Custom As Xojo.Core.Dictionary
+	#tag EndProperty
+
 	#tag Property, Flags = &h21
 		#tag Note
 			Tracks the current environment. Changes as the interpreter enters and exits local scopes.
 		#tag EndNote
-		Private environment As Environment
+		Private Environment As Environment
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		forceKill As Boolean = False
+		ForceKill As Boolean = False
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		#tag Note
 			Holds a fixed reference to the outermost global environment.
 		#tag EndNote
-		globals As Environment
+		Globals As Environment
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
@@ -1325,11 +1335,11 @@ Implements ExprVisitor,StmtVisitor
 			Key = Expr
 			Value = Integer (depth)
 		#tag EndNote
-		Private locals As VariantToVariantHashMapMBS
+		Private Locals As VariantToVariantHashMapMBS
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		nothing As Variant
+		Nothing As Variant
 	#tag EndProperty
 
 
@@ -1372,7 +1382,7 @@ Implements ExprVisitor,StmtVisitor
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="forceKill"
+			Name="ForceKill"
 			Group="Behavior"
 			InitialValue="False"
 			Type="Boolean"
