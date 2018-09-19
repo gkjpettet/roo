@@ -141,6 +141,7 @@ Protected Module Lookup
 		  dateTimeObjGetters.Value("leap?") = True
 		  dateTimeObjGetters.Value("long_month") = True
 		  dateTimeObjGetters.Value("mday") = True
+		  dateTimeObjGetters.Value("meridiem") = True
 		  dateTimeObjGetters.Value("minute") = True
 		  dateTimeObjGetters.Value("monday?") = True
 		  dateTimeObjGetters.Value("month") = True

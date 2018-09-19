@@ -119,6 +119,8 @@ Implements Roo.Dateable
 		      Return New TextObject(Self.Value.LongMonth)
 		    Case "mday" ' Returns the day of the month (1-31)
 		      Return New NumberObject(Self.Value.Day)
+		    Case "meridiem"
+		      Return New TextObject(Self.Value.Meridiem)
 		    Case "minute"
 		      Return New NumberObject(Self.Value.Minute)
 		    Case "monday?"

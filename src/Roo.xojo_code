@@ -81,6 +81,14 @@ Protected Module Roo
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
+		Protected Function Meridiem(Extends d As Xojo.Core.Date) As Text
+		  ' Returns the passed Date's meridiem
+		  
+		  Return If(d.Hour < 12, "AM", "PM")
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
 		Protected Function RooPath(Extends f As FolderItem) As String
 		  ' Returns this FolderItem's path as a Roo path. A Roo path is essentially a UNIX path.
 		  
