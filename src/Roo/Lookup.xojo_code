@@ -157,6 +157,7 @@ Protected Module Lookup
 		  dateTimeObjGetters.Value("sunday?") = True
 		  dateTimeObjGetters.Value("thursday?") = True
 		  dateTimeObjGetters.Value("time") = True
+		  dateTimeObjGetters.Value("to_http_header") = True
 		  dateTimeObjGetters.Value("to_text") = True
 		  dateTimeObjGetters.Value("today?") = True
 		  dateTimeObjGetters.Value("tomorrow?") = True

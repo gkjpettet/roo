@@ -151,6 +151,8 @@ Implements Roo.Dateable
 		      Return New BooleanObject(If(Value.DayOfWeek = 5, True, False))
 		    Case "time"
 		      Return DoTime(name)
+		    Case "to_http_header"
+		      Return New TextObject(ToHTTPHeaderFormat)
 		    Case "to_text"
 		      If Self.Value = Nil Then
 		        Return New TextObject("Nothing")
