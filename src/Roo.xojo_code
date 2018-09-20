@@ -330,6 +330,11 @@ Protected Module Roo
 	#tag EndMethod
 
 
+	#tag Property, Flags = &h0
+		NetworkingEnabled As Boolean = True
+	#tag EndProperty
+
+
 	#tag Constant, Name = VERSION_BUG, Type = Double, Dynamic = False, Default = \"1", Scope = Public
 	#tag EndConstant
 
@@ -453,6 +458,12 @@ Protected Module Roo
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="NetworkingEnabled"
+			Group="Behavior"
+			InitialValue="True"
+			Type="Boolean"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Module

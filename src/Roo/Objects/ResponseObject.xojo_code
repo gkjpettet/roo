@@ -67,7 +67,7 @@ Inherits RooClass
 		  ' EXCEPT for a few specific permitted values.
 		  
 		  Select Case name.Lexeme
-		    
+		    ' No setters defined.
 		  Else
 		    Raise New RuntimeError(name, "Cannot create or set fields on Response objects " +_ 
 		    "(Response." + name.Lexeme + ").")

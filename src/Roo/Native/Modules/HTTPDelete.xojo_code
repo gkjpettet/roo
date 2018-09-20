@@ -18,6 +18,11 @@ Implements Roo.Invokable,Roo.Textable
 		  
 		  #Pragma Unused interpreter
 		  
+		  ' Is networking enabled?
+		  If Not Roo.NetworkingEnabled Then
+		    Raise New RuntimeError(where, "Unable to send request as networking has been disabled.")
+		  End If
+		  
 		  Dim url As String
 		  Dim timeout As Integer = -1
 		  

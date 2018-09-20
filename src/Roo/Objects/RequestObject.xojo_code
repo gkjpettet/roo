@@ -56,6 +56,11 @@ Inherits RooClass
 		Function DoSend(where As Roo.Token) As Roo.Objects.ResponseObject
 		  ' Request.send as Response
 		  
+		  ' Is networking enabled?
+		  If Not Roo.NetworkingEnabled Then
+		    Raise New RuntimeError(where, "Unable to send request as networking has been disabled.")
+		  End If
+		  
 		  ' Flag that we are waiting for a response.
 		  AwaitingResponse = True
 		  
