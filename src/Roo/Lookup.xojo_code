@@ -135,6 +135,9 @@ Protected Module Lookup
 		  ' Define the DateObject getters.
 		  
 		  dateTimeObjGetters = New StringToVariantHashMapMBS(True)
+		  dateTimeObjGetters.Value("two_digit_hour") = True
+		  dateTimeObjGetters.Value("two_digit_minute") = True
+		  dateTimeObjGetters.Value("two_digit_second") = True
 		  dateTimeObjGetters.Value("day_name") = True
 		  dateTimeObjGetters.Value("friday?") = True
 		  dateTimeObjGetters.Value("hour") = True

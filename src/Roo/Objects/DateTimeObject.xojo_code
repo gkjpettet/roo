@@ -107,6 +107,12 @@ Implements Roo.Dateable
 		  
 		  If Lookup.DateTimeGetter(name.lexeme) Then
 		    Select Case name.lexeme
+		    Case "two_digit_hour"
+		      Return New TextObject(Self.Value.TwoDigitHour)
+		    Case "two_digit_minute"
+		      Return New TextObject(Self.Value.TwoDigitMinute)
+		    Case "two_digit_second"
+		      Return New TextObject(Self.Value.TwoDigitSecond)
 		    Case "day_name"
 		      Return New TextObject(Self.Value.DayName)
 		    Case "friday?"
