@@ -243,6 +243,11 @@ Protected Class Token
 			Group="Behavior"
 			Type="Integer"
 		#tag EndViewProperty
+		#tag ViewProperty
+			Name="type"
+			Group="Behavior"
+			Type="TokenType"
+		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
 #tag EndClass

@@ -10,19 +10,31 @@ Inherits Expr
 
 	#tag Method, Flags = &h0
 		Sub Constructor(obj as Expr, name as Token)
-		  self.obj = obj
-		  self.name = name
+		  Self.Obj = obj
+		  Self.Name = name
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(obj As Expr, name As Token, indexOrKey As Expr)
+		  Self.Obj = obj
+		  Self.Name = name
+		  Self.IndexOrKey = indexOrKey
 		End Sub
 	#tag EndMethod
 
 
 	#tag Property, Flags = &h0
-		name As Token
+		IndexOrKey As Expr
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		obj As Expr
+		Name As Token
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Obj As Expr
 	#tag EndProperty
 
 
@@ -42,7 +54,7 @@ Inherits Expr
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="name"
+			Name="Name"
 			Visible=true
 			Group="ID"
 			Type="String"

@@ -28,6 +28,8 @@ Implements Roo.Invokable,Roo.Textable
 		    return Array(1, 2)
 		  case "responds_to?"
 		    return 1
+		  Case "value"
+		    Return 1
 		  end select
 		End Function
 	#tag EndMethod
@@ -703,6 +705,8 @@ Implements Roo.Invokable,Roo.Textable
 		    return DoReject(arguments, where, interpreter, True)
 		  case "responds_to?"
 		    return DoRespondsTo(arguments, where)
+		  Case "value"
+		    Return Parent.GetValue(arguments(0))
 		  end select
 		End Function
 	#tag EndMethod

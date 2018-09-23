@@ -222,13 +222,13 @@ Inherits RooInstance
 
 	#tag Method, Flags = &h0
 		Sub Set(name as Token, value as Variant)
-		  #pragma Unused name
-		  #pragma Unused value
+		  #Pragma Unused name
+		  #Pragma Unused value
 		  
 		  ' Override RooInstance.Set
 		  ' We want to prevent both the creating of new fields on Hash objects and setting their values.
-		  raise new RuntimeError(name, "Cannot create or set fields on intrinsic data types " +_ 
-		  "(Hash." + name.lexeme + ").")
+		  Raise New RuntimeError(name, "Cannot create or set fields on intrinsic data types " +_ 
+		  "(Hash." + name.Lexeme + ").")
 		End Sub
 	#tag EndMethod
 

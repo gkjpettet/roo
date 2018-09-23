@@ -78,7 +78,12 @@ Implements ExprVisitor,StmtVisitor
 
 	#tag Method, Flags = &h0
 		Function Evaluate(expr as Expr) As Variant
-		  return expr.Accept(self)
+		  If expr <> Nil Then
+		    Return expr.Accept(self)
+		  Else
+		    Return Nil
+		  End If
+		  
 		End Function
 	#tag EndMethod
 
@@ -739,24 +744,25 @@ Implements ExprVisitor,StmtVisitor
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function VisitGetExpr(expr as GetExpr) As Variant
+		Function VisitGetExpr(expr as Roo.Expressions.GetExpr) As Variant
 		  ' First evaluate the expression whose property is being accessed.
 		  dim obj as Variant = Evaluate(expr.obj)
 		  
-		  if obj isA RooInstance then
-		    dim result as Variant = RooInstance(obj).Get(expr.name)
+		  If obj IsA RooInstance Then
+		    RooInstance(obj).IndexOrKey = Evaluate(expr.IndexOrKey)
+		    Dim result As Variant = RooInstance(obj).Get(expr.Name)
 		    
 		    ' If the field we are accessing is a getter then invoke it right now and return the
 		    ' result of that get. Otherwise just return the method without invoking it.
-		    if result isA RooFunction and RooFunction(result).declaration.parameters = Nil then
+		    If result IsA RooFunction And RooFunction(result).Declaration.Parameters = Nil Then
 		      ' This is a getter method.
-		      result = RooFunction(result).Invoke(self, Nil, expr.name)
-		    end if
+		      result = RooFunction(result).Invoke(Self, Nil, expr.name)
+		    End If
 		    
-		    return result
-		  end if
+		    Return result
+		  End If
 		  
-		  raise new RuntimeError(expr.name, "Only instances have properties.")
+		  Raise New RuntimeError(expr.Name, "Only instances have properties.")
 		End Function
 	#tag EndMethod
 

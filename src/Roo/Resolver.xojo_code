@@ -297,7 +297,7 @@ Implements ExprVisitor,StmtVisitor
 		  ' Since properties are looked up dynamically, they don’t get resolved. 
 		  ' Therefore we only recurse into the expression to the left of the dot. 
 		  ' The actual property access happens in the interpreter.
-		  Resolve(expr.obj)
+		  Resolve(expr.Obj)
 		End Function
 	#tag EndMethod
 

@@ -285,7 +285,7 @@ Protected Module Lookup
 		  hashObjMethods.Value("reject") = True
 		  hashObjMethods.Value("reject!") = True
 		  hashObjMethods.Value("responds_to?") = True
-		  
+		  hashObjMethods.Value("value") = True
 		End Sub
 	#tag EndMethod
 

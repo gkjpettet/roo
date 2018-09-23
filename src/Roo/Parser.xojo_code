@@ -415,25 +415,37 @@ Protected Class Parser
 		Private Function Invoke() As Expr
 		  ' Invoke → Primary ( LPAREN arguments? RPAREN | DOT IDENTIFIER )*
 		  
-		  dim expr as Expr = Primary()
+		  Dim expr As Expr = Primary()
 		  
-		  while True
+		  While True
 		    
-		    if Match(TokenType.LPAREN) then
+		    If Match(TokenType.LPAREN) Then
 		      ' Each time we find a `(`, use FinishInvoke() to parse the Invoke expression using the 
 		      ' previously parsed expression as the invokee. The returned expression becomes the new 
 		      ' expr and then loop to see if the result is itself called.
 		      expr = FinishInvoke(expr)
-		    elseif Match(TokenType.DOT) then
-		      dim name as Token = Consume(TokenType.IDENTIFIER, "Expected a property name after `.`.")
-		      expr = new GetExpr(expr, name)
-		    else
-		      exit
-		    end if
+		    ElseIf Match(TokenType.DOT) Then
+		      Dim name As Token = Consume(TokenType.IDENTIFIER, "Expected a property name after `.`.")
+		      
+		      ' Is the identifier an array or hash?
+		      If Match(TokenType.LSQUARE) Then ' Array.
+		        Dim index As Expr = Expression
+		        Call Consume(TokenType.RSQUARE, "Expected a `]` after an array index.")
+		        expr = New GetExpr(expr, name, index)
+		      ElseIf Match(TokenType.LCURLY) Then ' Hash.
+		        Dim key As Expr = Expression
+		        Call Consume(TokenType.RCURLY, "Expected a `}` after a hash key.")
+		        expr = New GetExpr(expr, name, key)
+		      Else
+		        expr = New GetExpr(expr, name)
+		      End If
+		    Else
+		      Exit
+		    End If
 		    
-		  wend
+		  Wend
 		  
-		  return expr
+		  Return expr
 		  
 		End Function
 	#tag EndMethod
