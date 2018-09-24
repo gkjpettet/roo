@@ -267,7 +267,7 @@ Protected Class Scanner
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function MakeToken(type as TokenType) As Token
+		Private Function MakeToken(type As Roo.TokenType) As Token
 		  ' Returns a new token based on the current position in the source string of the requested type.
 		  
 		  dim token as new Token
@@ -278,6 +278,13 @@ Protected Class Scanner
 		  token.lexeme = source.Mid(start, token.length)
 		  token.line = line
 		  token.File = sourceFile
+		  
+		  If token.type = TokenType.LCURLY Then
+		    If Tokens.Ubound >= 0 And Tokens(Tokens.Ubound).type = TokenType.IDENTIFIER _
+		      And Peek <> &u0A And source.Mid(current-2, 1) <> " " Then
+		      Tokens(Tokens.Ubound).MaybeHash = True
+		    End If
+		  End If
 		  
 		  return token
 		  

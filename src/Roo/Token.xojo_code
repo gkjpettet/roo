@@ -175,6 +175,10 @@ Protected Class Token
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		MaybeHash As Boolean = False
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		start As Integer
 	#tag EndProperty
 
@@ -242,6 +246,12 @@ Protected Class Token
 			Name="finish"
 			Group="Behavior"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="MaybeHash"
+			Group="Behavior"
+			InitialValue="False"
+			Type="Boolean"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

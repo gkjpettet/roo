@@ -747,7 +747,7 @@ Protected Class Parser
 		      dim index as Expr = Expression()
 		      call Consume(TokenType.RSQUARE, "Expected a closing `]` after an array index.")
 		      return new ArrayExpr(identifier, index)
-		    elseif Match(TokenType.LCURLY) then ' Hash? (a{"name"})
+		    elseif identifier.MaybeHash And Match(TokenType.LCURLY) Then ' Hash? (a{"name"})
 		      dim key as Expr = Expression()
 		      call Consume(TokenType.RCURLY, "Expected a closing `}` after a hash key.")
 		      return new HashExpr(identifier, key)
