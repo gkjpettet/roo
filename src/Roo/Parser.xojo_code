@@ -1,6 +1,40 @@
 #tag Class
 Protected Class Parser
 	#tag Method, Flags = &h21
+		Private Function ActuallyParse() As Stmt()
+		  ' This method actually does the parsing. It is called from one of the two Parse() methods after 
+		  ' those methods have correctly setup the scanner.
+		  
+		  Redim tokens(-1)
+		  current = 0
+		  hasError = False
+		  Dim statements() As Stmt
+		  
+		  ' Tokenise the source code.
+		  Try
+		    tokens = scanner.Scan()
+		  Catch e As ScannerError
+		    ScanningError(e)
+		    hasError = True
+		    Return statements
+		  End Try
+		  
+		  ' Bail early if there is only an EOF token.
+		  If tokens.Ubound = 0 Then Return statements
+		  
+		  ' Parse the tokens.
+		  Dim s As Stmt
+		  While tokens(current).type <> TokenType.EOF
+		    s = Declaration
+		    If s <> Nil Then statements.Append(s)
+		  Wend
+		  
+		  ' Return the AST.
+		  Return statements
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Function Addition() As Expr
 		  ' Addition → Multiplication ( ( MINUS | PLUS ) Multiplication )*
 		  
@@ -263,11 +297,23 @@ Protected Class Parser
 
 	#tag Method, Flags = &h21
 		Private Function ExpressionStatement() As Stmt
-		  dim expr as Expr = Expression()
+		  Dim expr As Expr = Expression()
 		  
-		  call Consume(TokenType.SEMICOLON, "Expected `;` after expression.")
+		  Try
+		    Call Consume(TokenType.SEMICOLON, "Expected `;` after expression.")
+		  Catch
+		    ' Semicolons are expected after expression statements.
+		    ' There is an edge case where an expression statement may end with a hash literal.
+		    ' In this case, the scanner will not have automatically inserted a semicolon if one was 
+		    ' omitted by the user. Handle that here.
+		    Self.hasError = False
+		  End Try
 		  
-		  return new ExpressionStmt(expr)
+		  If expr <> Nil Then
+		    Return New ExpressionStmt(expr)
+		  Else
+		    Return Nil
+		  End If
 		End Function
 	#tag EndMethod
 
@@ -404,6 +450,16 @@ Protected Class Parser
 		  
 		  Return New IfStmt(condition, thenBranch, elseBranch)
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub InsertSemicolon(line As Integer)
+		  Dim semicolon As New Roo.Token
+		  semicolon.line = line
+		  semicolon.type = TokenType.SEMICOLON
+		  
+		  Self.Tokens.Insert(current, semicolon)
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
@@ -580,31 +636,11 @@ Protected Class Parser
 		  ' Builds the AST and returns it as an array of Stmts.
 		  ' If a scanning error occurs we fire the ScannerError event and return an empty array.
 		  
+		  ' Initialise our scanner with this source file.
 		  scanner = new Scanner(sourceFile)
-		  redim tokens(-1)
-		  current = 0
-		  hasError = False
-		  dim statements() as Stmt
 		  
-		  ' Tokenise the source code.
-		  try
-		    tokens = scanner.Scan()
-		  catch e as ScannerError
-		    ScanningError(e)
-		    hasError = True
-		    return statements
-		  end try
-		  
-		  ' Bail early if there is only an EOF token.
-		  if tokens.Ubound = 0 then return statements
-		  
-		  ' Parse the tokens.
-		  while tokens(current).type <> TokenType.EOF
-		    statements.Append(Declaration())
-		  wend
-		  
-		  ' Return the AST.
-		  return statements
+		  ' Now parse.
+		  Return ActuallyParse
 		End Function
 	#tag EndMethod
 
@@ -613,31 +649,11 @@ Protected Class Parser
 		  ' Builds the AST and returns it as an array of Stmts.
 		  ' If a scanning error occurs we fire the ScannerError event and return an empty array.
 		  
+		  ' Initialise our scanner with this source text.
 		  scanner = new Scanner(source)
-		  redim tokens(-1)
-		  current = 0
-		  hasError = False
-		  dim statements() as Stmt
 		  
-		  ' Tokenise the source code.
-		  try
-		    tokens = scanner.Scan()
-		  catch e as ScannerError
-		    ScanningError(e)
-		    hasError = True
-		    return statements
-		  end try
-		  
-		  ' Bail early if there is only an EOF token.
-		  if tokens.Ubound = 0 then return statements
-		  
-		  ' Parse the tokens.
-		  while tokens(current).type <> TokenType.EOF
-		    statements.Append(Declaration())
-		  wend
-		  
-		  ' Return the AST.
-		  return statements
+		  ' Now parse.
+		  Return ActuallyParse
 		End Function
 	#tag EndMethod
 
@@ -861,15 +877,23 @@ Protected Class Parser
 		Private Function VarDeclaration() As Stmt
 		  ' VarDeclaration → VAR IDENTIFIER ( EQUAL Expression )? SEMICOLON
 		  
-		  dim name as Token = Consume(TokenType.IDENTIFIER, "Expected a variable name.")
+		  Dim name As Roo.Token = Consume(TokenType.IDENTIFIER, "Expected a variable name.")
 		  
 		  ' Is there an initialiser for this variable (i.e: a = 10)?
-		  dim initialiser as Expr = Nil
-		  if Match(TokenType.EQUAL) then initialiser = Expression()
+		  Dim initialiser As Expr = Nil
+		  If Match(TokenType.EQUAL) Then initialiser = Expression()
 		  
-		  call Consume(TokenType.SEMICOLON, "Expected `;` after variable declaration.")
+		  Try
+		    Call Consume(TokenType.SEMICOLON, "Expected `;` after variable declaration.")
+		  Catch
+		    ' Semicolons are expected after a variable declaration.
+		    ' There is an edge case where a declaration initialiser may end with a hash literal.
+		    ' In this case, the scanner will not have automatically inserted a semicolon if one was 
+		    ' omitted by the user. Handle that here.
+		    Self.hasError = False
+		  End Try
 		  
-		  return new VarStmt(name, initialiser)
+		  Return New VarStmt(name, initialiser)
 		End Function
 	#tag EndMethod
 

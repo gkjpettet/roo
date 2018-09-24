@@ -126,6 +126,39 @@ Protected Class Scanner
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Sub HandleRequire()
+		  ' The scanner has just encountered (and consumed) a REQUIRE token.
+		  
+		  ' The next token must be a text literal in order for this to be a valid require statement.
+		  NewScanToken
+		  Dim target As Roo.Token = Tokens.Pop
+		  If target.type <> TokenType.TEXT Then
+		    Raise New ScannerError(sourceFile, "Expected a Text literal after the `require` keyword.", _
+		    line, start)
+		  End If
+		  
+		  ' The next token must be either a newline, semicolon or the EOF for this to be a valid 
+		  ' require statement.
+		  If Peek = &u0A Then
+		    ' Newline
+		    line = line + 1
+		    Advance
+		  Else ' Semicolon or EOF?
+		    NewScanToken
+		    Dim t As Roo.Token = Tokens.Pop
+		    If t.type <> TokenType.SEMICOLON And t.type <> TokenType.EOF Then
+		      Raise New ScannerError(sourceFile, "Expected a newline, semicolon or EOF after the require " + _
+		      "statement's Text literal.", line, start)
+		    End If
+		  End If
+		  
+		  ' This is a syntactically valid require statement.
+		  ' Now check that the target path is valid and, if so, do the require.
+		  Require(target.Lexeme)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Function Identifier() As Token
 		  ' Consumes an identifier and returns a token of the correct type.
 		  
@@ -211,6 +244,27 @@ Protected Class Scanner
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Sub MagicSemicolon()
+		  ' The scanner has just hit a newline or the EOF. Do we need to append a semicolon token?
+		  ' Semicolons should be inserted if the last added token is one of the following:
+		  ' Identifier
+		  ' Literal (text, number, regex, boolean, nothing)
+		  ' break
+		  ' return
+		  ' )
+		  ' ]
+		  
+		  Select Case Tokens(Tokens.Ubound).type
+		  Case TokenType.IDENTIFIER, TokenType.TEXT, TokenType.NUMBER, TokenType.REGEX, _
+		    TokenType.BREAK_KEYWORD, TokenType.RETURN_KEYWORD, TokenType.RPAREN, TokenType.RSQUARE, _
+		    TokenType.NOTHING, TokenType.BOOLEAN
+		    Tokens.Append(MakeToken(TokenType.SEMICOLON))
+		  End Select
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Function MakeToken(type as TokenType) As Token
 		  ' Returns a new token based on the current position in the source string of the requested type.
 		  
@@ -243,6 +297,198 @@ Protected Class Scanner
 		  end if
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub NewScanToken()
+		  ' Adds the next token to the scanner's Tokens() array.
+		  
+		  #Pragma BreakOnExceptions False
+		  
+		  SkipWhitespace
+		  
+		  start = current
+		  
+		  If IsAtEnd Then
+		    MagicSemicolon
+		    Tokens.Append(MakeToken(TokenType.EOF))
+		    Return
+		  End If
+		  
+		  Dim c As String = Advance
+		  
+		  ' Number?
+		  If IsDigit(c) Then
+		    Tokens.Append(Number)
+		    Return
+		  End If
+		  
+		  Select Case c
+		    ' ---------------------------------------------------------------
+		    ' Single character tokens.
+		    ' ---------------------------------------------------------------
+		  Case "("
+		    Tokens.Append(MakeToken(TokenType.LPAREN))
+		    Return
+		  Case ")"
+		    Tokens.Append(MakeToken(TokenType.RPAREN))
+		    Return
+		  Case "{"
+		    Tokens.Append(MakeToken(TokenType.LCURLY))
+		    Return
+		  Case "}"
+		    Tokens.Append(MakeToken(TokenType.RCURLY))
+		    Return
+		  Case "["
+		    Tokens.Append(MakeToken(TokenType.LSQUARE))
+		    Return
+		  Case "]"
+		    Tokens.Append(MakeToken(TokenType.RSQUARE))
+		    Return
+		  Case ","
+		    Tokens.Append(MakeToken(TokenType.COMMA))
+		    Return
+		  Case "."
+		    Tokens.Append(MakeToken(TokenType.DOT))
+		    Return
+		  Case "!"
+		    Tokens.Append(MakeToken(TokenType.BANG))
+		    Return
+		  Case "^"
+		    Tokens.Append(MakeToken(TokenType.CARET))
+		    Return
+		  Case "?"
+		    Tokens.Append(MakeToken(TokenType.QUERY))
+		    Return
+		  Case ":"
+		    Tokens.Append(MakeToken(TokenType.COLON))
+		    Return
+		  Case ";"
+		    Tokens.Append(MakeToken(TokenType.SEMICOLON))
+		    Return
+		    
+		    ' ---------------------------------------------------------------
+		    ' Single OR double character tokens.
+		    ' ---------------------------------------------------------------
+		  Case "=" '=, ==, =>
+		    If Match("=") Then
+		      Tokens.Append(MakeToken(TokenType.EQUAL_EQUAL))
+		      Return
+		    End If
+		    Tokens.Append(MakeToken(If(Match(">"), TokenType.ARROW, TokenType.EQUAL)))
+		    Return
+		  Case "+" ' +=, ++, +
+		    If Match("=") Then
+		      Tokens.Append(MakeToken(TokenType.PLUS_EQUAL))
+		      Return
+		    End If
+		    Tokens.Append(MakeToken(If(Match("+"), TokenType.PLUS_PLUS, TokenType.PLUS)))
+		    Return
+		  Case "-" ' -=, --, -
+		    If Match("=") Then
+		      Tokens.Append(MakeToken(TokenType.MINUS_EQUAL))
+		      Return
+		    End If
+		    Tokens.Append(MakeToken(If(Match("-"), TokenType.MINUS_MINUS, TokenType.MINUS)))
+		    Return
+		  Case "*" ' *, *=
+		    If Match("=") Then
+		      Tokens.Append(MakeToken(TokenType.STAR_EQUAL))
+		      Return
+		    Else
+		      Tokens.Append(MakeToken(TokenType.STAR))
+		      Return
+		    End If
+		  Case "/" ' /, /=
+		    If Match("=") Then
+		      Tokens.Append(MakeToken(TokenType.SLASH_EQUAL))
+		      Return
+		    Else
+		      Tokens.Append(MakeToken(TokenType.SLASH))
+		      Return
+		    End If
+		  Case "%" ' %, /%
+		    If Match("=") Then
+		      Tokens.Append(MakeToken(TokenType.PERCENT_EQUAL))
+		      Return
+		    Else
+		      Tokens.Append(MakeToken(TokenType.PERCENT))
+		      Return
+		    End If
+		  Case ">" ' >, >=
+		    If Match("=") Then
+		      Tokens.Append(MakeToken(TokenType.GREATER_EQUAL))
+		      Return
+		    Else
+		      Tokens.Append(MakeToken(TokenType.GREATER))
+		      Return
+		    End If
+		  Case "<" ' <, <=, <>
+		    If Match("=") Then
+		      Tokens.Append(MakeToken(TokenType.LESS_EQUAL))
+		      Return
+		    Else
+		      Tokens.Append(MakeToken(TokenType.LESS))
+		      Return
+		    End If
+		    
+		    ' ---------------------------------------------------------------
+		    ' Text.
+		    ' ---------------------------------------------------------------
+		  Case """"
+		    Tokens.Append(TextToken(TextDelimiter.DoubleQuote))
+		    Return
+		  Case "'"
+		    Tokens.Append(TextToken(TextDelimiter.SingleQuote))
+		    Return
+		    
+		    ' ---------------------------------------------------------------
+		    ' Regex?
+		    ' ---------------------------------------------------------------
+		  Case "|"
+		    Dim nextOne As String
+		    Do
+		      nextOne = Peek
+		      If nextOne = "\" And PeekNext = "|" Then ' Escaped pipe, not the end of the regex.
+		        Advance
+		      ElseIf nextOne = "|" Then
+		        ' Gobble up the closing pipe.
+		        Advance
+		        ' Are there any suffixing options? ('i','s','e','u','m')
+		        Do
+		          nextOne = Peek
+		          Select Case nextOne
+		          Case "i", "s", "e", "u", "m"
+		            Advance
+		          Else
+		            Exit
+		          End Select
+		        Loop
+		        Tokens.Append(MakeToken(TokenType.REGEX))
+		        Return
+		      ElseIf nextOne = "" Then
+		        Raise New ScannerError(sourceFile, "Missing closing regex delimiter", line, start)
+		      End If
+		      Advance ' Keep consuming the contents
+		    Loop
+		    
+		  End Select
+		  
+		  ' Identifier?
+		  If IsAlpha(c) Then
+		    Dim tok As Roo.Token = Identifier
+		    If tok.type = TokenType.REQUIRE_KEYWORD Then
+		      HandleRequire
+		      Return
+		    Else
+		      Tokens.Append(tok)
+		      Return
+		    End If
+		  End If
+		  
+		  ' If we get to here we have a problem.
+		  Raise New ScannerError(sourceFile, "Unexpected character (" + c + ")", line, start)
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
@@ -306,11 +552,9 @@ Protected Class Scanner
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function Require(requireToken as Token, path as String) As Token
-		  ' This method is called by ScanToken when a potentially valid `require` statement is encountered. 
-		  ' It takes the encountered `require` token which is subsequently returned to the calling method to 
-		  ' signify that a require statement has been handled. 
-		  ' It also takes the path of the file to require.
+		Private Sub Require(path As String)
+		  ' This method is called by HandleRequire when a potentially valid `require` statement is encountered. 
+		  ' It takes the path of the file to require.
 		  
 		  ' Valid require paths can be relative or absolute. 
 		  
@@ -318,7 +562,7 @@ Protected Class Scanner
 		  If path.Right(1) = "/" Then path = path.Left(path.Len - 1)
 		  
 		  ' The .roo extension for the file to require is optional so we will add it if omitted.
-		  if path.Right(4) <> ".roo" then path = path + ".roo"
+		  If path.Right(4) <> ".roo" Then path = path + ".roo"
 		  
 		  ' Is `path` valid?
 		  Dim requireFile As FolderItem = Roo.RooPathToFolderItem(path, Self.sourceFile)
@@ -327,39 +571,38 @@ Protected Class Scanner
 		  End If
 		  
 		  ' Make sure requireFile is a file and not a folder.
-		  if requireFile.Directory then 
-		    raise new ScannerError(sourceFile, "Invalid require path. Expected a file not a folder: " + _
+		  If requireFile.Directory Then
+		    Raise New ScannerError(sourceFile, "Invalid require path. Expected a file not a folder: " + _
 		    "`" + path + "`.", line, start)
-		  end if
+		  End If
 		  
 		  ' Check the file is readable.
-		  if not requireFile.IsReadable then
-		    raise new ScannerError(sourceFile, "Unable to open the required file for reading: `" + _
+		  If Not requireFile.IsReadable Then
+		    Raise New ScannerError(sourceFile, "Unable to open the required file for reading: `" + _
 		    path + "`.", line, start)
-		  end if
+		  End If
 		  
 		  ' Has this file already been required? (If so, we're done).
-		  if doNotRequire.HasKey(requireFile.NativePath) then return requireToken
+		  If doNotRequire.HasKey(requireFile.NativePath) Then Return
 		  
-		  ' Record that the this file has been required to prevent it be re-required within the same script.
+		  ' Record that this file has been required to prevent it be re-required within the same script.
 		  doNotRequire.Value(requireFile.NativePath) = True
 		  
 		  ' Spin up a new scanner to tokenise the file.
-		  dim scanner as new Roo.Scanner(requireFile, doNotRequire)
-		  dim requireTokens() as Token = scanner.Scan()
-		  if requireTokens.Ubound >= 0 then
+		  Dim scanner As New Roo.scanner(requireFile, doNotRequire)
+		  Dim requireTokens() As Token = scanner.Scan()
+		  If requireTokens.Ubound >= 0 Then
 		    ' Remove the EOF token if this is the last token.
-		    if requireTokens(requireTokens.Ubound).type = TokenType.EOF then call requireTokens.Pop
+		    If requireTokens(requireTokens.Ubound).type = TokenType.EOF Then Call requireTokens.Pop
 		    ' Append these tokens to THIS scanner's tokens.
-		    for each t as Token in requireTokens
-		      self.tokens.Append(t)
-		    next t
-		  end if
+		    For Each t As Token In requireTokens
+		      Self.tokens.Append(t)
+		    Next t
+		  End If
 		  
-		  ' We must return a token of type TokenType.REQUIRE_KEYWORD to indicate to the calling function that 
-		  ' we have handled the require statement.
-		  return requireToken
-		End Function
+		  ' Done.
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -386,157 +629,155 @@ Protected Class Scanner
 		  ' NB: If a `require` statement is encountered, it is handled within the ScanToken() method but returns
 		  ' a token of type TokenType.REQUIRE_KEYWORD
 		  
-		  dim t as Token
+		  Redim tokens(-1)
 		  
-		  redim tokens(-1)
+		  Do
+		    NewScanToken
+		  Loop Until Tokens(Tokens.Ubound).type = TokenType.EOF
 		  
-		  do
-		    t = ScanToken()
-		    if t.type <> TokenType.REQUIRE_KEYWORD then tokens.Append(t)
-		  loop until t.type = TokenType.EOF
+		  Return Tokens
 		  
-		  return tokens
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Function ScanToken() As Token
-		  ' Return the next token.
-		  
-		  #pragma BreakOnExceptions False
-		  
-		  SkipWhitespace()
-		  
-		  start = current
-		  
-		  if IsAtEnd() then return MakeToken(TokenType.EOF)
-		  
-		  dim c as String = Advance()
-		  
-		  ' Identifer?
-		  if IsAlpha(c) then
-		    dim tok as Token = Identifier()
-		    if tok.type = TokenType.REQUIRE_KEYWORD then
-		      ' The next token must be Text and a semicolon in order for this to be a valid require statement.
-		      dim target as Token = ScanToken()
-		      dim semicolon as Token = ScanToken()
-		      if target.type = TokenType.TEXT and semicolon.type = TokenType.SEMICOLON then
-		        ' Handle this require statement.
-		        return Require(tok, target.lexeme)
-		      else
-		        ' Invalid require statement.
-		        if target.type <> TokenType.TEXT then
-		          raise new ScannerError(sourceFile, "Expected a Text literal after the `require` keyword.", _
-		          line, start)
-		        else
-		          raise new ScannerError(sourceFile, "Expected a semicolon after Text literal.", line, start)
-		        end if
-		      end if
-		    else
-		      ' An identifier that's NOT the require keyword.
-		      return tok
-		    end if
-		  end if
-		  
-		  ' Number?
-		  if IsDigit(c) then return Number()
-		  
-		  select case c
-		    ' ---------------------------------------------------------------
-		    ' Single character tokens.
-		    ' ---------------------------------------------------------------
-		  case "("
-		    return MakeToken(TokenType.LPAREN)
-		  case ")"
-		    return MakeToken(TokenType.RPAREN)
-		  case "{"
-		    return MakeToken(TokenType.LCURLY)
-		  case "}"
-		    return MakeToken(TokenType.RCURLY)
-		  case "["
-		    return MakeToken(TokenType.LSQUARE)
-		  case "]"
-		    return MakeToken(TokenType.RSQUARE)
-		  case ","
-		    return MakeToken(TokenType.COMMA)
-		  case "."
-		    return MakeToken(TokenType.DOT)
-		  case "!"
-		    return MakeToken(TokenType.BANG)
-		  case "^"
-		    return MakeToken(TokenType.CARET)
-		  case "?"
-		    return MakeToken(TokenType.QUERY)
-		  case ":"
-		    return MakeToken(TokenType.COLON)
-		  case ";"
-		    return MakeToken(TokenType.SEMICOLON)
-		    
-		    ' ---------------------------------------------------------------
-		    ' Single OR double character tokens.
-		    ' ---------------------------------------------------------------
-		  case "=" '=, ==, =>
-		    if Match("=") then return MakeToken(TokenType.EQUAL_EQUAL)
-		    return MakeToken(if(Match(">"), TokenType.ARROW, TokenType.EQUAL))
-		  case "+" ' +=, ++, + 
-		    if Match("=") then return MakeToken(TokenType.PLUS_EQUAL)
-		    return MakeToken(if(Match("+"), TokenType.PLUS_PLUS, TokenType.PLUS))
-		  case "-" ' -=, --, - 
-		    if Match("=") then return MakeToken(TokenType.MINUS_EQUAL)
-		    return MakeToken(if(Match("-"), TokenType.MINUS_MINUS, TokenType.MINUS))
-		  case "*" ' *, *=
-		    return MakeToken(if(Match("="), TokenType.STAR_EQUAL, TokenType.STAR))
-		  case "/" ' /, /=
-		    return MakeToken(if(Match("="), TokenType.SLASH_EQUAL, TokenType.SLASH))
-		  case "%" ' %, /%
-		    return MakeToken(if(Match("="), TokenType.PERCENT_EQUAL, TokenType.PERCENT))
-		  case ">" ' >, >=
-		    return MakeToken(if(Match("="), TokenType.GREATER_EQUAL, TokenType.GREATER))
-		  case "<" ' <, <=, <>
-		    if Match("=") then return MakeToken(TokenType.LESS_EQUAL)
-		    return MakeToken(if(Match(">"), TokenType.NOT_EQUAL, TokenType.LESS))
-		    
-		    ' ---------------------------------------------------------------
-		    ' Text.
-		    ' ---------------------------------------------------------------
-		  case """"
-		    return TextToken(TextDelimiter.DoubleQuote)
-		  case "'"
-		    return TextToken(TextDelimiter.SingleQuote)
-		    
-		    ' ---------------------------------------------------------------
-		    ' Regex?
-		    ' ---------------------------------------------------------------
-		  case "|"
-		    dim nextOne as String
-		    do
-		      nextOne = Peek()
-		      if nextOne = "\" and PeekNext() = "|" then ' Escaped pipe, not the end of the regex.
-		        Advance()
-		      elseif nextOne = "|" then
-		        ' Gobble up the closing pipe.
-		        Advance()
-		        ' Are there any suffixing options? ('i','s','e','u','m')
-		        do
-		          nextOne = Peek()
-		          select case nextOne
-		          case "i", "s", "e", "u", "m"
-		            Advance()
-		          else
-		            exit
-		          end select
-		        loop
-		        return MakeToken(TokenType.REGEX)
-		      elseif nextOne = "" then
-		        raise new ScannerError(sourceFile, "Missing closing regex delimiter", line, start)
-		      end if
-		      Advance() ' Keep consuming the contents
-		    loop
-		    
-		  end select
-		  
-		  ' If we get to here we have a problem.
-		  raise new ScannerError(sourceFile, "Unexpected character (" + c + ")", line, start)
+		  ' ' Return the next token.
+		  ' 
+		  ' #pragma BreakOnExceptions False
+		  ' 
+		  ' SkipWhitespace()
+		  ' 
+		  ' start = current
+		  ' 
+		  ' if IsAtEnd() then return MakeToken(TokenType.EOF)
+		  ' 
+		  ' dim c as String = Advance()
+		  ' 
+		  ' ' Identifer?
+		  ' if IsAlpha(c) then
+		  ' dim tok as Token = Identifier()
+		  ' if tok.type = TokenType.REQUIRE_KEYWORD then
+		  ' ' The next token must be Text and a semicolon in order for this to be a valid require statement.
+		  ' dim target as Token = ScanToken()
+		  ' dim semicolon as Token = ScanToken()
+		  ' if target.type = TokenType.TEXT and semicolon.type = TokenType.SEMICOLON then
+		  ' ' Handle this require statement.
+		  ' return Require(tok, target.lexeme)
+		  ' else
+		  ' ' Invalid require statement.
+		  ' if target.type <> TokenType.TEXT then
+		  ' raise new ScannerError(sourceFile, "Expected a Text literal after the `require` keyword.", _
+		  ' line, start)
+		  ' else
+		  ' raise new ScannerError(sourceFile, "Expected a semicolon after Text literal.", line, start)
+		  ' end if
+		  ' end if
+		  ' else
+		  ' ' An identifier that's NOT the require keyword.
+		  ' return tok
+		  ' end if
+		  ' end if
+		  ' 
+		  ' ' Number?
+		  ' if IsDigit(c) then return Number()
+		  ' 
+		  ' select case c
+		  ' ' ---------------------------------------------------------------
+		  ' ' Single character tokens.
+		  ' ' ---------------------------------------------------------------
+		  ' case "("
+		  ' return MakeToken(TokenType.LPAREN)
+		  ' case ")"
+		  ' return MakeToken(TokenType.RPAREN)
+		  ' case "{"
+		  ' return MakeToken(TokenType.LCURLY)
+		  ' case "}"
+		  ' return MakeToken(TokenType.RCURLY)
+		  ' case "["
+		  ' return MakeToken(TokenType.LSQUARE)
+		  ' case "]"
+		  ' return MakeToken(TokenType.RSQUARE)
+		  ' case ","
+		  ' return MakeToken(TokenType.COMMA)
+		  ' case "."
+		  ' return MakeToken(TokenType.DOT)
+		  ' case "!"
+		  ' return MakeToken(TokenType.BANG)
+		  ' case "^"
+		  ' return MakeToken(TokenType.CARET)
+		  ' case "?"
+		  ' return MakeToken(TokenType.QUERY)
+		  ' case ":"
+		  ' return MakeToken(TokenType.COLON)
+		  ' case ";"
+		  ' return MakeToken(TokenType.SEMICOLON)
+		  ' 
+		  ' ' ---------------------------------------------------------------
+		  ' ' Single OR double character tokens.
+		  ' ' ---------------------------------------------------------------
+		  ' case "=" '=, ==, =>
+		  ' if Match("=") then return MakeToken(TokenType.EQUAL_EQUAL)
+		  ' return MakeToken(if(Match(">"), TokenType.ARROW, TokenType.EQUAL))
+		  ' case "+" ' +=, ++, + 
+		  ' if Match("=") then return MakeToken(TokenType.PLUS_EQUAL)
+		  ' return MakeToken(if(Match("+"), TokenType.PLUS_PLUS, TokenType.PLUS))
+		  ' case "-" ' -=, --, - 
+		  ' if Match("=") then return MakeToken(TokenType.MINUS_EQUAL)
+		  ' return MakeToken(if(Match("-"), TokenType.MINUS_MINUS, TokenType.MINUS))
+		  ' case "*" ' *, *=
+		  ' return MakeToken(if(Match("="), TokenType.STAR_EQUAL, TokenType.STAR))
+		  ' case "/" ' /, /=
+		  ' return MakeToken(if(Match("="), TokenType.SLASH_EQUAL, TokenType.SLASH))
+		  ' case "%" ' %, /%
+		  ' return MakeToken(if(Match("="), TokenType.PERCENT_EQUAL, TokenType.PERCENT))
+		  ' case ">" ' >, >=
+		  ' return MakeToken(if(Match("="), TokenType.GREATER_EQUAL, TokenType.GREATER))
+		  ' case "<" ' <, <=, <>
+		  ' if Match("=") then return MakeToken(TokenType.LESS_EQUAL)
+		  ' return MakeToken(if(Match(">"), TokenType.NOT_EQUAL, TokenType.LESS))
+		  ' 
+		  ' ' ---------------------------------------------------------------
+		  ' ' Text.
+		  ' ' ---------------------------------------------------------------
+		  ' case """"
+		  ' return TextToken(TextDelimiter.DoubleQuote)
+		  ' case "'"
+		  ' return TextToken(TextDelimiter.SingleQuote)
+		  ' 
+		  ' ' ---------------------------------------------------------------
+		  ' ' Regex?
+		  ' ' ---------------------------------------------------------------
+		  ' case "|"
+		  ' dim nextOne as String
+		  ' do
+		  ' nextOne = Peek()
+		  ' if nextOne = "\" and PeekNext() = "|" then ' Escaped pipe, not the end of the regex.
+		  ' Advance()
+		  ' elseif nextOne = "|" then
+		  ' ' Gobble up the closing pipe.
+		  ' Advance()
+		  ' ' Are there any suffixing options? ('i','s','e','u','m')
+		  ' do
+		  ' nextOne = Peek()
+		  ' select case nextOne
+		  ' case "i", "s", "e", "u", "m"
+		  ' Advance()
+		  ' else
+		  ' exit
+		  ' end select
+		  ' loop
+		  ' return MakeToken(TokenType.REGEX)
+		  ' elseif nextOne = "" then
+		  ' raise new ScannerError(sourceFile, "Missing closing regex delimiter", line, start)
+		  ' end if
+		  ' Advance() ' Keep consuming the contents
+		  ' loop
+		  ' 
+		  ' end select
+		  ' 
+		  ' ' If we get to here we have a problem.
+		  ' raise new ScannerError(sourceFile, "Unexpected character (" + c + ")", line, start)
 		  
 		End Function
 	#tag EndMethod
@@ -544,35 +785,37 @@ Protected Class Scanner
 	#tag Method, Flags = &h21
 		Private Sub SkipWhitespace()
 		  ' Advance the scanner past meaningless whitespace.
+		  ' If we encounter a newline, we may need to insert a semicolon token.
 		  
-		  dim c as String
+		  Dim c As String
 		  
-		  do
+		  Do
 		    
-		    c = Peek()
+		    c = Peek
 		    
-		    select case c
-		    case " ", &u9 ' Spaces and tabs.
-		      Advance()
+		    Select Case c
+		    Case " ", &u9 ' Spaces and tabs.
+		      Advance
 		      
-		    case &u0A ' Newlines.
+		    Case &u0A ' Newlines.
 		      line = line + 1
-		      Advance()
+		      MagicSemicolon
+		      Advance
 		      
-		    case "#" ' Comment. These go to the end of the line.
-		      while Peek() <> &u0A and not IsAtEnd()
-		        Advance()
-		      wend
-		      if Peek() = &u0A then
-		        Advance() ' Consume the newline at the end of the comment.
+		    Case "#" ' Comment. These go to the end of the line.
+		      While Peek <> &u0A And Not IsAtEnd
+		        Advance
+		      Wend
+		      If Peek = &u0A Then
+		        Advance ' Consume the newline at the end of the comment.
 		        line = line + 1 ' Remember to increment the line number.
-		      end if
+		      End If
 		      
-		    else
-		      return
-		    end select
+		    Else
+		      Return
+		    End Select
 		    
-		  loop
+		  Loop
 		End Sub
 	#tag EndMethod
 
@@ -677,7 +920,7 @@ Protected Class Scanner
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		tokens() As Token
+		Tokens() As Roo.Token
 	#tag EndProperty
 
 
