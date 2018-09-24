@@ -483,7 +483,7 @@ Protected Class Parser
 		        Dim index As Expr = Expression
 		        Call Consume(TokenType.RSQUARE, "Expected a `]` after an array index.")
 		        expr = New GetExpr(expr, name, index)
-		      ElseIf Peek.type = TokenType.LCURLY And Peek.MaybeHash Then ' Hash.
+		      ElseIf Peek.type = TokenType.LCURLY And name.MaybeHash Then ' Hash.
 		        Advance ' Move past the `{` we just checked and know is present.
 		        Dim key As Expr = Expression
 		        Call Consume(TokenType.RCURLY, "Expected a `}` after a hash key.")
