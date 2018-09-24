@@ -1,6 +1,7 @@
 #tag Class
 Protected Class ArrayObject
 Inherits RooInstance
+Implements Roo.Textable
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  Constructor(0)
@@ -184,37 +185,39 @@ Inherits RooInstance
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText() As String
+		Function ToText(interpreter As Roo.Interpreter = Nil) As String
 		  ' Part of the Textable interface.
 		  
-		  dim s, value as String
-		  dim a, i, max as Integer
-		  dim d as Double
+		  #Pragma Unused interpreter
+		  
+		  Dim s, value As String
+		  Dim a, i, max As Integer
+		  Dim d As Double
 		  
 		  s = "["
 		  
-		  if elements.Ubound >= 0 then
+		  If elements.Ubound >= 0 Then
 		    max = elements.Ubound
-		    for a = 0 to max
-		      if a <> 0 then s = s + ", "
-		      if elements(a) isA NumberObject then
+		    For a = 0 To max
+		      If a <> 0 Then s = s + ", "
+		      If elements(a) IsA NumberObject Then
 		        d = NumberObject(elements(a)).value
-		        if Round(d) = d then ' Integer.
+		        If Round(d) = d Then ' Integer.
 		          i = d
 		          value = Str(i)
-		        else ' Double.
+		        Else ' Double.
 		          value = Str(d)
-		        end if
-		      elseif elements(a) isA Textable then
+		        End If
+		      ElseIf elements(a) IsA Textable Then
 		        value = """" + Textable(elements(a)).ToText + """"
-		      else
+		      Else
 		        value = "<No text representation>"
-		      end if
+		      End If
 		      s = s + value
-		    next a
-		  end if
+		    Next a
+		  End If
 		  
-		  return s + "]"
+		  Return s + "]"
 		End Function
 	#tag EndMethod
 

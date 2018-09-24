@@ -1,6 +1,7 @@
 #tag Class
 Protected Class RegexObject
 Inherits RooInstance
+Implements Roo.Textable
 	#tag Method, Flags = &h0
 		Sub Constructor(expr as RegexLiteralExpr)
 		  ' Calling the overridden superclass constructor.
@@ -76,10 +77,12 @@ Inherits RooInstance
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText() As String
+		Function ToText(interpreter As Roo.Interpreter = Nil) As String
 		  ' Part of the Textable interface.
 		  
-		  return "|" + pattern + "|" + options
+		  #Pragma Unused interpreter
+		  
+		  Return "|" + pattern + "|" + options
 		End Function
 	#tag EndMethod
 

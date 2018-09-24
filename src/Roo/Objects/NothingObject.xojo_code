@@ -1,6 +1,7 @@
 #tag Class
 Protected Class NothingObject
 Inherits RooInstance
+Implements Roo.Textable
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  ' Calling the overridden superclass constructor.
@@ -46,10 +47,12 @@ Inherits RooInstance
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText() As String
+		Function ToText(interpreter As Roo.Interpreter = Nil) As String
 		  ' Part of the Textable interface.
 		  
-		  return "Nothing"
+		  #Pragma Unused interpreter
+		  
+		  Return "Nothing"
 		End Function
 	#tag EndMethod
 

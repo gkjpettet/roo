@@ -14,18 +14,20 @@ Implements Roo.Invokable,Roo.Textable
 		  ' Used to "print" the passed argument. We will fire the interpreter's Print() event by calling into
 		  ' its HookPrint() method.
 		  
-		  if not arguments(0) isA Textable then raise new RuntimeError(where, "No text representation of object.")
+		  #Pragma Unused where
 		  
-		  interpreter.HookPrint(Textable(arguments(0)).ToText)
-		  
+		  interpreter.HookPrint(Textable(arguments(0)).ToText(interpreter))
+		  Return arguments(0)
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText() As String
+		Function ToText(interpreter As Roo.Interpreter = Nil) As String
 		  ' Return this function's name.
 		  
-		  return "<function: print>"
+		  #Pragma Unused interpreter
+		  
+		  Return "<function: print>"
 		End Function
 	#tag EndMethod
 

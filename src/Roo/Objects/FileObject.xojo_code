@@ -1,6 +1,7 @@
 #tag Class
 Protected Class FileObject
 Inherits RooClass
+Implements Roo.Textable
 	#tag Method, Flags = &h0
 		Function CheckInteger(value As Variant, shouldBePositive As Boolean = False) As Boolean
 		  ' Helper method.
@@ -378,14 +379,16 @@ Inherits RooClass
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText() As String
+		Function ToText(interpreter As Roo.Interpreter = Nil) As String
 		  ' Part of the Textable interface.
 		  
-		  if self.file = Nil then
-		    return "Nothing"
-		  else
-		    return self.file.NativePath
-		  end if
+		  #Pragma Unused interpreter
+		  
+		  If Self.file = Nil Then
+		    Return "Nothing"
+		  Else
+		    Return Self.file.NativePath
+		  End If
 		  
 		End Function
 	#tag EndMethod

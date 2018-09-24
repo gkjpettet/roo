@@ -185,10 +185,12 @@ Implements Roo.Invokable,Roo.Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText() As String
+		Function ToText(interpreter As Roo.Interpreter = Nil) As String
 		  ' Return this function's name.
 		  
-		  return "<function: DateTime>"
+		  #Pragma Unused interpreter
+		  
+		  Return "<function: DateTime>"
 		End Function
 	#tag EndMethod
 

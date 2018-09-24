@@ -1,6 +1,7 @@
 #tag Class
 Protected Class BooleanObject
 Inherits RooInstance
+Implements Roo.Textable
 	#tag Method, Flags = &h0
 		Sub Constructor(value as Boolean)
 		  ' Calling the overridden superclass constructor.
@@ -47,10 +48,12 @@ Inherits RooInstance
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText() As String
+		Function ToText(interpreter As Roo.Interpreter = Nil) As String
 		  ' Part of the Textable interface.
 		  
-		  return self.value.ToString
+		  #Pragma Unused interpreter
+		  
+		  Return Self.Value.ToString
 		End Function
 	#tag EndMethod
 

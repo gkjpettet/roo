@@ -1,6 +1,7 @@
 #tag Class
 Protected Class ResponseObject
 Inherits RooClass
+Implements Roo.Textable
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  ' Calling the overridden superclass constructor.
@@ -76,8 +77,10 @@ Inherits RooClass
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText() As String
+		Function ToText(interpreter As Roo.Interpreter = Nil) As String
 		  ' Part of the Textable interface.
+		  
+		  #Pragma Unused interpreter
 		  
 		  Return "<Response instance>"
 		End Function

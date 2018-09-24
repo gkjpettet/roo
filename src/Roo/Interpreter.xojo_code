@@ -956,16 +956,25 @@ Implements ExprVisitor,StmtVisitor
 		Function VisitIfStmt(stmt as IfStmt) As Variant
 		  ' The interpreter is visiting an if statement.
 		  
-		  if IsTruthy(Evaluate(stmt.condition)) then
+		  Try
 		    
-		    Execute(stmt.thenBranch)
+		    If IsTruthy(Evaluate(stmt.condition)) Then
+		      
+		      Execute(stmt.thenBranch)
+		      
+		    ElseIf stmt.elseBranch <> Nil Then
+		      
+		      Execute(stmt.elseBranch)
+		      
+		    End If
 		    
-		  elseif stmt.elseBranch <> Nil then
+		  Catch b As BreakReturn
 		    
-		    Execute(stmt.elseBranch)
+		    #Pragma BreakOnExceptions False
+		    ' Break statement. Simply exit the if construct.
+		    Return Self.Nothing
 		    
-		  end if
-		  
+		  End Try
 		End Function
 	#tag EndMethod
 
@@ -986,7 +995,6 @@ Implements ExprVisitor,StmtVisitor
 		  end if
 		  
 		  if not invokee isA Invokable then
-		    #pragma BreakOnExceptions False
 		    raise new RuntimeError(expr.paren, "Only functions and classes can be invoked.")
 		  end if
 		  

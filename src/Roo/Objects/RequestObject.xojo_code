@@ -1,6 +1,7 @@
 #tag Class
 Protected Class RequestObject
 Inherits RooClass
+Implements Roo.Textable
 	#tag Method, Flags = &h21
 		Private Sub AddResponseCookies()
 		  ' Internal helper method.
@@ -592,8 +593,10 @@ Inherits RooClass
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText() As String
+		Function ToText(interpreter As Roo.Interpreter = Nil) As String
 		  ' Part of the Textable interface.
+		  
+		  #Pragma Unused interpreter
 		  
 		  Return "<Request instance>"
 		End Function

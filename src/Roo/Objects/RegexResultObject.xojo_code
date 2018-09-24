@@ -1,6 +1,7 @@
 #tag Class
 Protected Class RegexResultObject
 Inherits RooInstance
+Implements Roo.Textable
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  ' Calling the overridden superclass constructor.
@@ -72,8 +73,12 @@ Inherits RooInstance
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText() As String
-		  return "<RegexResult instance>"
+		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		  ' Part of the Roo.Textable interface.
+		  
+		  #Pragma Unused interpreter
+		  
+		  Return "<RegexResult instance>"
 		End Function
 	#tag EndMethod
 

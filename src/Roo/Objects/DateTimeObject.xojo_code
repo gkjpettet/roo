@@ -1,7 +1,7 @@
 #tag Class
 Protected Class DateTimeObject
 Inherits RooClass
-Implements Roo.Dateable
+Implements Roo.Dateable, Roo.Textable
 	#tag Method, Flags = &h0
 		Sub Constructor(value As Xojo.Core.Date)
 		  ' Calling the overridden superclass constructor.
@@ -229,15 +229,16 @@ Implements Roo.Dateable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText() As String
+		Function ToText(interpreter As Roo.Interpreter = Nil) As String
 		  ' Part of the Textable interface.
 		  
-		  if self.value = Nil then
-		    return "Nothing"
-		  else
-		    return self.value.ToText
-		  end if
+		  #Pragma Unused interpreter
 		  
+		  If Self.value = Nil Then
+		    Return "Nothing"
+		  Else
+		    Return Self.Value.ToText
+		  End If
 		End Function
 	#tag EndMethod
 

@@ -29,7 +29,7 @@ Implements Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(klass as RooClass)
+		Sub Constructor(klass As RooClass)
 		  Self.klass = klass
 		  fields = New StringToVariantHashMapMBS(True)
 		  Self.IndexOrKey = Nil
@@ -70,34 +70,35 @@ Implements Textable
 		    Return Self.klass.Get(name)
 		  end if
 		  
+		  ' When looking up a property on an instance, if we don’t find a matching field, we look for a 
+		  ' method with that name on the instance’s class. If found, we return that. 
+		  ' Doing this before the generic object getters and methods allows the user to override 
+		  ' them if desired.
+		  Dim method As RooFunction = Self.klass.FindMethod(Self, name.lexeme)
+		  If method <> Nil Then Return method
+		  
 		  ' ===========================================================================================
 		  ' Handle the generic object getters and methods.
 		  ' ===========================================================================================
 		  ' Getters
-		  if StrComp(name.lexeme, "nothing?", 0) = 0 then
-		    return if(self.klass isA NothingObject, new BooleanObject(True), new BooleanObject(False))
-		  elseif StrComp(name.lexeme, "to_text", 0) = 0 then
-		    return if(self.klass = Nil, new TextObject("No text representation"), new TextObject(self.ToText))
-		  elseif StrComp(name.lexeme, "type", 0) = 0 then
-		    if self.klass <> Nil then
-		      return new TextObject(self.klass.name)
-		    else
-		      return new TextObject(self.ToText)
-		    end if
-		  end if
+		  If StrComp(name.lexeme, "nothing?", 0) = 0 Then
+		    Return If(Self.klass IsA NothingObject, New BooleanObject(True), New BooleanObject(False))
+		  ElseIf StrComp(name.lexeme, "to_text", 0) = 0 Then
+		    Return If(Self.klass = Nil, New TextObject("No text representation"), New TextObject(Self.ToText))
+		  ElseIf StrComp(name.lexeme, "type", 0) = 0 Then
+		    If Self.klass <> Nil Then
+		      Return New TextObject(Self.klass.name)
+		    Else
+		      Return New TextObject(Self.ToText)
+		    End If
+		  End If
 		  ' Methods
-		  if StrComp(name.lexeme, "responds_to?", 0) = 0 then
-		    return new GenericObjectRespondsToMethod(self)
-		  end if
+		  If StrComp(name.lexeme, "responds_to?", 0) = 0 Then
+		    Return New GenericObjectRespondsToMethod(Self)
+		  End If
 		  ' ===========================================================================================
 		  
-		  ' When looking up a property on an instance, if we don’t find a matching field, we look for a 
-		  ' method with that name on the instance’s class. If found, we return that. 
-		  dim method as RooFunction = self.klass.FindMethod(self, name.lexeme)
-		  if method <> Nil then return method
-		  
-		  #pragma BreakOnExceptions False
-		  raise new RuntimeError(name, "Undefined property `" + name.lexeme + "` on " + self.ToText + ".")
+		  Raise New RuntimeError(name, "Undefined property `" + name.lexeme + "` on " + Self.ToText + ".")
 		End Function
 	#tag EndMethod
 
@@ -120,8 +121,32 @@ Implements Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText() As String
-		  return "<" + klass.name + " instance>"
+		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		  If interpreter <> Nil Then
+		    
+		    ' Does this object define its own `to_text` method that we should use preferentially?
+		    Dim override As Roo.RooFunction = Self.Klass.FindMethod(Self, "to_text")
+		    
+		    If override <> Nil Then
+		      ' This object has a user-defined `to_text()` method.
+		      ' Make sure that the overriden to_text definition doesn't define any parameters.
+		      ' If it does, don't use it.
+		      If override.Declaration.Parameters <> Nil Then Exit
+		      
+		      ' This object has an overriding `to_text` getter or `to_text()` method
+		      ' Use this method to get the text representation.
+		      Dim overrideResult As Variant = override.Invoke(interpreter, Nil, New Roo.Token)
+		      If Not overrideResult IsA Roo.Textable Then
+		        Raise New RuntimeError(New Roo.Token, "The result returned from `" + _
+		        Self.Klass.Name + ".to_text` does not have a valid Text representation.")
+		      Else
+		        Return Textable(overrideResult).ToText
+		      End If
+		    End If
+		    
+		  End If
+		  
+		  Return "<" + Self.Klass.Name + " instance>"
 		End Function
 	#tag EndMethod
 
@@ -143,7 +168,7 @@ Implements Textable
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		klass As RooClass
+		klass As Roo.RooClass
 	#tag EndProperty
 
 

@@ -1,6 +1,7 @@
 #tag Class
 Protected Class MatchInfoObject
 Inherits RooInstance
+Implements Roo.Textable
 	#tag Method, Flags = &h0
 		Sub Constructor(start as Integer, finish as Integer, value as String)
 		  ' Calling the overridden superclass constructor.
@@ -56,8 +57,12 @@ Inherits RooInstance
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText() As String
-		  return "<MatchInfo instance>"
+		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		  ' Part of the Roo.Textable interface.
+		  
+		  #Pragma Unused interpreter
+		  
+		  Return "<MatchInfo instance>"
 		End Function
 	#tag EndMethod
 

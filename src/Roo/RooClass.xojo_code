@@ -79,7 +79,7 @@ Implements Textable,Invokable
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		name As String
+		Name As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -89,7 +89,7 @@ Implements Textable,Invokable
 
 	#tag ViewBehavior
 		#tag ViewProperty
-			Name="name"
+			Name="Name"
 			Visible=true
 			Group="ID"
 			Type="String"

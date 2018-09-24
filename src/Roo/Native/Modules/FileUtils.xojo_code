@@ -1,6 +1,7 @@
 #tag Class
 Protected Class FileUtils
 Inherits Roo.CustomModule
+Implements Roo.Textable
 	#tag Method, Flags = &h21
 		Private Function DoCwd(where As Roo.Token, textMode As Boolean) As Variant
 		  ' FileUtils.cwd as File or Nothing
@@ -40,6 +41,16 @@ Inherits Roo.CustomModule
 		  ' Methods.
 		  Return Super.Get(name)
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		  ' Part of the Roo.Textable interface.
+		  
+		  #Pragma Unused interpreter
+		  
+		  Return "FileUtils module"
 		End Function
 	#tag EndMethod
 

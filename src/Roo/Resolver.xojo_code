@@ -14,6 +14,7 @@ Implements ExprVisitor,StmtVisitor
 		  currentFunction = FunctionType.None
 		  currentClass = ClassType.None
 		  loopLevel = 0
+		  IfLevel = 0
 		  hasError = False
 		End Sub
 	#tag EndMethod
@@ -203,17 +204,18 @@ Implements ExprVisitor,StmtVisitor
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function VisitBreakStmt(stmt as Roo.Statements.BreakStmt) As Variant
-		  #pragma BreakOnExceptions False
+		Function VisitBreakStmt(stmt As Roo.Statements.BreakStmt) As Variant
+		  #Pragma BreakOnExceptions False
 		  
-		  ' Make sure that `break` is only called from within a loop. Doesn't make sense otherwise.
-		  if loopLevel <= 0 then
+		  ' Make sure that `break` is only called from within a loop or an if construct. 
+		  ' It doesn't make sense otherwise.
+		  If loopLevel <= 0 And IfLevel <= 0 Then
 		    hasError = True
-		    raise new ResolverError(stmt.keyword, "Cannot break when not in a loop.")
+		    Raise New ResolverError(stmt.keyword, "Cannot break when not in a loop or `if` construct.")
 		  end if
 		  
 		  ' Resolve the optional break condition.
-		  if stmt.condition <> Nil then Resolve(stmt.condition)
+		  If stmt.Condition <> Nil Then Resolve(stmt.Condition)
 		End Function
 	#tag EndMethod
 
@@ -344,9 +346,13 @@ Implements ExprVisitor,StmtVisitor
 
 	#tag Method, Flags = &h0
 		Function VisitIfStmt(stmt as IfStmt) As Variant
+		  IfLevel = IfLevel + 1
+		  
 		  Resolve(stmt.condition)
 		  Resolve(stmt.thenBranch)
 		  if stmt.elseBranch <> Nil then Resolve(stmt.elseBranch)
+		  
+		  IfLevel = IfLevel - 1
 		End Function
 	#tag EndMethod
 
@@ -570,6 +576,10 @@ Implements ExprVisitor,StmtVisitor
 
 	#tag Property, Flags = &h0
 		hasError As Boolean = False
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private IfLevel As Integer = 0
 	#tag EndProperty
 
 	#tag Property, Flags = &h21

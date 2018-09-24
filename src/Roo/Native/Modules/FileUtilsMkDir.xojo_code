@@ -54,9 +54,11 @@ Implements Roo.Invokable,Roo.Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText() As String
+		Function ToText(interpreter As Roo.Interpreter = Nil) As String
 		  ' Part of the Textable interface.
 		  ' Return this function's name.
+		  
+		  #Pragma Unused interpreter
 		  
 		  Return "<function: FileUtils.mkdir>"
 		End Function

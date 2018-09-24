@@ -1,6 +1,7 @@
 #tag Class
 Protected Class Maths
 Inherits Roo.CustomModule
+Implements Roo.Textable
 	#tag Method, Flags = &h0
 		Function Get(name as Token) As Variant
 		  ' Override RooInstance.Get().
@@ -13,6 +14,16 @@ Inherits Roo.CustomModule
 		  ' Methods.
 		  return super.Get(name)
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		  ' Part of the Roo.Textable interface.
+		  
+		  #Pragma Unused interpreter
+		  
+		  Return "Maths module"
 		End Function
 	#tag EndMethod
 

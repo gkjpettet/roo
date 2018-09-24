@@ -1,6 +1,7 @@
 #tag Class
 Protected Class NumberObject
 Inherits RooInstance
+Implements Roo.Textable
 	#tag Method, Flags = &h0
 		Sub Constructor(value as Double)
 		  ' Calling the overridden superclass constructor.
@@ -109,15 +110,17 @@ Inherits RooInstance
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText() As String
+		Function ToText(interpreter As Roo.Interpreter = Nil) As String
 		  ' Part of the Textable interface.
 		  
-		  if value.IsInteger then
-		    dim i as Integer = value
-		    return Str(i)
-		  else
-		    return Str(value)
-		  end if
+		  #Pragma Unused interpreter
+		  
+		  If value.IsInteger Then
+		    Dim i As Integer = value
+		    Return Str(i)
+		  Else
+		    Return Str(value)
+		  End If
 		End Function
 	#tag EndMethod
 

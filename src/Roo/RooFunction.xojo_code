@@ -67,10 +67,12 @@ Implements Invokable,Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText() As String
+		Function ToText(interpreter As Roo.Interpreter = Nil) As String
 		  ' Part of the Textable interface.
 		  
-		  return "<function " + declaration.name.lexeme + ">"
+		  #Pragma Unused interpreter
+		  
+		  Return "<function " + declaration.name.lexeme + ">"
 		End Function
 	#tag EndMethod
 

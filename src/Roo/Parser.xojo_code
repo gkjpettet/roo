@@ -483,7 +483,8 @@ Protected Class Parser
 		        Dim index As Expr = Expression
 		        Call Consume(TokenType.RSQUARE, "Expected a `]` after an array index.")
 		        expr = New GetExpr(expr, name, index)
-		      ElseIf Match(TokenType.LCURLY) Then ' Hash.
+		      ElseIf Peek.type = TokenType.LCURLY And Peek.MaybeHash Then ' Hash.
+		        Advance ' Move past the `{` we just checked and know is present.
 		        Dim key As Expr = Expression
 		        Call Consume(TokenType.RCURLY, "Expected a `}` after a hash key.")
 		        expr = New GetExpr(expr, name, key)
@@ -658,7 +659,7 @@ Protected Class Parser
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function Peek() As Token
+		Private Function Peek() As Roo.Token
 		  ' Returns the current token we have yet to consume.
 		  
 		  return tokens(current)

@@ -1,6 +1,7 @@
 #tag Class
 Protected Class RegexMatchObject
 Inherits RooInstance
+Implements Roo.Textable
 	#tag Method, Flags = &h0
 		Sub AddValueForGroupNumber(group as Integer, info as MatchInfoObject)
 		  ' Stores the passed MatchInfo object as the value for the specified group.
@@ -102,8 +103,12 @@ Inherits RooInstance
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText() As String
-		  return "<RegexMatch instance>"
+		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		  ' Part of the Roo.Textable interface.
+		  
+		  #Pragma Unused interpreter
+		  
+		  Return "<RegexMatch instance>"
 		End Function
 	#tag EndMethod
 

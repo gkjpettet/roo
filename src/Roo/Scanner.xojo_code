@@ -248,8 +248,9 @@ Protected Class Scanner
 		  ' The scanner has just hit a newline or the EOF. Do we need to append a semicolon token?
 		  ' Semicolons should be inserted if the last added token is one of the following:
 		  ' Identifier
-		  ' Literal (text, number, regex, boolean, nothing)
+		  ' Literal (boolean, nothing, number, text, regex)
 		  ' break
+		  ' quit
 		  ' return
 		  ' )
 		  ' ]
@@ -257,9 +258,9 @@ Protected Class Scanner
 		  If Tokens.Ubound < 0 Then Return
 		  
 		  Select Case Tokens(Tokens.Ubound).type
-		  Case TokenType.IDENTIFIER, TokenType.TEXT, TokenType.NUMBER, TokenType.REGEX, _
-		    TokenType.BREAK_KEYWORD, TokenType.RETURN_KEYWORD, TokenType.RPAREN, TokenType.RSQUARE, _
-		    TokenType.NOTHING, TokenType.BOOLEAN
+		  Case TokenType.IDENTIFIER, TokenType.BOOLEAN, TokenType.NOTHING, TokenType.NUMBER, _
+		    TokenType.TEXT, TokenType.REGEX, TokenType.BREAK_KEYWORD, TokenType.QUIT_KEYWORD, _
+		    TokenType.RETURN_KEYWORD, TokenType.RPAREN, TokenType.RSQUARE
 		    Tokens.Append(MakeToken(TokenType.SEMICOLON))
 		  End Select
 		  
@@ -582,6 +583,9 @@ Protected Class Scanner
 		  Case "<" ' <, <=, <>
 		    If Match("=") Then
 		      Tokens.Append(MakeToken(TokenType.LESS_EQUAL))
+		      Return
+		    ElseIf Match(">") Then
+		      Tokens.Append(MakeToken(TokenType.NOT_EQUAL))
 		      Return
 		    Else
 		      Tokens.Append(MakeToken(TokenType.LESS))

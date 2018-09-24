@@ -25,10 +25,12 @@ Implements Roo.Invokable,Roo.Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText() As String
+		Function ToText(interpreter As Roo.Interpreter = Nil) As String
 		  ' Return this function's name.
 		  
-		  return "<function: Response>"
+		  #Pragma Unused interpreter
+		  
+		  Return "<function: Response>"
 		End Function
 	#tag EndMethod
 

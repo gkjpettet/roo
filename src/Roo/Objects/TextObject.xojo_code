@@ -1,7 +1,7 @@
 #tag Class
 Protected Class TextObject
 Inherits RooInstance
-Implements Roo.Dateable
+Implements Roo.Dateable, Roo.Textable
 	#tag Method, Flags = &h0
 		Sub Constructor(value as String)
 		  ' Calling the overridden superclass constructor.
@@ -226,10 +226,12 @@ Implements Roo.Dateable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText() As String
+		Function ToText(interpreter As Roo.Interpreter = Nil) As String
 		  ' Part of the Textable interface.
 		  
-		  return self.value
+		  #Pragma Unused interpreter
+		  
+		  Return Self.Value
 		End Function
 	#tag EndMethod
 

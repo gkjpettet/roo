@@ -1,6 +1,7 @@
 #tag Class
 Protected Class HashObject
 Inherits RooInstance
+Implements Roo.Textable
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  ' Calling the overridden superclass constructor.
@@ -233,55 +234,57 @@ Inherits RooInstance
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText() As String
+		Function ToText(interpreter As Roo.Interpreter = Nil) As String
 		  ' Part of the Textable interface.
 		  
-		  dim k, v, t, QUOTE as String
-		  dim d as Double
+		  #Pragma Unused interpreter
+		  
+		  Dim k, v, t, QUOTE As String
+		  Dim d As Double
 		  
 		  QUOTE = """"
 		  
 		  t = "{"
 		  
-		  dim i as VariantToVariantHashMapIteratorMBS = map.first
-		  dim e as VariantToVariantHashMapIteratorMBS = map.last
+		  Dim i As VariantToVariantHashMapIteratorMBS = map.first
+		  Dim e As VariantToVariantHashMapIteratorMBS = map.last
 		  
-		  while i.isNotEqual(e)
+		  While i.isNotEqual(e)
 		    ' Key as text.
-		    if i.Key isA TextObject then
+		    If i.Key IsA TextObject Then
 		      k = QUOTE + TextObject(i.Key).value + QUOTE
-		    elseif i.Key.Type = Variant.TypeString then
+		    ElseIf i.Key.Type = Variant.TypeString Then
 		      k = QUOTE + i.Key.StringValue + QUOTE
-		    elseif i.Key isA NumberObject then
+		    ElseIf i.Key IsA NumberObject Then
 		      d = NumberObject(i.Key).value
-		      k = if(d.IsInteger, d.ToInteger.ToText, d.ToText)
-		    elseif i.Key isA Textable then
+		      k = If(d.IsInteger, d.ToInteger.ToText, d.ToText)
+		    ElseIf i.Key IsA Textable Then
 		      k = Textable(i.Key).ToText
-		    elseif i.Key.Type = Variant.TypeDouble then
+		    ElseIf i.Key.Type = Variant.TypeDouble Then
 		      k = DoubleToString(i.Key)
-		    else
+		    Else
 		      k = i.Key.StringValue
-		    end if
+		    End If
 		    
 		    ' Value as text.
-		    if i.Value isA TextObject then
+		    If i.Value IsA TextObject Then
 		      v = QUOTE + TextObject(i.Value).value + QUOTE
-		    elseif i.Value isA NumberObject then
+		    ElseIf i.Value IsA NumberObject Then
 		      d = NumberObject(i.Value).value
-		      v = if(d.IsInteger, d.ToInteger.ToText, d.ToText)
-		    else
+		      v = If(d.IsInteger, d.ToInteger.ToText, d.ToText)
+		    Else
 		      v = Textable(i.Value).ToText
-		    end if
+		    End If
 		    
 		    t = t + k + " => " + v + ", "
 		    i.MoveNext()
-		  wend
+		  Wend
 		  
 		  t = t.Trim()
 		  
-		  if t.Right(1) = "," then t = t.Left(t.Len - 1)
+		  If t.Right(1) = "," Then t = t.Left(t.Len - 1)
 		  
-		  return t + "}"
+		  Return t + "}"
 		End Function
 	#tag EndMethod
 
