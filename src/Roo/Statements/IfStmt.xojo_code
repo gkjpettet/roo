@@ -3,29 +3,29 @@ Protected Class IfStmt
 Inherits Stmt
 	#tag Method, Flags = &h0
 		Function Accept(visitor as StmtVisitor) As Variant
-		  return visitor.VisitIfStmt(self)
+		  Return visitor.VisitIfStmt(Self)
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(condition as Expr, thenBranch as Stmt, elseBranch as Stmt)
-		  self.condition = condition
-		  self.thenBranch = thenBranch
-		  self.elseBranch = elseBranch
+		Sub Constructor(condition As Expr, thenBranch As Stmt, elseBranch As Stmt)
+		  Self.Condition = condition
+		  Self.ThenBranch = thenBranch
+		  Self.ElseBranch = elseBranch
 		End Sub
 	#tag EndMethod
 
 
 	#tag Property, Flags = &h0
-		condition As Expr
+		Condition As Expr
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		elseBranch As Stmt
+		ElseBranch As Stmt
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		thenBranch As Stmt
+		ThenBranch As Stmt
 	#tag EndProperty
 
 

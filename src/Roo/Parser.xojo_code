@@ -300,57 +300,57 @@ Protected Class Parser
 
 	#tag Method, Flags = &h21
 		Private Function ForStatement() As Stmt
-		  ' ForStmt → FOR LPAREN ( VarDeclaration | ExpressionStmt | SEMICOLON ) 
+		  ' ForStmt → FOR LPAREN (VarDeclaration | ExpressionStmt | SEMICOLON ) 
 		  '           Expression? SEMICOLON Expression? RPAREN Statement
 		  
-		  ' E.g: for (var i = 0; i < 10; i = i + 1) Print i;
+		  ' E.g: for (var i = 0; i < 10; i = i + 1) print(i);
 		  
-		  call Consume(TokenType.LPAREN, "Expected `(` after for keyword.")
+		  Call Consume(TokenType.LPAREN, "Expected `(` after for keyword.")
 		  
 		  ' Get the initialiser (if defined).
-		  dim initialiser as Stmt
-		  if Match(TokenType.SEMICOLON) then
+		  Dim initialiser As Stmt
+		  If Match(TokenType.SEMICOLON) Then
 		    initialiser = Nil ' The initialiser has been omitted.
-		  elseif Match(TokenType.VAR) then
+		  ElseIf Match(TokenType.VAR) Then
 		    initialiser = VarDeclaration()
-		  else
+		  Else
 		    initialiser = ExpressionStatement()
-		  end if
+		  End If
 		  
 		  ' Get the loop condition (if defined).
-		  dim condition as Expr = Nil
-		  if not Check(TokenType.SEMICOLON) then condition = Expression()
-		  call Consume(TokenType.SEMICOLON, "Expected `;` after for loop condition.")
+		  Dim condition As Expr = Nil
+		  If Not Check(TokenType.SEMICOLON) Then condition = Expression()
+		  Call Consume(TokenType.SEMICOLON, "Expected `;` after for loop condition.")
 		  
 		  ' Get the increment (if defined).
-		  dim increment as Expr = Nil
-		  if not Check(TokenType.RPAREN) then increment = Expression()
-		  call Consume(TokenType.RPAREN, "Expected `)` after for loop clauses.")
+		  Dim increment As Expr = Nil
+		  If Not Check(TokenType.RPAREN) Then increment = Expression()
+		  Call Consume(TokenType.RPAREN, "Expected `)` after for loop clauses.")
 		  
 		  ' Get the loop body.
-		  dim body as Stmt = Statement()
+		  Dim body As Stmt = Statement()
 		  
 		  ' Desugar to a while loop.
-		  ' The increment, if there is one, executes after the body in each iteration of the loop. 
-		  ' We do that by replacing the body with a little block that contains the original body 
+		  ' The increment, if there is one, executes after the body in each iteration of the loop.
+		  ' We do that by replacing the body with a little block that contains the original body
 		  ' followed by an expression statement that evaluates the increment.
-		  if increment <> Nil then
-		    dim blockStatements() as Stmt ' HACK: Xojo can't create an array of subclasses using the `Array` keyword.
+		  If increment <> Nil Then
+		    Dim blockStatements() As Stmt ' HACK: Xojo can't create an array of subclasses using the `Array` keyword.
 		    blockStatements.Append(body)
-		    blockStatements.Append(new ExpressionStmt(increment))
-		    body = new BlockStmt(blockStatements)
-		  end if
+		    blockStatements.Append(New ExpressionStmt(increment))
+		    body = New BlockStmt(blockStatements)
+		  End If
 		  
-		  ' Next, we take the condition and the body and build the loop using a primitive while loop. 
+		  ' Next, we take the condition and the body and build the loop using a primitive while loop.
 		  ' If the condition is omitted, we jam in True to make an infinite loop.
-		  if condition = Nil then condition = new BooleanLiteralExpr(True)
-		  body = new WhileStmt(condition, body)
+		  If condition = Nil Then condition = New BooleanLiteralExpr(True)
+		  body = New WhileStmt(condition, body)
 		  
-		  ' Finally, if there is an initializer, it runs once before the entire loop. We do that by, 
+		  ' Finally, if there is an initializer, it runs once before the entire loop. We do that by,
 		  ' again, replacing the whole statement with a block that runs the initializer and then executes the loop.
-		  if initialiser <> Nil then body = new BlockStmt(Array(initialiser, body))
+		  If initialiser <> Nil Then body = New BlockStmt(Array(initialiser, body))
 		  
-		  return body
+		  Return body
 		End Function
 	#tag EndMethod
 
@@ -395,19 +395,14 @@ Protected Class Parser
 
 	#tag Method, Flags = &h21
 		Private Function IfStatement() As Stmt
-		  ' IfStmt → IF LPAREN Expression RPAREN Statement ( ELSE Statement )?
+		  ' IfStmt → IF Expression Statement ( ELSE Statement )?
 		  
-		  call Consume(TokenType.LPAREN, "Expected `(` after `if`.")
+		  Dim condition As Expr = Expression()
+		  Dim thenBranch As Stmt = Statement()
+		  Dim elseBranch As Stmt = Nil
+		  If Match(TokenType.ELSE_KEYWORD) Then elseBranch = Statement()
 		  
-		  dim condition as Expr = Expression()
-		  
-		  call Consume(TokenType.RPAREN, "Expected `)` after if condition.")
-		  
-		  dim thenBranch as Stmt = Statement()
-		  dim elseBranch as Stmt = Nil
-		  if Match(TokenType.ELSE_KEYWORD) then elseBranch = Statement()
-		  
-		  return new IfStmt(condition, thenBranch, elseBranch)
+		  Return New IfStmt(condition, thenBranch, elseBranch)
 		End Function
 	#tag EndMethod
 
@@ -880,17 +875,13 @@ Protected Class Parser
 
 	#tag Method, Flags = &h21
 		Private Function WhileStatement() As Stmt
-		  ' WhileStmt → WHILE LPAREN Expression RPAREN Statement
+		  ' WhileStmt → WHILE Expression Statement
 		  
-		  call Consume(TokenType.LPAREN, "Expected `(` after while keyword.")
+		  Dim condition As Expr = Expression()
 		  
-		  dim condition as Expr = Expression()
+		  Dim body As Stmt = Statement()
 		  
-		  call Consume(TokenType.RPAREN, "Expected `)` after while condition.")
-		  
-		  dim body as Stmt =Statement()
-		  
-		  return new WhileStmt(condition, body)
+		  Return New WhileStmt(condition, body)
 		End Function
 	#tag EndMethod
 

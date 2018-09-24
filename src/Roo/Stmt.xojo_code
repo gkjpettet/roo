@@ -10,7 +10,7 @@ Protected Class Stmt
 
 
 	#tag Property, Flags = &h0
-		expression As Expr
+		Expression As Expr
 	#tag EndProperty
 
 
