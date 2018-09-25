@@ -5,12 +5,12 @@ Implements Roo.Textable
 	#tag Method, Flags = &h0
 		Sub Constructor(expr as RegexLiteralExpr)
 		  ' Calling the overridden superclass constructor.
-		  super.Constructor(Nil)
+		  Super.Constructor(Nil)
 		  
 		  pattern = expr.pattern
 		  options = expr.options
 		  
-		  re = new RegExMBS
+		  re = New RegExMBS
 		  re.CompileOptionCaseLess = expr.optionCaseLess
 		  re.CompileOptionDotAll = expr.optionDotAll
 		  re.ExecuteOptionNotEmpty = expr.optionNotEmpty
@@ -18,25 +18,25 @@ Implements Roo.Textable
 		  re.CompileOptionMultiline = expr.optionMultiline
 		  
 		  ' Compile the pattern.
-		  if not re.Compile(pattern) then
-		    raise new RuntimeError(expr.where, "Unable to compile regex pattern: " + self.ToText())
-		  end if
+		  If Not re.Compile(pattern) Then
+		    Raise New RuntimeError(expr.where, "Unable to compile regex pattern: " + Self.ToText(Nil))
+		  End If
 		  
-		  ' Store any named capture groups in the pattern in a hash map where the key is the name 
+		  ' Store any named capture groups in the pattern in a hash map where the key is the name
 		  ' of the group and the value is it's group index in the pattern.
-		  namedGroups = new VariantToVariantHashMapMBS(True)
-		  groups = new VariantToVariantHashMapMBS(True)
-		  dim numNamedGroups as Integer = re.InfoNameCount
-		  for i as Integer = 1 to numNamedGroups
+		  namedGroups = New VariantToVariantHashMapMBS(True)
+		  groups = New VariantToVariantHashMapMBS(True)
+		  Dim numNamedGroups As Integer = re.InfoNameCount
+		  For i As Integer = 1 To numNamedGroups
 		    namedGroups.Value(re.InfoNameEntry(i)) = i
 		    groups.Value(i) = Nil
-		  next i
+		  Next i
 		  
 		  ' Populate the groups hash map, which stores any regular (non-named) groups.
-		  dim numGroups as Integer = re.InfoCaptureCount
-		  for i as Integer = 1 to numGroups
+		  Dim numGroups As Integer = re.InfoCaptureCount
+		  For i As Integer = 1 To numGroups
 		    groups.Value(i) = Nil
-		  next i
+		  Next i
 		End Sub
 	#tag EndMethod
 
@@ -44,23 +44,22 @@ Implements Roo.Textable
 		Function Get(name as Token) As Variant
 		  ' Override RooInstance.Get().
 		  
-		  if Lookup.RegexMethod(name.lexeme) then return new RegexObjectMethod(self, name.lexeme)
+		  If Lookup.RegexMethod(name.Lexeme) Then Return New RegexObjectMethod(Self, name.Lexeme)
 		  
-		  if Lookup.RegexGetter(name.lexeme) then
-		    select case name.lexeme
-		    case "nothing?"
-		      return new BooleanObject(False)
-		    case "number?"
-		      return new BooleanObject(False)
-		    case "to_text"
-		      return new TextObject(self.ToText)
-		    case "type"
-		      return new TextObject("Regex")
-		    end select
-		  end if
+		  If Lookup.RegexGetter(name.Lexeme) Then
+		    Select Case name.Lexeme
+		    Case "nothing?"
+		      Return New BooleanObject(False)
+		    Case "number?"
+		      Return New BooleanObject(False)
+		    Case "to_text"
+		      Return New TextObject(Self.ToText(Nil))
+		    Case "type"
+		      Return New TextObject("Regex")
+		    End Select
+		  End If
 		  
-		  raise new RuntimeError(name, "Regex objects have no method named `" + name.lexeme + "`.")
-		  
+		  Raise New RuntimeError(name, "Regex objects have no method named `" + name.lexeme + "`.")
 		End Function
 	#tag EndMethod
 
@@ -77,7 +76,7 @@ Implements Roo.Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		Function ToText(interpreter As Roo.Interpreter) As String
 		  ' Part of the Textable interface.
 		  
 		  #Pragma Unused interpreter

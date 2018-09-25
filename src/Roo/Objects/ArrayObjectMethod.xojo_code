@@ -201,7 +201,7 @@ Implements Roo.Invokable,Roo.Textable
 		  ' +2 as we will pass in each element as the first argument.
 		  if not Interpreter.CorrectArity(func, funcArgs.Ubound + 2) then
 		    raise new RuntimeError(where, "Incorrect number of arguments passed to the " +_
-		    Textable(func).ToText + " function.")
+		    Textable(func).ToText(interpreter) + " function.")
 		  end if
 		  
 		  elementsUbound = parent.elements.Ubound
@@ -278,7 +278,7 @@ Implements Roo.Invokable,Roo.Textable
 		  ' +2 as we will pass in each element index as the first argument.
 		  if not Interpreter.CorrectArity(func, funcArgs.Ubound + 2) then
 		    raise new RuntimeError(where, "Incorrect number of arguments passed to the " +_
-		    Textable(func).ToText + " function.")
+		    Textable(func).ToText(interpreter) + " function.")
 		  end if
 		  
 		  elementsUbound = parent.elements.Ubound
@@ -524,7 +524,7 @@ Implements Roo.Invokable,Roo.Textable
 		      raise new RuntimeError(where, "The " + self.name + "(separator) method `separator` parameter " + _
 		      "does not have a text representation.")
 		    else
-		      separator = Textable(args(0)).ToText()
+		      separator = Textable(args(0)).ToText(Nil)
 		    end if
 		  end if
 		  
@@ -576,7 +576,7 @@ Implements Roo.Invokable,Roo.Textable
 		  ' +2 as we will pass in each element as the first argument.
 		  if not Interpreter.CorrectArity(func, funcArgs.Ubound + 2) then
 		    raise new RuntimeError(where, "Incorrect number of arguments passed to the " +_
-		    Textable(func).ToText + " function.")
+		    Textable(func).ToText(interpreter) + " function.")
 		  end if
 		  
 		  ' Do the keep.
@@ -683,7 +683,7 @@ Implements Roo.Invokable,Roo.Textable
 		  ' +2 as we will pass in each element as the first argument.
 		  if not Interpreter.CorrectArity(func, funcArgs.Ubound + 2) then
 		    raise new RuntimeError(where, "Incorrect number of arguments passed to the " +_
-		    Textable(func).ToText + " function.")
+		    Textable(func).ToText(interpreter) + " function.")
 		  end if
 		  
 		  elementsUbound = parent.elements.Ubound
@@ -750,7 +750,7 @@ Implements Roo.Invokable,Roo.Textable
 		  ' +2 as we will pass in each element as the first argument.
 		  if not Interpreter.CorrectArity(func, funcArgs.Ubound + 2) then
 		    raise new RuntimeError(where, "Incorrect number of arguments passed to the " +_
-		    Textable(func).ToText + " function.")
+		    Textable(func).ToText(interpreter) + " function.")
 		  end if
 		  
 		  ' Do the rejection.
@@ -1020,7 +1020,7 @@ Implements Roo.Invokable,Roo.Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		Function ToText(interpreter As Roo.Interpreter) As String
 		  ' Part of the Textable interface.
 		  
 		  #Pragma Unused interpreter

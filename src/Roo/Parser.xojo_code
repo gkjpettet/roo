@@ -708,82 +708,85 @@ Protected Class Parser
 		  '         | LSQUARE arguments? RSQUARE
 		  
 		  ' Simple literals (booleans, numbers, nothing, text and regex).
-		  if Match(TokenType.BOOLEAN) then return new BooleanLiteralExpr(tokens(current - 1).lexeme.ToBoolean)
-		  if Match(TokenType.NUMBER) then return new NumberLiteralExpr(tokens(current - 1).lexeme.Val)
-		  if Match(TokenType.NOTHING) then return new NothingExpr
-		  if Match(TokenType.TEXT) then return new TextLiteralExpr(tokens(current - 1).lexeme)
-		  if Match(TokenType.REGEX) then return new RegexLiteralExpr(tokens(current - 1).lexeme, tokens(current - 1))
+		  If Match(TokenType.Boolean) Then Return New BooleanLiteralExpr(tokens(current - 1).Lexeme.ToBoolean)
+		  If Match(TokenType.NUMBER) Then Return New NumberLiteralExpr(tokens(current - 1).Lexeme.Val)
+		  If Match(TokenType.NOTHING) Then Return New NothingExpr
+		  If Match(TokenType.TEXT) Then Return New TextLiteralExpr(tokens(current - 1).Lexeme)
+		  If Match(TokenType.REGEX) Then Return New RegexLiteralExpr(tokens(current - 1).Lexeme, tokens(current - 1))
 		  
 		  ' Array literal? (E.g: [1, 3, "a"]
-		  if Match(TokenType.LSQUARE) then
-		    dim elements() as Expr
-		    if tokens(current).type = TokenType.RSQUARE then ' Empty array []
-		      current = current + 1 ' Consume the `]`
-		      return new ArrayLiteralExpr(elements)
-		    end if
-		    do
-		      elements.Append(Expression())
-		    loop until not Match(TokenType.COMMA)
-		    if not Match(TokenType.RSQUARE) then
-		      raise new ParserError(tokens(current - 1), _
+		  If Match(TokenType.LSQUARE) Then
+		    Dim elements() As Expr
+		    If tokens(Current).Type = TokenType.RSQUARE Then ' Empty array []
+		      Current = Current + 1 ' Consume the `]`
+		      Return New ArrayLiteralExpr(elements)
+		    End If
+		    Do
+		      elements.Append(Expression)
+		    Loop Until Not Match(TokenType.COMMA)
+		    If Not Match(TokenType.RSQUARE) Then
+		      Raise New ParserError(Tokens(Current - 1), _
 		      "Expected a closing square bracket after an array literal list.")
-		    end if
-		    return new ArrayLiteralExpr(elements)
-		  end if
+		    End If
+		    Return New ArrayLiteralExpr(elements)
+		  End If
 		  
 		  ' Hash literal? (E.g: {"a" => 1, "b" => 2})
-		  if Match(TokenType.LCURLY) then
-		    dim keyValues() as Roo.KeyValuePair
-		    if tokens(current).type = TokenType.RCURLY then ' Empty hash {}
-		      current = current + 1 ' Consume the `}`
-		      return new HashLiteralExpr(keyValues)
-		    end if
-		    do
-		      keyValues.Append(KeyValue())
-		    loop until not Match(TokenType.COMMA)
-		    if not Match(TokenType.RCURLY) then
-		      raise new ParserError(tokens(current - 1), _
+		  If Match(TokenType.LCURLY) Then
+		    Dim keyValues() As Roo.KeyValuePair
+		    If Tokens(Current).Type = TokenType.RCURLY Then ' Empty hash {}
+		      Current = Current + 1 ' Consume the `}`
+		      Return New HashLiteralExpr(keyValues)
+		    End If
+		    Do
+		      keyValues.Append(KeyValue)
+		    Loop Until Not Match(TokenType.COMMA)
+		    If Not Match(TokenType.RCURLY) Then
+		      Raise New ParserError(Tokens(Current - 1), _
 		      "Expected a closing `}` after a hash literal list.")
-		    end if
-		    return new HashLiteralExpr(keyValues)
-		  end if
+		    End If
+		    Return New HashLiteralExpr(keyValues)
+		  End If
 		  
 		  ' Self.
-		  if Match(TokenType.SELF_KEYWORD) then return new SelfExpr(tokens(current - 1))
+		  If Match(TokenType.SELF_KEYWORD) Then Return New SelfExpr(Tokens(Current - 1))
 		  
 		  ' Super.
-		  if Match(TokenType.SUPER_KEYWORD) then
-		    dim keyword as Token = tokens(current - 1)
-		    call Consume(TokenType.DOT, "Expected superclass method name after `super.`.")
-		    dim method as Token = Consume(TokenType.IDENTIFIER, "Expected superclass method name.")
-		    return new SuperExpr(keyword, method)
-		  end if
+		  If Match(TokenType.SUPER_KEYWORD) Then
+		    Dim keyword As Token = Tokens(Current - 1)
+		    Call Consume(TokenType.DOT, "Expected superclass method name after `super.`.")
+		    Dim method As Token = Consume(TokenType.IDENTIFIER, "Expected superclass method name.")
+		    Return New SuperExpr(keyword, method)
+		  End If
 		  
 		  ' Grouping expression.
-		  if Match(TokenType.LPAREN) then
-		    dim expr as Expr = Expression()
-		    call Consume(TokenType.RPAREN, "Expected ')' after expression.")
-		    return new GroupingExpr(expr)
-		  end if
+		  If Match(TokenType.LPAREN) Then
+		    Dim expr As expr = Expression
+		    Call Consume(TokenType.RPAREN, "Expected ')' after expression.")
+		    Return New GroupingExpr(expr)
+		  End If
 		  
 		  ' Variable, array and hash access.
-		  if Match(TokenType.IDENTIFIER) then
-		    dim identifier as Token = tokens(current - 1)
-		    if Match(TokenType.LSQUARE) then ' Array? (a[3])
-		      dim index as Expr = Expression()
-		      call Consume(TokenType.RSQUARE, "Expected a closing `]` after an array index.")
-		      return new ArrayExpr(identifier, index)
-		    elseif identifier.MaybeHash And Match(TokenType.LCURLY) Then ' Hash? (a{"name"})
-		      dim key as Expr = Expression()
-		      call Consume(TokenType.RCURLY, "Expected a closing `}` after a hash key.")
-		      return new HashExpr(identifier, key)
-		    else
-		      return new VariableExpr(tokens(current - 1))
-		    end if
-		  end if
+		  If Match(TokenType.IDENTIFIER) Then
+		    Dim identifier As Token = Tokens(Current - 1)
+		    If Match(TokenType.LSQUARE) Then ' Array? (a[3])
+		      Dim index As Expr = Expression
+		      Call Consume(TokenType.RSQUARE, "Expected a closing `]` after an array index.")
+		      Return New ArrayExpr(identifier, index)
+		    ElseIf identifier.MaybeHash And Match(TokenType.LCURLY) Then ' Hash? (a{"name"})
+		      Dim key As Expr = Expression
+		      Call Consume(TokenType.RCURLY, "Expected a closing `}` after a hash key.")
+		      Return New HashExpr(identifier, key)
+		    Else
+		      Return New VariableExpr(Tokens(Current - 1))
+		    End If
+		  End If
 		  
-		  
-		  
+		  ' Houston, we have a problem.
+		  Self.HasError = True
+		  #Pragma BreakOnExceptions False
+		  Raise New ParserError(Tokens(current), "Syntax error. Unexpected token: " + _
+		  Roo.Token.TypeToString(Tokens(current).Type))
 		End Function
 	#tag EndMethod
 
@@ -959,11 +962,11 @@ Protected Class Parser
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private Scanner As Scanner
+		Private Scanner As Roo.Scanner
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private Tokens() As Token
+		Private Tokens() As Roo.Token
 	#tag EndProperty
 
 

@@ -43,7 +43,7 @@ Implements Roo.Invokable,Roo.Textable
 		    "method expects the `content` parameter to have a Text representation. Instead got " + _
 		    VariantType(arguments(1)) + ".")
 		  Else
-		    content = Textable(arguments(1)).ToText
+		    content = Textable(arguments(1)).ToText(interpreter)
 		  End If
 		  
 		  ' Get the optional timeout parameter.
@@ -78,7 +78,7 @@ Implements Roo.Invokable,Roo.Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		Function ToText(interpreter As Roo.Interpreter) As String
 		  ' Part of the Textable interface.
 		  ' Return this function's name.
 		  

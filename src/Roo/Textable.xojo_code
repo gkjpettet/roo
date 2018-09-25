@@ -1,7 +1,7 @@
 #tag Interface
 Protected Interface Textable
 	#tag Method, Flags = &h0
-		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		Function ToText(interpreter As Roo.Interpreter) As String
 		  
 		End Function
 	#tag EndMethod

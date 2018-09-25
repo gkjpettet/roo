@@ -118,36 +118,35 @@ Implements Roo.Textable
 		Function Get(name as Token) As Variant
 		  ' Override RooInstance.Get().
 		  
-		  if Lookup.HashMethod(name.lexeme) then return new HashObjectMethod(self, name.lexeme)
+		  If Lookup.HashMethod(name.Lexeme) Then Return New HashObjectMethod(Self, name.Lexeme)
 		  
-		  if Lookup.HashGetter(name.lexeme) then
-		    select case name.lexeme
-		    case "clear!"
-		      map = new VariantToVariantHashMapMBS(True)
-		      return self
-		    case "invert"
-		      return DoInvert(False)
-		    case "invert!"
-		      return DoInvert(True)
-		    case "keys"
-		      return DoKeys()
-		    case "length"
-		      return new NumberObject(map.Count)
-		    case "nothing?"
-		      return new BooleanObject(False)
-		    case "number?"
-		      return new BooleanObject(False)
-		    case "to_text"
-		      return new TextObject(self.ToText)
-		    case "type"
-		      return new TextObject("Hash")
-		    case "values"
-		      return DoValues()
-		    end select
-		  end if
+		  If Lookup.HashGetter(name.Lexeme) Then
+		    Select Case name.Lexeme
+		    Case "clear!"
+		      map = New VariantToVariantHashMapMBS(True)
+		      Return Self
+		    Case "invert"
+		      Return DoInvert(False)
+		    Case "invert!"
+		      Return DoInvert(True)
+		    Case "keys"
+		      Return DoKeys()
+		    Case "length"
+		      Return New NumberObject(map.Count)
+		    Case "nothing?"
+		      Return New BooleanObject(False)
+		    Case "number?"
+		      Return New BooleanObject(False)
+		    Case "to_text"
+		      Return New TextObject(Self.ToText(Nil))
+		    Case "type"
+		      Return New TextObject("Hash")
+		    Case "values"
+		      Return DoValues()
+		    End Select
+		  End If
 		  
-		  raise new RuntimeError(name, "Hash objects have no method named `" + name.lexeme + "`.")
-		  
+		  Raise New RuntimeError(name, "Hash objects have no method named `" + name.lexeme + "`.")
 		End Function
 	#tag EndMethod
 
@@ -234,7 +233,7 @@ Implements Roo.Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		Function ToText(interpreter As Roo.Interpreter) As String
 		  ' Part of the Textable interface.
 		  
 		  #Pragma Unused interpreter
@@ -259,7 +258,7 @@ Implements Roo.Textable
 		      d = NumberObject(i.Key).value
 		      k = If(d.IsInteger, d.ToInteger.ToText, d.ToText)
 		    ElseIf i.Key IsA Textable Then
-		      k = Textable(i.Key).ToText
+		      k = Textable(i.Key).ToText(interpreter)
 		    ElseIf i.Key.Type = Variant.TypeDouble Then
 		      k = DoubleToString(i.Key)
 		    Else
@@ -273,7 +272,7 @@ Implements Roo.Textable
 		      d = NumberObject(i.Value).value
 		      v = If(d.IsInteger, d.ToInteger.ToText, d.ToText)
 		    Else
-		      v = Textable(i.Value).ToText
+		      v = Textable(i.Value).ToText(interpreter)
 		    End If
 		    
 		    t = t + k + " => " + v + ", "

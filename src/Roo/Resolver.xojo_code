@@ -592,7 +592,7 @@ Implements ExprVisitor,StmtVisitor
 
 	#tag Property, Flags = &h21
 		#tag Note
-			If the resolver is not currently within an `if` construct then this is 0. 
+			If the resolver is not currently within an `if` construct then this is 0.
 			For each `if` construct that is entered we increment.
 		#tag EndNote
 		Private IfLevel As Integer = 0
@@ -607,7 +607,7 @@ Implements ExprVisitor,StmtVisitor
 
 	#tag Property, Flags = &h21
 		#tag Note
-			If the resolver is not currently within a loop then this is 0. 
+			If the resolver is not currently within a loop then this is 0.
 			For each loop that is entered we increment.
 		#tag EndNote
 		Private LoopLevel As Integer = 0

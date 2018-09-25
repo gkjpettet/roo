@@ -161,19 +161,19 @@ Protected Class Token
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		finish As Integer
+		Finish As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		length As Integer
+		Length As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		lexeme As String
+		Lexeme As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		line As Integer
+		Line As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -181,11 +181,11 @@ Protected Class Token
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		start As Integer
+		Start As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		type As TokenType
+		Type As TokenType
 	#tag EndProperty
 
 
@@ -224,28 +224,28 @@ Protected Class Token
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="start"
+			Name="Start"
 			Group="Behavior"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="length"
+			Name="Length"
 			Group="Behavior"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="lexeme"
+			Name="Lexeme"
 			Group="Behavior"
 			Type="String"
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="line"
+			Name="Line"
 			Group="Behavior"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="finish"
+			Name="Finish"
 			Group="Behavior"
 			Type="Integer"
 		#tag EndViewProperty

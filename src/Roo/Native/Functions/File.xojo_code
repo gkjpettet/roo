@@ -27,7 +27,7 @@ Implements Roo.Invokable,Roo.Textable
 		  If arguments(0) IsA Roo.Objects.TextObject Then
 		    path = Roo.Objects.TextObject(arguments(0)).value
 		  Else
-		    path = Textable(arguments(0)).ToText
+		    path = Textable(arguments(0)).ToText(interpreter)
 		  End If
 		  
 		  ' Convert this Roo path to a FolderItem
@@ -41,7 +41,7 @@ Implements Roo.Invokable,Roo.Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		Function ToText(interpreter As Roo.Interpreter) As String
 		  ' Return this function's name.
 		  
 		  #Pragma Unused interpreter

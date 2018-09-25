@@ -62,31 +62,30 @@ Implements Roo.Textable
 		Function Get(name as Token) As Variant
 		  ' Override RooInstance.Get().
 		  
-		  if Lookup.RegexMatchMethod(name.lexeme) then return new RegexMatchObjectMethod(self, name.lexeme)
+		  If Lookup.RegexMatchMethod(name.Lexeme) Then Return New RegexMatchObjectMethod(Self, name.Lexeme)
 		  
-		  if Lookup.RegexMatchGetter(name.lexeme) then
-		    select case name.lexeme
-		    case "captures"
-		      return DoCaptures()
-		    case "finish"
-		      return new NumberObject(info.finish)
-		    case "nothing?"
-		      return new BooleanObject(False)
-		    case "number?"
-		      return new BooleanObject(False)
-		    case "start"
-		      return new NumberObject(info.start)
-		    case "to_text"
-		      return new TextObject(self.ToText)
-		    case "type"
-		      return new TextObject("RegexMatch")
-		    case "value"
-		      return new TextObject(info.value)
-		    end select
-		  end if
+		  If Lookup.RegexMatchGetter(name.Lexeme) Then
+		    Select Case name.Lexeme
+		    Case "captures"
+		      Return DoCaptures()
+		    Case "finish"
+		      Return New NumberObject(info.finish)
+		    Case "nothing?"
+		      Return New BooleanObject(False)
+		    Case "number?"
+		      Return New BooleanObject(False)
+		    Case "start"
+		      Return New NumberObject(info.start)
+		    Case "to_text"
+		      Return New TextObject(Self.ToText(Nil))
+		    Case "type"
+		      Return New TextObject("RegexMatch")
+		    Case "value"
+		      Return New TextObject(info.value)
+		    End Select
+		  End If
 		  
-		  raise new RuntimeError(name, "RegexMatch objects have no method named `" + name.lexeme + "`.")
-		  
+		  Raise New RuntimeError(name, "RegexMatch objects have no method named `" + name.lexeme + "`.")
 		End Function
 	#tag EndMethod
 
@@ -103,7 +102,7 @@ Implements Roo.Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		Function ToText(interpreter As Roo.Interpreter) As String
 		  ' Part of the Roo.Textable interface.
 		  
 		  #Pragma Unused interpreter

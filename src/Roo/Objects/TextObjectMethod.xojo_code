@@ -49,7 +49,7 @@ Implements Roo.Invokable,Roo.Textable
 		    "a text representation. Instead got " + VariantType(arguments(0)) + ".")
 		  end if
 		  
-		  dim what as String = Textable(arguments(0)).ToText
+		  dim what as String = Textable(arguments(0)).ToText(Nil)
 		  
 		  if StrComp(parent.value.Right(what.Len), what, 0) = 0 then
 		    return new BooleanObject(True)
@@ -72,7 +72,7 @@ Implements Roo.Invokable,Roo.Textable
 		  
 		  ' We need to convert the String values to Xojo Text objects to take advantage of Xojo's
 		  ' built-in case-sensitive searching.
-		  dim needle as Text = Textable(arguments(0)).ToText.ToText
+		  dim needle as Text = Textable(arguments(0)).ToText(Nil).ToText
 		  dim haystack as Text = parent.value.ToText
 		  
 		  ' Do the case-sensitive search.
@@ -94,7 +94,7 @@ Implements Roo.Invokable,Roo.Textable
 		  
 		  ' We need to convert the String values to Xojo Text objects to take advantage of Xojo's
 		  ' built-in case-sensitive searching.
-		  dim needle as Text = Textable(arguments(0)).ToText.ToText
+		  dim needle as Text = Textable(arguments(0)).ToText(Nil).ToText
 		  dim haystack as Text = parent.value.ToText
 		  dim index as Integer
 		  
@@ -427,7 +427,7 @@ Implements Roo.Invokable,Roo.Textable
 		    "a text representation. Instead got " + VariantType(arguments(0)) + ".")
 		  end if
 		  
-		  dim what as String = Textable(arguments(0)).ToText
+		  dim what as String = Textable(arguments(0)).ToText(Nil)
 		  
 		  if StrComp(parent.value.Left(what.Len), what, 0) = 0 then
 		    return new BooleanObject(True)
@@ -493,7 +493,7 @@ Implements Roo.Invokable,Roo.Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		Function ToText(interpreter As Roo.Interpreter) As String
 		  ' Part of the Textable interface.
 		  
 		  #Pragma Unused interpreter

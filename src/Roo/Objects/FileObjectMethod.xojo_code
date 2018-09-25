@@ -121,7 +121,7 @@ Implements Roo.Invokable,Roo.Textable
 		  ' +2 as we will pass in each byte as the first argument.
 		  If Not Interpreter.CorrectArity(func, funcArgs.Ubound + 2) Then
 		    Raise New RuntimeError(where, "Incorrect number of arguments passed to the " +_
-		    Textable(func).ToText + " function.")
+		    Textable(func).ToText(interpreter) + " function.")
 		  End If
 		  
 		  ' Is the file valid?
@@ -224,7 +224,7 @@ Implements Roo.Invokable,Roo.Textable
 		  ' +2 as we will pass in each character as the first argument.
 		  If Not Interpreter.CorrectArity(func, funcArgs.Ubound + 2) Then
 		    Raise New RuntimeError(where, "Incorrect number of arguments passed to the " +_
-		    Textable(func).ToText + " function.")
+		    Textable(func).ToText(interpreter) + " function.")
 		  End If
 		  
 		  ' Is the file valid?
@@ -326,7 +326,7 @@ Implements Roo.Invokable,Roo.Textable
 		  ' +3 as we will pass in each line and line number as the first two arguments.
 		  If Not Interpreter.CorrectArity(func, funcArgs.Ubound + 3) Then
 		    Raise New RuntimeError(where, "Incorrect number of arguments passed to the " +_
-		    Textable(func).ToText + " function.")
+		    Textable(func).ToText(interpreter) + " function.")
 		  End If
 		  
 		  ' Is the file valid?
@@ -407,7 +407,7 @@ Implements Roo.Invokable,Roo.Textable
 		  ' Check that a positive integer argument has been passed.
 		  If Not Parent.CheckInteger(arguments(0), True) Then
 		    Raise New RuntimeError(where, "The File.read(count) method expects a positive integer for the " + _
-		    "`count` parameter. Instead got `" + Textable(arguments(0)).ToText + "`.")
+		    "`count` parameter. Instead got `" + Textable(arguments(0)).ToText(Nil) + "`.")
 		  End If
 		  Dim count As Integer = NumberObject(arguments(0)).value
 		  
@@ -474,7 +474,7 @@ Implements Roo.Invokable,Roo.Textable
 		  If arguments(0) IsA TextObject Then
 		    data = TextObject(arguments(0)).value
 		  ElseIf arguments(0) IsA Textable Then
-		    data = Textable(arguments(0)).ToText
+		    data = Textable(arguments(0)).ToText(Nil)
 		  Else
 		    Raise New RuntimeError(where, "Unable to write the data to disk as it has no text representation.")
 		  End If
@@ -554,7 +554,7 @@ Implements Roo.Invokable,Roo.Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		Function ToText(interpreter As Roo.Interpreter) As String
 		  ' Part of the Textable interface.
 		  
 		  #Pragma Unused interpreter

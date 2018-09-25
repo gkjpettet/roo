@@ -68,7 +68,7 @@ Implements Roo.Textable
 		    case "to_radians"
 		      return new NumberObject(value / 57.295779513)
 		    case "to_text"
-		      return new TextObject(self.ToText())
+		      return new TextObject(self.ToText(Nil))
 		    case "type"
 		      return new TextObject("Number")
 		    end select
@@ -110,7 +110,7 @@ Implements Roo.Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		Function ToText(interpreter As Roo.Interpreter) As String
 		  ' Part of the Textable interface.
 		  
 		  #Pragma Unused interpreter

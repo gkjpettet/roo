@@ -125,7 +125,7 @@ Implements Roo.Invokable,Roo.Textable
 		  ' +3 as we will pass in the key and the value as the first two arguments.
 		  if not Interpreter.CorrectArity(func, funcArgs.Ubound + 3) then
 		    raise new RuntimeError(where, "Incorrect number of arguments passed to the " +_
-		    Textable(func).ToText + " function.")
+		    Textable(func).ToText(interpreter) + " function.")
 		  end if
 		  
 		  dim i as VariantToVariantHashMapIteratorMBS = parent.map.first
@@ -220,7 +220,7 @@ Implements Roo.Invokable,Roo.Textable
 		  ' +2 as we will pass in the key as the first argument.
 		  if not Interpreter.CorrectArity(func, funcArgs.Ubound + 2) then
 		    raise new RuntimeError(where, "Incorrect number of arguments passed to the " +_
-		    Textable(func).ToText + " function.")
+		    Textable(func).ToText(interpreter) + " function.")
 		  end if
 		  
 		  dim i as VariantToVariantHashMapIteratorMBS = parent.map.first
@@ -312,7 +312,7 @@ Implements Roo.Invokable,Roo.Textable
 		  ' +2 as we will pass in the value as the first argument.
 		  if not Interpreter.CorrectArity(func, funcArgs.Ubound + 2) then
 		    raise new RuntimeError(where, "Incorrect number of arguments passed to the " +_
-		    Textable(func).ToText + " function.")
+		    Textable(func).ToText(interpreter) + " function.")
 		  end if
 		  
 		  dim i as VariantToVariantHashMapIteratorMBS = parent.map.first
@@ -421,7 +421,7 @@ Implements Roo.Invokable,Roo.Textable
 		  ' +3 as we will pass in the key and the value as the first two arguments.
 		  if not Interpreter.CorrectArity(func, funcArgs.Ubound + 3) then
 		    raise new RuntimeError(where, "Incorrect number of arguments passed to the " +_
-		    Textable(func).ToText + " function.")
+		    Textable(func).ToText(interpreter) + " function.")
 		  end if
 		  
 		  dim i as VariantToVariantHashMapIteratorMBS = parent.map.first
@@ -544,8 +544,8 @@ Implements Roo.Invokable,Roo.Textable
 		    if newHash.HasKey(i.Key) then
 		      ' Check that we have the correct number of arguments for `func`.
 		      if not Interpreter.CorrectArity(func, 3) then
-		        raise new RuntimeError(where, "The " + Textable(func).ToText + " function must accept 3 " + _
-		        "arguments (key, value1, value2.")
+		        raise new RuntimeError(where, "The " + Textable(func).ToText(interpreter) + _
+		        " function must accept 3 arguments (key, value1, value2.")
 		      end if
 		      ' Invoke the passed function, passing in the necessary arguments.
 		      funcArgs = Array(i.Key, parent.GetValue(i.Key), i.Value)
@@ -602,7 +602,7 @@ Implements Roo.Invokable,Roo.Textable
 		  ' +3 as we will pass in the key and the value as the first two arguments.
 		  if not Interpreter.CorrectArity(func, funcArgs.Ubound + 3) then
 		    raise new RuntimeError(where, "Incorrect number of arguments passed to the " +_
-		    Textable(func).ToText + " function.")
+		    Textable(func).ToText(interpreter) + " function.")
 		  end if
 		  
 		  dim i as VariantToVariantHashMapIteratorMBS = parent.map.first
@@ -712,7 +712,7 @@ Implements Roo.Invokable,Roo.Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		Function ToText(interpreter As Roo.Interpreter) As String
 		  ' Part of the Textable interface.
 		  
 		  #Pragma Unused interpreter

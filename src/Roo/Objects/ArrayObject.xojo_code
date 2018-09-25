@@ -133,7 +133,7 @@ Implements Roo.Textable
 		      elements.Shuffle()
 		      return self
 		    case "to_text"
-		      return new TextObject(self.ToText)
+		      return new TextObject(self.ToText(Nil))
 		    case "type"
 		      return new TextObject("Array")
 		    case "unique"
@@ -164,7 +164,7 @@ Implements Roo.Textable
 		    if elements(i) isA ArrayObject then ' Recurse.
 		      result = result + ArrayObject(elements(i)).Join(separator).value + if(i = limit, "", separator)
 		    else
-		      result = result + Textable(elements(i)).ToText() + if(i = limit, "", separator)
+		      result = result + Textable(elements(i)).ToText(Nil) + if(i = limit, "", separator)
 		    end if
 		  next i
 		  
@@ -185,7 +185,7 @@ Implements Roo.Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		Function ToText(interpreter As Roo.Interpreter) As String
 		  ' Part of the Textable interface.
 		  
 		  #Pragma Unused interpreter
@@ -209,7 +209,7 @@ Implements Roo.Textable
 		          value = Str(d)
 		        End If
 		      ElseIf elements(a) IsA Textable Then
-		        value = """" + Textable(elements(a)).ToText + """"
+		        value = """" + Textable(elements(a)).ToText(interpreter) + """"
 		      Else
 		        value = "<No text representation>"
 		      End If

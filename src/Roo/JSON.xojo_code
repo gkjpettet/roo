@@ -375,7 +375,7 @@ Protected Module JSON
 		  ElseIf v IsA Roo.Objects.ArrayObject Then
 		    result = SerialiseArray(v)
 		  ElseIf v IsA Textable Then
-		    result = EscapeSpecialCharacters(Textable(v).ToText)
+		    result = EscapeSpecialCharacters(Textable(v).ToText(Nil))
 		  Else
 		    result = EscapeSpecialCharacters(v.StringValue)
 		  End If

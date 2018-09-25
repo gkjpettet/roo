@@ -37,7 +37,8 @@ Implements Roo.Invokable,Roo.Textable
 		    Roo.Objects.NumberObject(arguments(0)).IsInteger = False Or _
 		    Roo.Objects.NumberObject(arguments(0)).value < 0 Then
 		    Raise New RuntimeError(where, "The DateTime constructor, DateTime(y, m, d, h, min, s), expects " + _
-		    "the year parameter to be a positive integer. Instead got `" + Textable(arguments(0)).ToText + "`.")
+		    "the year parameter to be a positive integer. Instead got `" + _
+		    Textable(arguments(0)).ToText(Nil) + "`.")
 		  End If
 		  Dim year As Integer = Roo.Objects.NumberObject(arguments(0)).value
 		  
@@ -46,7 +47,8 @@ Implements Roo.Invokable,Roo.Textable
 		    Roo.Objects.NumberObject(arguments(1)).IsInteger = False Or _
 		    Roo.Objects.NumberObject(arguments(1)).value < 0 Then
 		    Raise New RuntimeError(where, "The DateTime constructor, DateTime(y, m, d, h, min, s), expects " + _
-		    "the month parameter to be a positive integer. Instead got `" + Textable(arguments(1)).ToText + "`.")
+		    "the month parameter to be a positive integer. Instead got `" + _
+		    Textable(arguments(1)).ToText(Nil) + "`.")
 		  End If
 		  Dim month As Integer = Roo.Objects.NumberObject(arguments(1)).value
 		  
@@ -55,7 +57,8 @@ Implements Roo.Invokable,Roo.Textable
 		    Roo.Objects.NumberObject(arguments(2)).IsInteger = False Or _
 		    Roo.Objects.NumberObject(arguments(2)).value < 0 Then
 		    Raise New RuntimeError(where, "The DateTime constructor, DateTime(y, m, d, h, min, s), expects " + _
-		    "the day parameter to be a positive integer. Instead got `" + Textable(arguments(2)).ToText + "`.")
+		    "the day parameter to be a positive integer. Instead got `" + _
+		    Textable(arguments(2)).ToText(Nil) + "`.")
 		  End If
 		  Dim day As Integer = Roo.Objects.NumberObject(arguments(2)).value
 		  
@@ -63,7 +66,7 @@ Implements Roo.Invokable,Roo.Textable
 		  If arguments(3) IsA Roo.Objects.NumberObject = False Or _
 		    Roo.Objects.NumberObject(arguments(3)).IsInteger = False Then
 		    Raise New RuntimeError(where, "The DateTime constructor, DateTime(y, m, d, h, min, s), expects " + _
-		    "the hour parameter to be an integer. Instead got `" + Textable(arguments(3)).ToText + "`.")
+		    "the hour parameter to be an integer. Instead got `" + Textable(arguments(3)).ToText(Nil) + "`.")
 		  End If
 		  Dim hour As Integer = Roo.Objects.NumberObject(arguments(3)).value
 		  
@@ -71,7 +74,7 @@ Implements Roo.Invokable,Roo.Textable
 		  If arguments(4) IsA Roo.Objects.NumberObject = False Or _
 		    Roo.Objects.NumberObject(arguments(4)).IsInteger = False Then
 		    Raise New RuntimeError(where, "The DateTime constructor, DateTime(y, m, d, h, min, s), expects " + _
-		    "the minute parameter to be an integer. Instead got `" + Textable(arguments(4)).ToText + "`.")
+		    "the minute parameter to be an integer. Instead got `" + Textable(arguments(4)).ToText(Nil) + "`.")
 		  End If
 		  Dim minute As Integer = Roo.Objects.NumberObject(arguments(4)).value
 		  
@@ -79,7 +82,7 @@ Implements Roo.Invokable,Roo.Textable
 		  If arguments(5) IsA Roo.Objects.NumberObject = False Or _
 		    Roo.Objects.NumberObject(arguments(5)).IsInteger = False Then
 		    Raise New RuntimeError(where, "The DateTime constructor, DateTime(y, m, d, h, min, s), expects " + _
-		    "the second parameter to be an integer. Instead got `" + Textable(arguments(5)).ToText + "`.")
+		    "the second parameter to be an integer. Instead got `" + Textable(arguments(5)).ToText(Nil) + "`.")
 		  End If
 		  Dim sec As Integer = Roo.Objects.NumberObject(arguments(5)).value
 		  
@@ -105,7 +108,7 @@ Implements Roo.Invokable,Roo.Textable
 		    Roo.Objects.NumberObject(arguments(0)).IsInteger = False Or _
 		    Roo.Objects.NumberObject(arguments(0)).value < 0 Then
 		    Raise New RuntimeError(where, "The DateTime constructor, DateTime(y, m, d, h, min, s), expects " + _
-		    "the year parameter to be a positive integer. Instead got `" + Textable(arguments(0)).ToText + "`.")
+		    "the year parameter to be a positive integer. Instead got `" + Textable(arguments(0)).ToText(Nil) + "`.")
 		  End If
 		  Dim year As Integer = Roo.Objects.NumberObject(arguments(0)).value
 		  
@@ -114,7 +117,8 @@ Implements Roo.Invokable,Roo.Textable
 		    Roo.Objects.NumberObject(arguments(1)).IsInteger = False Or _
 		    Roo.Objects.NumberObject(arguments(1)).value < 0 Then
 		    Raise New RuntimeError(where, "The DateTime constructor, DateTime(y, m, d, h, min, s), expects " + _
-		    "the month parameter to be a positive integer. Instead got `" + Textable(arguments(1)).ToText + "`.")
+		    "the month parameter to be a positive integer. Instead got `" + _
+		    Textable(arguments(1)).ToText(Nil) + "`.")
 		  End If
 		  Dim month As Integer = Roo.Objects.NumberObject(arguments(1)).value
 		  
@@ -123,7 +127,8 @@ Implements Roo.Invokable,Roo.Textable
 		    Roo.Objects.NumberObject(arguments(2)).IsInteger = False Or _
 		    Roo.Objects.NumberObject(arguments(2)).value < 0 Then
 		    Raise New RuntimeError(where, "The DateTime constructor, DateTime(y, m, d, h, min, s), expects " + _
-		    "the day parameter to be a positive integer. Instead got `" + Textable(arguments(2)).ToText + "`.")
+		    "the day parameter to be a positive integer. Instead got `" + _
+		    Textable(arguments(2)).ToText(Nil) + "`.")
 		  End If
 		  Dim day As Integer = Roo.Objects.NumberObject(arguments(2)).value
 		  
@@ -185,7 +190,7 @@ Implements Roo.Invokable,Roo.Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		Function ToText(interpreter As Roo.Interpreter) As String
 		  ' Return this function's name.
 		  
 		  #Pragma Unused interpreter

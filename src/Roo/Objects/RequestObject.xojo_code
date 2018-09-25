@@ -554,7 +554,7 @@ Implements Roo.Textable
 		    If i.Value IsA DateTimeObject Then
 		      value = DateTimeObject(i.Value).ToHTTPHeaderFormat
 		    Else
-		      value = Textable(i.Value).ToText
+		      value = Textable(i.Value).ToText(Nil)
 		    End If
 		    result = result + name + "=" + value + ";"
 		    i.MoveNext
@@ -582,7 +582,7 @@ Implements Roo.Textable
 		    If i.Value IsA DateTimeObject Then
 		      HTTP.RequestHeader(i.Key.StringValue.ToText) = DateTimeObject(i.Value).ToHTTPHeaderFormat.ToText
 		    Else
-		      HTTP.RequestHeader(i.Key.StringValue.ToText) = Textable(i.Value).ToText.ToText
+		      HTTP.RequestHeader(i.Key.StringValue.ToText) = Textable(i.Value).ToText(Nil).ToText
 		    End If
 		    i.MoveNext
 		  Wend
@@ -593,7 +593,7 @@ Implements Roo.Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		Function ToText(interpreter As Roo.Interpreter) As String
 		  ' Part of the Textable interface.
 		  
 		  #Pragma Unused interpreter

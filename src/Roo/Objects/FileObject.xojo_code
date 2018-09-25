@@ -352,34 +352,34 @@ Implements Roo.Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Set(name as Roo.Token, value as Variant)
-		  #pragma Unused name
-		  #pragma Unused value
+		Sub Set(name As Roo.Token, value As Variant)
+		  #Pragma Unused name
+		  #Pragma Unused value
 		  
 		  ' Override RooInstance.Set
-		  ' We want to prevent both the creating of new fields on File objects and setting their values 
+		  ' We want to prevent both the creating of new fields on File objects and setting their values
 		  ' EXCEPT for a few specific permitted values.
 		  
-		  select case name.lexeme
-		  case "path"
+		  Select Case name.Lexeme
+		  Case "path"
 		    DoSetPath(value, name)
-		    return
+		    Return
 		  Case "pos"
 		    If Not CheckInteger(value, True) Then
 		      Raise New RuntimeError(name, "File.pos must be an integer >= 0. Instead got `" + _
-		      Textable(value).ToText + "`")
+		      Textable(value).ToText(Nil) + "`")
 		    Else
 		      Pos = NumberObject(value).value
 		    End If
-		  else
-		    raise new RuntimeError(name, "Cannot create or set fields on File objects " +_ 
-		    "(File." + name.lexeme + ").")
-		  end select
+		  Else
+		    Raise New RuntimeError(name, "Cannot create or set fields on File objects " + _
+		    "(File." + name.Lexeme + ").")
+		  End Select
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		Function ToText(interpreter As Roo.Interpreter) As String
 		  ' Part of the Textable interface.
 		  
 		  #Pragma Unused interpreter

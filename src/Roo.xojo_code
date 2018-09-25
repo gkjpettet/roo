@@ -312,20 +312,20 @@ Protected Module Roo
 		Function VariantType(v as Variant) As String
 		  ' A more robust implementation of Variant.StringValue().
 		  
-		  if v = Nil then return "Nil"
-		  if v isA BooleanObject then return "Boolean object"
-		  if v isA NumberObject then return "Number object"
-		  if v isA TextObject then return "Text object"
-		  if v isA NothingObject then return "Nothing"
-		  if v isA RooClass then return RooClass(v).name + " class"
-		  if v isA RooFunction then return RooFunction(v).ToText
-		  if v isA RooInstance then return RooInstance(v).ToText
+		  If v = Nil Then Return "Nil"
+		  If v IsA BooleanObject Then Return "Boolean object"
+		  If v IsA NumberObject Then Return "Number object"
+		  If v IsA TextObject Then Return "Text object"
+		  If v IsA NothingObject Then Return "Nothing"
+		  If v IsA RooClass Then Return RooClass(v).Name + " class"
+		  If v IsA RooFunction Then Return RooFunction(v).ToText(Nil)
+		  If v IsA RooInstance Then Return RooInstance(v).ToText(Nil)
 		  
-		  dim info as Xojo.Introspection.TypeInfo = Xojo.Introspection.GetType(v)
-		  return info.Name
+		  Dim info As Xojo.Introspection.TypeInfo = Xojo.Introspection.GetType(v)
+		  Return info.Name
 		  
-		  exception err
-		    return "Cannot determine variant type."
+		  Exception err
+		    Return "Cannot determine variant type."
 		End Function
 	#tag EndMethod
 
@@ -335,7 +335,7 @@ Protected Module Roo
 	#tag EndProperty
 
 
-	#tag Constant, Name = VERSION_BUG, Type = Double, Dynamic = False, Default = \"0", Scope = Public
+	#tag Constant, Name = VERSION_BUG, Type = Double, Dynamic = False, Default = \"1", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = VERSION_MAJOR, Type = Double, Dynamic = False, Default = \"2", Scope = Public

@@ -64,7 +64,7 @@ Implements Textable
 		    If m <> Nil Then
 		      Return m
 		    Else
-		      Raise New RuntimeError(name, "Undefined property `" + name.lexeme + "` on " + self.ToText + ".")
+		      Raise New RuntimeError(name, "Undefined property `" + name.lexeme + "` on " + self.ToText(Nil) + ".")
 		    End If
 		  ElseIf Self IsA RooClass And RooClass(Self).isNative Then
 		    Return Self.klass.Get(name)
@@ -84,12 +84,12 @@ Implements Textable
 		  If StrComp(name.lexeme, "nothing?", 0) = 0 Then
 		    Return If(Self.klass IsA NothingObject, New BooleanObject(True), New BooleanObject(False))
 		  ElseIf StrComp(name.lexeme, "to_text", 0) = 0 Then
-		    Return If(Self.klass = Nil, New TextObject("No text representation"), New TextObject(Self.ToText))
+		    Return If(Self.klass = Nil, New TextObject("No text representation"), New TextObject(Self.ToText(Nil)))
 		  ElseIf StrComp(name.lexeme, "type", 0) = 0 Then
 		    If Self.klass <> Nil Then
 		      Return New TextObject(Self.klass.name)
 		    Else
-		      Return New TextObject(Self.ToText)
+		      Return New TextObject(Self.ToText(Nil))
 		    End If
 		  End If
 		  ' Methods
@@ -98,7 +98,7 @@ Implements Textable
 		  End If
 		  ' ===========================================================================================
 		  
-		  Raise New RuntimeError(name, "Undefined property `" + name.lexeme + "` on " + Self.ToText + ".")
+		  Raise New RuntimeError(name, "Undefined property `" + name.lexeme + "` on " + Self.ToText(Nil) + ".")
 		End Function
 	#tag EndMethod
 
@@ -121,7 +121,7 @@ Implements Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		Function ToText(interpreter As Roo.Interpreter) As String
 		  If interpreter <> Nil Then
 		    
 		    ' Does this object define its own `to_text` method that we should use preferentially?
@@ -140,7 +140,7 @@ Implements Textable
 		        Raise New RuntimeError(New Roo.Token, "The result returned from `" + _
 		        Self.Klass.Name + ".to_text` does not have a valid Text representation.")
 		      Else
-		        Return Textable(overrideResult).ToText
+		        Return Textable(overrideResult).ToText(interpreter)
 		      End If
 		    End If
 		    

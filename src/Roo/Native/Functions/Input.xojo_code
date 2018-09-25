@@ -24,7 +24,7 @@ Implements Roo.Invokable,Roo.Textable
 		      if arguments(0) isA TextObject then
 		        prompt = TextObject(arguments(0)).value
 		      else
-		        prompt = Textable(arguments(0)).ToText
+		        prompt = Textable(arguments(0)).ToText(interpreter)
 		      end if
 		    end if
 		  end if
@@ -43,7 +43,7 @@ Implements Roo.Invokable,Roo.Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		Function ToText(interpreter As Roo.Interpreter) As String
 		  ' Return this function's name.
 		  
 		  #Pragma Unused interpreter

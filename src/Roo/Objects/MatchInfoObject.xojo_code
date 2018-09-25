@@ -18,29 +18,28 @@ Implements Roo.Textable
 		Function Get(name as Token) As Variant
 		  ' Override RooInstance.Get().
 		  
-		  if Lookup.MatchInfoMethod(name.lexeme) then return new MatchInfoObjectMethod(self, name.lexeme)
+		  If Lookup.MatchInfoMethod(name.Lexeme) Then Return New MatchInfoObjectMethod(Self, name.Lexeme)
 		  
-		  if Lookup.MatchInfoGetter(name.lexeme) then
-		    select case name.lexeme
-		    case "finish"
-		      return new NumberObject(self.finish)
-		    case "nothing?"
-		      return new BooleanObject(False)
-		    case "number?"
-		      return new BooleanObject(False)
-		    case "start"
-		      return new NumberObject(self.start)
-		    case "to_text"
-		      return new TextObject(self.ToText)
-		    case "type"
-		      return new TextObject("MatchInfo")
-		    case "value"
-		      return new TextObject(self.value)
-		    end select
-		  end if
+		  If Lookup.MatchInfoGetter(name.Lexeme) Then
+		    Select Case name.Lexeme
+		    Case "finish"
+		      Return New NumberObject(Self.finish)
+		    Case "nothing?"
+		      Return New BooleanObject(False)
+		    Case "number?"
+		      Return New BooleanObject(False)
+		    Case "start"
+		      Return New NumberObject(Self.start)
+		    Case "to_text"
+		      Return New TextObject(Self.ToText(Nil))
+		    Case "type"
+		      Return New TextObject("MatchInfo")
+		    Case "value"
+		      Return New TextObject(Self.value)
+		    End Select
+		  End If
 		  
-		  raise new RuntimeError(name, "MatchInfo objects have no method named `" + name.lexeme + "`.")
-		  
+		  Raise New RuntimeError(name, "MatchInfo objects have no method named `" + name.lexeme + "`.")
 		End Function
 	#tag EndMethod
 
@@ -57,7 +56,7 @@ Implements Roo.Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		Function ToText(interpreter As Roo.Interpreter) As String
 		  ' Part of the Roo.Textable interface.
 		  
 		  #Pragma Unused interpreter

@@ -694,7 +694,7 @@ Protected Class Scanner
 
 	#tag Property, Flags = &h21
 		#tag Note
-			Stores files that do not need to be required again as they have previously been required 
+			Stores files that do not need to be required again as they have previously been required
 			already by the script.
 			
 			Key = Native path of the file

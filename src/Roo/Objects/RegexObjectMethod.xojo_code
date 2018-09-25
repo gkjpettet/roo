@@ -53,7 +53,7 @@ Implements Roo.Invokable,Roo.Textable
 		  if args(0) isA TextObject then
 		    what = TextObject(args(0)).value
 		  else
-		    what = Textable(args(0)).ToText
+		    what = Textable(args(0)).ToText(Nil)
 		  end if
 		  
 		  ' Valid start position?
@@ -126,7 +126,7 @@ Implements Roo.Invokable,Roo.Textable
 		  if args(0) isA TextObject then
 		    what = TextObject(args(0)).value
 		  else
-		    what = Textable(args(0)).ToText
+		    what = Textable(args(0)).ToText(Nil)
 		  end if
 		  
 		  ' Return whether there is a match or not.
@@ -175,7 +175,7 @@ Implements Roo.Invokable,Roo.Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToText(interpreter As Roo.Interpreter = Nil) As String
+		Function ToText(interpreter As Roo.Interpreter) As String
 		  ' Part of the Textable interface.
 		  
 		  #Pragma Unused interpreter

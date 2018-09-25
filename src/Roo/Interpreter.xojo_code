@@ -325,104 +325,104 @@ Implements ExprVisitor,StmtVisitor
 		  ' The value to assign to the specified element is expr.value
 		  ' Shorthand assignment is permitted (+=, -=, /=, *=, %=) and well as simple assignment (=).
 		  
-		  dim currentValue, value, indexValue, variable as Variant
-		  dim distance, index as Integer
-		  dim a as ArrayObject
+		  Dim currentValue, value, indexValue, variable As Variant
+		  Dim distance, index As Integer
+		  Dim a As ArrayObject
 		  
 		  ' Evaluate the right hand side of the assignment.
-		  value = Evaluate(expr.value)
+		  value = Evaluate(expr.Value)
 		  
 		  ' Get this variable.
 		  distance = locals.Lookup(expr, -1)
-		  if distance = -1 then
+		  If distance = -1 Then
 		    ' Can't find this variable in our resolved local variables so assume it's global.
-		    variable = globals.Get(expr.name)
-		  else
+		    variable = globals.Get(expr.Name)
+		  Else
 		    ' It's a local variable.
-		    variable = environment.GetAt(distance, expr.name.lexeme)
-		  end if
+		    variable = environment.GetAt(distance, expr.Name.Lexeme)
+		  End If
 		  
-		  if variable = Nil then
-		    raise new RuntimeError(expr.name, "Error retrieving variable `" + expr.name.lexeme + "`.")
-		  elseif variable isA NothingObject then
+		  If variable = Nil Then
+		    Raise New RuntimeError(expr.Name, "Error retrieving variable `" + expr.Name.Lexeme + "`.")
+		  ElseIf variable IsA NothingObject Then
 		    ' Non-initialised variable. Initialise it as an empty array object.
-		    variable = new ArrayObject
-		  end if
+		    variable = New ArrayObject
+		  End If
 		  
 		  a = ArrayObject(variable)
 		  
 		  ' Get the index of the element to assign to.
-		  indexValue = Evaluate(expr.index)
-		  if not indexValue isA NumberObject and not NumberObject(indexValue).IsInteger then
-		    raise new RuntimeError(expr.name, "Expected an integer index value for the element to assign to.")
-		  end if
+		  indexValue = Evaluate(expr.Index)
+		  If Not indexValue IsA NumberObject And Not NumberObject(indexValue).IsInteger Then
+		    Raise New RuntimeError(expr.Name, "Expected an integer index value for the element to assign to.")
+		  End If
 		  
-		  index = NumberObject(indexValue).value
+		  index = NumberObject(indexValue).Value
 		  
 		  ' Is there an element at this index?
-		  if index < 0 then
-		    raise new RuntimeError(expr.name, "Expected an integer index >= 0.")
-		  elseif index <= a.elements.Ubound then
-		    currentValue = a.elements(index)
-		  else
+		  If index < 0 Then
+		    Raise New RuntimeError(expr.Name, "Expected an integer index >= 0.")
+		  ElseIf index <= a.Elements.Ubound Then
+		    currentValue = a.Elements(index)
+		  Else
 		    currentValue = Nil
-		  end if
+		  End If
 		  
 		  ' Prohibit the compound assignment operators (+', -=, /=, *=) on non-existent elements.
-		  if currentValue = Nil and expr.operator.type <> TokenType.EQUAL then
-		    raise new RuntimeError(expr.name, "Cannot use a compound assigment operator on Nothing.")
-		  end if
+		  If currentValue = Nil And expr.Operator.Type <> TokenType.EQUAL Then
+		    Raise New RuntimeError(expr.Name, "Cannot use a compound assigment operator on Nothing.")
+		  End If
 		  
 		  ' What type of assignment is this?
-		  select case expr.operator.type
-		  case TokenType.PLUS_EQUAL ' +=
-		    if currentValue isA NumberObject and value isA NumberObject then ' Arithmetic addition.
-		      value = new NumberObject(NumberObject(currentValue).value + NumberObject(value).value)
-		    elseif currentValue isA Textable and value isA Textable then ' Text concatenation.
-		      value = new TextObject(Textable(currentValue).ToText + Textable(value).ToText)
-		    else
-		      raise new RuntimeError(expr.operator, "Either both operands must be numbers or viable text " + _
+		  Select Case expr.Operator.Type
+		  Case TokenType.PLUS_EQUAL ' +=
+		    If currentValue IsA NumberObject And value IsA NumberObject Then ' Arithmetic addition.
+		      value = New NumberObject(NumberObject(currentValue).Value + NumberObject(value).Value)
+		    ElseIf currentValue IsA Textable And value IsA Textable Then ' Text concatenation.
+		      value = New TextObject(Textable(currentValue).ToText(Self) + Textable(value).ToText(Self))
+		    Else
+		      Raise New RuntimeError(expr.Operator, "Either both operands must be numbers or viable text " + _
 		      "concatenation must be possible.")
-		    end if
+		    End If
 		    
-		  case TokenType.MINUS_EQUAL ' -=
-		    CheckNumberOperands(expr.operator, currentValue, value)
-		    value = new NumberObject(NumberObject(currentValue).value - NumberObject(value).value)
+		  Case TokenType.MINUS_EQUAL ' -=
+		    CheckNumberOperands(expr.Operator, currentValue, value)
+		    value = New NumberObject(NumberObject(currentValue).Value - NumberObject(value).Value)
 		    
-		  case TokenType.SLASH_EQUAL ' /=
-		    CheckNumberOperands(expr.operator, currentValue, value)
-		    value = new NumberObject(NumberObject(currentValue).value / NumberObject(value).value)
+		  Case TokenType.SLASH_EQUAL ' /=
+		    CheckNumberOperands(expr.Operator, currentValue, value)
+		    value = New NumberObject(NumberObject(currentValue).Value / NumberObject(value).Value)
 		    
-		  case TokenType.STAR_EQUAL ' *=
-		    CheckNumberOperands(expr.operator, currentValue, value)
-		    value = new NumberObject(NumberObject(currentValue).value * NumberObject(value).value)
+		  Case TokenType.STAR_EQUAL ' *=
+		    CheckNumberOperands(expr.Operator, currentValue, value)
+		    value = New NumberObject(NumberObject(currentValue).Value * NumberObject(value).Value)
 		    
-		  case TokenType.PERCENT_EQUAL ' %=
-		    CheckNumberOperands(expr.operator, currentValue, value)
-		    if NumberObject(value).value = 0 then raise new RuntimeError(expr.operator, "Modulo with zero")
-		    value = new NumberObject(NumberObject(currentValue).value Mod NumberObject(value).value)
-		  end select
+		  Case TokenType.PERCENT_EQUAL ' %=
+		    CheckNumberOperands(expr.Operator, currentValue, value)
+		    If NumberObject(value).value = 0 Then Raise New RuntimeError(expr.operator, "Modulo with zero")
+		    value = New NumberObject(NumberObject(currentValue).Value Mod NumberObject(value).Value)
+		  End Select
 		  
 		  ' Assign the new value to the correct element.
-		  if index > a.elements.Ubound then
-		    ' Increase the size of this array to accomodate this new element, filling the preceding elements 
+		  If index > a.Elements.Ubound Then
+		    ' Increase the size of this array to accomodate this new element, filling the preceding elements
 		    ' with Nothing.
-		    dim numNothings as Integer = index - a.elements.Ubound
-		    for i as Integer = 1 to numNothings
-		      a.elements.Append(self.nothing)
-		    next i
-		  end if
+		    Dim numNothings As Integer = index - a.Elements.Ubound
+		    For i As Integer = 1 To numNothings
+		      a.Elements.Append(Self.nothing)
+		    Next i
+		  End If
 		  a.elements(index) = value
 		  
 		  ' Assign the newly updated array to the correct environment.
-		  if distance = -1 then
-		    globals.Assign(expr.name, a)
-		  else
-		    environment.AssignAt(distance, expr.name, a)
-		  end if
+		  If distance = -1 Then
+		    globals.Assign(expr.Name, a)
+		  Else
+		    environment.AssignAt(distance, expr.Name, a)
+		  End If
 		  
 		  ' Return the value we assigned to the element value to allow nesting (e.g: `print(a[2] = "hi")`)
-		  return value
+		  Return value
 		End Function
 	#tag EndMethod
 
@@ -514,7 +514,7 @@ Implements ExprVisitor,StmtVisitor
 		    if currentValue isA NumberObject and value isA NumberObject then
 		      value = new NumberObject(NumberObject(currentValue).value + NumberObject(value).value)
 		    elseif currentValue isA Textable and value isA Textable then ' Text concatenation?
-		      value = new TextObject(Textable(currentValue).ToText + Textable(value).ToText)
+		      value = new TextObject(Textable(currentValue).ToText(Self) + Textable(value).ToText(Self))
 		    else
 		      raise new RuntimeError(expr.operator, "Unable to convert operands to a text representation")
 		    end if
@@ -614,7 +614,7 @@ Implements ExprVisitor,StmtVisitor
 		    end if
 		    ' Text concatenation?
 		    if left isA Textable and right isA Textable then
-		      return new TextObject(Textable(left).ToText + Textable(right).ToText)
+		      return new TextObject(Textable(left).ToText(Self) + Textable(right).ToText(Self))
 		    end if
 		    raise new RuntimeError(expr.operator, "Unable to convert operands to a text representation")
 		    
@@ -846,7 +846,7 @@ Implements ExprVisitor,StmtVisitor
 		    if currentValue isA NumberObject and value isA NumberObject then ' Arithmetic addition.
 		      value = new NumberObject(NumberObject(currentValue).value + NumberObject(value).value)
 		    elseif currentValue isA Textable and value isA Textable then ' Text concatenation.
-		      value = new TextObject(Textable(currentValue).ToText + Textable(value).ToText)
+		      value = new TextObject(Textable(currentValue).ToText(Self) + Textable(value).ToText(Self))
 		    else
 		      raise new RuntimeError(expr.operator, "Either both operands must be numbers or viable text " + _
 		      "concatenation must be possible.")
@@ -1172,7 +1172,8 @@ Implements ExprVisitor,StmtVisitor
 		    ' Prohibit compound assignment operators (+=, -=, %=, /=, *=) when the property doesn't exist.
 		    #pragma BreakOnExceptions False
 		    raise new RuntimeError(expr.operator, "Cannot use the " + Token.TypeToString(expr.operator.type) + _
-		    " operator on an undefined class field (" + RooInstance(obj).ToText + "." + expr.name.lexeme + ").")
+		    " operator on an undefined class field (" + RooInstance(obj).ToText(Self) + "." + _
+		    expr.Name.Lexeme + ").")
 		  end if
 		  
 		  select case expr.operator.type
@@ -1181,7 +1182,7 @@ Implements ExprVisitor,StmtVisitor
 		    if currentValue isA NumberObject and value isA NumberObject then
 		      value = new NumberObject(NumberObject(currentValue).value + NumberObject(value).value)
 		    elseif currentValue isA Textable and value isA Textable then ' Text concatenation?
-		      value = new TextObject(Textable(currentValue).ToText + Textable(value).ToText)
+		      value = new TextObject(Textable(currentValue).ToText(Self) + Textable(value).ToText(Self))
 		    else
 		      raise new RuntimeError(expr.operator, "Unable to convert operands to a text representation.")
 		    end if
