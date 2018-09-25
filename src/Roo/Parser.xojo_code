@@ -127,16 +127,26 @@ Protected Class Parser
 		Private Function Block() As Stmt()
 		  ' Block → LCURLY Declaration* RCURLY
 		  
-		  dim statements() as Stmt
+		  Dim statements() As Stmt
 		  
-		  while not Check(TokenType.RCURLY) and tokens(current).type <> TokenType.EOF
+		  While Not Check(TokenType.RCURLY) And tokens(current).type <> TokenType.EOF
 		    statements.Append(Declaration())
-		  wend
+		    If statements(statements.Ubound) = Nil Then
+		      ' Something has gone wrong parsing this block. 
+		      Self.HasError = True
+		      Exit
+		    End If
+		  Wend
 		  
-		  call Consume(TokenType.RCURLY, "Expected `}` after block.")
+		  If Self.HasError Then
+		    ParsingError(Self.tokens(Self.Current), "Unable to parse block.")
+		    Synchronise()
+		    Return Nil
+		  End If
 		  
-		  return statements
+		  Call Consume(TokenType.RCURLY, "Expected `}` after block.")
 		  
+		  Return statements
 		End Function
 	#tag EndMethod
 
@@ -224,8 +234,8 @@ Protected Class Parser
 
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		  scanner = new Scanner("")
-		  hasError = False
+		  Self.Scanner = New Scanner("")
+		  Self.HasError = False
 		End Sub
 	#tag EndMethod
 
@@ -284,6 +294,21 @@ Protected Class Parser
 		  wend
 		  
 		  return expr
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function ExitStatement() As Stmt
+		  ' ExitStmt → EXIT SEMICOLON
+		  
+		  ' Get a reference to the triggering `exit` token in case we encounter an error and need
+		  ' to inform the user of it's position in the source code.
+		  Dim keyword As Token = tokens(current - 1)
+		  
+		  Call Consume(TokenType.SEMICOLON, "Expected a `;` after the exit keyword.")
+		  
+		  Return New ExitStmt(keyword)
+		  
 		End Function
 	#tag EndMethod
 
@@ -797,21 +822,23 @@ Protected Class Parser
 		  ' Statement → ExpressionStatement 
 		  '           | Block
 		  '           | BreakStmt
+		  '           | ExitStmt
 		  '           | ForStmt
 		  '           | IfStmt
 		  '           | QuitStmt
 		  '           | ReturnStmt
 		  '           | WhileStmt
 		  
-		  if Match(TokenType.LCURLY) then return new BlockStmt(Block())
-		  if Match(TokenType.BREAK_KEYWORD) then return BreakStatement()
-		  if Match(TokenType.IF_KEYWORD) then return IfStatement()
-		  if Match(TokenType.QUIT_KEYWORD) then return QuitStatement()
-		  if Match(TokenType.FOR_KEYWORD) then return ForStatement()
-		  if Match(TokenType.RETURN_KEYWORD) then return ReturnStatement()
-		  if Match(TokenType.WHILE_KEYWORD) then return WhileStatement()
+		  If Match(TokenType.LCURLY) Then Return New BlockStmt(Block())
+		  If Match(TokenType.BREAK_KEYWORD) Then Return BreakStatement()
+		  If Match(TokenType.EXIT_KEYWORD) Then Return ExitStatement()
+		  If Match(TokenType.IF_KEYWORD) Then Return IfStatement()
+		  If Match(TokenType.QUIT_KEYWORD) Then Return QuitStatement()
+		  If Match(TokenType.FOR_KEYWORD) Then Return ForStatement()
+		  If Match(TokenType.RETURN_KEYWORD) Then Return ReturnStatement()
+		  If Match(TokenType.WHILE_KEYWORD) Then Return WhileStatement()
 		  
-		  return ExpressionStatement()
+		  Return ExpressionStatement()
 		End Function
 	#tag EndMethod
 
@@ -924,19 +951,19 @@ Protected Class Parser
 		#tag Note
 			A pointer to the next token to parse.
 		#tag EndNote
-		Private current As Integer = 0
+		Private Current As Integer = 0
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		hasError As Boolean = False
+		HasError As Boolean = False
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private scanner As Scanner
+		Private Scanner As Scanner
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private tokens() As Token
+		Private Tokens() As Token
 	#tag EndProperty
 
 
@@ -975,7 +1002,7 @@ Protected Class Parser
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="hasError"
+			Name="HasError"
 			Group="Behavior"
 			InitialValue="False"
 			Type="Boolean"

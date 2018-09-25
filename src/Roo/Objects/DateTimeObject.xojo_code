@@ -1,7 +1,7 @@
 #tag Class
 Protected Class DateTimeObject
 Inherits RooClass
-Implements Roo.Dateable, Roo.Textable
+Implements Roo.Dateable,Roo.Textable
 	#tag Method, Flags = &h0
 		Sub Constructor(value As Xojo.Core.Date)
 		  ' Calling the overridden superclass constructor.

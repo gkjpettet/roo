@@ -728,6 +728,18 @@ Implements ExprVisitor,StmtVisitor
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function VisitExitStmt(stmt As Roo.Statements.ExitStmt) As Variant
+		  ' The interpreter is visiting an `exit` statement.
+		  
+		  #Pragma Unused stmt
+		  #Pragma BreakOnExceptions False
+		  
+		  Raise New ExitReturn
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function VisitExpressionStmt(stmt as Stmt) As Variant
 		  call Evaluate(stmt.expression)
 		  
@@ -968,10 +980,9 @@ Implements ExprVisitor,StmtVisitor
 		      
 		    End If
 		    
-		  Catch b As BreakReturn
+		  Catch e As ExitReturn
 		    
-		    #Pragma BreakOnExceptions False
-		    ' Break statement. Simply exit the if construct.
+		    ' `exit` statement. Simply exit the `if` construct.
 		    Return Self.Nothing
 		    
 		  End Try
@@ -1281,18 +1292,18 @@ Implements ExprVisitor,StmtVisitor
 
 	#tag Method, Flags = &h0
 		Function VisitWhileStmt(stmt as WhileStmt) As Variant
-		  try
+		  Try
 		    
-		    while IsTruthy(Evaluate(stmt.condition)) and not forceKill
-		      Execute(stmt.body)
-		    wend
+		    While IsTruthy(Evaluate(stmt.condition)) And Not forceKill
+		      Execute(stmt.Body)
+		    Wend
 		    
-		  catch b as BreakReturn
+		  Catch b As BreakReturn
 		    
-		    ' Break statement. Simply exit the while loop.
-		    return self.nothing
+		    ' `break` statement. Simply exit the while loop.
+		    Return Self.Nothing
 		    
-		  end try
+		  End Try
 		End Function
 	#tag EndMethod
 

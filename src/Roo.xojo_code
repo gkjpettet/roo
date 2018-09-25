@@ -361,6 +361,7 @@ Protected Module Roo
 		  EQUAL_EQUAL
 		  EOF
 		  ERROR
+		  EXIT_KEYWORD
 		  FOR_KEYWORD
 		  FUNCTION_KEYWORD
 		  GREATER

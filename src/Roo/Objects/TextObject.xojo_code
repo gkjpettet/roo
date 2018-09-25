@@ -1,7 +1,7 @@
 #tag Class
 Protected Class TextObject
 Inherits RooInstance
-Implements Roo.Dateable, Roo.Textable
+Implements Roo.Dateable,Roo.Textable
 	#tag Method, Flags = &h0
 		Sub Constructor(value as String)
 		  ' Calling the overridden superclass constructor.

@@ -8,14 +8,14 @@ Implements ExprVisitor,StmtVisitor
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(interpreter as Interpreter)
-		  self.interpreter = interpreter
-		  redim self.scopes(-1)
-		  currentFunction = FunctionType.None
-		  currentClass = ClassType.None
-		  loopLevel = 0
-		  IfLevel = 0
-		  hasError = False
+		Sub Constructor(interpreter As Interpreter)
+		  Self.Interpreter = interpreter
+		  Redim Self.Scopes(-1)
+		  Self.CurrentFunction = FunctionType.None
+		  Self.CurrentClass = ClassType.None
+		  Self.LoopLevel = 0
+		  Self.IfLevel = 0
+		  Self.HasError = False
 		End Sub
 	#tag EndMethod
 
@@ -207,11 +207,10 @@ Implements ExprVisitor,StmtVisitor
 		Function VisitBreakStmt(stmt As Roo.Statements.BreakStmt) As Variant
 		  #Pragma BreakOnExceptions False
 		  
-		  ' Make sure that `break` is only called from within a loop or an if construct. 
-		  ' It doesn't make sense otherwise.
-		  If loopLevel <= 0 And IfLevel <= 0 Then
+		  ' Make sure that `break` is only called from within a loop. It doesn't make sense otherwise.
+		  If loopLevel <= 0 Then
 		    hasError = True
-		    Raise New ResolverError(stmt.keyword, "Cannot break when not in a loop or `if` construct.")
+		    Raise New ResolverError(stmt.keyword, "Cannot break when not in a loop.")
 		  end if
 		  
 		  ' Resolve the optional break condition.
@@ -271,6 +270,19 @@ Implements ExprVisitor,StmtVisitor
 		  if stmt.superclass <> Nil then EndScope()
 		  
 		  currentClass = enclosingClass
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function VisitExitStmt(stmt As Roo.Statements.ExitStmt) As Variant
+		  #Pragma BreakOnExceptions False
+		  
+		  ' Make sure that `exit` is only called from within an `if` construct. It doesn't make sense otherwise.
+		  If IfLevel <= 0 Then
+		    HasError = True
+		    Raise New ResolverError(stmt.Keyword, "Cannot break when not in an `if` construct.")
+		  end if
+		  
 		End Function
 	#tag EndMethod
 
@@ -348,9 +360,9 @@ Implements ExprVisitor,StmtVisitor
 		Function VisitIfStmt(stmt as IfStmt) As Variant
 		  IfLevel = IfLevel + 1
 		  
-		  Resolve(stmt.condition)
-		  Resolve(stmt.thenBranch)
-		  if stmt.elseBranch <> Nil then Resolve(stmt.elseBranch)
+		  Resolve(stmt.Condition)
+		  Resolve(stmt.ThenBranch)
+		  If stmt.ElseBranch <> Nil Then Resolve(stmt.ElseBranch)
 		  
 		  IfLevel = IfLevel - 1
 		End Function
@@ -567,18 +579,22 @@ Implements ExprVisitor,StmtVisitor
 
 
 	#tag Property, Flags = &h21
-		Private currentClass As ClassType
+		Private CurrentClass As ClassType
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private currentFunction As FunctionType
+		Private CurrentFunction As FunctionType
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		hasError As Boolean = False
+		HasError As Boolean = False
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
+		#tag Note
+			If the resolver is not currently within an `if` construct then this is 0. 
+			For each `if` construct that is entered we increment.
+		#tag EndNote
 		Private IfLevel As Integer = 0
 	#tag EndProperty
 
@@ -586,14 +602,15 @@ Implements ExprVisitor,StmtVisitor
 		#tag Note
 			A reference to the interpreter that this resolver works for.
 		#tag EndNote
-		Private interpreter As Interpreter
+		Private Interpreter As Interpreter
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
 		#tag Note
-			If the resolver is not currently within a loop then this is 0. For each loop that is entered we increment.
+			If the resolver is not currently within a loop then this is 0. 
+			For each loop that is entered we increment.
 		#tag EndNote
-		Private loopLevel As Integer = 0
+		Private LoopLevel As Integer = 0
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
@@ -603,7 +620,7 @@ Implements ExprVisitor,StmtVisitor
 			String key = variable name.
 			Variant value = Boolean. True means the variable is finished being initialised.
 		#tag EndNote
-		Private scopes() As StringToVariantHashMapMBS
+		Private Scopes() As StringToVariantHashMapMBS
 	#tag EndProperty
 
 
@@ -657,7 +674,7 @@ Implements ExprVisitor,StmtVisitor
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="hasError"
+			Name="HasError"
 			Group="Behavior"
 			InitialValue="False"
 			Type="Boolean"

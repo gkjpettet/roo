@@ -1,14 +1,6 @@
 #tag Class
 Protected Class Scanner
 	#tag Method, Flags = &h21
-		Private Sub AddReservedWord(word as String)
-		  ' Convenience method for adding reserved words to our case-sensitive hash map.
-		  
-		  reserved.Value(word) = ""
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
 		Private Sub Advance()
 		  ' Consumes the current character in the source.
 		  
@@ -26,101 +18,37 @@ Protected Class Scanner
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(sourceFile as FolderItem, doNotRequire as Xojo.Core.Dictionary = Nil)
-		  ' Define the reserved words in the language.
-		  reserved = new StringToStringHashMapMBS(True)
+		Sub Constructor(sourceFile As FolderItem, doNotRequire As Xojo.Core.Dictionary = Nil)
+		  ' Create a scanner to tokenise this source code file.
 		  
-		  AddReservedWord("True")
-		  AddReservedWord("False")
-		  AddReservedWord("and")
-		  AddReservedWord("break")
-		  AddReservedWord("class")
-		  AddReservedWord("else")
-		  AddReservedWord("function")
-		  AddReservedWord("if")
-		  AddReservedWord("let")
-		  AddReservedWord("module")
-		  AddReservedWord("next")
-		  AddReservedWord("not")
-		  AddReservedWord("or")
-		  AddReservedWord("return")
-		  AddReservedWord("self")
-		  AddReservedWord("static")
-		  AddReservedWord("super")
-		  AddReservedWord("then")
-		  AddReservedWord("var")
-		  AddReservedWord("while")
+		  ' Generic setup.
+		  Initialise(doNotRequire)
 		  
-		  ' Are there any files that do not need re-requiring?
-		  if doNotRequire = Nil then
-		    self.doNotRequire = new Xojo.Core.Dictionary
-		  else
-		    self.doNotRequire = doNotRequire
-		  end if
-		  
-		  ' Initialise properties.
-		  self.current = 1
-		  self.start = 1
-		  self.line = 1
-		  
-		  dim ti as TextInputStream
-		  self.sourceFile = sourceFile
-		  if sourceFile <> Nil and sourceFile.Exists and sourceFile.IsReadable then 
+		  ' Get the contents of the file.
+		  Dim ti As TextInputStream
+		  Self.SourceFile = sourceFile
+		  If sourceFile <> Nil And sourceFile.Exists And sourceFile.IsReadable Then
 		    ti = TextInputStream.Open(sourceFile)
 		    ti.Encoding = Encodings.UTF8
-		    self.source = DefineEncoding(ti.ReadAll, Encodings.UTF8) ' Only UTF-8 is supported
+		    Self.Source = DefineEncoding(ti.ReadAll, Encodings.UTF8) ' Only UTF-8 is supported
 		    ti.Close
-		  end if
+		  End If
 		  
-		  self.source = StandardiseNewlines(self.source) ' Get rid of pesky Windows newlines
-		  self.sourceLength = self.source.Len ' Cache for performance
-		  redim self.tokens(-1)
+		  ' Assign the standardised content of the file to the source property.
+		  Self.Source = StandardiseNewlines(Self.Source) ' Get rid of pesky Windows newlines
+		  Self.SourceLength = Self.Source.Len ' Cache for performance
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(sourceToScan as String, doNotRequire as Xojo.Core.Dictionary = Nil)
-		  ' Define the reserved words in the language.
-		  reserved = new StringToStringHashMapMBS(True)
+		Sub Constructor(sourceToScan As String, doNotRequire As Xojo.Core.Dictionary = Nil)
+		  Initialise(doNotRequire)
 		  
-		  AddReservedWord("True")
-		  AddReservedWord("False")
-		  AddReservedWord("and")
-		  AddReservedWord("break")
-		  AddReservedWord("class")
-		  AddReservedWord("else")
-		  AddReservedWord("function")
-		  AddReservedWord("if")
-		  AddReservedWord("let")
-		  AddReservedWord("module")
-		  AddReservedWord("next")
-		  AddReservedWord("not")
-		  AddReservedWord("or")
-		  AddReservedWord("return")
-		  AddReservedWord("self")
-		  AddReservedWord("static")
-		  AddReservedWord("super")
-		  AddReservedWord("then")
-		  AddReservedWord("var")
-		  AddReservedWord("while")
-		  
-		  ' Are there any files that do not need re-requiring?
-		  if doNotRequire = Nil then
-		    self.doNotRequire = new Xojo.Core.Dictionary
-		  else
-		    self.doNotRequire = doNotRequire
-		  end if
-		  
-		  ' Initialise properties.
-		  self.current = 1
-		  self.start = 1
-		  self.line = 1
-		  self.source = DefineEncoding(sourceToScan, Encodings.UTF8) ' Only UTF-8 is supported
-		  self.source = StandardiseNewlines(self.source) ' Get rid of pesky Windows newlines
-		  self.sourceLength = self.source.Len ' Cache for performance
-		  redim self.tokens(-1)
-		  self.sourceFile = Nil
+		  Self.Source = DefineEncoding(sourceToScan, Encodings.UTF8) ' Only UTF-8 is supported
+		  Self.Source = StandardiseNewlines(Self.Source) ' Get rid of pesky Windows newlines
+		  Self.SourceLength = Self.Source.Len ' Cache for performance
+		  Self.SourceFile = Nil
 		  
 		End Sub
 	#tag EndMethod
@@ -188,6 +116,7 @@ Protected Class Scanner
 		  if StrComp(lexeme, "break", 0) = 0 then return TokenType.BREAK_KEYWORD
 		  if StrComp(lexeme, "class", 0) = 0 then return TokenType.CLASS_KEYWORD
 		  if StrComp(lexeme, "else", 0) = 0 then return TokenType.ELSE_KEYWORD
+		  if StrComp(lexeme, "exit", 0) = 0 then return TokenType.EXIT_KEYWORD
 		  if StrComp(lexeme, "for", 0) = 0 then return TokenType.FOR_KEYWORD
 		  if StrComp(lexeme, "function", 0) = 0 then return TokenType.FUNCTION_KEYWORD
 		  if StrComp(lexeme, "if", 0) = 0 then return TokenType.IF_KEYWORD
@@ -197,8 +126,8 @@ Protected Class Scanner
 		  if StrComp(lexeme, "quit", 0) = 0 then return TokenType.QUIT_KEYWORD
 		  if StrComp(lexeme, "require", 0) = 0 then return TokenType.REQUIRE_KEYWORD
 		  if StrComp(lexeme, "return", 0) = 0 then return TokenType.RETURN_KEYWORD
-		  if StrComp(lexeme, "static", 0) = 0 then return TokenType.STATIC_KEYWORD
 		  if StrComp(lexeme, "self", 0) = 0 then return TokenType.SELF_KEYWORD
+		  if StrComp(lexeme, "static", 0) = 0 then return TokenType.STATIC_KEYWORD
 		  if StrComp(lexeme, "super", 0) = 0 then return TokenType.SUPER_KEYWORD
 		  if StrComp(lexeme, "var", 0) = 0 then return TokenType.VAR
 		  if StrComp(lexeme, "while", 0) = 0 then return TokenType.WHILE_KEYWORD
@@ -206,6 +135,26 @@ Protected Class Scanner
 		  return TokenType.IDENTIFIER
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub Initialise(doNotRequire As Xojo.Core.Dictionary)
+		  ' Common setup tasks required by the scanner regardless of whether or not it is tokenising a 
+		  ' String or a file.
+		  
+		  ' Are there any files that do not need re-requiring?
+		  If doNotRequire = Nil Then
+		    Self.DoNotRequire = New Xojo.Core.Dictionary
+		  Else
+		    Self.DoNotRequire = doNotRequire
+		  End If
+		  
+		  ' Initialise properties.
+		  Self.Current = 1
+		  Self.Start = 1
+		  Self.Line = 1
+		  Redim Self.Tokens(-1)
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
@@ -250,6 +199,7 @@ Protected Class Scanner
 		  ' Identifier
 		  ' Literal (boolean, nothing, number, text, regex)
 		  ' break
+		  ' exit
 		  ' quit
 		  ' return
 		  ' )
@@ -259,8 +209,8 @@ Protected Class Scanner
 		  
 		  Select Case Tokens(Tokens.Ubound).type
 		  Case TokenType.IDENTIFIER, TokenType.BOOLEAN, TokenType.NOTHING, TokenType.NUMBER, _
-		    TokenType.TEXT, TokenType.REGEX, TokenType.BREAK_KEYWORD, TokenType.QUIT_KEYWORD, _
-		    TokenType.RETURN_KEYWORD, TokenType.RPAREN, TokenType.RSQUARE
+		    TokenType.TEXT, TokenType.REGEX, TokenType.BREAK_KEYWORD, TokenType.EXIT_KEYWORD, _
+		    TokenType.QUIT_KEYWORD, TokenType.RETURN_KEYWORD, TokenType.RPAREN, TokenType.RSQUARE
 		    Tokens.Append(MakeToken(TokenType.SEMICOLON))
 		  End Select
 		  
@@ -676,8 +626,9 @@ Protected Class Scanner
 		        Advance
 		      Wend
 		      If Peek = &u0A Then
-		        Advance ' Consume the newline at the end of the comment.
 		        line = line + 1 ' Remember to increment the line number.
+		        MagicSemicolon
+		        Advance ' Consume the newline at the end of the comment.
 		      End If
 		      
 		    Else
@@ -738,18 +689,18 @@ Protected Class Scanner
 			The current position in the source string.
 			NB: The first character is 1
 		#tag EndNote
-		current As Integer = 1
+		Current As Integer = 1
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
 		#tag Note
+			Stores files that do not need to be required again as they have previously been required 
+			already by the script.
 			
-			script.
 			Key = Native path of the file
 			Value = True
-			Stores files that do not need to be required again as they have previously been required already by the
 		#tag EndNote
-		Private doNotRequire As Xojo.Core.Dictionary
+		Private DoNotRequire As Xojo.Core.Dictionary
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -757,15 +708,11 @@ Protected Class Scanner
 			The current line of source code that the scanner is tokenising.
 			NB: The first line is 1
 		#tag EndNote
-		line As Integer = 1
+		Line As Integer = 1
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		reserved As StringToStringHashMapMBS
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		source As String
+		Source As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -773,11 +720,11 @@ Protected Class Scanner
 			If the scanner is parsing source from a file then this FolderItem keeps a reference to that file.
 			Used to report the file that a token or error occurs within.
 		#tag EndNote
-		sourceFile As FolderItem
+		SourceFile As FolderItem
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private sourceLength As Integer
+		Private SourceLength As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -785,7 +732,7 @@ Protected Class Scanner
 			The start position of the current token in the source string.
 			NB: The first character in the source string is 1
 		#tag EndNote
-		start As Integer = 1
+		Start As Integer = 1
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -834,25 +781,25 @@ Protected Class Scanner
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="current"
+			Name="Current"
 			Group="Behavior"
 			InitialValue="1"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="line"
+			Name="Line"
 			Group="Behavior"
 			InitialValue="1"
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="source"
+			Name="Source"
 			Group="Behavior"
 			Type="String"
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="start"
+			Name="Start"
 			Group="Behavior"
 			InitialValue="1"
 			Type="Integer"
