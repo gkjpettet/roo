@@ -35,9 +35,11 @@ Implements Roo.Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor()
+		Sub Constructor(interpreter As Roo.Interpreter)
 		  ' Calling the overridden superclass constructor.
 		  Super.Constructor(Nil)
+		  
+		  Self.Interpreter = interpreter
 		  
 		  Self.HTTP = New Xojo.Net.HTTPSocket
 		  AddHandler Self.HTTP.PageReceived, AddressOf PageReceived
@@ -58,7 +60,8 @@ Implements Roo.Textable
 		  ' Request.send as Response
 		  
 		  ' Is networking enabled?
-		  If Not Roo.NetworkingEnabled Then
+		  If Not Self.Interpreter.NetworkingEnabled Then
+		    Self.Interpreter.NetworkAccessAttemptMade(Self.URL, False)
 		    Raise New RuntimeError(where, "Unable to send request as networking has been disabled.")
 		  End If
 		  
@@ -87,6 +90,9 @@ Implements Roo.Textable
 		    ' Self.Timeout milliseconds (in case a response is never received).
 		    App.DoEvents
 		  Loop
+		  
+		  ' Fire the interpreter's NetworkAccessed event.
+		  Self.Interpreter.NetworkAccessAttemptMade(Self.URL, True)
 		  
 		  ' Return the Response object created by the PageReceived method.
 		  Return MyResponse
@@ -633,6 +639,10 @@ Implements Roo.Textable
 
 	#tag Property, Flags = &h0
 		IfModifiedSince As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Interpreter As Roo.Interpreter
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

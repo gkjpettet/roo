@@ -16,10 +16,15 @@ Implements Roo.Invokable,Roo.Textable
 		  ' HTTP.delete(url as Text) as Request
 		  ' HTTP.delete(url as Text, timeout as Integer) as Request
 		  
-		  #Pragma Unused interpreter
-		  
 		  ' Is networking enabled?
-		  If Not Roo.NetworkingEnabled Then
+		  If Not interpreter.NetworkingEnabled Then
+		    Try
+		      ' Fire the interpreter's NetworkAccessed event.
+		      interpreter.NetworkAccessAttemptMade(Textable(arguments(0)).ToText(interpreter), False)
+		    Catch
+		      ' Unable to get the URL as a String.
+		      interpreter.NetworkAccessAttemptMade("", False)
+		    End Try
 		    Raise New RuntimeError(where, "Unable to send request as networking has been disabled.")
 		  End If
 		  
@@ -54,7 +59,7 @@ Implements Roo.Invokable,Roo.Textable
 		  End If
 		  
 		  ' Create a basic Request object to do the DELETE.
-		  Dim r As New Roo.Objects.RequestObject
+		  Dim r As New Roo.Objects.RequestObject(interpreter)
 		  r.URL = url
 		  r.Method = "DELETE"
 		  r.Timeout = If(timeout = -1, r.Timeout, timeout)

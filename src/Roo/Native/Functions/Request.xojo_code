@@ -18,7 +18,7 @@ Implements Roo.Invokable,Roo.Textable
 		  #Pragma Unused where
 		  
 		  ' Create the new RequestObject and return it.
-		  Return New Roo.Objects.RequestObject
+		  Return New Roo.Objects.RequestObject(interpreter)
 		  
 		  
 		End Function

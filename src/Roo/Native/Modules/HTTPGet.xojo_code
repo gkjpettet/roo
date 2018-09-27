@@ -12,14 +12,19 @@ Implements Roo.Invokable,Roo.Textable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Invoke(interpreter As Interpreter, arguments() As Variant, where As Roo.Token) As Variant
+		Function Invoke(interpreter As Roo.Interpreter, arguments() As Variant, where As Roo.Token) As Variant
 		  ' HTTP.get(url as Text) as Request
 		  ' HTTP.get(url as Text, timeout as Integer) as Request
 		  
-		  #Pragma Unused interpreter
-		  
 		  ' Is networking enabled?
-		  If Not Roo.NetworkingEnabled Then
+		  If Not interpreter.NetworkingEnabled Then
+		    Try
+		      ' Fire the interpreter's NetworkAccessed event.
+		      interpreter.NetworkAccessAttemptMade(Textable(arguments(0)).ToText(interpreter), False)
+		    Catch
+		      ' Unable to get the URL as a String.
+		      interpreter.NetworkAccessAttemptMade("", False)
+		    End Try
 		    Raise New RuntimeError(where, "Unable to send request as networking has been disabled.")
 		  End If
 		  
@@ -54,7 +59,7 @@ Implements Roo.Invokable,Roo.Textable
 		  End If
 		  
 		  ' Create a basic Request object to do the GET.
-		  Dim r As New Roo.Objects.RequestObject
+		  Dim r As New Roo.Objects.RequestObject(interpreter)
 		  r.URL = url
 		  r.Method = "GET"
 		  r.Timeout = If(timeout = -1, r.Timeout, timeout)

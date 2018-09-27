@@ -207,6 +207,14 @@ Implements ExprVisitor,StmtVisitor
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub NetworkAccessAttemptMade(url As String, granted As Boolean)
+		  ' An attempt at accessing the network was made by the script. Raise this as an event.
+		  
+		  NetworkAccessed(url, granted)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Reset()
 		  ' Reset the interpreter.
 		  
@@ -1314,6 +1322,10 @@ Implements ExprVisitor,StmtVisitor
 	#tag EndHook
 
 	#tag Hook, Flags = &h0
+		Event NetworkAccessed(url As String, granted As Boolean)
+	#tag EndHook
+
+	#tag Hook, Flags = &h0
 		Event Print(what as String)
 	#tag EndHook
 
@@ -1324,6 +1336,17 @@ Implements ExprVisitor,StmtVisitor
 		- Invokable
 		- Textable
 		You should then add it to the interpreter within the Interpreter.SetupNativeFunctions() method.
+		
+	#tag EndNote
+
+	#tag Note, Name = Network access
+		The `NetworkingEnabled` Boolean on the Interpreter controls whether or not a script can 
+		access the network. If `True` then the request goes through as normal. If `False` then a 
+		RuntimeError is raised.
+		
+		Everytime a network access is made (regardless of whether or not networking is enabled), the 
+		`NetworkAccessed` event is fired, being passed the URL that was accessed. This event is 
+		fired BEFORE the request is either sent or the runtime error raised.
 		
 	#tag EndNote
 
@@ -1362,6 +1385,10 @@ Implements ExprVisitor,StmtVisitor
 			Value = Integer (depth)
 		#tag EndNote
 		Private Locals As VariantToVariantHashMapMBS
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		NetworkingEnabled As Boolean = True
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -1411,6 +1438,12 @@ Implements ExprVisitor,StmtVisitor
 			Name="ForceKill"
 			Group="Behavior"
 			InitialValue="False"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="NetworkingEnabled"
+			Group="Behavior"
+			InitialValue="True"
 			Type="Boolean"
 		#tag EndViewProperty
 	#tag EndViewBehavior
