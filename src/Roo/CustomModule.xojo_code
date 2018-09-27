@@ -17,6 +17,23 @@ Inherits RooModule
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function HashOrValue(hash As Roo.Objects.HashObject, indexOrKey As Variant) As Variant
+		  ' The script is trying to access a Hash property on this custom module. 
+		  ' If indexOrKey is Nil then the script is requesting the Hash object itself.
+		  ' If indexOrKey <> Nil then the script is trying to access a the value associated 
+		  ' with a key.
+		  
+		  If indexOrKey <> Nil Then
+		    ' Retrieve a value from the specified key of the passed Hash object.
+		    Return hash.GetValue(indexOrKey)
+		  Else
+		    ' Just return the Hash object itself.
+		    Return hash
+		  End If
+		End Function
+	#tag EndMethod
+
 
 	#tag ViewBehavior
 		#tag ViewProperty
