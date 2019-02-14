@@ -1,3 +1,7 @@
+# This script asks for a decimal number and prints out its binary 
+# representation. The script will always return a multiple of 
+# 8 characters (i.e: bytes).
+
 def dec_to_binary(n):
 	if n == 0: return "00000000"	
 
@@ -15,6 +19,5 @@ def dec_to_binary(n):
 	var width = (result.length/8).ceil * 8
 	return result.lpad(width, "0")
 
-
 var n = input("Enter a base 10 number")
-print("The binary equivalent is: " + dec_to_binary(n))
+print("The binary equivalent of " + n + " is " + dec_to_binary(n))
