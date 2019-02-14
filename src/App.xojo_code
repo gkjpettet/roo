@@ -22,7 +22,7 @@ Inherits ConsoleApplication
 		  End If
 		  
 		  // Should we allow network access?
-		  EnableNetworking = Options.BooleanValue("network", True)
+		  DisableNetworking = Options.BooleanValue("network", False)
 		  
 		  // REPL or script execution?
 		  If Options.Extra.Ubound < 0 Then
@@ -46,7 +46,9 @@ Inherits ConsoleApplication
 		  
 		  // The `n` and `network` command line flags determine if script networking 
 		  // should be enabled or not.
-		  Return EnableNetworking
+		  // Return True to permit the interpreter to access the network, False to 
+		  // deny it.
+		  Return Not DisableNetworking
 		  
 		End Function
 	#tag EndMethod
@@ -163,7 +165,7 @@ Inherits ConsoleApplication
 		  Options = New OptionParser(kAppName, kAppDescription)
 		  
 		  Options.AddOption New Option("v", "version", "Get the version number of the Roo interpreter", Option.OptionType.Boolean)
-		  Options.AddOption New Option("n", "network", "Enable network access", Option.OptionType.Boolean)
+		  Options.AddOption New Option("n", "network", "Disable network access", Option.OptionType.Boolean)
 		  
 		  Try
 		    Options.Parse(args)
@@ -309,7 +311,7 @@ Inherits ConsoleApplication
 
 
 	#tag Property, Flags = &h21
-		Private EnableNetworking As Boolean
+		Private DisableNetworking As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
@@ -335,7 +337,7 @@ Inherits ConsoleApplication
 	#tag Constant, Name = kAppName, Type = String, Dynamic = False, Default = \"Roo", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = kRunCount, Type = String, Dynamic = False, Default = \"9", Scope = Public
+	#tag Constant, Name = kRunCount, Type = String, Dynamic = False, Default = \"17", Scope = Public
 	#tag EndConstant
 
 
