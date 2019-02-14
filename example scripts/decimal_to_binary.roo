@@ -1,0 +1,20 @@
+def dec_to_binary(n):
+	if n == 0: return "00000000"	
+
+	var a
+	var result = ""
+
+	while n > 0:
+		a = n % 2
+		result = result + a
+		n = (n / 2).floor
+
+	result.reverse!
+
+	# Make sure we return a multiple of 8 digits.
+	var width = (result.length/8).ceil * 8
+	return result.lpad(width, "0")
+
+
+var n = input("Enter a base 10 number")
+print("The binary equivalent is: " + dec_to_binary(n))

@@ -1,3 +1,5 @@
+# Prints out the first 15 numbers in the Fibonacci sequence.
+
 def fibonacci(n):
 	if n < 2: return n
 	return fibonacci(n - 1) + fibonacci(n - 2)
@@ -5,6 +7,7 @@ def fibonacci(n):
 var start = Roo.clock
 
 print("Here are the first 15 fibonacci numbers:")
+
 for (var i = 0; i < 15; i = i + 1):
 	print(fibonacci(i))
 
