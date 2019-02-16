@@ -17,8 +17,15 @@
 # 6200000000000005	UnionPay
 
 class CreditCard:
+	def char_to_digit(char):
+		return char.to_number
+
 	def init(cardNumber):
-		self.cardNumber = cardNumber
+		# We store the card number as a Text object. This is 
+		# due to the fact that card numbers are integers that may be > 17 
+		# digits in length. This exceeds the maximum storage size for a 
+		# number object in Roo.
+		self.cardNumber = cardNumber.to_text
 
 	def company:
 		var comp
@@ -47,17 +54,16 @@ class CreditCard:
 		return comp
 
 	def valid?:	
-		# Must be an integer.
-		if not self.cardNumber.integer?: return False
+		# Convert the card number text object to an array of digits.
+		var digits = self.cardNumber.each_char(self.char_to_digit)
+
 		# Check that the number is of a valid length.
-		var cardLength = self.cardNumber.to_text.length
-		if cardLength < 13 or cardLength > 19: return False
-		
+		if digits.length < 13 or digits.length > 19: return False
+
 		# Double the value of alternate digits beginning with the 
 		# second digit from the right (the first right-hand digit 
 		# is the check digit).
 		var sum = 0
-		var digits = self.cardNumber.digits
 		var length = digits.length
 		for (var i = 0; i < length; i += 1):
 			# Get digits in reverse order.
@@ -68,10 +74,16 @@ class CreditCard:
 			sum += digit > 9 ? digit - 9 : digit
 		return (sum % 10) == 0
 
+# Ask for a card number from the user. Get it as text.
+var cardNumber = input("Enter a card number")
 
-var cardNumber = input_value("Enter a card number")
-assert(cardNumber.number?, "You must enter a number")
+# Make sure that the user entered a value.
+assert(not cardNumber.nothing?, "You must enter a number")
+
+# Create a new card instance with this card number.
 var card = CreditCard(cardNumber)
+
+# Validate the card number and print the result.
 if card.valid?:
 	print("Valid " + card.company + " card")
 else:
