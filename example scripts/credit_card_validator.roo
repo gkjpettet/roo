@@ -1,3 +1,21 @@
+# This script asks for a card number and returns whether or not it is 
+# valid (using the Luhn algorithm) and the type of card it is.
+# Example card numbers (test cards provided by Stripe):
+# 4242424242424242	Visa
+# 4000056655665556	Visa (debit)
+# 5555555555554444	Mastercard
+# 2223003122003222	Mastercard (2-series)
+# 5200828282828210	Mastercard (debit)
+# 5105105105105100	Mastercard (prepaid)
+# 378282246310005	American Express
+# 371449635398431	American Express
+# 6011111111111117	Discover
+# 6011000990139424	Discover
+# 30569309025904	Diners Club
+# 38520000023237	Diners Club
+# 3566002020360505	JCB
+# 6200000000000005	UnionPay
+
 class CreditCard:
 	def init(cardNumber):
 		self.cardNumber = cardNumber
@@ -9,7 +27,7 @@ class CreditCard:
 			comp = "Visa"
 		or c.starts_with?([50, 67, 58, 63]):
 			comp = "Maestro"
-		or c.starts_with?(5):
+		or c.starts_with?([2, 5]):
 			comp = "MasterCard"
 		or c.starts_with?(37):
 			comp = "American Express"
@@ -21,24 +39,40 @@ class CreditCard:
 			comp = "JCB"
 		or c.starts_with?(7):
 			comp = "Gasoline"
+		or c.starts_with?([30, 38]):
+			comp = "Diners Club"
 		else:
 			comp = "Unknown"
 
-		return "Company: " + comp
+		return comp
 
-	def valid?:
-		# Credit: https://support.symantec.com/en_US/article.TECH221769.html
-		var cardLength = self.cardNumber.to_text.length
-		
+	def valid?:	
+		# Must be an integer.
+		if not self.cardNumber.integer?: return False
 		# Check that the number is of a valid length.
+		var cardLength = self.cardNumber.to_text.length
 		if cardLength < 13 or cardLength > 19: return False
 		
 		# Double the value of alternate digits beginning with the 
 		# second digit from the right (the first right-hand digit 
 		# is the check digit).
-		
+		var sum = 0
+		var digits = self.cardNumber.digits
+		var length = digits.length
+		for (var i = 0; i < length; i += 1):
+			# Get digits in reverse order.
+			var digit = digits[length - i - 1]
+			# Every second number multiply with 2.
+			if (i % 2 == 1):
+				digit *= 2
+			sum += digit > 9 ? digit - 9 : digit
+		return (sum % 10) == 0
 
 
-
-var card = CreditCard(4000056655665556) # Visa debit card.
-print(card.valid?)
+var cardNumber = input_value("Enter a card number")
+assert(cardNumber.number?, "You must enter a number")
+var card = CreditCard(cardNumber)
+if card.valid?:
+	print("Valid " + card.company + " card")
+else:
+	print("Invalid card number")
