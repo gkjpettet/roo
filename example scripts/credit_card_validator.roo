@@ -1,0 +1,44 @@
+class CreditCard:
+	def init(cardNumber):
+		self.cardNumber = cardNumber
+
+	def company:
+		var comp
+		var c = self.cardNumber.to_text
+		if c.starts_with?(4):
+			comp = "Visa"
+		or c.starts_with?([50, 67, 58, 63]):
+			comp = "Maestro"
+		or c.starts_with?(5):
+			comp = "MasterCard"
+		or c.starts_with?(37):
+			comp = "American Express"
+		or c.starts_with?(62):
+			comp = "Unionpay"
+		or c.starts_with?(6):
+			comp = "Discover"
+		or c.starts_with?(35):
+			comp = "JCB"
+		or c.starts_with?(7):
+			comp = "Gasoline"
+		else:
+			comp = "Unknown"
+
+		return "Company: " + comp
+
+	def valid?:
+		# Credit: https://support.symantec.com/en_US/article.TECH221769.html
+		var cardLength = self.cardNumber.to_text.length
+		
+		# Check that the number is of a valid length.
+		if cardLength < 13 or cardLength > 19: return False
+		
+		# Double the value of alternate digits beginning with the 
+		# second digit from the right (the first right-hand digit 
+		# is the check digit).
+		
+
+
+
+var card = CreditCard(4000056655665556) # Visa debit card.
+print(card.valid?)

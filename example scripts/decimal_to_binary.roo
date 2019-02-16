@@ -13,7 +13,7 @@ def dec_to_binary(n):
 		result = result + a
 		n = (n / 2).floor
 
-	result.reverse!
+	result.reverse
 
 	# Make sure we return a multiple of 8 digits.
 	var width = (result.length/8).ceil * 8
