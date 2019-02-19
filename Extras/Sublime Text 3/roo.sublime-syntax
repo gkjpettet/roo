@@ -18,7 +18,8 @@ contexts:
     - include: keywords
     - include: numbers
     - include: strings
-    - include: invokable
+    - include: ucase_invokable
+    - include: lcase_invokable
     - include: ucase_identifiers
     - include: lcase_identifiers
 
@@ -32,7 +33,7 @@ contexts:
       scope: keyword.control.roo
 
   numbers:
-    - match: '\b(0[xX]\h(_?\h)*|\d(_?\d)*(\.(?![^[:space:][:digit:]])(_?\d)*)?([eE][-+]?\d(_?\d)*)?|0[bB][01]+|0[oO][01234567]+)\b'
+    - match: '\b(([0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)|0[xX][0-9a-zA-Z]+|0[bB][01]+|0[oO][01234567]+)\b'
       scope: constant.numeric.roo
 
   strings:
@@ -67,12 +68,16 @@ contexts:
         - match: $\n?
           pop: true
 
-  invokable:
-    - match: '[A-Za-z_][A-Za-z_0-9]*[!?]?(?=\()'
-      scope: entity.name.invokable.roo
+  ucase_invokable:
+    - match: '[A-Z][A-Za-z_0-9]*[!?]?(?=\()'
+      scope: entity.name.invokable.ucase.roo
+
+  lcase_invokable:
+    - match: '[a-z_][A-Za-z_0-9]*[!?]?(?=\()'
+      scope: entity.name.invokable.lcase.roo
 
   ucase_identifiers:
-    - match: '[A-Z_][A-Za-z_0-9]*'
+    - match: '[A-Z][A-Za-z_0-9]*'
       scope: entity.name.ucase.roo
 
   lcase_identifiers:

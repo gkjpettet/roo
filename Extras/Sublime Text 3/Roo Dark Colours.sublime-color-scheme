@@ -6,9 +6,10 @@
 		"keyword": "#fc5fa3",
 		"number": "#9686f5",
 		"string": "#fc6a5d",
-		"invokable": "#99e8d5",
+		"lcase_invokable": "#99e8d5",
+		"ucase_invokable": "#91d462",
 		"ucase_identifier": "#91d462",
-		"lcase_identifier": "",
+		"lcase_identifier": "#ffffff",
 	},
 	"globals": {
 		"foreground": "#ffffff",
@@ -40,9 +41,13 @@
 			"font_style": "italic"
 		},
 		{
-			"scope": "entity.name.invokable.roo",
-			"foreground": "var(invokable)"
+			"scope": "entity.name.invokable.lcase.roo",
+			"foreground": "var(lcase_invokable)"
 		},
+		{
+			"scope": "entity.name.invokable.ucase.roo",
+			"foreground": "var(ucase_invokable)"
+		},		
 		{
 			"scope": "entity.name.ucase.roo",
 			"foreground": "var(ucase_identifier)"
