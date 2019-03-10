@@ -2,7 +2,7 @@
 The reference command line interpreter for the Roo programming language
 
 ## The Roo programming language
-Roo is a cross-platform dynamically-typed interpreted open source scripting language which takes inspiration from Ruby (everything is an object) and Javascript. It supports both object-oriented and functional programming approaches and includes closures. The reference interpreter is `roo` which is written in [Xojo][xojo].
+Roo is a cross-platform dynamically-typed interpreted open source scripting language which takes inspiration from Ruby (everything is an object) and Python (indentation is important). It supports both object-oriented and functional programming approaches. The reference interpreter is `roo` which is written in [Xojo][xojo].
 
 Full documentation is available on [the Roo homepage][homepage].
 
@@ -67,11 +67,9 @@ XojoConsoleFramework64.dll
 I use a Mac and if I wasn't using Homebrew I would place `roo` and `roo Libs/` in `/usr/local/bin`. You can grab the required files from the [releases page][releases].
 
 ### 3. Build the intepreter from source
-**Note: Requires a Xojo license and MBS plugin license**
+**Note: Requires a Xojo license**
 
-Simply clone this repo and build the app from within the Xojo IDE for your platform of choice. Remember to place the `roo` executable in your PATH (and make sure the dependency folder/files are in the same place).
-
-In order to improve the performance of Roo I have had to use several classes within MonkeyBread Software's excellent [Xojo plugin][mbs plugin]. Specifically the Regex and Hash classes. To successfully compile Roo with Xojo you'll need to purchase a license for this plugin. Then you need to create a module named `RegisterPlugins` containing a single method: `MBS() as Boolean`. This method should perform the plugin registration (included in your purchase of the plugin) and return `True` if it worked or `False` otherwise.
+Simply clone this repo and build the app from within the Xojo IDE for your platform of choice. Remember to place the `roo` executable in your PATH (and make sure the dependency folder/files are in the same place). The interpreter is written entirely in native Xojo code and no external plugins are required.
 
 Once the `roo` interpreter is installed, you can start a REPL session by typing `roo` in the Terminal. This will give you a prompt and allow you to enter Roo code line by line and have it interpreted as you enter it. Good for playing around. It's worth noting that you don't have to terminate statements with semicolons a REPL session. To run a script, simply type `roo [script.roo]` where `script.roo` is the full path to the script to run.
 
@@ -81,6 +79,5 @@ To quit a REPL session type `CTRL-C` or `CTRL-D` or `CTRL-X` (depending on your 
 
 [homebrew]: https://brew.sh
 [homepage]: https://roolang.org
-[mbs plugin]: https://www.monkeybreadsoftware.de/xojo/plugins.shtml
 [scoop]: https://scoop.sh
 [xojo]: https://xojo.com
