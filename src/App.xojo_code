@@ -212,7 +212,7 @@ Inherits ConsoleApplication
 
 	#tag Method, Flags = &h21
 		Private Sub PrintVersion()
-		  Print "Roo " + RooVersion + " (" + App.BuildDate.AbbreviatedDate + _
+		  Print RooVersion + " (" + App.BuildDate.AbbreviatedDate + _
 		  ", revision " + Str(App.kRunCount) + ")"
 		End Sub
 	#tag EndMethod
@@ -333,7 +333,7 @@ Inherits ConsoleApplication
 	#tag Constant, Name = kAppName, Type = String, Dynamic = False, Default = \"Roo", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = kRunCount, Type = String, Dynamic = False, Default = \"32", Scope = Public
+	#tag Constant, Name = kRunCount, Type = String, Dynamic = False, Default = \"37", Scope = Public
 	#tag EndConstant
 
 
