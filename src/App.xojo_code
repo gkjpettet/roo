@@ -221,8 +221,8 @@ Inherits ConsoleApplication
 		Private Sub Prompt()
 		  // Interactive (REPL) mode.
 		  
-		  REPL = True
 		  Interpreter.Reset
+		  Interpreter.REPL = True
 		  
 		  Do
 		    Stdout.Write(">>> ")
@@ -323,10 +323,6 @@ Inherits ConsoleApplication
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private REPL As Boolean = False
-	#tag EndProperty
-
-	#tag Property, Flags = &h21
 		Private REPLInput As String
 	#tag EndProperty
 
@@ -337,7 +333,7 @@ Inherits ConsoleApplication
 	#tag Constant, Name = kAppName, Type = String, Dynamic = False, Default = \"Roo", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = kRunCount, Type = String, Dynamic = False, Default = \"25", Scope = Public
+	#tag Constant, Name = kRunCount, Type = String, Dynamic = False, Default = \"32", Scope = Public
 	#tag EndConstant
 
 

@@ -34,11 +34,12 @@ Rainbow.extend('roo', [
 
     {
         name: 'keyword',
-        pattern: /\b(and|break|class|def|else|exit|for|if|module|not|or|pass|quit|require|return|self|static|super|var|while)\b/g
+        pattern: /\b(False|True|and|break|class|def|else|exit|for|if|module|not|or|pass|quit|require|return|self|static|super|var|while)\b/g
     },
     {
         name: 'string',
-        pattern: /".*"|'.*'/g
+        //pattern: /".*?"|'.*?'/gm
+        pattern: /"(?:.|\s)*?[^\\]"|'(?:.|\s)*?[^\\]'/gm
     },
 
     // Invokable entities (followed by brackets)
