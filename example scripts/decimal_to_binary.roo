@@ -19,5 +19,5 @@ def dec_to_binary(n):
 	var width = (result.length/8).ceil * 8
 	return result.lpad(width, "0")
 
-var n = input("Enter a base 10 number")
+var n = input_value("Enter a base 10 number")
 print("The binary equivalent of " + n + " is " + dec_to_binary(n))

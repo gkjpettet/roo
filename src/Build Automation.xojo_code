@@ -27,7 +27,7 @@
 					platform = "linuxARM"
 					//platform = "linuxX86"
 					
-					// Use my custom publisher tool to zip the components, name them 
+					// Use my custom publisher tool to zip the components, name them
 					// correctly and determine thezip file's hash.
 					result = DoShellCommand("/usr/local/bin/publisher/publisher -n " + name + " -m " + major + " -x " + _
 					minor + " -b " + bug + " -r " + revision + " -p " + platform + " -s " + source + " -d " + destination + " --colour-off")
@@ -61,7 +61,7 @@
 					Dim result As String
 					Dim platform As String = "macos"
 					
-					// Use my custom publisher tool to zip the components, name them 
+					// Use my custom publisher tool to zip the components, name them
 					// correctly and determine thezip file's hash.
 					result = DoShellCommand("/usr/local/bin/publisher/publisher -n " + name + " -m " + major + " -x " + _
 					minor + " -b " + bug + " -r " + revision + " -p " + platform + " -s " + source + " -d " + destination + " --colour-off")
@@ -95,7 +95,7 @@
 					Dim result As String
 					Dim platform As String = "win64"
 					
-					// Use my custom publisher tool to zip the components, name them 
+					// Use my custom publisher tool to zip the components, name them
 					// correctly and determine thezip file's hash.
 					result = DoShellCommand("/usr/local/bin/publisher/publisher -n " + name + " -m " + major + " -x " + _
 					minor + " -b " + bug + " -r " + revision + " -p " + platform + " -s " + source + " -d " + destination + " --colour-off")
