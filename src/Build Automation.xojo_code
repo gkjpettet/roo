@@ -1,56 +1,41 @@
 #tag BuildAutomation
 			Begin BuildStepList Linux
-				Begin BuildProjectStep Build
+				Begin IDEScriptBuildStep PreBuildLinux , AppliesTo = 0
+					// Automatically increment the debug run count so we know how 
+					// many times the project has been debugged.
+					Dim value As String = ConstantValue("App.kRunCount")
+					Dim count As Integer = Val(value)
+					count = count + 1
+					ConstantValue("App.kRunCount") = Str(count)
+					
 				End
-				Begin IDEScriptBuildStep PostBuildLinux , AppliesTo = 2
-					dim name as String = "roo"
-					dim major as String = PropertyValue("App.MajorVersion")
-					dim minor as String = PropertyValue("App.MinorVersion")
-					dim bug as String = PropertyValue("App.BugVersion")
-					dim source as String = CurrentBuildLocation()
-					dim destination as String = "/Users/garry/Desktop"
-					dim result as String
-					
-					result = DoShellCommand("/usr/local/bin/publisher -n " + name + " -m " + major + " -x " + minor + " -b " + bug + _
-					" -p linux" + " -s " + source + " -d " + destination + " --colour-off")
-					
-					Print(result)
+				Begin BuildProjectStep Build
 				End
 			End
 			Begin BuildStepList Mac OS X
-				Begin BuildProjectStep Build
+				Begin IDEScriptBuildStep PreBuildMac , AppliesTo = 0
+					// Automatically increment the debug run count so we know how 
+					// many times the project has been debugged.
+					Dim value As String = ConstantValue("App.kRunCount")
+					Dim count As Integer = Val(value)
+					count = count + 1
+					ConstantValue("App.kRunCount") = Str(count)
+					
 				End
-				Begin IDEScriptBuildStep PostBuildMac , AppliesTo = 2
-					dim name as String = "roo"
-					dim major as String = PropertyValue("App.MajorVersion")
-					dim minor as String = PropertyValue("App.MinorVersion")
-					dim bug as String = PropertyValue("App.BugVersion")
-					dim source as String = CurrentBuildLocation()
-					dim destination as String = "/Users/garry/Desktop"
-					dim result as String
-					
-					result = DoShellCommand("/usr/local/bin/publisher -n " + name + " -m " + major + " -x " + minor + " -b " + bug + _
-					" -p macos" + " -s " + source + " -d " + destination + " --colour-off")
-					
-					Print(result)
+				Begin BuildProjectStep Build
 				End
 			End
 			Begin BuildStepList Windows
-				Begin BuildProjectStep Build
+				Begin IDEScriptBuildStep PreBuildWin , AppliesTo = 0
+					// Automatically increment the debug run count so we know how 
+					// many times the project has been debugged.
+					Dim value As String = ConstantValue("App.kRunCount")
+					Dim count As Integer = Val(value)
+					count = count + 1
+					ConstantValue("App.kRunCount") = Str(count)
+					
 				End
-				Begin IDEScriptBuildStep PostBuildWin , AppliesTo = 2
-					dim name as String = "roo"
-					dim major as String = PropertyValue("App.MajorVersion")
-					dim minor as String = PropertyValue("App.MinorVersion")
-					dim bug as String = PropertyValue("App.BugVersion")
-					dim source as String = CurrentBuildLocation()
-					dim destination as String = "/Users/garry/Desktop"
-					dim result as String
-					
-					result = DoShellCommand("/usr/local/bin/publisher -n " + name + " -m " + major + " -x " + minor + " -b " + bug + _
-					" -p win64" + " -s " + source + " -d " + destination + " --colour-off")
-					
-					Print(result)
+				Begin BuildProjectStep Build
 				End
 			End
 #tag EndBuildAutomation

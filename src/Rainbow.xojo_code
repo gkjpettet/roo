@@ -166,15 +166,15 @@ Protected Module Rainbow
 
 
 	#tag Enum, Name = Colour, Type = Integer, Flags = &h0
-		black
-		  blue
-		  cyan
-		  green
-		  magenta
-		  red
-		  white
-		  yellow
-		default
+		Black
+		  Blue
+		  Cyan
+		  Green
+		  Magenta
+		  Red
+		  White
+		  Yellow
+		Default
 	#tag EndEnum
 
 

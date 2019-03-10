@@ -3,346 +3,341 @@ Protected Class App
 Inherits ConsoleApplication
 	#tag Event
 		Function Run(args() as String) As Integer
-		  using Rainbow
+		  // Setup the app.
+		  Initialise
 		  
-		  ' Register the MBS plugin.
-		  if not RegisterPlugins.MBS() then
-		    Print Colourise("Unable to register the MBS plugins.", Colour.Red)
-		    return -1
-		  end if
+		  // Parse any command line arguments.
+		  ParseOptions(args)
 		  
-		  Initialise()
+		  // Does the user want to display help?
+		  If Options.HelpRequested Then
+		    Usage
+		    Return 0
+		  End If
 		  
-		  if args.Ubound > 1 then
-		    
-		    Usage()
-		    return 0
-		    
-		  elseif args.Ubound = 1 then
-		    
-		    select case args(1)
-		    case "-h"
-		      Usage()
-		      return 0
-		    case "-v"
-		      Print RooVersion()
-		    else
-		      ' Assume it's a script file to execute.
-		      ExecuteFile(args(1))
-		    end select
-		    
-		  else ' REPL.
-		    
-		    Welcome()
-		    Prompt()
-		    
-		  end if
+		  // Does the user want the version number?
+		  If Options.BooleanValue("version") Then
+		    PrintVersion
+		    Return 0
+		  End If
+		  
+		  // Should we allow network access?
+		  DisableNetworking = Options.BooleanValue("network", False)
+		  
+		  // REPL or script execution?
+		  If Options.Extra.Ubound < 0 Then
+		    // REPL
+		    Welcome
+		    Prompt
+		  ElseIf Options.Extra.Ubound = 0 Then
+		    // Script execution.
+		    ExecuteFile(Options.Extra(0))
+		  Else
+		    Usage
+		  End If
 		End Function
 	#tag EndEvent
 
 
-	#tag Method, Flags = &h0
-		Sub Execute(file as FolderItem)
-		  ' Parse the source code.
-		  dim ast() as Roo.Stmt = parser.Parse(file)
-		  if self.parser.hasError then return ' No point continuing if we can't parse the script.
-		  
-		  ' Reset the interpreter (only if we're not in a REPL session).
-		  if not repl then interpreter.Reset()
-		  
-		  ' Perform static analysis and symbol resolution on the AST.
-		  resolver = new Roo.Resolver(interpreter)
-		  resolver.Resolve(ast)
-		  if resolver.hasError then return ' Don't run if the resolver failed.
-		  
-		  ' Run the code.
-		  interpreter.Interpret(ast)
-		  
-		  ' Catch any errors. Remember that scanning and parsing errors will already call this window's
-		  ' ScanningError() or ParsingError() methods if they occur.
-		  exception err as Roo.ResolverError
-		    ResolverError(err)
-		  exception err as Roo.RuntimeError
-		    RuntimeError(err)
-		  exception err as Roo.QuitReturn
-		    if repl then
-		      raise err
-		    else
-		      return
-		    end if
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Execute(source as String)
-		  ' Parse the source code.
-		  dim ast() as Roo.Stmt = parser.Parse(source)
-		  if self.parser.hasError then return ' No point continuing if we can't parse the script.
-		  
-		  ' Reset the interpreter (only if we're not in a REPL session).
-		  if not repl then interpreter.Reset()
-		  
-		  ' Perform static analysis and symbol resolution on the AST.
-		  resolver = new Roo.Resolver(interpreter)
-		  resolver.Resolve(ast)
-		  if resolver.hasError then return ' Don't run if the resolver failed.
-		  
-		  ' Run the code.
-		  interpreter.Interpret(ast)
-		  
-		  ' Catch any errors. Remember that scanning and parsing errors will already call this window's
-		  ' ScanningError() or ParsingError() methods if they occur.
-		  exception err as Roo.ResolverError
-		    ResolverError(err)
-		  exception err as Roo.RuntimeError
-		    RuntimeError(err)
-		  exception err as Roo.QuitReturn
-		    if repl then
-		      raise err
-		    else
-		      return
-		    end if
-		End Sub
-	#tag EndMethod
-
 	#tag Method, Flags = &h21
-		Private Sub ExecuteFile(filePath as String)
-		  ' Execute the contents of the passed file.
+		Private Function AllowNetworkAccessDelegate(sender As RooInterpreter, url As String) As Boolean
+		  #Pragma Unused sender
+		  #Pragma Unused url
 		  
-		  using Rainbow
-		  
-		  dim sourcefile as FolderItem
-		  
-		  try
-		    sourceFile = new FolderItem(filePath, FolderItem.PathTypeNative)
-		    if sourcefile = Nil or not sourcefile.Exists then
-		      Print Colourise("File does not exist: '" + filePath + "'.", Colour.Red)
-		      return
-		    end if
-		  catch
-		    Print Colourise("File does not exist: '" + filePath + "'.", Colour.Red)
-		    return
-		  end try
-		  
-		  ' Is the file readable?
-		  if not sourcefile.IsReadable then
-		    Print Colourise("Unable to open file `" + sourcefile.NativePath + "` for reading.", Colour.Red)
-		    return
-		  end if
-		  
-		  ' Run the file.
-		  Execute(sourcefile)
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function HandleInput(sender as Roo.Interpreter, prompt as String) As String
-		  ' The interpreter's native input() function has been called.
-		  
-		  #pragma Unused sender
-		  
-		  ' Display a prompt if needed.
-		  if prompt <> "" then Print(prompt)
-		  
-		  ' Prompt the user for some input.
-		  dim userInput as String = DefineEncoding(REALbasic.Input(), Encodings.UTF8)
-		  
-		  ' Return the entered input to the sender.
-		  return userInput
+		  // The `n` and `network` command line flags determine if script networking 
+		  // should be enabled or not.
+		  // Return True to permit the interpreter to access the network, False to 
+		  // deny it.
+		  Return Not DisableNetworking
 		  
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub HandlePrint(sender as Roo.Interpreter, what as String)
-		  ' The interpreter's native print() function has been called.
+	#tag Method, Flags = &h21
+		Private Sub AnalyserError(sender As RooInterpreter, token As RooToken, message As String)
+		  // An error occurred during static analysis of the source code.
 		  
-		  #pragma Unused sender
+		  Using Rainbow
 		  
-		  REALbasic.Print(what)
+		  #Pragma Unused sender
+		  
+		  // Report that an error has occurred and its location.
+		  Print Colourise("Static analysis error (line " + Str(token.Line) + ", pos " + _
+		  Str(token.Start) + ").", Colour.Red)
+		  Print "Token: " + token.Lexeme
+		  
+		  // Print the actual error message.
+		  Print(message)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub DeletionPrevented(sender As RooInterpreter, f As FolderItem, where As RooToken)
+		  // The interpreter has prevented the deletion of a file or folder.
+		  
+		  Using Rainbow
+		  
+		  #Pragma Unused sender
+		  
+		  Const QUOTE = """"
+		  
+		  Dim scriptName As String = If(where.File = Nil, "", where.File.NativePath)
+		  Dim itemName As String = If(f = Nil, "", f.NativePath)
+		  
+		  Dim message As String = "An attempt to delete the FolderItem " + _
+		  QUOTE + itemName + QUOTE + _
+		  " from the script " + QUOTE + scriptName + QUOTE + _
+		  " was prevented by the interpreter." + EndOfLine
+		  
+		  Print Colourise(message, Colour.Red)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ExecuteFile(filePath As String)
+		  // Execute the contents of the passed file.
+		  
+		  Using Rainbow
+		  
+		  Dim sourcefile As FolderItem
+		  
+		  Try
+		    sourceFile = New FolderItem(filePath, FolderItem.PathTypeNative)
+		    If sourcefile = Nil Or Not sourcefile.Exists Then
+		      Print Colourise("File does not exist: '" + filePath + "'.", Colour.Red)
+		      Quit(-1)
+		    End if
+		  Catch
+		    Print Colourise("File does not exist: '" + filePath + "'.", Colour.Red)
+		    Quit(-1)
+		  End Try
+		  
+		  // Is the file readable?
+		  If Not sourcefile.IsReadable Then
+		    Print Colourise("Unable to open file `" + sourcefile.NativePath + "` for reading.", Colour.Red)
+		    Quit(-1)
+		  End If
+		  
+		  // Run the file.
+		  Interpreter.Interpret(sourceFile)
+		  
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Sub Initialise()
-		  ' Create a new parser.
-		  self.parser = new Roo.Parser
+		  // Create and configure an interpreter.
+		  Interpreter = New RooInterpreter
+		  AddHandler Interpreter.ScannerError, AddressOf Self.ScannerError
+		  AddHandler Interpreter.ParserError, AddressOf Self.ParserError
+		  AddHandler Interpreter.AnalyserError, AddressOf Self.AnalyserError
+		  AddHandler Interpreter.RuntimeError, AddressOf Self.RuntimeError
+		  AddHandler Interpreter.Print, AddressOf Self.PrintDelegate
+		  AddHandler Interpreter.Input, AddressOf Self.InputDelegate
+		  AddHandler Interpreter.AllowNetworkAccess, AddressOf AllowNetworkAccessDelegate
+		  AddHandler Interpreter.DeletionPrevented, AddressOf Self.DeletionPrevented
 		  
-		  ' Tell the parser to call the app's ScanningError() method if a scanning error occurs.
-		  AddHandler parser.ScanningError, AddressOf self.ScanningError
-		  
-		  ' Tell the parser to call the app's ParsingError() method if a parsing error occurs.
-		  AddHandler parser.ParsingError, AddressOf self.ParsingError
-		  
-		  ' Create a new interpreter.
-		  self.interpreter = new Roo.Interpreter
-		  
-		  ' Tell the interpreter to call the app's Print() or Input() methods whenever Roo's 
-		  ' built-in print() or input() methods are called from a script.
-		  AddHandler interpreter.Print, AddressOf self.HandlePrint
-		  AddHandler interpreter.Input, AddressOf self.HandleInput
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub ParsingError(sender as Roo.Parser, where as Roo.Token, message as String)
-		  #pragma Unused sender
+	#tag Method, Flags = &h21
+		Private Function InputDelegate(sender As RooInterpreter, prompt As String) As String
+		  // The interpreter's native input() function has been called.
 		  
-		  ' An error has occurred during the parsing process.
+		  #Pragma Unused sender
 		  
-		  using Rainbow
+		  // Display a prompt if needed.
+		  If prompt <> "" Then Print(prompt)
 		  
-		  ' Report that a parsing error has occurred and its location.
-		  Print Colourise("Parser error (line " + Str(where.line) + ", pos " + Str(where.start) + ").", Colour.Red)
-		  Print "Token: " + where.lexeme
+		  // Prompt the user for some input.
+		  Dim userInput As String = DefineEncoding(REALbasic.Input, Encodings.UTF8)
 		  
-		  ' Print the actual error message.
+		  // Return the entered input to the sender.
+		  Return userInput
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ParseOptions(args() As String)
+		  Options = New OptionParser(kAppName, kAppDescription)
+		  
+		  Options.AddOption New Option("v", "version", "Get the version number of the Roo interpreter", Option.OptionType.Boolean)
+		  Options.AddOption New Option("n", "network", "Disable network access", Option.OptionType.Boolean)
+		  
+		  Try
+		    Options.Parse(args)
+		  Catch OptionMissingKeyException
+		    Print "Invalid usage"
+		    Print ""
+		    
+		    Options.ShowHelp
+		    
+		    Quit 1
+		  End Try
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ParserError(sender As RooInterpreter, where As RooToken, message As String)
+		  // An error occurred during the parsing process.
+		  
+		  Using Rainbow
+		  
+		  #Pragma Unused sender
+		  
+		  // Report that an error has occurred and its location.
+		  Print Colourise("Parser error (line " + Str(where.Line) + ", pos " + Str(where.Start) + ").", Colour.Red)
+		  Print "Token: " + where.Lexeme
+		  
+		  // Print the actual error message.
 		  Print(message)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub PrintDelegate(sender As RooInterpreter, what As String)
+		  // The interpreter's native print() function has been called.
+		  
+		  #Pragma Unused sender
+		  
+		  REALbasic.Print(what)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub PrintVersion()
+		  Print RooVersion + " (" + App.BuildDate.AbbreviatedDate + _
+		  ", revision " + Str(App.kRunCount) + ")"
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Sub Prompt()
-		  ' Interactive mode.
+		  // Interactive (REPL) mode.
 		  
-		  repl = True
-		  self.interpreter.Reset()
+		  Interpreter.Reset
+		  Interpreter.REPL = True
 		  
-		  do
-		    
+		  Do
 		    Stdout.Write(">>> ")
-		    promptInput = Input.DefineEncoding(Encodings.UTF8).Trim()
-		    if promptInput.Right(1) <> ";" then
-		      promptInput = promptInput + ";" ' Permit optional semicolons in REPL mode.
-		    end if
-		    
-		    Execute(promptInput)
-		    
-		  loop
+		    REPLInput = Input.DefineEncoding(Encodings.UTF8).Trim
+		    Interpreter.Interpret(REPLInput, True) // Tell the interpreter to preserve state.
+		  Loop
 		  
-		  exception err as Roo.QuitReturn
-		    ' The user wants to quit the REPL mode.
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub ResolverError(err as Roo.ResolverError)
-		  ' An error has occurred during static analysis.
-		  
-		  using Rainbow
-		  
-		  ' Report that a resolver error has occurred and its location.
-		  Print Colourise("Resolver error (line " + Str(err.token.line) + ", pos " + _
-		  Str(err.token.start) + ").", Colour.Red)
-		  Print "Token: " + err.token.lexeme
-		  
-		  ' Print the actual error message.
-		  Print(err.message)
+		  Exception err As RooQuit
+		    // The user wants to quit the REPL mode.
+		    Quit(0)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Function RooVersion() As String
-		  return Str(Roo.VERSION_MAJOR) + "." + Str(Roo.VERSION_MINOR) + "." + Str(Roo.VERSION_BUG)
+		  // Returns the current version of the Roo interpreter as a String.
+		  
+		  Return Str(Roo.kVersionMajor) + "." + Str(Roo.kVersionMinor) + "." + Str(Roo.kVersionBug)
+		  
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub RuntimeError(err as Roo.RuntimeError)
-		  ' An error has occurred during interpretation.
+	#tag Method, Flags = &h21
+		Private Sub RuntimeError(sender As RooInterpreter, where As RooToken, message As String)
+		  // An error has occurred during interpretation.
 		  
-		  using Rainbow
+		  Using Rainbow
 		  
-		  ' Report that a runtime error has occurred and its location.
-		  Print Colourise("Runtime error (line " + Str(err.token.line) + ", pos " + _
-		  Str(err.token.start) + ").", Colour.Red)
-		  Print "Token: " + err.token.lexeme
+		  #Pragma Unused sender
 		  
-		  ' Print the actual error message.
-		  Print(err.message)
+		  // Report that a runtime error has occurred and its location.
+		  Print Colourise("Runtime error (line " + Str(where.Line) + ", pos " + _
+		  Str(where.Start) + ").", Colour.Red)
+		  Print "Token: " + where.Lexeme
+		  
+		  // Print the actual error message.
+		  Print(message)
+		  
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub ScanningError(sender as Roo.Parser, e as Roo.ScannerError)
-		  #pragma Unused sender
+	#tag Method, Flags = &h21
+		Private Sub ScannerError(sender As RooInterpreter, file As FolderItem, message As String, line As Integer, position As Integer)
+		  // An error occurred during the scanning process.
 		  
-		  ' An error has occurred during the scanning process.
+		  #Pragma Unused sender
 		  
-		  using Rainbow
+		  Using Rainbow
 		  
-		  ' Report that a scanning error has occurred and its location.
+		  // Report the type of error and its location.
 		  Print Colourise("Scanner error.", Colour.Red)
-		  if e.file <> Nil then Print("File: " + e.file.NativePath)
-		  Print("Location: line " + Str(e.line) + ", position " + Str(e.position))
+		  if file <> Nil then Print("File: " + file.NativePath)
+		  Print("Location: line " + Str(line) + ", position " + Str(position))
 		  
-		  ' Print the actual error message.
-		  Print(e.message)
+		  // Print the actual error message.
+		  Print(message)
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Sub Usage()
-		  ' Prints the usage of the interpreter to the terminal.
+		  // Prints the usage of the interpreter to the terminal.
 		  
-		  using Rainbow
+		  Using Rainbow
 		  
-		  dim TAB as String = Chr(9)
+		  Dim TAB As String = Chr(9)
 		  
-		  Welcome()
+		  Welcome
 		  
-		  Print Colourise("Usage: roo [option]", Colour.yellow)
+		  Print Colourise("Usage: roo [option]", Colour.Yellow)
 		  Print "roo <file>" + TAB + ": Run a script"
 		  Print "roo -h" + TAB + TAB + ": Display help"
 		  Print "roo -v" + TAB + TAB + ": Display the interpreter's version number"
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Sub Welcome()
-		  ' Prints the interpreter's welcome message.
+		  // Prints the interpreter's welcome message.
 		  
 		  Print("Roo interpreter (v" + RooVersion + ")")
 		End Sub
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h0
-		interpreter As Roo.Interpreter
+	#tag Property, Flags = &h21
+		Private DisableNetworking As Boolean
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		parser As Roo.Parser
+	#tag Property, Flags = &h21
+		Private Interpreter As RooInterpreter
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		promptInput As String
+	#tag Property, Flags = &h21
+		Private Options As OptionParser
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		repl As Boolean = False
+	#tag Property, Flags = &h21
+		Private REPLInput As String
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		resolver As Roo.Resolver
-	#tag EndProperty
+
+	#tag Constant, Name = kAppDescription, Type = String, Dynamic = False, Default = \"The Roo programming language", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = kAppName, Type = String, Dynamic = False, Default = \"Roo", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = kRunCount, Type = String, Dynamic = False, Default = \"37", Scope = Public
+	#tag EndConstant
 
 
 	#tag ViewBehavior
-		#tag ViewProperty
-			Name="promptInput"
-			Group="Behavior"
-			Type="String"
-			EditorType="MultiLineEditor"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="repl"
-			Group="Behavior"
-			InitialValue="False"
-			Type="Boolean"
-		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
 #tag EndClass

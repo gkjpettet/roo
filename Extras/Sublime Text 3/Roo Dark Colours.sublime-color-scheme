@@ -1,0 +1,60 @@
+{
+	"name": "Roo Dark",
+	"author": "Garry Pettet",
+	"variables": {
+		"comment": "#6c7986",
+		"keyword": "#fc5fa3",
+		"number": "#9686f5",
+		"string": "#fc6a5d",
+		"lcase_invokable": "#99e8d5",
+		"ucase_invokable": "#91d462",
+		"ucase_identifier": "#91d462",
+		"lcase_identifier": "#ffffff",
+	},
+	"globals": {
+		"foreground": "#ffffff",
+		"background": "#1f1f24",
+		"caret": "#ffffff",
+		"selection": "#d9c5dd",
+		"line_highlight": "#23252b"
+	},
+	"rules": [
+		{
+			"scope": "string",
+			"foreground": "var(string)",
+		},
+		{
+			"scope": "variable",
+			"foreground": "",
+		},
+		{
+			"scope": "keyword",
+			"foreground": "var(keyword)",
+		},
+		{
+			"scope": "constant",
+			"foreground": "var(number)",
+		},
+		{
+			"scope": "comment",
+			"foreground": "var(comment)",
+			"font_style": "italic"
+		},
+		{
+			"scope": "entity.name.invokable.lcase.roo",
+			"foreground": "var(lcase_invokable)"
+		},
+		{
+			"scope": "entity.name.invokable.ucase.roo",
+			"foreground": "var(ucase_invokable)"
+		},		
+		{
+			"scope": "entity.name.ucase.roo",
+			"foreground": "var(ucase_identifier)"
+		},
+		{
+			"scope": "entity.name.lcase.roo",
+			"foreground": "var(lcase_identifier)"
+		},		
+	]
+}
