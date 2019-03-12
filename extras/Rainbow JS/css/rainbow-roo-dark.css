@@ -76,11 +76,11 @@ pre {
       animation-fill-mode: forwards; }
 
 pre {
-  background-color: #1f1f24;
+  background-color: #161616;
   word-wrap: break-word;
   margin: 0px;
   padding: 10px;
-  color: #fff;
+  color: #a5a4a4;
   font-size: 14px;
   margin-bottom: 20px; }
 
@@ -109,10 +109,10 @@ pre .identifier.ucase {
   color: #91d462; }
 
 pre .identifier.lcase {
-  color: #fff; }
+  color: #a5a4a4; }
 
 pre .getter {
   color: #99e8d5; }
 
 pre .operator {
-  color: #fff; }
+  color: #a5a4a4; }

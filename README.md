@@ -86,6 +86,12 @@ Whilst there is no interactive debugger for Roo (yet), `roo` does provide reason
 
 To quit a REPL session type `CTRL-C` or `CTRL-D` or `CTRL-X` (depending on your operating system). Or you can simply use the global `quit` statement.
 
+## Extras
+
+You'll notices that this repo has an `extras/` folder which contains goodies additional to the source code. These are detailed below:
+
+
+
 [homebrew]: https://brew.sh
 [homepage]: https://roolang.org
 [scoop]: https://scoop.sh
