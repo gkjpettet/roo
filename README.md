@@ -90,7 +90,13 @@ To quit a REPL session type `CTRL-C` or `CTRL-D` or `CTRL-X` (depending on your 
 
 You'll notices that this repo has an `extras/` folder which contains goodies additional to the source code. These are detailed below:
 
+### RainbowJS/
 
+Contains a custom syntax definition for the Roo programming language to allow you to highlight Roo code on webpages using [Craig Campbell's](https://craig.is/) [Rainbow](https://github.com/ccampbell/rainbow) javascript syntax highlighter. I also include SASS and CSS files to colour the code.
+
+### Sublime Text 3
+
+Contains a syntax definition file to enable Roo syntax highlighting in [Sublime Text 3](https://www.sublimetext.com/3). It also contains light and dark colour themes.
 
 [homebrew]: https://brew.sh
 [homepage]: https://roolang.org
