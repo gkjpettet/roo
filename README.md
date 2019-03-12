@@ -44,7 +44,7 @@ scoop update roo
 ```
 
 ### 2. Install the precompiled binary and its dependencies
-If you can't/don't want to use a package manager then I provide precompiled binaries for macOS (64-bit), Windows (32/64-bit) and x86 Linux (64-bit). Essentially just make sure that you install the `roo` binary and all its dependencies (included in the download) within your system's PATH. The Mac and Linux versions contain one file and one folder:
+If you can't/don't want to use a package manager then I provide precompiled binaries for macOS (64-bit), Windows (32/64-bit) and x86 Linux (64-bit). Essentially just make sure that you install the `roo` binary and all its dependencies (included in the download) within your system's `$PATH`. The Mac and Linux versions contain one file and one folder:
 
 ```bash
 roo
