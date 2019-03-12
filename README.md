@@ -64,7 +64,7 @@ vcruntime140.dll
 XojoConsoleFramework64.dll
 ```
 
-I use a Mac and if I wasn't using Homebrew I would place `roo` and `roo Libs/` in `/usr/local/bin`. You can grab the required files from the [releases page][releases].
+I use a Mac and if I wasn't using Homebrew I would place `roo` and `roo Libs/` in `/usr/local/bin`. You can grab the required files from the [releases page](https://github.com/gkjpettet/roo/releases).
 
 ### 3. Build the intepreter from source
 
