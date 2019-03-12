@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="718084095">
+ <ObjName>RooHash</ObjName>
+ <ObjContainerID>360427519</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Superclass>RooInstance</Superclass>
+ <Interfaces> RooNativeClass</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>423116799</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor()</SourceLine>
+   <SourceLine>Super.Constructor(Nil)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Self.Dict = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1083265023</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(d As Xojo.Core.Dictionary)</SourceLine>
+   <SourceLine>// Expects a case-sensitive dictionary. Check.</SourceLine>
+   <SourceLine>#If DebugBuild</SourceLine>
+   <SourceLine>If Not Roo.IsCaseSensitive(d) Then</SourceLine>
+   <SourceLine>Dim err As New TypeMismatchException</SourceLine>
+   <SourceLine>err.Reason = "A case insensitive dictionary was passed to the RooHash constructor method"</SourceLine>
+   <SourceLine>Raise err</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>#Endif</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Super.Constructor(Nil)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Self.Dict = d</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>d As Xojo.Core.Dictionary</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>GetValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1008521215</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function GetValue(keyObject as Variant) As Variant</SourceLine>
+   <SourceLine>// Returns the value of the specified key. If `key` does not exist in this hash then we return Nothing.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Not HasKey(keyObject) Then Return New RooNothing</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim key As Variant</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Is this a simple object lookup?</SourceLine>
+   <SourceLine>If Dict.HasKey(keyObject) Then Return Dict.Value(keyObject)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// We have to handle Roo text, number and boolean objects differently.</SourceLine>
+   <SourceLine>If keyObject IsA RooText Then</SourceLine>
+   <SourceLine>key = RooText(keyObject).Value</SourceLine>
+   <SourceLine>ElseIf keyObject IsA RooNumber Then</SourceLine>
+   <SourceLine>key = RooNumber(keyObject).Value</SourceLine>
+   <SourceLine>elseIf keyObject IsA RooBoolean Then</SourceLine>
+   <SourceLine>key = RooBoolean(keyObject).Value</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Dict.Value(key)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>keyObject as Variant</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasKey</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>186064895</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasKey(obj as Variant) As Boolean</SourceLine>
+   <SourceLine>// Returns True if this hash contains the specified key. </SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim key As Variant</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If obj = Nil Then Return False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Try a quick object lookup.</SourceLine>
+   <SourceLine>If Dict.HasKey(obj) Then Return True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Roo text, number and boolean objects are handled differently.</SourceLine>
+   <SourceLine>If obj IsA RooText Then</SourceLine>
+   <SourceLine>key = RooText(obj).Value.ToText  // Use Text not String.</SourceLine>
+   <SourceLine>ElseIf obj IsA RooNumber Then</SourceLine>
+   <SourceLine>key = RooNumber(obj).Value</SourceLine>
+   <SourceLine>ElseIf obj IsA RooBoolean Then</SourceLine>
+   <SourceLine>key = RooBoolean(obj).Value</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Dict.HasKey(key)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>obj as Variant</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1784315903</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>Dim k, v, t, QUOTE As String</SourceLine>
+   <SourceLine>Dim d As Double</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>QUOTE = """"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>t = "{"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>For Each entry As Xojo.Core.DictionaryEntry In Self.Dict</SourceLine>
+   <SourceLine>// Convert the key to a String.</SourceLine>
+   <SourceLine>Select Case Roo.AutoType(entry.Key)</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoText, Roo.ObjectType.XojoString</SourceLine>
+   <SourceLine>k = QUOTE + entry.Key + QUOTE</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoDouble</SourceLine>
+   <SourceLine>If Roo.IsInteger(entry.Key) Then</SourceLine>
+   <SourceLine>k = Str(Roo.DoubleToInteger(entry.Key))</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>d = entry.Key</SourceLine>
+   <SourceLine>k = Str(d)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoBoolean</SourceLine>
+   <SourceLine>k = If(entry.Key, "True", "False")</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>k = Stringable(entry.Key).StringValue</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert the value to a String.</SourceLine>
+   <SourceLine>If entry.Value IsA RooText Then</SourceLine>
+   <SourceLine>v = QUOTE + RooText(entry.Value).Value + QUOTE</SourceLine>
+   <SourceLine>ElseIf entry.Value IsA RooNumber Then</SourceLine>
+   <SourceLine>d = RooNumber(entry.Value).Value</SourceLine>
+   <SourceLine>If Roo.IsInteger(d) Then</SourceLine>
+   <SourceLine>v = Str(Roo.DoubleToInteger(d))</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>v = Str(d)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>v = Stringable(entry.Value).StringValue</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>t = t + k + " =&gt; " + v + ", "</SourceLine>
+   <SourceLine>Next entry</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>t = t.Trim</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If t.Right(1) = "," Then t = t.Left(t.Len - 1)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return t + "}"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Type</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>823367679</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Type() As String</SourceLine>
+   <SourceLine>Return "Hash"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>GetterWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1581576191</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function GetterWithName(name As RooToken) As Variant</SourceLine>
+   <SourceLine>// Return the result of the requested getter operation.</SourceLine>
+   <SourceLine>If StrComp(name.Lexeme, "clear!", 0) = 0 Then</SourceLine>
+   <SourceLine>Dict = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine>Return Self</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "invert", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoInvert(False)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "invert!", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoInvert(True)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "keys", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoKeys</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "length", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(Dict.Count)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "values", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoValues</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasGetterWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1038127103</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasGetterWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Query the global Roo dictionary of Hash object getters for the existence of a getter </SourceLine>
+   <SourceLine>// with the passed name.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return RooSLCache.HashGetters.HasKey(name)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasMethodWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1226784767</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasMethodWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Query the global Roo dictionary of Hash object methods for the existence of a method </SourceLine>
+   <SourceLine>// with the passed name.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return RooSLCache.HashMethods.HasKey(name)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>MethodWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1735858175</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function MethodWithName(name As RooToken) As Invokable</SourceLine>
+   <SourceLine>// Return a new instance of a Hash object method initialised with the name of the method </SourceLine>
+   <SourceLine>// being called. That way, when the returned method is invoked, it will know what operation </SourceLine>
+   <SourceLine>// to perform.</SourceLine>
+   <SourceLine>Return New RooHashMethod(Self, name.Lexeme)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>Invokable</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Arity</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1030971391</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Arity() As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Raise New RooRuntimeError(New RooToken, "Cannot invoke a hash object.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Invoke</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1079560191</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Invoke(interpreter As RooInterpreter, arguments() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused interpreter</SourceLine>
+   <SourceLine>#Pragma Unused arguments</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Cannot invoke a hash object.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter, arguments() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoInvert</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>372715519</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoInvert(destructive As Boolean) As RooHash</SourceLine>
+   <SourceLine>// Hash.invert as HashObject</SourceLine>
+   <SourceLine>// Hash.invert! as HashObject</SourceLine>
+   <SourceLine>// Returns a new hash object created using this hash's values as keys and the keys as values.</SourceLine>
+   <SourceLine>// If a key with the same value already exists in the hash then the last one encountered </SourceLine>
+   <SourceLine>// will be used with earlier values being discarded.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim newHash As New RooHash</SourceLine>
+   <SourceLine>Dim newValue, oldValue As Variant</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>For Each entry As Xojo.Core.DictionaryEntry In Dict</SourceLine>
+   <SourceLine>newValue = entry.Key</SourceLine>
+   <SourceLine>oldValue = entry.Value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Remember that text, number and boolean keys are stored as literal values, not their runtime </SourceLine>
+   <SourceLine>// object representations.</SourceLine>
+   <SourceLine>If oldValue IsA RooText Then</SourceLine>
+   <SourceLine>oldValue = RooText(oldValue).Value</SourceLine>
+   <SourceLine>ElseIf oldValue IsA RooNumber Then </SourceLine>
+   <SourceLine>oldValue = RooNumber(oldValue).Value</SourceLine>
+   <SourceLine>ElseIf oldValue IsA RooBoolean Then </SourceLine>
+   <SourceLine>oldValue = RooBoolean(oldValue).Value</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Similarly, any keys that were stored as literal Xojo values need to be converted to </SourceLine>
+   <SourceLine>// a runtime representation when they are stored as values.</SourceLine>
+   <SourceLine>Select Case Roo.AutoType(newValue)</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoString, Roo.ObjectType.XojoText</SourceLine>
+   <SourceLine>newValue = New RooText(newValue)</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoDouble, Roo.ObjectType.XojoInteger</SourceLine>
+   <SourceLine>newValue = New RooNumber(newValue)</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoBoolean</SourceLine>
+   <SourceLine>newValue = New RooBoolean(newValue)</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>newHash.Dict.Value(oldValue) = newValue</SourceLine>
+   <SourceLine>Next entry</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If destructive Then Dict = newHash.Dict.Clone</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return newHash</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>destructive As Boolean</ItemParams>
+  <ItemResult>RooHash</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoKeys</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1616863231</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoKeys() As RooArray</SourceLine>
+   <SourceLine>// Hash.keys as Array</SourceLine>
+   <SourceLine>// Returns the keys of this hash object as an array object.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim a As New RooArray</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>For Each entry As Xojo.Core.DictionaryEntry In Dict</SourceLine>
+   <SourceLine>Select Case Roo.AutoType(entry.Key)</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoString, Roo.ObjectType.XojoText</SourceLine>
+   <SourceLine>a.Elements.Append(New RooText(entry.Key))</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoDouble, Roo.ObjectType.XojoInteger</SourceLine>
+   <SourceLine>a.Elements.Append(New RooNumber(entry.Key))</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoBoolean</SourceLine>
+   <SourceLine>a.Elements.Append(New RooBoolean(entry.Key))</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>a.Elements.Append(entry.Key)</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>Next entry</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return a</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooArray</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoValues</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1494245375</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoValues() As RooArray</SourceLine>
+   <SourceLine>// Hash.values as Array</SourceLine>
+   <SourceLine>// Returns the values of this hash as an array object.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim a As New RooArray</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>For Each entry As Xojo.Core.DictionaryEntry In Dict</SourceLine>
+   <SourceLine>a.Elements.Append(entry.Value)</SourceLine>
+   <SourceLine>Next entry</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return a</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooArray</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1729460223</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasValue(what As Variant) As Boolean</SourceLine>
+   <SourceLine>// Returns True if this Hash contains the specified value. </SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>For Each entry As Xojo.Core.DictionaryEntry In Dict</SourceLine>
+   <SourceLine>If entry.Value = what Then Return True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If entry.Value IsA RooNothing And what IsA RooNothing Then Return True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If what IsA RooText And entry.Value IsA RooText Then</SourceLine>
+   <SourceLine>If StrComp(RooText(entry.Value).Value, RooText(what).Value, 0) = 0 Then Return True</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If what IsA RooNumber And entry.Value IsA RooNumber Then</SourceLine>
+   <SourceLine>If RooNumber(entry.Value).Value = RooNumber(what).Value Then Return True</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If what IsA RooBoolean And entry.Value IsA RooBoolean Then</SourceLine>
+   <SourceLine>If RooBoolean(entry.Value).Value = RooBoolean(what).Value Then Return True</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next entry</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>what As Variant</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Property>
+  <ItemName>Dict</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>393400319</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Dict As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Dict As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

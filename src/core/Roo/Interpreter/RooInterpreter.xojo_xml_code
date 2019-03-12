@@ -1,0 +1,2845 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="1234921471">
+ <ObjName>RooInterpreter</ObjName>
+ <ObjContainerID>532322303</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Interfaces>RooExprVisitor, RooStmtVisitor</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>VisitVariableExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>823619583</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitVariableExpr(expr As RooVariableExpr) As Variant</SourceLine>
+   <SourceLine>// Return the requested variable.</SourceLine>
+   <SourceLine>Return LookupVariable(expr.Name, expr)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooVariableExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitGetExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>702672895</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitGetExpr(expr As RooGetExpr) As Variant</SourceLine>
+   <SourceLine>// The interpreter is trying to retrieve a property or method on an instance.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// First evaluate the expression whose property is being accessed.</SourceLine>
+   <SourceLine>Dim obj As Variant = Evaluate(expr.Obj)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If obj IsA RooInstance Then</SourceLine>
+   <SourceLine>RooInstance(obj).IndexOrKey = Evaluate(expr.IndexOrKey)</SourceLine>
+   <SourceLine>Dim result As Variant = RooInstance(obj).Get(expr.Name)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If the field we are accessing is a getter then invoke it right now and return the</SourceLine>
+   <SourceLine>// result of that. Otherwise just return the method without invoking it.</SourceLine>
+   <SourceLine>If result IsA RooFunction And RooFunction(result).Declaration.Parameters = Nil Then</SourceLine>
+   <SourceLine>// This is a getter method.</SourceLine>
+   <SourceLine>result = RooFunction(result).Invoke(Self, Nil, expr.Name)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return result</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.Name, "Only instances have fields.")</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooGetExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitAssignExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1082314751</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitAssignExpr(expr As RooAssignExpr) As Variant</SourceLine>
+   <SourceLine>// Examples:</SourceLine>
+   <SourceLine>// a = 10;</SourceLine>
+   <SourceLine>// b += "world!"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Retrieve the current value of the variable.</SourceLine>
+   <SourceLine>Dim current As Variant</SourceLine>
+   <SourceLine>// How many hops from the current environment is the variable?</SourceLine>
+   <SourceLine>Dim distance As Integer = Locals.Lookup(expr, -1)</SourceLine>
+   <SourceLine>If distance = -1 Then</SourceLine>
+   <SourceLine>// The variable should be in the global scope.</SourceLine>
+   <SourceLine>current = Globals.Get(expr.Name)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// It's a local variable.</SourceLine>
+   <SourceLine>current = Environment.GetAt(distance, expr.Name.Lexeme)</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Disallow compound assignment operations on array objects (since no index has been provided).</SourceLine>
+   <SourceLine>// This catches edge cases like:</SourceLine>
+   <SourceLine>// var a = [2,3]</SourceLine>
+   <SourceLine>// a += 10</SourceLine>
+   <SourceLine>If current IsA RooArray And expr.Operator.Type &lt;&gt; Roo.TokenType.EQUAL Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.Name, _</SourceLine>
+   <SourceLine>"Cannot use a compound assignment operator on an array without providing an index.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Evaluate the new value.</SourceLine>
+   <SourceLine>Dim newValue As Variant = Evaluate(expr.Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Determine the type of assignment.</SourceLine>
+   <SourceLine>Select Case expr.Operator.Type</SourceLine>
+   <SourceLine>Case Roo.TokenType.PLUS_EQUAL</SourceLine>
+   <SourceLine>If BothNumbers(current, newValue) Then</SourceLine>
+   <SourceLine>// Arithmetic addition.</SourceLine>
+   <SourceLine>newValue = New RooNumber(RooNumber(current).Value + RooNumber(newValue).Value)</SourceLine>
+   <SourceLine>ElseIf BothStringable(current, newValue) Then</SourceLine>
+   <SourceLine>// Text concatenation.</SourceLine>
+   <SourceLine>newValue = New RooText(Stringable(current).StringValue + Stringable(newValue).StringValue)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Case Roo.TokenType.MINUS_EQUAL</SourceLine>
+   <SourceLine>// Compound subtraction (-=).</SourceLine>
+   <SourceLine>Roo.AssertAreNumbers(expr.Operator, current, newValue)</SourceLine>
+   <SourceLine>newValue = New RooNumber(RooNumber(current).Value - RooNumber(newValue).Value)</SourceLine>
+   <SourceLine>Case Roo.TokenType.PERCENT_EQUAL</SourceLine>
+   <SourceLine>// Compound modulo (%=).</SourceLine>
+   <SourceLine>Roo.AssertAreNumbers(expr.Operator, current, newValue)</SourceLine>
+   <SourceLine>If RooNumber(newValue).Value = 0 Then Raise New RooRuntimeError(expr.Operator, "Modulo with zero")</SourceLine>
+   <SourceLine>newValue = New RooNumber(RooNumber(current).Value Mod RooNumber(newValue).Value)</SourceLine>
+   <SourceLine>Case Roo.TokenType.SLASH_EQUAL</SourceLine>
+   <SourceLine>// Compound division (/=).</SourceLine>
+   <SourceLine>Roo.AssertAreNumbers(expr.Operator, current, newValue)</SourceLine>
+   <SourceLine>newValue = New RooNumber(RooNumber(current).Value / RooNumber(newValue).Value)</SourceLine>
+   <SourceLine>Case Roo.TokenType.STAR_EQUAL</SourceLine>
+   <SourceLine>// Compound multiplication (*=).</SourceLine>
+   <SourceLine>Roo.AssertAreNumbers(expr.Operator, current, newValue)</SourceLine>
+   <SourceLine>newValue = New RooNumber(RooNumber(current).Value * RooNumber(newValue).Value)</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Assign the new value to the variable.</SourceLine>
+   <SourceLine>If distance = -1 Then</SourceLine>
+   <SourceLine>Globals.Assign(expr.Name, newValue)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Environment.AssignAt(distance, expr.Name, newValue)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return the new value to allow nesting (e.g: `print(a = 2)`)</SourceLine>
+   <SourceLine>Return newValue</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooAssignExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitArrayExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1821386751</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitArrayExpr(expr As RooArrayExpr) As Variant</SourceLine>
+   <SourceLine>// Return the requested element from this array.</SourceLine>
+   <SourceLine>// The identifier of the array is expr.Name</SourceLine>
+   <SourceLine>// The index of the element to return is the result of evaluating expr.Index</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma BreakOnExceptions False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim index As RooNumber</SourceLine>
+   <SourceLine>Dim a As RooArray</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the requested array.</SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine>a = LookupVariable(expr.Name, expr)</SourceLine>
+   <SourceLine>Catch</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.Name, "You are treating `" + expr.Name.Lexeme + _</SourceLine>
+   <SourceLine>"` like an array but it isn't one.")</SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Evaluate the index.</SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine>index = Evaluate(expr.Index)</SourceLine>
+   <SourceLine>Catch err As IllegalCastException</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.Name, "Integer array index expected")</SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Ensure that an integer index has been passed.</SourceLine>
+   <SourceLine>If Not Roo.IsInteger(index.Value) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.Name, "Array indices must be integers, not fractional numbers.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return the correct element or Nothing if out of bounds.</SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine>Return a.Elements(index.Value)</SourceLine>
+   <SourceLine>Catch OutOfBoundsException</SourceLine>
+   <SourceLine>Return Nothing</SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooArrayExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitHashExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2020980735</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitHashExpr(expr As RooHashExpr) As Variant</SourceLine>
+   <SourceLine>// Return the value associated with the specified key for this Hash.</SourceLine>
+   <SourceLine>// The identifier of the Hash is expr.Name</SourceLine>
+   <SourceLine>// The key is the result of evaluating expr.Key</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim keyValue As Variant</SourceLine>
+   <SourceLine>Dim hash As RooHash</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get this Hash</SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine>hash = LookupVariable(expr.Name, expr)</SourceLine>
+   <SourceLine>Catch</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.Name, "You are treating `" + expr.Name.Lexeme + _</SourceLine>
+   <SourceLine>"` like a Hash but it isn't one.")</SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Evaluate the key.</SourceLine>
+   <SourceLine>keyValue = Evaluate(expr.Key)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If keyValue IsA RooNothing Then </SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.Name, "Nothing is not a valid Hash key.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return the requested value or Nothing if it doesn't exist.</SourceLine>
+   <SourceLine>// Try a speedy object lookup first.</SourceLine>
+   <SourceLine>If hash.Dict.HasKey(keyValue) Then Return hash.Dict.Value(keyValue)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Remember that we don't store RooText, RooNumber and RooBoolean objects directly as keys. </SourceLine>
+   <SourceLine>// Instead we store them as their text, double or boolean value.</SourceLine>
+   <SourceLine>If keyValue IsA RooText then</SourceLine>
+   <SourceLine>Dim t as Text = RooText(keyValue).Value.ToText // Use Text not String.</SourceLine>
+   <SourceLine>If hash.Dict.HasKey(t) Then</SourceLine>
+   <SourceLine>Return hash.Dict.Value(t)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return Nothing</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>ElseIf keyValue IsA RooNumber Then</SourceLine>
+   <SourceLine>Dim d as Double = RooNumber(keyValue).Value</SourceLine>
+   <SourceLine>Return hash.Dict.Lookup(d, Nothing)</SourceLine>
+   <SourceLine>ElseIf keyValue IsA RooBoolean Then</SourceLine>
+   <SourceLine>Return hash.Dict.Lookup(RooBoolean(keyValue).Value, Nothing)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return Nothing</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooHashExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitSetExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1160333311</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitSetExpr(expr As RooSetExpr) As Variant</SourceLine>
+   <SourceLine>// The interpreter is trying to set the value of a field on an instance.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Evaluate the object we're trying to set the field on.</SourceLine>
+   <SourceLine>Dim obj As Variant = Evaluate(expr.Obj)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Bail if the object is not an instance.</SourceLine>
+   <SourceLine>If Not obj IsA RooInstance Then</SourceLine>
+   <SourceLine>#Pragma BreakOnExceptions False</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.Name, "Can only set fields on instances.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Disallow the alteration of fields on native modules and classes.</SourceLine>
+   <SourceLine>If obj IsA RooNativeClass Then</SourceLine>
+   <SourceLine>// We give a specisal dispensation to RooNativeSettable objects. These are </SourceLine>
+   <SourceLine>// native classes that handle their own property setting. </SourceLine>
+   <SourceLine>If obj IsA RooNativeSettable = False Then</SourceLine>
+   <SourceLine>#Pragma BreakOnExceptions False</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.Operator, "Cannot set fields on native classes or types.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>ElseIf obj IsA RooNativeModule Then</SourceLine>
+   <SourceLine>#Pragma BreakOnExceptions False</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.Operator, "Cannot set fields on native modules.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Evaluate the value that we will assign and set the field.</SourceLine>
+   <SourceLine>Dim value As Variant = Evaluate(expr.Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Since simple assignment with `=` is the most common type of set operation, handle it first</SourceLine>
+   <SourceLine>// before the select case statement below for a slight performance increase.</SourceLine>
+   <SourceLine>If expr.Operator.Type = Roo.TokenType.EQUAL Then</SourceLine>
+   <SourceLine>RooInstance(obj).Set(expr.Name, value)</SourceLine>
+   <SourceLine>Return value</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the current value of the requested field as we need to manipulate it.</SourceLine>
+   <SourceLine>Dim current As Variant = RooInstance(obj).fields.Lookup(expr.name.lexeme, Nil)</SourceLine>
+   <SourceLine>If current = Nil Then</SourceLine>
+   <SourceLine>// Prevent the use of compound assignment operators (+=, -=, %=, /=, *=) when </SourceLine>
+   <SourceLine>// the property doesn't exist.</SourceLine>
+   <SourceLine>#Pragma BreakOnExceptions False</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.Operator, "Cannot use the " + _</SourceLine>
+   <SourceLine>RooToken.TypeToString(expr.Operator.type) + _</SourceLine>
+   <SourceLine>" operator on an undefined instance field (" + RooInstance(obj).StringValue + "." + _</SourceLine>
+   <SourceLine>expr.Name.Lexeme + ").")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Handle the compound operators.</SourceLine>
+   <SourceLine>Select Case expr.Operator.Type</SourceLine>
+   <SourceLine>Case Roo.TokenType.PLUS_EQUAL // Compound addition (current += value).</SourceLine>
+   <SourceLine>If BothNumbers(current, value) Then</SourceLine>
+   <SourceLine>// Arithmetic addition.</SourceLine>
+   <SourceLine>value = New RooNumber(RooNumber(current).Value + RooNumber(value).Value)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// Text concatenation.</SourceLine>
+   <SourceLine>value = New RooText(Stringable(current).StringValue + Stringable(value).StringValue)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case Roo.TokenType.MINUS_EQUAL // Compound subtraction (current -= value).</SourceLine>
+   <SourceLine>Roo.AssertAreNumbers(expr.Operator, current, value)</SourceLine>
+   <SourceLine>value = New RooNumber(RooNumber(current).Value - RooNumber(value).Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case Roo.TokenType.SLASH_EQUAL // Compound division (current /= value).</SourceLine>
+   <SourceLine>Roo.AssertAreNumbers(expr.Operator, current, value)</SourceLine>
+   <SourceLine>If RooNumber(value).Value = 0 Then Raise New RooRuntimeError(expr.Operator, "Division with zero")</SourceLine>
+   <SourceLine>value = New RooNumber(RooNumber(current).Value / RooNumber(value).Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case Roo.TokenType.STAR_EQUAL // Compound multiplication (current *= value).</SourceLine>
+   <SourceLine>Roo.AssertAreNumbers(expr.Operator, current, value)</SourceLine>
+   <SourceLine>value = New RooNumber(RooNumber(current).Value * RooNumber(value).Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case Roo.TokenType.PERCENT_EQUAL // Compound modulo (current %= value).</SourceLine>
+   <SourceLine>Roo.AssertAreNumbers(expr.Operator, current, value)</SourceLine>
+   <SourceLine>If RooNumber(value).Value = 0 Then Raise New RooRuntimeError(expr.Operator, "Modulo with zero")</SourceLine>
+   <SourceLine>value = New RooNumber(RooNumber(current).Value Mod RooNumber(value).Value)</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Actually do the assignment for the operators other than EQUAL (which has already returned).</SourceLine>
+   <SourceLine>RooInstance(obj).Set(expr.Name, value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return value</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooSetExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitArrayAssignExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1447352319</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitArrayAssignExpr(expr As RooArrayAssignExpr) As Variant</SourceLine>
+   <SourceLine>// The user wants to assign a value to an element in an array.</SourceLine>
+   <SourceLine>// The array's identifer is expr.Name</SourceLine>
+   <SourceLine>// The index of the element to assign to is the expr.Index expression (to be evaluated).</SourceLine>
+   <SourceLine>// The value to assign to the specified element is expr.Value</SourceLine>
+   <SourceLine>// compound assignment is permitted (+=, -=, /=, *=, %=) as well as simple assignment (=).</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim current, newValue, assigneeVariant As Variant</SourceLine>
+   <SourceLine>Dim index As Integer</SourceLine>
+   <SourceLine>Dim assignee As RooArray</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the array we are assigning to.</SourceLine>
+   <SourceLine>Dim distance As Integer = Locals.Lookup(expr, -1)</SourceLine>
+   <SourceLine>If distance = -1 Then // Global variable.</SourceLine>
+   <SourceLine>assigneeVariant = Globals.Get(expr.Name)</SourceLine>
+   <SourceLine>Else // Locally scoped variable.</SourceLine>
+   <SourceLine>assigneeVariant = environment.GetAt(distance, expr.Name.Lexeme)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>If assigneeVariant = Nil Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.Name, "Error retrieving variable `" + expr.Name.Lexeme + "`.")</SourceLine>
+   <SourceLine>ElseIf assigneeVariant IsA RooNothing Then</SourceLine>
+   <SourceLine>// Non-initialised variable. Initialise it as an empty array object.</SourceLine>
+   <SourceLine>assigneeVariant = New RooArray</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Evaluate the right hand side of the assignment.</SourceLine>
+   <SourceLine>newValue = Evaluate(expr.Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Help the Xojo compiler by telling it that we're working with a RooArray, not a Variant.</SourceLine>
+   <SourceLine>assignee = RooArray(assigneeVariant)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine>index = RooNumber(Evaluate(expr.Index)).Value</SourceLine>
+   <SourceLine>Catch err</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.Name, _</SourceLine>
+   <SourceLine>"Expected an integer index value for the element to assign to.")</SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Is there an element at this index?</SourceLine>
+   <SourceLine>If index &lt; 0 Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.Name, "Expected an integer index &gt;= 0.")</SourceLine>
+   <SourceLine>ElseIf index &lt;= assignee.Elements.Ubound Then</SourceLine>
+   <SourceLine>current = assignee.Elements(index)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>current = Nil</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Prohibit the compound assignment operators with non-existent elements.</SourceLine>
+   <SourceLine>If (current = Nil Or current IsA RooNothing) And expr.Operator.Type &lt;&gt; Roo.TokenType.EQUAL Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.Name, "Cannot use a compound assigment operator on Nothing.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// What type of assignment is this?</SourceLine>
+   <SourceLine>Select Case expr.Operator.Type</SourceLine>
+   <SourceLine>Case Roo.TokenType.PLUS_EQUAL</SourceLine>
+   <SourceLine>If BothNumbers(current, newValue) Then</SourceLine>
+   <SourceLine>// Arithmetic addition.</SourceLine>
+   <SourceLine>newValue = New RooNumber(RooNumber(current).Value + RooNumber(newValue).Value)</SourceLine>
+   <SourceLine>Else // Text concatenation.</SourceLine>
+   <SourceLine>newValue = New RooText(Stringable(current).StringValue + Stringable(newValue).StringValue)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case Roo.TokenType.MINUS_EQUAL // Compound subtraction (-=).</SourceLine>
+   <SourceLine>Roo.AssertAreNumbers(expr.Operator, current, newValue)</SourceLine>
+   <SourceLine>newValue = New RooNumber(RooNumber(current).Value - RooNumber(newValue).Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case Roo.TokenType.SLASH_EQUAL // Compound division (/=).</SourceLine>
+   <SourceLine>Roo.AssertAreNumbers(expr.Operator, current, newValue)</SourceLine>
+   <SourceLine>If RooNumber(newValue).Value = 0 Then Raise New RooRuntimeError(expr.Operator, "Division by zero")</SourceLine>
+   <SourceLine>newValue = New RooNumber(RooNumber(current).Value / RooNumber(newValue).Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case Roo.TokenType.STAR_EQUAL // Compound multiplication (*=).</SourceLine>
+   <SourceLine>Roo.AssertAreNumbers(expr.Operator, current, newValue)</SourceLine>
+   <SourceLine>newValue = New RooNumber(RooNumber(current).Value * RooNumber(newValue).Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case Roo.TokenType.PERCENT_EQUAL // Compound modulo (%=).</SourceLine>
+   <SourceLine>Roo.AssertAreNumbers(expr.Operator, current, newValue)</SourceLine>
+   <SourceLine>If RooNumber(newValue).Value = 0 Then Raise New RooRuntimeError(expr.Operator, "Modulo with zero")</SourceLine>
+   <SourceLine>newValue = New RooNumber(RooNumber(current).Value Mod RooNumber(newValue).Value)</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Assign the new value to the correct element.</SourceLine>
+   <SourceLine>If index &gt; assignee.Elements.Ubound Then</SourceLine>
+   <SourceLine>// Increase the size of this array to accomodate this new element, filling the </SourceLine>
+   <SourceLine>// preceding elements with Nothing.</SourceLine>
+   <SourceLine>Dim numNothings As Integer = index - assignee.Elements.Ubound</SourceLine>
+   <SourceLine>For i As Integer = 1 To numNothings</SourceLine>
+   <SourceLine>assignee.Elements.Append(Nothing)</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>assignee.Elements(index) = newValue</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Assign the newly updated array to the correct environment.</SourceLine>
+   <SourceLine>If distance = -1 Then // Global variable.</SourceLine>
+   <SourceLine>Globals.Assign(expr.Name, assignee)</SourceLine>
+   <SourceLine>Else // Locally scoped variable.</SourceLine>
+   <SourceLine>Environment.AssignAt(distance, expr.Name, assignee)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return the value we assigned to the element to allow nesting (e.g: `print(a[2] = "hi")`)</SourceLine>
+   <SourceLine>Return newValue</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooArrayAssignExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitHashAssignExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1293547519</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitHashAssignExpr(expr As RooHashAssignExpr) As Variant</SourceLine>
+   <SourceLine>// The user wants to assign a value to a Hash.</SourceLine>
+   <SourceLine>// The Hash's identifer is expr.Name</SourceLine>
+   <SourceLine>// The key to assign to is expr.Key (to be evaluated).</SourceLine>
+   <SourceLine>// The value to assign to the specified key is expr.Value</SourceLine>
+   <SourceLine>// Shorthand assignment is permitted (+=, -=, /=, *=, %=) as well as simple assignment (=).</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim current, value, key, variable As Variant</SourceLine>
+   <SourceLine>Dim distance As Integer</SourceLine>
+   <SourceLine>Dim h As RooHash</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Evaluate the right hand side of the assignment.</SourceLine>
+   <SourceLine>value = Evaluate(expr.Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get this hash variable.</SourceLine>
+   <SourceLine>distance = Locals.Lookup(expr, -1)</SourceLine>
+   <SourceLine>If distance = -1 Then</SourceLine>
+   <SourceLine>// Global variable.</SourceLine>
+   <SourceLine>variable = Globals.Get(expr.Name)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// Locally scoped variable.</SourceLine>
+   <SourceLine>variable = Environment.GetAt(distance, expr.Name.Lexeme)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If variable = Nil Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.Name, "Error retrieving hash variable `" + expr.Name.Lexeme + "`.")</SourceLine>
+   <SourceLine>ElseIf variable IsA RooNothing Then</SourceLine>
+   <SourceLine>// Non-initialised variable. Initialise it as a empty hash object.</SourceLine>
+   <SourceLine>variable = New RooHash</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Cast to a RooHash to help the Xojo IDE with autocompletion, etc.</SourceLine>
+   <SourceLine>h = RooHash(variable)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the key to assign to.</SourceLine>
+   <SourceLine>// Remember, we use the raw value of RooText, RooNumber and RooBoolean objects as </SourceLine>
+   <SourceLine>// the key. For other types, we use the actual object.</SourceLine>
+   <SourceLine>key = Evaluate(expr.Key)</SourceLine>
+   <SourceLine>If key IsA RooText Then</SourceLine>
+   <SourceLine>key = RooText(key).Value.ToText // Use Text not String.</SourceLine>
+   <SourceLine>ElseIf key IsA RooNumber Then</SourceLine>
+   <SourceLine>key = RooNumber(key).Value</SourceLine>
+   <SourceLine>ElseIf key IsA RooBoolean Then</SourceLine>
+   <SourceLine>key = RooBoolean(key).Value</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Does this key exist? If so, get the current value of it.</SourceLine>
+   <SourceLine>If h.HasKey(key) Then</SourceLine>
+   <SourceLine>current = h.GetValue(key)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>current = Nil</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Prevent the use of the compound assignment operators (+', -=, /=, *=) on non-existent keys.</SourceLine>
+   <SourceLine>If (current = Nil Or current IsA RooNothing) And expr.Operator.type &lt;&gt; Roo.TokenType.EQUAL Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.name, "Cannot use a compound assigment operator on Nothing.")</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// What type of assignment is this?</SourceLine>
+   <SourceLine>Select Case expr.Operator.Type</SourceLine>
+   <SourceLine>Case Roo.TokenType.PLUS_EQUAL // Compound addition (+=).</SourceLine>
+   <SourceLine>If BothNumbers(current, value) Then</SourceLine>
+   <SourceLine>// Arithmetic addition.</SourceLine>
+   <SourceLine>value = New RooNumber(RooNumber(current).Value + RooNumber(value).Value)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// Text concatenation.</SourceLine>
+   <SourceLine>value = New RooText(Stringable(current).StringValue + Stringable(value).StringValue)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case Roo.TokenType.MINUS_EQUAL // Compound subtraction (-=).</SourceLine>
+   <SourceLine>Roo.AssertAreNumbers(expr.Operator, current, value)</SourceLine>
+   <SourceLine>value = New RooNumber(RooNumber(current).Value - RooNumber(value).Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case Roo.TokenType.SLASH_EQUAL // Compound division (/=).</SourceLine>
+   <SourceLine>Roo.AssertAreNumbers(expr.Operator, current, value)</SourceLine>
+   <SourceLine>If RooNumber(value).Value = 0 Then Raise New RooRuntimeError(expr.Operator, "Division by zero")</SourceLine>
+   <SourceLine>value = New RooNumber(RooNumber(current).Value / RooNumber(value).Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case Roo.TokenType.STAR_EQUAL // Compound multiplication (*=).</SourceLine>
+   <SourceLine>Roo.AssertAreNumbers(expr.Operator, current, value)</SourceLine>
+   <SourceLine>value = New RooNumber(RooNumber(current).Value * RooNumber(value).Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case Roo.TokenType.PERCENT_EQUAL // Compound modulo (%=).</SourceLine>
+   <SourceLine>Roo.AssertAreNumbers(expr.Operator, current, value)</SourceLine>
+   <SourceLine>If RooNumber(value).Value = 0 Then Raise New RooRuntimeError(expr.Operator, "Modulo with zero")</SourceLine>
+   <SourceLine>value = New RooNumber(RooNumber(current).Value Mod RooNumber(value).Value)</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Assign the new value to this key.</SourceLine>
+   <SourceLine>h.Dict.Value(key) = value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Assign the newly updated hash to the correct environment.</SourceLine>
+   <SourceLine>If distance = -1 Then</SourceLine>
+   <SourceLine>Globals.Assign(expr.Name, h)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Environment.AssignAt(distance, expr.Name, h)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return the value we assigned to the key to allow nesting (e.g: `print(h{"name"} = "Garry")`)</SourceLine>
+   <SourceLine>Return value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooHashAssignExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitTernaryExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1311612927</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitTernaryExpr(expr As RooTernaryExpr) As Variant</SourceLine>
+   <SourceLine>// The interpreter has encountered a ternary operation.</SourceLine>
+   <SourceLine>// E.g: `var a = b &gt; c ? True : False`</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim condition As Variant = Evaluate(expr.Expression)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If IsTruthy(condition) Then</SourceLine>
+   <SourceLine>Return Evaluate(expr.ThenBranch)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return Evaluate(expr.ElseBranch)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooTernaryExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitLogicalExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>987297791</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitLogicalExpr(expr As RooLogicalExpr) As Variant</SourceLine>
+   <SourceLine>// The interpreter has encountered either a logical `and` or a logical `or` expression.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim left As Variant = Evaluate(expr.Left)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If expr.Operator.Type = Roo.TokenType.OR_KEYWORD Then</SourceLine>
+   <SourceLine>If IsTruthy(left) Then Return left</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>If Not IsTruthy(left) Then Return left</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Evaluate(expr.Right)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooLogicalExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitBinaryExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1366390783</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitBinaryExpr(expr As RooBinaryExpr) As Variant</SourceLine>
+   <SourceLine>// Evaluate the left and right operands.</SourceLine>
+   <SourceLine>Dim left As Variant = Evaluate(expr.Left)</SourceLine>
+   <SourceLine>Dim right As Variant = Evaluate(expr.Right)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case expr.Operator.Type</SourceLine>
+   <SourceLine>Case Roo.TokenType.PLUS</SourceLine>
+   <SourceLine>If BothNumbers(left, right) Then</SourceLine>
+   <SourceLine>// Arithmetic addition.</SourceLine>
+   <SourceLine>Return New RooNumber(RooNumber(left).Value + RooNumber(right).Value)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// Text concatenation.</SourceLine>
+   <SourceLine>Return New RooText(Stringable(left).StringValue + Stringable(right).StringValue)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case Roo.TokenType.MINUS // Subtraction.</SourceLine>
+   <SourceLine>Roo.AssertAreNumbers(expr.Operator, left, right)</SourceLine>
+   <SourceLine>Return New RooNumber(RooNumber(left).Value - RooNumber(right).Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case Roo.TokenType.SLASH // Division.</SourceLine>
+   <SourceLine>Roo.AssertAreNumbers(expr.Operator, left, right)</SourceLine>
+   <SourceLine>If RooNumber(right).Value = 0 Then Raise New RooRuntimeError(expr.Operator, "Division by zero")</SourceLine>
+   <SourceLine>Return New RooNumber(RooNumber(left).Value / RooNumber(right).Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case Roo.TokenType.STAR // Multiplication.</SourceLine>
+   <SourceLine>Roo.AssertAreNumbers(expr.Operator, left, right)</SourceLine>
+   <SourceLine>Return New RooNumber(RooNumber(left).Value * RooNumber(right).Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case Roo.TokenType.EQUAL_EQUAL // left == right</SourceLine>
+   <SourceLine>Return New RooBoolean(IsEqual(left, right))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case Roo.TokenType.NOT_EQUAL // left &lt;&gt; right</SourceLine>
+   <SourceLine>Return New RooBoolean(Not IsEqual(left, right))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case Roo.TokenType.GREATER // Greater than (left &gt; right).</SourceLine>
+   <SourceLine>If BothNumbers(left, right) Then</SourceLine>
+   <SourceLine>Return New RooBoolean(RooNumber(left).Value &gt; RooNumber(right).Value)</SourceLine>
+   <SourceLine>ElseIf left IsA RooDateTime And right IsA RooDateTime Then</SourceLine>
+   <SourceLine>Return New RooBoolean(RooDateTime(left).Value.SecondsFrom1970 &gt; _</SourceLine>
+   <SourceLine>RooDateTime(right).Value.SecondsFrom1970)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.Operator, _</SourceLine>
+   <SourceLine>"The `&gt;` operator requires either two numbers or two DateTime objects")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case Roo.TokenType.GREATER_EQUAL // Greater than or equal to (left &gt;= right).</SourceLine>
+   <SourceLine>If BothNumbers(left, right) Then</SourceLine>
+   <SourceLine>Return New RooBoolean(RooNumber(left).Value &gt;= RooNumber(right).Value)</SourceLine>
+   <SourceLine>ElseIf left IsA RooDateTime And right IsA RooDateTime Then</SourceLine>
+   <SourceLine>Return New RooBoolean(RooDateTime(left).Value.SecondsFrom1970 &gt;= _</SourceLine>
+   <SourceLine>RooDateTime(right).Value.SecondsFrom1970)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.Operator, _</SourceLine>
+   <SourceLine>"The `&gt;=` operator requires either two numbers or two DateTime objects")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case Roo.TokenType.LESS // Less than (left &lt; right).</SourceLine>
+   <SourceLine>If BothNumbers(left, right) Then</SourceLine>
+   <SourceLine>Return New RooBoolean(RooNumber(left).Value &lt; RooNumber(right).Value)</SourceLine>
+   <SourceLine>ElseIf left IsA RooDateTime And right IsA RooDateTime Then</SourceLine>
+   <SourceLine>Return New RooBoolean(RooDateTime(left).Value.SecondsFrom1970 &lt; _</SourceLine>
+   <SourceLine>RooDateTime(right).Value.SecondsFrom1970)</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.Operator, _</SourceLine>
+   <SourceLine>"The `&lt;` operator requires either two numbers or two DateTime objects")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case Roo.TokenType.LESS_EQUAL // Less than or equal to (left &lt;= right).</SourceLine>
+   <SourceLine>If BothNumbers(left, right) Then</SourceLine>
+   <SourceLine>Return New RooBoolean(RooNumber(left).Value &lt;= RooNumber(right).Value)</SourceLine>
+   <SourceLine>ElseIf left IsA RooDateTime And right IsA RooDateTime Then</SourceLine>
+   <SourceLine>Return New RooBoolean(RooDateTime(left).Value.SecondsFrom1970 &lt;= _</SourceLine>
+   <SourceLine>RooDateTime(right).Value.SecondsFrom1970)</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.Operator, _</SourceLine>
+   <SourceLine>"The `&lt;=` operator requires either two numbers or two DateTime objects")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case Roo.TokenType.CARET // Exponent (left ^ right)</SourceLine>
+   <SourceLine>Roo.AssertAreNumbers(expr.Operator, left, right)</SourceLine>
+   <SourceLine>Return New RooNumber(RooNumber(left).Value ^ RooNumber(right).Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case Roo.TokenType.PERCENT // Modulo (left % right).</SourceLine>
+   <SourceLine>Roo.AssertAreNumbers(expr.Operator, left, right)</SourceLine>
+   <SourceLine>If RooNumber(right).Value = 0 Then Raise New RooRuntimeError(expr.Operator, "Modulo with zero")</SourceLine>
+   <SourceLine>Return New RooNumber(RooNumber(left).Value Mod RooNumber(right).Value)</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooBinaryExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitUnaryExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1606006783</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitUnaryExpr(expr As RooUnaryExpr) As Variant</SourceLine>
+   <SourceLine>// Since Roo's scanner is unable to identify negative numbers, we need to </SourceLine>
+   <SourceLine>// handle number literals following the MINUS token as a special case. </SourceLine>
+   <SourceLine>If expr.Operator.Type = Roo.TokenType.MINUS Then</SourceLine>
+   <SourceLine>If expr.Right IsA RooGetExpr Then</SourceLine>
+   <SourceLine>If RooGetExpr(expr.Right).Obj IsA RooNumberLiteralExpr Then</SourceLine>
+   <SourceLine>// Negate the literal value.</SourceLine>
+   <SourceLine>RooNumberLiteralExpr(RooGetExpr(expr.Right).Obj).Value = _</SourceLine>
+   <SourceLine>-RooNumberLiteralExpr(RooGetExpr(expr.Right).Obj).Value</SourceLine>
+   <SourceLine>// Evaluate the right hand expression.]</SourceLine>
+   <SourceLine>Return Evaluate(expr.Right)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The right hand expression is NOT a number literal. Proceed.</SourceLine>
+   <SourceLine>// Evaluate the expression.</SourceLine>
+   <SourceLine>Dim right As Variant = Evaluate(expr.Right)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case expr.Operator.Type</SourceLine>
+   <SourceLine>Case Roo.TokenType.BANG, Roo.TokenType.NOT_KEYWORD // Boolean negation.</SourceLine>
+   <SourceLine>Return New RooBoolean(Not IsTruthy(right))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case Roo.TokenType.MINUS // Arithmetic negation.</SourceLine>
+   <SourceLine>Roo.AssertAreNumbers(expr.Operator, right)</SourceLine>
+   <SourceLine>Return New RooNumber(-RooNumber(right).Value)</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooUnaryExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitBooleanLiteralExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>597346303</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitBooleanLiteralExpr(expr As RooBooleanLiteralExpr) As Variant</SourceLine>
+   <SourceLine>Return New RooBoolean(expr.Value)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooBooleanLiteralExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitNumberLiteralExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>201021439</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitNumberLiteralExpr(expr As RooNumberLiteralExpr) As Variant</SourceLine>
+   <SourceLine>// Return a runtime representation of this number literal.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooNumber(expr.Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooNumberLiteralExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitNothingExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>811763711</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitNothingExpr(expr As RooNothingExpr) As Variant</SourceLine>
+   <SourceLine>#Pragma Unused expr</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// We only need one Nothing representation in the runtime...</SourceLine>
+   <SourceLine>Return Nothing</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooNothingExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitTextLiteralExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>751257599</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitTextLiteralExpr(expr As RooTextLiteralExpr) As Variant</SourceLine>
+   <SourceLine>// Return the runtime representation of this text literal.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooText(expr.Value)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooTextLiteralExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitArrayLiteralExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>460910591</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitArrayLiteralExpr(expr As RooArrayLiteralExpr) As Variant</SourceLine>
+   <SourceLine>// The interpreter is visiting an array literal node. E.g:</SourceLine>
+   <SourceLine>// [1, 2, "hello"]</SourceLine>
+   <SourceLine>// a = ["a", True]</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create a new runtime representation for the array.</SourceLine>
+   <SourceLine>Dim a As New RooArray</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Evaluate each of the elements in the array literal.</SourceLine>
+   <SourceLine>For Each element As RooExpr In expr.Elements</SourceLine>
+   <SourceLine>a.Elements.Append(Evaluate(element))</SourceLine>
+   <SourceLine>Next element</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return a</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooArrayLiteralExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitHashLiteralExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>525375487</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitHashLiteralExpr(expr As RooHashLiteralExpr) As Variant</SourceLine>
+   <SourceLine>// The interpreter has encountered a hash literal (e.g: {"name" =&gt; "value"}).</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create a new runtime representation for the hash.</SourceLine>
+   <SourceLine>Dim h As New RooHash</SourceLine>
+   <SourceLine>Dim key, value As Variant</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>For Each entry As Xojo.Core.DictionaryEntry In expr.Dict</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>key = Evaluate(entry.Key)</SourceLine>
+   <SourceLine>value = Evaluate(expr.Dict.Value(entry.Key))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// For text, numerical and boolean objects, we use their raw values as the keys.</SourceLine>
+   <SourceLine>If key IsA RooText Then</SourceLine>
+   <SourceLine>key = RooText(key).Value.ToText // Use Text not String.</SourceLine>
+   <SourceLine>ElseIf key IsA RooNumber Then</SourceLine>
+   <SourceLine>key = RooNumber(key).Value</SourceLine>
+   <SourceLine>ElseIf key IsA RooBoolean Then</SourceLine>
+   <SourceLine>key = RooBoolean(key).Value</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>h.Dict.Value(key) = value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Next entry</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return h</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooHashLiteralExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitSelfExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1817880575</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitSelfExpr(expr As RooSelfExpr) As Variant</SourceLine>
+   <SourceLine>Return LookupVariable(expr.Keyword, expr)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooSelfExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitSuperExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>301367295</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitSuperExpr(expr As RooSuperExpr) As Variant</SourceLine>
+   <SourceLine>// The interpreter has encountered the `super` keyword.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim distance As Integer = Locals.Lookup(expr, -1)</SourceLine>
+   <SourceLine>If distance = -1 Then</SourceLine>
+   <SourceLine>// Not supposed to happen...</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.Keyword, "An error occurred in the Interpreter.VisitSuperExpr method.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim superclass As RooClass = Environment.GetAt(distance, "super")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// "self" is always one level nearer than "super"'s environment.</SourceLine>
+   <SourceLine>Dim obj As RooInstance = Environment.GetAt(distance - 1, "self")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim method As RooFunction = superclass.FindMethod(obj, expr.Method.Lexeme)</SourceLine>
+   <SourceLine>If method = Nil Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.Method, "Undefined field `" + expr.Method.Lexeme + "`.")</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return method</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooSuperExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitGroupingExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>357132287</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitGroupingExpr(expr As RooGroupingExpr) As Variant</SourceLine>
+   <SourceLine>Return Evaluate(expr.Expression)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooGroupingExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitInvokeExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2128150527</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitInvokeExpr(expr As RooInvokeExpr) As Variant</SourceLine>
+   <SourceLine>// Evaluate the expression for the invokee. Usually this will be an identifier that looks up </SourceLine>
+   <SourceLine>// the function by its name but it could be anything. </SourceLine>
+   <SourceLine>Dim invokeeVariant As Variant = Evaluate(expr.Invokee)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Evaluate any arguments.</SourceLine>
+   <SourceLine>Dim arguments() As Variant</SourceLine>
+   <SourceLine>If expr.Arguments &lt;&gt; Nil Then // Remember that getters will have a Nil arguments array.</SourceLine>
+   <SourceLine>For i As Integer = 0 To expr.Arguments.Ubound</SourceLine>
+   <SourceLine>arguments.Append(Evaluate(expr.Arguments(i)))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure that we have an invokable invokee.</SourceLine>
+   <SourceLine>If Not invokeeVariant IsA Invokable Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.Paren, "Only functions, " + _</SourceLine>
+   <SourceLine>"methods and class initialisers can be invoked.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Dim invokee As Invokable = invokeeVariant</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that the number of arguments passed to this invokable object is correct.</SourceLine>
+   <SourceLine>If Not CorrectArity(invokee, arguments.Ubound + 1) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(expr.Paren, "Incorrect number of arguments passed to " + _</SourceLine>
+   <SourceLine>Stringable(invokee).StringValue + ".")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return the result of the invokcation.</SourceLine>
+   <SourceLine>Return invokee.Invoke(Self, arguments, expr.Paren)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooInvokeExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitFunctionStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2032107519</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitFunctionStmt(stmt As RooFunctionStmt) As Variant</SourceLine>
+   <SourceLine>// The interpreter is visiting a function declaration.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create a runtime representation for this function.</SourceLine>
+   <SourceLine>Dim func As New RooFunction(stmt, Environment, False)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Define the function in the current environment.</SourceLine>
+   <SourceLine>Environment.Define(stmt.Name.Lexeme, func)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>stmt As RooFunctionStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitModuleStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>998209535</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitModuleStmt(stmt As RooModuleStmt) As Variant</SourceLine>
+   <SourceLine>Dim func As RooFunction</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Define the module's name in the current environment.</SourceLine>
+   <SourceLine>Environment.Define(stmt.Name.Lexeme, Nothing)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Store the current environment and then immediately create a new one that </SourceLine>
+   <SourceLine>// will act as the module's namespace.</SourceLine>
+   <SourceLine>Dim oldEnv As RooEnvironment = Environment</SourceLine>
+   <SourceLine>Environment = New RooEnvironment(oldEnv)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert any methods in the module to RooFunctions.</SourceLine>
+   <SourceLine>Dim methods As Xojo.Core.Dictionary = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine>For Each f As RooFunctionStmt In stmt.Methods</SourceLine>
+   <SourceLine>func = New RooFunction(f, Environment, False)</SourceLine>
+   <SourceLine>methods.Value(f.Name.Lexeme) = func</SourceLine>
+   <SourceLine>Next f</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create a metaclass for this module to enable the use of the above </SourceLine>
+   <SourceLine>// methods (which are essentially static).</SourceLine>
+   <SourceLine>Dim metaclass As New RooClass(Nil, Nil, stmt.Name.Lexeme + " metaclass", methods, Self)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert any sub-module declarations to RooModules within this module's namespace.</SourceLine>
+   <SourceLine>Dim modules() As RooModule</SourceLine>
+   <SourceLine>For Each m As RooModuleStmt In stmt.Modules</SourceLine>
+   <SourceLine>modules.Append(VisitModuleStmt(m))</SourceLine>
+   <SourceLine>Next m</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert any class declarations to RooClasses within this module's namespace.</SourceLine>
+   <SourceLine>Dim classes() As RooClass</SourceLine>
+   <SourceLine>For Each c As RooClassStmt In stmt.Classes</SourceLine>
+   <SourceLine>classes.Append(VisitClassStmt(c))</SourceLine>
+   <SourceLine>Next c</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert the passed module statement node into its runtime representation.</SourceLine>
+   <SourceLine>Dim m As New RooModule(metaclass, stmt.Name.Lexeme, modules, classes, methods)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Store the module object in the variable we previously declared.</SourceLine>
+   <SourceLine>Environment.Assign(stmt.Name, m)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Done defining the module. Restore the environment.</SourceLine>
+   <SourceLine>Environment = oldEnv</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>return m</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>stmt As RooModuleStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitClassStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>468789247</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitClassStmt(stmt As RooClassStmt) As Variant</SourceLine>
+   <SourceLine>// The intepreter is visiting a class definition.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim staticMethods, methods As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine>Dim func As RooFunction</SourceLine>
+   <SourceLine>Dim superclass As RooClass = Nil</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Environment.Define(stmt.Name.Lexeme, Nothing)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Evaluate this class definition's (optional) superclass and make sure that, </SourceLine>
+   <SourceLine>// if defined, it is actually a class.</SourceLine>
+   <SourceLine>Dim superclassVariant As Variant = Nil</SourceLine>
+   <SourceLine>If stmt.Superclass &lt;&gt; Nil Then</SourceLine>
+   <SourceLine>superclassVariant = Evaluate(stmt.Superclass)</SourceLine>
+   <SourceLine>If Not superclassVariant IsA RooClass Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(stmt.Superclass.Name, "Classes must inherit from another class (" + _</SourceLine>
+   <SourceLine>stmt.Superclass.Name.Lexeme + " is a " + Roo.VariantTypeAsString(superclassVariant) + ").")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>superclass = superclassVariant</SourceLine>
+   <SourceLine>// Create a new environment to store a reference to the superclass.</SourceLine>
+   <SourceLine>Environment = New RooEnvironment(Environment)</SourceLine>
+   <SourceLine>Environment.Define("super", superclass)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert the static methods into their runtime representation as RooFunctions.</SourceLine>
+   <SourceLine>staticMethods = New Xojo.Core.Dictionary</SourceLine>
+   <SourceLine>For Each sm As RooFunctionStmt In stmt.StaticMethods</SourceLine>
+   <SourceLine>func = New RooFunction(sm, Environment, False)</SourceLine>
+   <SourceLine>staticMethods.Value(sm.Name.Lexeme) = func</SourceLine>
+   <SourceLine>Next sm</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create this class definition's metaclass (to permit static methods).</SourceLine>
+   <SourceLine>Dim metaclass As New RooClass(Nil, superclass, stmt.Name.Lexeme + " metaclass", staticMethods, Self)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert the instance methods into their runtime representation as RooFunctions.</SourceLine>
+   <SourceLine>methods = New Xojo.Core.Dictionary</SourceLine>
+   <SourceLine>For each m As RooFunctionStmt In stmt.Methods</SourceLine>
+   <SourceLine>func = New RooFunction(m, Environment, If(m.Name.Lexeme = "init", True, False))</SourceLine>
+   <SourceLine>methods.Value(m.Name.Lexeme) = func</SourceLine>
+   <SourceLine>Next m</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert the class syntax node into its runtime representation.</SourceLine>
+   <SourceLine>Dim klass As New RooClass(metaclass, superclass, stmt.Name.Lexeme, methods, Self)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If a superclass was defined, pop the previously created environment off.</SourceLine>
+   <SourceLine>if superclass &lt;&gt; Nil Then Environment = Environment.Enclosing</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Store the class object in the variable we previously declared.</SourceLine>
+   <SourceLine>Environment.Assign(stmt.Name, klass)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return klass</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>stmt As RooClassStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitBlockStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>473231359</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitBlockStmt(stmt As RooBlockStmt) As Variant</SourceLine>
+   <SourceLine>// Execute this block, passing to it a new environment enclosed by the current environment.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>ExecuteBlock(stmt.Statements, New RooEnvironment(Environment))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>stmt As RooBlockStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitVarStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1058586623</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitVarStmt(varStatement As RooVarStmt) As Variant</SourceLine>
+   <SourceLine>// Examples:</SourceLine>
+   <SourceLine>//   var a;</SourceLine>
+   <SourceLine>//   var a = 10;</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim value As Variant</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If varStatement.Initialiser = Nil Then</SourceLine>
+   <SourceLine>// No initialiser, e.g. var a;</SourceLine>
+   <SourceLine>value = Self.Nothing</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// There is an initialiser, e.g. var a = 10;</SourceLine>
+   <SourceLine>value = Evaluate(varStatement.Initialiser)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Define this newly created variable in the current scope.</SourceLine>
+   <SourceLine>Self.Environment.Define(varStatement.Name.Lexeme, value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>varStatement As RooVarStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitExitStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>830978047</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitExitStmt(stmt As RooExitStmt) As Variant</SourceLine>
+   <SourceLine>// The interpreter is visiting an `exit` statement.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused stmt</SourceLine>
+   <SourceLine>#Pragma BreakOnExceptions False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Raise New RooExit</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>stmt As RooExitStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitQuitStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>140105727</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitQuitStmt(stmt As RooQuitStmt) As Variant</SourceLine>
+   <SourceLine>// The interpreter has encountered the quit keyword.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused stmt</SourceLine>
+   <SourceLine>#Pragma BreakOnExceptions False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Raise New RooQuit</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>stmt As RooQuitStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitReturnStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>166823935</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitReturnStmt(stmt As RooReturnStmt) As Variant</SourceLine>
+   <SourceLine>// The interpreter has encountered the `return` keyword.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim value As Variant</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If there is an (optional) return value, evaluate it.</SourceLine>
+   <SourceLine>If stmt.Value &lt;&gt; Nil Then value = Evaluate(stmt.Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma BreakOnExceptions False</SourceLine>
+   <SourceLine>Raise New RooReturn(value)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>stmt As RooReturnStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitBreakStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>904660991</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitBreakStmt(stmt As RooBreakStmt) As Variant</SourceLine>
+   <SourceLine>// The interpreter has encountered a break statement.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused stmt</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If stmt.Condition &lt;&gt; Nil Then</SourceLine>
+   <SourceLine>// Evaluate the break condition.</SourceLine>
+   <SourceLine>If IsTruthy(Evaluate(stmt.Condition)) Then</SourceLine>
+   <SourceLine>#Pragma BreakOnExceptions False // Xojo bug. Compiler ignores if at top of the method.</SourceLine>
+   <SourceLine>Raise New RooBreak</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Else // Unconditional break.</SourceLine>
+   <SourceLine>#Pragma BreakOnExceptions False // Xojo bug. Compiler ignores if at top of the method.</SourceLine>
+   <SourceLine>Raise New RooBreak</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>stmt As RooBreakStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitWhileStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1269694463</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitWhileStmt(stmt As RooWhileStmt) As Variant</SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>While IsTruthy(Evaluate(stmt.Condition)) And Not ForceKill</SourceLine>
+   <SourceLine>Execute(stmt.Body)</SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Catch b As RooBreak</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// `break` statement encountered - exit the while loop.</SourceLine>
+   <SourceLine>Return Nothing</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>stmt As RooWhileStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitExpressionStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>191500287</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitExpressionStmt(stmt As RooStmt) As Variant</SourceLine>
+   <SourceLine>#If Self.kDebugMode</SourceLine>
+   <SourceLine>// Print out the result of expression statements in debugging mode.</SourceLine>
+   <SourceLine>Dim result As Variant = Evaluate(stmt.Expression)</SourceLine>
+   <SourceLine>If result IsA Stringable Then Print("=&gt; " + Stringable(result).StringValue)</SourceLine>
+   <SourceLine>#Else</SourceLine>
+   <SourceLine>Call Evaluate(stmt.Expression)</SourceLine>
+   <SourceLine>#Endif</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>stmt As RooStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitIfStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1353287679</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitIfStmt(stmt As RooIfStmt) As Variant</SourceLine>
+   <SourceLine>// The interpreter is visiting an if statement.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Try the primary condition.</SourceLine>
+   <SourceLine>If IsTruthy(Evaluate(stmt.Condition)) Then</SourceLine>
+   <SourceLine>Execute(stmt.ThenBranch)</SourceLine>
+   <SourceLine>Return Nothing</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Try the `or` clauses in order.</SourceLine>
+   <SourceLine>If stmt.OrStatements.Ubound &gt;= 0 Then</SourceLine>
+   <SourceLine>For i As Integer = 0 To stmt.OrStatements.Ubound</SourceLine>
+   <SourceLine>If IsTruthy(Evaluate(stmt.OrStatements(i).Condition)) Then</SourceLine>
+   <SourceLine>Execute(stmt.OrStatements(i).ThenBranch)</SourceLine>
+   <SourceLine>Return Nothing</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Try the else clause, if present.</SourceLine>
+   <SourceLine>If stmt.ElseBranch &lt;&gt; Nil Then</SourceLine>
+   <SourceLine>Execute(stmt.ElseBranch)</SourceLine>
+   <SourceLine>Return Nothing</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err As RooExit</SourceLine>
+   <SourceLine>// Encountered an `exit` statement. Simply exit the `if` construct.</SourceLine>
+   <SourceLine>Return Nothing</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>stmt As RooIfStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Resolve</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1342291967</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Resolve(expr As RooExpr, depth As Integer)</SourceLine>
+   <SourceLine>Locals.Value(expr) = depth</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooExpr, depth As Integer</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Reset</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1144723455</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Reset()</SourceLine>
+   <SourceLine>// Reset the interpreter.</SourceLine>
+   <SourceLine>// Do not flush out the Natives environment. There's no need as they are read-only and we don't</SourceLine>
+   <SourceLine>// want to have to re-add the entire standard library every time we reset the interpreter.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>ForceKill = False</SourceLine>
+   <SourceLine>mIsRunning = False</SourceLine>
+   <SourceLine>Globals = New RooEnvironment(Natives) // Note that global classes, functions, etc will shadow Natives.</SourceLine>
+   <SourceLine>Environment = globals</SourceLine>
+   <SourceLine>Locals = New Dictionary // Stores resolution information from the Analyser.</SourceLine>
+   <SourceLine>Nothing = New RooNothing // The global Nothing object.</SourceLine>
+   <SourceLine>Custom = New Dictionary</SourceLine>
+   <SourceLine>REPL = False</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Interpret</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>689334271</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Interpret(statements() As RooStmt)</SourceLine>
+   <SourceLine>// Flag that we've started.</SourceLine>
+   <SourceLine>mIsRunning = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Execute each of the passed statements in order.</SourceLine>
+   <SourceLine>Dim i, limit As Integer</SourceLine>
+   <SourceLine>limit = statements.Ubound</SourceLine>
+   <SourceLine>For i = 0 To limit</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Execute(statements(i))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If ForceKill Then</SourceLine>
+   <SourceLine>mIsRunning = False</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// We've finished execution.</SourceLine>
+   <SourceLine>mIsRunning = False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Catch any runtime errors and fire our custom event.</SourceLine>
+   <SourceLine>Exception err As RooRuntimeError</SourceLine>
+   <SourceLine>mIsRunning = False</SourceLine>
+   <SourceLine>RuntimeError(err.Token, err.Message)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Exit gracefully if the `quit` statement is encountered in non-REPL</SourceLine>
+   <SourceLine>// mode or raise the quit exception further if REPL mode.</SourceLine>
+   <SourceLine>Exception err As RooQuit</SourceLine>
+   <SourceLine>mIsRunning = False</SourceLine>
+   <SourceLine>If REPL Then</SourceLine>
+   <SourceLine>#Pragma BreakOnExceptions False</SourceLine>
+   <SourceLine>Raise err</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>statements() As RooStmt</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Execute</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>523765759</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Execute(statement As RooStmt)</SourceLine>
+   <SourceLine>// This method is analogous to Evaluate (which takes an expression).</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Call statement.Accept(Self)</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>statement As RooStmt</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Evaluate</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1661626367</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Evaluate(expr As RooExpr) As Variant</SourceLine>
+   <SourceLine>If expr &lt;&gt; Nil Then</SourceLine>
+   <SourceLine>Return expr.Accept(Self)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return Nil</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1657389055</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(absoluteRoot As FolderItem = Nil)</SourceLine>
+   <SourceLine>// Create a root environment that will hold native modules. This will enclose the </SourceLine>
+   <SourceLine>// Globals environment. Creating the Natives environment in the constructor allows us to </SourceLine>
+   <SourceLine>// reset the interpreter and not incur the overhead of redefining native modules and </SourceLine>
+   <SourceLine>// functions again.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Determine the root of the volume that the interpreter is running on and </SourceLine>
+   <SourceLine>// use this as the root for absolute paths when the interpreter is accessing </SourceLine>
+   <SourceLine>// the file system.</SourceLine>
+   <SourceLine>If absoluteRoot = Nil Or absoluteRoot.Exists = False Then</SourceLine>
+   <SourceLine>Dim f As FolderItem = App.ExecutableFile.Parent</SourceLine>
+   <SourceLine>Do</SourceLine>
+   <SourceLine>If f.Parent = Nil Or Not f.Parent.Exists Then Exit</SourceLine>
+   <SourceLine>f = f.Parent</SourceLine>
+   <SourceLine>Loop</SourceLine>
+   <SourceLine>Self.AbsoluteRoot = f</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Self.AbsoluteRoot = absoluteRoot</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Setup a new parser.</SourceLine>
+   <SourceLine>Parser = New RooParser</SourceLine>
+   <SourceLine>AddHandler Parser.ScanningError, AddressOf ScannerErrorDelegate</SourceLine>
+   <SourceLine>AddHandler Parser.ParsingError, AddressOf ParserErrorDelegate</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Setup a new analyser.</SourceLine>
+   <SourceLine>Analyser = New RooAnalyser(Self)</SourceLine>
+   <SourceLine>AddHandler Analyser.Error, AddressOf AnalyserErrorDelegate</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure that the Roo module has been initialised.</SourceLine>
+   <SourceLine>Roo.Initialise</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create a new enclosing environment to hold our native classes, functions and modules.</SourceLine>
+   <SourceLine>Natives = New RooEnvironment</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Default to file system safe mode.</SourceLine>
+   <SourceLine>mFileSystemSafeMode = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Add the standard library functions and modules to the runtime.</SourceLine>
+   <SourceLine>InitialiseStandardLibrary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Reset the interpreter.</SourceLine>
+   <SourceLine>Reset</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>absoluteRoot As FolderItem = Nil</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>BothNumbers</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2113026047</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function BothNumbers(obj1 As Variant, obj2 As Variant) As Boolean</SourceLine>
+   <SourceLine>// Returns True if both objects are RooNumbers, False otherwise.</SourceLine>
+   <SourceLine>If obj1 IsA RooNumber And obj2 IsA RooNumber Then</SourceLine>
+   <SourceLine>Return True</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>obj1 As Variant, obj2 As Variant</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>BothStringable</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1525893119</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function BothStringable(obj1 As Variant, obj2 As Variant) As Boolean</SourceLine>
+   <SourceLine>// Returns True if both objects implement the Stringable interface, False otherwise.</SourceLine>
+   <SourceLine>If obj1 IsA Stringable And obj2 IsA Stringable Then</SourceLine>
+   <SourceLine>Return True</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>obj1 As Variant, obj2 As Variant</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>IsEqual</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>208267263</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function IsEqual(a As Variant, b As Variant) As Boolean</SourceLine>
+   <SourceLine>// Returns True if objects `a` and `b` are considered by Roo to be equal. False if not.</SourceLine>
+   <SourceLine>// Built in data types (text, booleans, numbers and dates) are always compared by value.</SourceLine>
+   <SourceLine>// Instances are always compared by reference.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Are they the same object in memory?</SourceLine>
+   <SourceLine>If a = b Then Return True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Objects compared by value.</SourceLine>
+   <SourceLine>// Text objects. We do a CASE-SENSITIVE comparison.</SourceLine>
+   <SourceLine>If a IsA RooText And b IsA RooText then</SourceLine>
+   <SourceLine>Return If(StrComp(RooText(a).Value, RooText(b).Value, 0) = 0, True, False)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Boolean objects.</SourceLine>
+   <SourceLine>If a IsA RooBoolean And b IsA RooBoolean Then</SourceLine>
+   <SourceLine>Return RooBoolean(a).Value = RooBoolean(b).Value</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Number objects.</SourceLine>
+   <SourceLine>If BothNumbers(a, b) Then Return RooNumber(a).Value = RooNumber(b).Value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If a IsA RooDateTime And b IsA RooDateTime Then</SourceLine>
+   <SourceLine>Return RooDateTime(a).Value.SecondsFrom1970 = RooDateTime(b).Value.SecondsFrom1970</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Nothing always equals nothing.</SourceLine>
+   <SourceLine>If a IsA RooNothing And b IsA RooNothing Then Return True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Not equal.</SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>a As Variant, b As Variant</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>LookupVariable</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1767688191</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function LookupVariable(name As RooToken, expr As RooExpr) As Variant</SourceLine>
+   <SourceLine>// Returns the requested variable by finding it in the correct scope.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Look up the resolved distance (calculated by the Analyser).</SourceLine>
+   <SourceLine>Dim distance As Integer = Locals.Lookup(expr, -1)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If distance = -1 Then</SourceLine>
+   <SourceLine>// Global variable.</SourceLine>
+   <SourceLine>Return Globals.Get(name)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// Locally scoped variable.</SourceLine>
+   <SourceLine>Return Environment.GetAt(distance, name.Lexeme)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken, expr As RooExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VariantAsString</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>815849471</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VariantAsString(v As Variant) As String</SourceLine>
+   <SourceLine>// A more robust and Roo-friendly implementation of Variant.StringValue().</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If v = Nil Then Return "Nil"</SourceLine>
+   <SourceLine>If v IsA RooBoolean Then Return "Boolean object"</SourceLine>
+   <SourceLine>If v IsA RooNumber Then Return "Number object"</SourceLine>
+   <SourceLine>If v IsA RooText Then Return "Text object"</SourceLine>
+   <SourceLine>If v IsA RooNothing Then Return "Nothing"</SourceLine>
+   <SourceLine>If v IsA RooClass Then Return RooClass(v).Name + " class"</SourceLine>
+   <SourceLine>If v IsA RooFunction Or v IsA RooInstance Then Return Stringable(v).StringValue</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim info As Xojo.Introspection.TypeInfo = Xojo.Introspection.GetType(v)</SourceLine>
+   <SourceLine>Return info.Name</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err</SourceLine>
+   <SourceLine>Return "Cannot determine type."</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>v As Variant</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ExecuteBlock</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1189425151</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub ExecuteBlock(statements() As RooStmt, env As RooEnvironment)</SourceLine>
+   <SourceLine>// Execute a block of statements within the passed environment.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim limit As Integer = statements.Ubound</SourceLine>
+   <SourceLine>Dim i As Integer</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Keep a reference to the current interpreter's environment.</SourceLine>
+   <SourceLine>Dim previous As RooEnvironment = Environment</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Switch to the block's environment.</SourceLine>
+   <SourceLine>Environment = env</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Execute the statements in the block.</SourceLine>
+   <SourceLine>For i = 0 To limit</SourceLine>
+   <SourceLine>Execute(statements(i))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Finally</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Always restore the interpreter's environment back to what it was.</SourceLine>
+   <SourceLine>Environment = previous</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>statements() As RooStmt, env As RooEnvironment</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>IsTruthy</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>372234239</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function IsTruthy(what As Variant) As Boolean</SourceLine>
+   <SourceLine>// In Roo, Nothing and False are False, everything else is True.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If what = Nil Or what IsA RooNothing Then Return False</SourceLine>
+   <SourceLine>If what IsA RooBoolean Then Return RooBoolean(what).Value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>what As Variant</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>CorrectArity</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1249783807</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Shared Function CorrectArity(invokee As Invokable, argCount As Integer) As Boolean</SourceLine>
+   <SourceLine>// Checks that the the correct number of arguments for the specified invokable object have been passed</SourceLine>
+   <SourceLine>// (i.e `argCount` matches the invokable's "arity").</SourceLine>
+   <SourceLine>// An invokable object's Arity() function returns a Variant which is either an integer or an array </SourceLine>
+   <SourceLine>// of integers.</SourceLine>
+   <SourceLine>// If an integer is returned it means that this invokable object has only one method signature.</SourceLine>
+   <SourceLine>// If an array of integers is returned then there are multiple signatures which take</SourceLine>
+   <SourceLine>// differing numbers of arguments.</SourceLine>
+   <SourceLine>// E.g: The `Text.slice()` method can take one or two arguments. In that case, Arity() will </SourceLine>
+   <SourceLine>// return an integer array in the form: arity(0) = 1, arity(1) = 2.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim arities() As Integer</SourceLine>
+   <SourceLine>Dim arity As Variant = invokee.Arity</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If arity.IsArray Then // This invokable object has more than one method signature.</SourceLine>
+   <SourceLine>arities = arity</SourceLine>
+   <SourceLine>If arities.IndexOf(argCount) &lt;&gt; -1 Then Return True</SourceLine>
+   <SourceLine>Else // This invokable object has only one method signature.</SourceLine>
+   <SourceLine>If argCount = arity.IntegerValue Then Return True</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Wrong arity.</SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>1</IsShared>
+  <ItemParams>invokee As Invokable, argCount As Integer</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitOrStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>739395583</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitOrStmt(stmt As RooOrStmt) As Variant</SourceLine>
+   <SourceLine>// The interpreter will never visit one of these nodes. They are only visited by the Analyser.</SourceLine>
+   <SourceLine>#Pragma Unused stmt</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Nothing</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>stmt As RooOrStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>PrintHook</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2085462015</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub PrintHook(s As String)</SourceLine>
+   <SourceLine>// This method exists to provide an accessible hook to the interpreter's Print event.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Print(s)</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>s As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InitialiseStandardLibrary</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1813262335</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InitialiseStandardLibrary()</SourceLine>
+   <SourceLine>DefineNativeFunction("assert", New RooSLAssert)</SourceLine>
+   <SourceLine>DefineNativeFunction("DateTime", New RooSLDateTime)</SourceLine>
+   <SourceLine>DefineNativeFunction("input", New RooSLInput)</SourceLine>
+   <SourceLine>DefineNativeFunction("input_value", New RooSLInputValue)</SourceLine>
+   <SourceLine>DefineNativeFunction("print", New RooSLPrint)</SourceLine>
+   <SourceLine>DefineNativeFunction("Regex", New RooSLRegex)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>DefineNativeModule("FileSystem", New RooSLFileSystem(Self))</SourceLine>
+   <SourceLine>DefineNativeModule("HTTP", New RooSLHTTP(Self))</SourceLine>
+   <SourceLine>DefineNativeModule("JSON", New RooSLJSON)</SourceLine>
+   <SourceLine>DefineNativeModule("Maths", New RooSLMaths)</SourceLine>
+   <SourceLine>DefineNativeModule("Roo", New RooSLRoo)</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DefineNativeFunction</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1501497343</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub DefineNativeFunction(name As String, func As Variant)</SourceLine>
+   <SourceLine>Natives.Define(name, func)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String, func As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InputHook</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1411545087</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function InputHook(prompt As String) As String</SourceLine>
+   <SourceLine>// This method exists to provide an accessible hook to the interpreter's Input event.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Input(prompt)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>prompt As String</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitPassStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1329268735</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitPassStmt(stmt As RooPassStmt) As Variant</SourceLine>
+   <SourceLine>// The `pass` statement does nothing.</SourceLine>
+   <SourceLine>#Pragma Unused stmt</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Nothing</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>stmt As RooPassStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DefineNativeModule</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>148672511</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub DefineNativeModule(name as String, m as RooNativeModule)</SourceLine>
+   <SourceLine>Natives.Define(name, m)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name as String, m as RooNativeModule</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Interpret</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1681530879</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Interpret(source As String, preserveState As Boolean = False)</SourceLine>
+   <SourceLine>// Reset the interpreter if required.</SourceLine>
+   <SourceLine>If Not preserveState Then Reset</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Flag that we've started.</SourceLine>
+   <SourceLine>mIsRunning = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Parse the source code into an abstract syntax tree.</SourceLine>
+   <SourceLine>Dim ast() As RooStmt = Parser.Parse(source)</SourceLine>
+   <SourceLine>If Parser.HasError Then</SourceLine>
+   <SourceLine>mIsRunning = False</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Analyse the tree.</SourceLine>
+   <SourceLine>Analyser.Analyse(ast)</SourceLine>
+   <SourceLine>If Analyser.HasError Then</SourceLine>
+   <SourceLine>mIsRunning = False</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Interpret the AST.</SourceLine>
+   <SourceLine>Interpret(ast)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>source As String, preserveState As Boolean = False</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ScannerErrorDelegate</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1013088255</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub ScannerErrorDelegate(sender As RooParser, file As FolderItem, message As String, line As Integer, position As Integer)</SourceLine>
+   <SourceLine>#Pragma Unused sender</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// An error occurred during source code scanning.</SourceLine>
+   <SourceLine>ScannerError(file, message, line, position)</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>sender As RooParser, file As FolderItem, message As String, line As Integer, position As Integer</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ParserErrorDelegate</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1190422527</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub ParserErrorDelegate(sender As RooParser, where As RooToken, message As String)</SourceLine>
+   <SourceLine>#Pragma Unused sender</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// An error occurred whilst parsing the source code.</SourceLine>
+   <SourceLine>ParserError(where, message)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>sender As RooParser, where As RooToken, message As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AnalyserErrorDelegate</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>937664511</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AnalyserErrorDelegate(sender As RooAnalyser, token As RooToken, message As String)</SourceLine>
+   <SourceLine>#Pragma Unused sender</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// An error occurred during the analysis of the parse tree.</SourceLine>
+   <SourceLine>AnalyserError(token, message)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>sender As RooAnalyser, token As RooToken, message As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Interpret</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1952665599</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Interpret(f As FolderItem, preserveState As Boolean = False)</SourceLine>
+   <SourceLine>// Reset the interpreter if required.</SourceLine>
+   <SourceLine>If Not preserveState Then Reset</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// flag that we've started.</SourceLine>
+   <SourceLine>mIsRunning = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Parse the source file into an abstract syntax tree.</SourceLine>
+   <SourceLine>Dim ast() As RooStmt = Parser.Parse(f)</SourceLine>
+   <SourceLine>If Parser.HasError Then</SourceLine>
+   <SourceLine>mIsRunning = False</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Analyse the tree.</SourceLine>
+   <SourceLine>Analyser.Analyse(ast)</SourceLine>
+   <SourceLine>If Analyser.HasError Then</SourceLine>
+   <SourceLine>mIsRunning = False</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Interpret the AST.</SourceLine>
+   <SourceLine>Interpret(ast)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>f As FolderItem, preserveState As Boolean = False</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitBitwiseExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>568911871</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitBitwiseExpr(expr As RooBitwiseExpr) As Variant</SourceLine>
+   <SourceLine>// Evaluate the left and right operands.</SourceLine>
+   <SourceLine>Dim left As Variant = Evaluate(expr.Left)</SourceLine>
+   <SourceLine>Dim right As Variant = Evaluate(expr.Right)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The bitwise operations all require positive integer operands.</SourceLine>
+   <SourceLine>Roo.AssertArePositiveIntegers(expr.Operator, left, right)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Cast the operands to 64-bit integers.</SourceLine>
+   <SourceLine>Dim intLeft, intRight As UInt64</SourceLine>
+   <SourceLine>intLeft = RooNumber(left).Value</SourceLine>
+   <SourceLine>intRight = RooNumber(right).Value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case expr.Operator.Type</SourceLine>
+   <SourceLine>Case Roo.TokenType.AMPERSAND</SourceLine>
+   <SourceLine>// Bitwise AND operation.</SourceLine>
+   <SourceLine>Return New RooNumber(intLeft And intRight)</SourceLine>
+   <SourceLine>Case Roo.TokenType.PIPE</SourceLine>
+   <SourceLine>// Bitwise OR operation.</SourceLine>
+   <SourceLine>Return New RooNumber(intLeft Or intRight)</SourceLine>
+   <SourceLine>Case Roo.TokenType.LESS_LESS</SourceLine>
+   <SourceLine>// Bit shift left.</SourceLine>
+   <SourceLine>Return New RooNumber(Bitwise.ShiftLeft(intLeft, intRight))</SourceLine>
+   <SourceLine>Case Roo.TokenType.GREATER_GREATER</SourceLine>
+   <SourceLine>// Bit shift right.</SourceLine>
+   <SourceLine>Return New RooNumber(Bitwise.ShiftRight(intLeft, intRight))</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooBitwiseExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ShouldAllowNetworkAccess</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>121493503</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ShouldAllowNetworkAccess(url As String) As Boolean</SourceLine>
+   <SourceLine>// Internal method. </SourceLine>
+   <SourceLine>// Called by the HTTP module to determine whether or not to allow access to the </SourceLine>
+   <SourceLine>// network using the specified URL.</SourceLine>
+   <SourceLine>// It fires the interpreter's AllowNetworkAccess() event. If this event returns </SourceLine>
+   <SourceLine>// False then we need to prevent the interpreter from accessing the network by </SourceLine>
+   <SourceLine>// returning False from this method. If it returns True then we return True </SourceLine>
+   <SourceLine>// from this method.</SourceLine>
+   <SourceLine>// We do it this way so that if the AllowNetworkAccess() event is not handled by a </SourceLine>
+   <SourceLine>// Xojo developer, the interpreter will default to disallowing network access.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return AllowNetworkAccess(url)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>url As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DidAccessNetwork</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1581608959</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub DidAccessNetwork(url As String, status As Integer)</SourceLine>
+   <SourceLine>// Called internally when a network access was made and was either successful or </SourceLine>
+   <SourceLine>// timed out.</SourceLine>
+   <SourceLine>// We use this method as a proxy to fire the interpreter's NetworkAccessed event.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>NetworkAccessed(url, status)</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>url As String, status As Integer</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>RooPathToFolderItem</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1818275839</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function RooPathToFolderItem(path As String, baseFile As FolderItem) As FolderItem</SourceLine>
+   <SourceLine>// Takes a Roo file path and returns it as a FolderItem or Nil if it's not possible </SourceLine>
+   <SourceLine>// to derive one.</SourceLine>
+   <SourceLine>// File paths in Roo are separated by forward slashes.</SourceLine>
+   <SourceLine>// `../` moves up the hierarchy to the parent.</SourceLine>
+   <SourceLine>// If a path starts with a `/` it is absolute, otherwise it is taken to be </SourceLine>
+   <SourceLine>// relative to `baseFile`.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// An empty path refers to the base file.</SourceLine>
+   <SourceLine>If path = "" Then Return baseFile</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Is this an absolute path? If so it will begin with `/`.</SourceLine>
+   <SourceLine>Dim absolute As Boolean = False</SourceLine>
+   <SourceLine>If path.Left(1) = "/" Then</SourceLine>
+   <SourceLine>absolute = True</SourceLine>
+   <SourceLine>path = path.Right(path.Len - 1)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Split the path into it's constituent parts.</SourceLine>
+   <SourceLine>Dim chars() As String = path.Split("")</SourceLine>
+   <SourceLine>Dim char, part, parts() As String</SourceLine>
+   <SourceLine>For Each char In chars</SourceLine>
+   <SourceLine>If char = "/" Then</SourceLine>
+   <SourceLine>parts.Append(part)</SourceLine>
+   <SourceLine>part = ""</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>part = part + char</SourceLine>
+   <SourceLine>End if</SourceLine>
+   <SourceLine>Next char</SourceLine>
+   <SourceLine>If char &lt;&gt; "/" Then parts.Append(part)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim result As FolderItem</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Handle absolute paths.</SourceLine>
+   <SourceLine>If absolute Then</SourceLine>
+   <SourceLine>result = New FolderItem(AbsoluteRoot.NativePath, FolderItem.PathTypeNative)</SourceLine>
+   <SourceLine>For Each part In parts</SourceLine>
+   <SourceLine>If part = ".." Then</SourceLine>
+   <SourceLine>result = result.Parent</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>result = result.Child(part)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next part</SourceLine>
+   <SourceLine>Return result</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Handle relative paths.</SourceLine>
+   <SourceLine>If baseFile = Nil Then</SourceLine>
+   <SourceLine>result = AbsoluteRoot</SourceLine>
+   <SourceLine>ElseIf Not baseFile.Directory Then // Use this file's parent folder as our starting point.</SourceLine>
+   <SourceLine>result = New FolderItem(baseFile.Parent.NativePath, FolderItem.PathTypeNative)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>result = New FolderItem(baseFile.NativePath, FolderItem.PathTypeNative)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>For Each part In parts</SourceLine>
+   <SourceLine>If part = ".." Then</SourceLine>
+   <SourceLine>result = result.Parent</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>result = result.Child(part)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next part</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return result</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err</SourceLine>
+   <SourceLine>Return Nil</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>path As String, baseFile As FolderItem</ItemParams>
+  <ItemResult>FolderItem</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DeletionPreventedDelegate</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1926785023</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub DeletionPreventedDelegate(f As FolderItem, where As RooToken)</SourceLine>
+   <SourceLine>// Provides a hook to fire this interpreter's DeletionPrevented event.</SourceLine>
+   <SourceLine>DeletionPrevented(f, where)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>f As FolderItem, where As RooToken</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Hook>
+  <ItemName>Print</ItemName>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemFlags>33</ItemFlags>
+  <SystemFlags>0</SystemFlags>
+  <ItemParams>s As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Hook>
+ <Hook>
+  <ItemName>Input</ItemName>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemFlags>33</ItemFlags>
+  <SystemFlags>0</SystemFlags>
+  <ItemParams>prompt As String</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Hook>
+ <Hook>
+  <ItemName>ScannerError</ItemName>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemFlags>33</ItemFlags>
+  <SystemFlags>0</SystemFlags>
+  <ItemParams>file As FolderItem, message As String, line As Integer, position As Integer</ItemParams>
+  <ItemResult></ItemResult>
+ </Hook>
+ <Hook>
+  <ItemName>ParserError</ItemName>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemFlags>33</ItemFlags>
+  <SystemFlags>0</SystemFlags>
+  <ItemParams>where As RooToken, message As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Hook>
+ <Hook>
+  <ItemName>AnalyserError</ItemName>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemFlags>33</ItemFlags>
+  <SystemFlags>0</SystemFlags>
+  <ItemParams>token As RooToken, message As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Hook>
+ <Hook>
+  <ItemName>RuntimeError</ItemName>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemFlags>33</ItemFlags>
+  <SystemFlags>0</SystemFlags>
+  <ItemParams>where As RooToken, message As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Hook>
+ <Hook>
+  <ItemName>AllowNetworkAccess</ItemName>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemFlags>33</ItemFlags>
+  <SystemFlags>0</SystemFlags>
+  <ItemParams>url As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Hook>
+ <Hook>
+  <ItemName>NetworkAccessed</ItemName>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemFlags>33</ItemFlags>
+  <SystemFlags>0</SystemFlags>
+  <ItemParams>url As String, status As Integer</ItemParams>
+  <ItemResult></ItemResult>
+ </Hook>
+ <Hook>
+  <ItemName>DeletionPrevented</ItemName>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemFlags>33</ItemFlags>
+  <SystemFlags>0</SystemFlags>
+  <ItemParams>f As FolderItem, where As RooToken</ItemParams>
+  <ItemResult></ItemResult>
+ </Hook>
+ <Property>
+  <ItemName>ForceKill</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1219713023</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>ForceKill As Boolean = False</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>ForceKill As Boolean = False</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Globals</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>537065471</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Globals As RooEnvironment</SourceLine>
+   <SourceLine>Holds a fixed reference to the outermost global environment.</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Globals As RooEnvironment</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Environment</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>987226111</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Environment As RooEnvironment</SourceLine>
+   <SourceLine>Tracks the current environment. Changes as the interpreter enters and exits local scopes.</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Environment As RooEnvironment</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Custom</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1470050303</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Custom As Dictionary</SourceLine>
+   <SourceLine>Used to store arbitrary data for the interpreter.</SourceLine>
+   <SourceLine>Only of use to Xojo developers.</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Custom As Dictionary</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Locals</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1096308735</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Locals As Dictionary</SourceLine>
+   <SourceLine>This Dictionary stores resolution information passed to the Interpreter from the Analyser during</SourceLine>
+   <SourceLine>static analysis.</SourceLine>
+   <SourceLine>Key = RooExpr</SourceLine>
+   <SourceLine>Value = Integer (depth)</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Locals As Dictionary</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Nothing</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1461329919</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Nothing As RooNothing</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Nothing As RooNothing</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Natives</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1136068607</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Natives As RooEnvironment</SourceLine>
+   <SourceLine>Holds a reference the environment which contains modules, classes, functions and variables that are </SourceLine>
+   <SourceLine>part of the standard library or are created by Xojo developers.</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Natives As RooEnvironment</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Parser</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>872357887</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Parser As RooParser</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Parser As RooParser</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Analyser</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1057853439</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Analyser As RooAnalyser</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Analyser As RooAnalyser</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>IsRunning</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1085857791</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>IsRunning As Boolean</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>IsRunning As Boolean</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <SetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Set</SourceLine>
+   <SourceLine>// Read only.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Set</SourceLine>
+  </SetAccessor>
+  <GetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Get</SourceLine>
+   <SourceLine>Return mIsRunning</SourceLine>
+   <SourceLine>End Get</SourceLine>
+  </GetAccessor>
+ </Property>
+ <Property>
+  <ItemName>mIsRunning</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1375084543</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>mIsRunning As Boolean = False</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>mIsRunning As Boolean = False</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>AbsoluteRoot</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1416017919</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>AbsoluteRoot As FolderItem</SourceLine>
+   <SourceLine>This references the location on disk that the interpreter will consider the root </SourceLine>
+   <SourceLine>when resolving absolute paths during file system access.</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>AbsoluteRoot As FolderItem</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>FileSystemSafeMode</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>167692287</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>FileSystemSafeMode As Boolean</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>FileSystemSafeMode As Boolean</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <SetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Set</SourceLine>
+   <SourceLine>// Get a reference to the FileSystem module in this interpreter's Natives Environment.</SourceLine>
+   <SourceLine>Dim fs As RooSLFileSystem = Natives.Values.Value("FileSystem")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Set the safe mode appropriately.</SourceLine>
+   <SourceLine>fs.SafeMode = value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(New RooToken(Roo.TokenType.ERROR), "Unable to get reference to the FileSystem module")</SourceLine>
+   <SourceLine>End Set</SourceLine>
+  </SetAccessor>
+  <GetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Get</SourceLine>
+   <SourceLine>Return mFileSystemSafeMode</SourceLine>
+   <SourceLine>End Get</SourceLine>
+  </GetAccessor>
+ </Property>
+ <Property>
+  <ItemName>mFileSystemSafeMode</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>569659391</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>mFileSystemSafeMode As Boolean = True</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>mFileSystemSafeMode As Boolean = True</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>REPL</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>959969279</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>REPL As Boolean = False</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>REPL As Boolean = False</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>ForceKill</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <PropertyValue>False</PropertyValue>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>IsRunning</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>FileSystemSafeMode</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>REPL</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <PropertyValue>False</PropertyValue>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+ <Constant>
+  <ItemName>kDebugMode</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1401556991</PartID>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemType>3</ItemType>
+  <ItemDef>False</ItemDef>
+  <ItemFlags>0</ItemFlags>
+ </Constant>
+</block>
+</RBProject>

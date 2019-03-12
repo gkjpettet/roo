@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="1102495743">
+ <ObjName>RooSLFileSystemCopy</ObjName>
+ <ObjContainerID>223258623</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Interfaces>Invokable, Stringable</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Arity</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1041772543</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Arity() As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return 3</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Invoke</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>435902463</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Invoke(interpreter As RooInterpreter, args() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// FileSystem.copy(source, destination, overwrite as Boolean) as Boolean.</SourceLine>
+   <SourceLine>// Copies the folder/file at `source` to `destination`</SourceLine>
+   <SourceLine>// `source` and `destination` can be either a Text path or a File object.</SourceLine>
+   <SourceLine>// Returns True if OK, False if unsuccessful.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Should we overwrite?</SourceLine>
+   <SourceLine>Dim overwrite As Boolean = interpreter.IsTruthy(args(2))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Ensure that `source` is a Stringable or File object.</SourceLine>
+   <SourceLine>If Not args(0) IsA RooSLFileSystemItem And Not args(0) IsA Stringable Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Expected a Text or FileSystem.Item " + _</SourceLine>
+   <SourceLine>"object parameter for `source`. Instead got " + _</SourceLine>
+   <SourceLine>Roo.VariantTypeAsString(args(0)) + ".")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the source FolderItem.</SourceLine>
+   <SourceLine>Dim source As FolderItem</SourceLine>
+   <SourceLine>If args(0) IsA RooSLFileSystemItem Then</SourceLine>
+   <SourceLine>If RooSLFileSystemItem(args(0)).File = Nil Then</SourceLine>
+   <SourceLine>// Invalid FileSystem.Item `source` parameter.</SourceLine>
+   <SourceLine>Return New RooBoolean(False)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>source = RooSLFileSystemItem(args(0)).File</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>source = interpreter.RooPathToFolderItem(RooText(args(0)).Value, where.File)</SourceLine>
+   <SourceLine>If source = Nil Then Return New RooBoolean(False) // Invalid `source` path.</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// OK, we have a valid FolderItem representing the source file/folder. Does it exist?</SourceLine>
+   <SourceLine>If Not source.Exists Then Return New RooBoolean(False)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Ensure that `destination` is a Stringable or File object.</SourceLine>
+   <SourceLine>If Not args(1) IsA RooSLFileSystemItem And Not args(1) IsA Stringable Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Expected a Text or FileSystem.Item " + _</SourceLine>
+   <SourceLine>"object parameter for `destination`. Instead got " + _</SourceLine>
+   <SourceLine>Roo.VariantTypeAsString(args(1)) + ".")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the destination FolderItem.</SourceLine>
+   <SourceLine>Dim destination As FolderItem</SourceLine>
+   <SourceLine>If args(1) IsA RooSLFileSystemItem Then</SourceLine>
+   <SourceLine>If RooSLFileSystemItem(args(1)).File = Nil Then</SourceLine>
+   <SourceLine>// Invalid FileSystem.Item `destination` item.</SourceLine>
+   <SourceLine>Return New RooBoolean(False)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>destination = RooSLFileSystemItem(args(1)).File</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>destination = interpreter.RooPathToFolderItem(RooText(args(1)).Value, where.File)</SourceLine>
+   <SourceLine>If destination = Nil Then Return New RooBoolean(False) // Invalid `destination` path.</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// OK, we have a valid FolderItem representing the destination file/folder. Does it exist?</SourceLine>
+   <SourceLine>If Not destination.Exists Then Return New RooBoolean(False)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The destination must always be a folder. Check this.</SourceLine>
+   <SourceLine>If Not destination.Directory Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Invalid destination parameter (" + _</SourceLine>
+   <SourceLine>destination.NativePath + "). The destination must be a folder.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// We now have FolderItems representing the source and destination. </SourceLine>
+   <SourceLine>Return Copy(source, destination, overwrite, where)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter, args() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>587995135</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>// Part of the Stringable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return "&lt;function: FileSystem.copy&gt;"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Copy</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>285274111</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Copy(source As FolderItem, destination As FolderItem, overwrite As Boolean, where As RooToken) As RooBoolean</SourceLine>
+   <SourceLine>// Internal helper method.</SourceLine>
+   <SourceLine>// Assumes `source` and `destination` both exist and that `destination` is a folder.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Use this interpreter's FileSystem module to copy `source` to `destination`.</SourceLine>
+   <SourceLine>Dim e As RooSLFileSystem.Error = Owner.Copy(source, destination, overwrite)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return the result.</SourceLine>
+   <SourceLine>Select Case e</SourceLine>
+   <SourceLine>Case RooSLFileSystem.Error.None</SourceLine>
+   <SourceLine>Return New RooBoolean(True)</SourceLine>
+   <SourceLine>Case RooSLFileSystem.Error.AttemptToDeleteProtectedFolderItem</SourceLine>
+   <SourceLine>// This copy would have resulted in the deletion of a protected </SourceLine>
+   <SourceLine>// file or folder. Fire the interpreter's DeletionPrevented event.</SourceLine>
+   <SourceLine>Owner.Interpreter.DeletionPreventedDelegate(source, where)</SourceLine>
+   <SourceLine>Return New RooBoolean(False)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return New RooBoolean(False)</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>source As FolderItem, destination As FolderItem, overwrite As Boolean, where As RooToken</ItemParams>
+  <ItemResult>RooBoolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1193003007</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(owner As RooSLFileSystem)</SourceLine>
+   <SourceLine>Self.Owner = owner</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>owner As RooSLFileSystem</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Property>
+  <ItemName>Owner</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1438838783</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Owner As RooSLFileSystem</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Owner As RooSLFileSystem</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

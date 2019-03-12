@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="2119565311">
+ <ObjName>RooSLInputValue</ObjName>
+ <ObjContainerID>2009554943</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Interfaces>Invokable</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Arity</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>953851903</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Arity() As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine>// The input_value() function has two definitions:</SourceLine>
+   <SourceLine>// input_value()</SourceLine>
+   <SourceLine>// input_value(prompt As TextObject)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Array(0, 1)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Invoke</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2041004031</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Invoke(interpreter As RooInterpreter, arguments() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine>// Used to get input from the user into the running script. </SourceLine>
+   <SourceLine>// The input_value() function differs from the input() function in </SourceLine>
+   <SourceLine>// that it will try to convert the String returned by the interpreter's Input() </SourceLine>
+   <SourceLine>// method into the correct Roo runtime object. for example, if True is returned </SourceLine>
+   <SourceLine>// we will create a RooBoolean, if 0xFFFFFF is returned we will create a RooNumber, etc.</SourceLine>
+   <SourceLine>// We will fire the interpreter's Input() event by calling into its InputHook() method.</SourceLine>
+   <SourceLine>// The only values we allow are:</SourceLine>
+   <SourceLine>// Text, Numbers, Booleans, Nothing.</SourceLine>
+   <SourceLine>// We don't parse arrays and hashes.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim prompt As String = ""</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Has a prompt been provided?</SourceLine>
+   <SourceLine>If arguments.Ubound = 0 Then prompt = Stringable(arguments(0)).StringValue</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Fire the intepreter's Input() event.</SourceLine>
+   <SourceLine>Dim userInput As String = interpreter.InputHook(prompt)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert the user-provided value into a runtime representation.</SourceLine>
+   <SourceLine>// Only Text will contain whitespace.</SourceLine>
+   <SourceLine>If userInput.InStr(" ") &lt;&gt; 0 Or userInput.InStr(Chr(9)) &lt;&gt; 0 Then</SourceLine>
+   <SourceLine>Return New RooText(userInput)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Nothing?</SourceLine>
+   <SourceLine>If userInput = "" Or StrComp(userInput, "Nothing", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNothing</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Boolean?</SourceLine>
+   <SourceLine>If StrComp(userInput, "True", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooBoolean(True)</SourceLine>
+   <SourceLine>ElseIf StrComp(userInput, "False", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooBoolean(False)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Zero?</SourceLine>
+   <SourceLine>If userInput = "0" Then Return New RooNumber(0)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Before we check to see if this is a prefixed number, </SourceLine>
+   <SourceLine>// check to see if the user input is too short to be one.</SourceLine>
+   <SourceLine>If userInput.Len &gt;= 3 Then</SourceLine>
+   <SourceLine>// Hex number?</SourceLine>
+   <SourceLine>If userInput.Left(2) = "0x" Then</SourceLine>
+   <SourceLine>Dim hexValue As String = userInput.Right(userInput.Len - 2)</SourceLine>
+   <SourceLine>If ValidHex(hexValue) Then</SourceLine>
+   <SourceLine>Return New RooNumber(Val("&amp;h" + hexValue))</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// Invalid hex value.</SourceLine>
+   <SourceLine>Return New RooText(userInput)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Binary number?</SourceLine>
+   <SourceLine>If userInput.Left(2) = "0b" Then</SourceLine>
+   <SourceLine>Dim binaryValue As String = userInput.Right(userInput.Len - 2)</SourceLine>
+   <SourceLine>If ValidBinary(binaryValue) Then</SourceLine>
+   <SourceLine>Return New RooNumber(Val("&amp;b" + binaryValue))</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// Invalid binary value.</SourceLine>
+   <SourceLine>Return New RooText(userInput)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Octal number?</SourceLine>
+   <SourceLine>If userInput.Left(2) = "0o" Then</SourceLine>
+   <SourceLine>Dim octalValue As String = userInput.Right(userInput.Len - 2)</SourceLine>
+   <SourceLine>If ValidOctal(octalValue) Then</SourceLine>
+   <SourceLine>Return New RooNumber(Val("&amp;o" + octalValue))</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// Invalid octal value.</SourceLine>
+   <SourceLine>Return New RooText(userInput)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Decimal number?</SourceLine>
+   <SourceLine>If Val(userInput) &lt;&gt; 0 Then Return New RooNumber(userInput.Val)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Assume text.</SourceLine>
+   <SourceLine>Return New RooText(userInput)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "If a parameter is passed to the input() method, " + _</SourceLine>
+   <SourceLine>"it must have a text representation.")</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter, arguments() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1962008575</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>// Part of the Stringable interface.</SourceLine>
+   <SourceLine>// Return this function's name.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return "&lt;function: input_value&gt;"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ValidHex</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>912472063</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ValidHex(s As String) As Boolean</SourceLine>
+   <SourceLine>// Takes a String and determines if it is a valid hex number.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If s = "" Then Return False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim chars() As String = s.Split("")</SourceLine>
+   <SourceLine>For i As Integer = 0 To chars.Ubound</SourceLine>
+   <SourceLine>Select Case chars(i)</SourceLine>
+   <SourceLine>Case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", _</SourceLine>
+   <SourceLine>"a", "b", "c", "d", "e", "f"</SourceLine>
+   <SourceLine>// Valid character. Carry on.</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>s As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ValidBinary</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2102681599</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ValidBinary(s As String) As Boolean</SourceLine>
+   <SourceLine>// Takes a String and determines if it is a valid binary number.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If s = "" Then Return False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim chars() As String = s.Split("")</SourceLine>
+   <SourceLine>For i As Integer = 0 To chars.Ubound</SourceLine>
+   <SourceLine>Select Case chars(i)</SourceLine>
+   <SourceLine>Case "0", "1"</SourceLine>
+   <SourceLine>// Valid character. Carry on.</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>s As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ValidOctal</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>802293759</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ValidOctal(s As String) As Boolean</SourceLine>
+   <SourceLine>// Takes a String and determines if it is a valid octal number.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If s = "" Then Return False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim chars() As String = s.Split("")</SourceLine>
+   <SourceLine>For i As Integer = 0 To chars.Ubound</SourceLine>
+   <SourceLine>Select Case chars(i)</SourceLine>
+   <SourceLine>Case "0", "1", "2", "3", "4", "5", "6", "7"</SourceLine>
+   <SourceLine>// Valid character. Carry on.</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>s As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

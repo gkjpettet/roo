@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="466452479">
+ <ObjName>RooSLFileSystemMkDir</ObjName>
+ <ObjContainerID>533815295</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Interfaces>Invokable, Stringable</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Arity</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1041772543</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Arity() As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return 1</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Invoke</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>435902463</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Invoke(interpreter As RooInterpreter, args() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// FileSystem.mkdir(path) as Text or Nothing.</SourceLine>
+   <SourceLine>// Creates a new directory at the specified path. </SourceLine>
+   <SourceLine>// Returns the path to the newly created folder if successful, Nothing if fails.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' Check the passed argument is a text object.</SourceLine>
+   <SourceLine>Roo.AssertIsStringable(where, args(0))</SourceLine>
+   <SourceLine>Dim path As String = Stringable(args(0)).StringValue</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert the passed Roo path to a FolderItem.</SourceLine>
+   <SourceLine>Dim f As FolderItem = interpreter.RooPathToFolderItem(path, where.File)</SourceLine>
+   <SourceLine>If f = Nil Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Invalid path passed to the FileSystem.mkdir(path) function (`" + _</SourceLine>
+   <SourceLine>path + "`).")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// We have a valid FolderItem representing the folder to create.</SourceLine>
+   <SourceLine>// If it already exists we'll just return the path. No need to recreate it.</SourceLine>
+   <SourceLine>If f.Exists Then Return New RooText(Roo.FolderItemToRooPath(f))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Try to create this folder.</SourceLine>
+   <SourceLine>f.CreateAsFolder</SourceLine>
+   <SourceLine>If f.LastErrorCode &lt;&gt; 0 Then</SourceLine>
+   <SourceLine>Return New RooNothing</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return New RooText(Roo.FolderItemToRooPath(f))</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err</SourceLine>
+   <SourceLine>Return New RooNothing</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter, args() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>587995135</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>// Part of the Stringable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return "&lt;function: FileSystem.mkdir&gt;"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

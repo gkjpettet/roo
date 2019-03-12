@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="2018732031">
+ <ObjName>RooNumberMethod</ObjName>
+ <ObjContainerID>367458303</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Interfaces>Invokable</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Arity</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1700845567</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Arity() As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine>// Return the arity of this method. This is stored in the cached NumberMethods dictionary.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return RooSLCache.NumberMethods.Value(Name)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Invoke</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1815246847</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Invoke(interpreter As RooInterpreter, arguments() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine>// Perform the required method operation on this Number object.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case Name</SourceLine>
+   <SourceLine>Case "each_digit"</SourceLine>
+   <SourceLine>Return DoEachDigit(arguments, where, interpreter)</SourceLine>
+   <SourceLine>Case "ends_with?"</SourceLine>
+   <SourceLine>Return DoEndsWith(arguments, where)</SourceLine>
+   <SourceLine>Case "starts_with?"</SourceLine>
+   <SourceLine>Return DoStartsWith(arguments, where)</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter, arguments() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1268824063</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>// Part of the Stringable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return "&lt;function " + Name + "&gt;"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>339918847</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(owner As RooNumber, name As String)</SourceLine>
+   <SourceLine>Self.Owner = owner</SourceLine>
+   <SourceLine>Self.Name = name</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>owner As RooNumber, name As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoEndsWith</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1951139839</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoEndsWith(args() As Variant, where As RooToken) As RooBoolean</SourceLine>
+   <SourceLine>// Number.ends_with?(digits As Text) As Boolean object</SourceLine>
+   <SourceLine>// Number.ends_with?(digits As Number) As Boolean object</SourceLine>
+   <SourceLine>// Number.ends_with?(digits As Array) As Boolean object</SourceLine>
+   <SourceLine>// Returns True or False depending on whether or not this number object </SourceLine>
+   <SourceLine>// ends with the specified digits.</SourceLine>
+   <SourceLine>// Digits may be passed as Text, as a single Number or as an array of digits.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim what As String</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If args(0) IsA RooArray Then</SourceLine>
+   <SourceLine>// Convert this array into a single string.</SourceLine>
+   <SourceLine>For i As Integer = 0 To RooArray(args(0)).Elements.Ubound</SourceLine>
+   <SourceLine>what = what + Stringable(RooArray(args(0)).Elements(i)).StringValue</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>what = Stringable(args(0)).StringValue</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert this Number into a String to compare.</SourceLine>
+   <SourceLine>Dim thisValue As String</SourceLine>
+   <SourceLine>If Roo.IsInteger(Owner.Value) Then</SourceLine>
+   <SourceLine>thisValue = Str(Owner.Value, Owner.kIntegerFormatString)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>thisValue = Str(Owner.Value)</SourceLine>
+   <SourceLine>If thisValue.InStr("e") &lt;&gt; 0 Then</SourceLine>
+   <SourceLine>// Only specially format high precision doubles.</SourceLine>
+   <SourceLine>thisValue = Str(Owner.Value, Owner.kDoubleFormatString)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Remove any decimal point.</SourceLine>
+   <SourceLine>thisValue = thisValue.Replace(".", "")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check to see if there is an exponent in the string. If so, this number </SourceLine>
+   <SourceLine>// has too many digits in either the integer-part or fractional-part.</SourceLine>
+   <SourceLine>If thisValue.InStr("e") &lt;&gt; 0 Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "The Number.ends_with?() method only " + _</SourceLine>
+   <SourceLine>"supports numbers with integer-parts or fractional-parts &lt;= 30 digits. " + _</SourceLine>
+   <SourceLine>"This number is " + thisValue)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Sanity check.</SourceLine>
+   <SourceLine>If what.Len &gt; thisValue.Len Then Return New RooBoolean(False)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Do the check.</SourceLine>
+   <SourceLine>Return New RooBoolean(thisValue.Right(what.Len) = what)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken</ItemParams>
+  <ItemResult>RooBoolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoStartsWith</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1540282367</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoStartsWith(args() As Variant, where As RooToken) As RooBoolean</SourceLine>
+   <SourceLine>// Number.starts_with?(digits As Text) As Boolean object</SourceLine>
+   <SourceLine>// Number.starts_with?(digits As Number) As Boolean object</SourceLine>
+   <SourceLine>// Number.starts_with?(digits As Array) As Boolean object</SourceLine>
+   <SourceLine>// Returns True or False depending on whether or not this number object </SourceLine>
+   <SourceLine>// starts with the specified digits.</SourceLine>
+   <SourceLine>// Digits may be passed as Text, as a single Number or as an array of digits.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim what As String</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If args(0) IsA RooArray Then</SourceLine>
+   <SourceLine>// Convert this array into a single string.</SourceLine>
+   <SourceLine>For i As Integer = 0 To RooArray(args(0)).Elements.Ubound</SourceLine>
+   <SourceLine>what = what + Stringable(RooArray(args(0)).Elements(i)).StringValue</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>what = Stringable(args(0)).StringValue</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert this Number into a String to compare.</SourceLine>
+   <SourceLine>Dim thisValue As String</SourceLine>
+   <SourceLine>If Roo.IsInteger(Owner.Value) Then</SourceLine>
+   <SourceLine>thisValue = Str(Owner.Value, Owner.kIntegerFormatString)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>thisValue = Str(Owner.Value)</SourceLine>
+   <SourceLine>If thisValue.InStr("e") &lt;&gt; 0 Then</SourceLine>
+   <SourceLine>// Only specially format high precision doubles.</SourceLine>
+   <SourceLine>thisValue = Str(Owner.Value, Owner.kDoubleFormatString)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Remove any decimal point.</SourceLine>
+   <SourceLine>thisValue = thisValue.Replace(".", "")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check to see if there is an exponent in the string. If so, this number </SourceLine>
+   <SourceLine>// has too many digits in either the integer-part or fractional-part.</SourceLine>
+   <SourceLine>If thisValue.InStr("e") &lt;&gt; 0 Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "The Number.starts_with?() method only " + _</SourceLine>
+   <SourceLine>"supports numbers with integer-parts or fractional-parts &lt;= 30 digits. " + _</SourceLine>
+   <SourceLine>"This number is " + thisValue)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Sanity check.</SourceLine>
+   <SourceLine>If what.Len &gt; thisValue.Len Then Return New RooBoolean(False)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Do the check.</SourceLine>
+   <SourceLine>Return New RooBoolean(thisValue.Left(what.Len) = what)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken</ItemParams>
+  <ItemResult>RooBoolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoEachDigit</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2672639</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoEachDigit(args() As Variant, where As RooToken, interpreter As RooInterpreter) As RooNumber</SourceLine>
+   <SourceLine>// Number.each_digit(func as Invokable, optional arguments as Array) as Number</SourceLine>
+   <SourceLine>// Invokes the passed function for each digit of this number, passing to the function the </SourceLine>
+   <SourceLine>// digit as the first argument.</SourceLine>
+   <SourceLine>// Optionally the method can take a second argument in the form of an Array. The elements of this</SourceLine>
+   <SourceLine>// Array will be passed to the function as additional arguments.</SourceLine>
+   <SourceLine>// Returns the number of digits invoked.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// E.g: </SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' def listDigits(digit):</SourceLine>
+   <SourceLine>'   print(digit)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' 123.each_digit(listDigits)</SourceLine>
+   <SourceLine>' # Prints:</SourceLine>
+   <SourceLine>' 1</SourceLine>
+   <SourceLine>' 2</SourceLine>
+   <SourceLine>' 3</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim funcArgs() As Variant</SourceLine>
+   <SourceLine>Dim func As Invokable</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that `func` is invokable.</SourceLine>
+   <SourceLine>Roo.AssertIsInvokable(where, args(0))</SourceLine>
+   <SourceLine>func = args(0)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If a second argument has been passed, check that it's an Array object.</SourceLine>
+   <SourceLine>If args.Ubound = 1 Then</SourceLine>
+   <SourceLine>Roo.AssertIsArray(where, args(1))</SourceLine>
+   <SourceLine>// Get an array of the additional arguments to pass to the function that we will invoke.</SourceLine>
+   <SourceLine>Dim limit As Integer = RooArray(args(1)).Elements.Ubound</SourceLine>
+   <SourceLine>For i As Integer = 0 To limit</SourceLine>
+   <SourceLine>funcArgs.Append(RooArray(args(1)).Elements(i))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that we have the correct number of arguments for `func`.</SourceLine>
+   <SourceLine>// NB: +2 as we will pass in each digit as the first argument.</SourceLine>
+   <SourceLine>If Not Interpreter.CorrectArity(func, funcArgs.Ubound + 2) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Incorrect number of arguments passed to the " +_</SourceLine>
+   <SourceLine>Stringable(func).StringValue + " function.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert this number into a String array.</SourceLine>
+   <SourceLine>Dim tmp As String</SourceLine>
+   <SourceLine>If Roo.IsInteger(Owner.Value) Then</SourceLine>
+   <SourceLine>tmp = Str(Owner.Value, Owner.kIntegerFormatString)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>tmp = Str(Owner.Value)</SourceLine>
+   <SourceLine>If tmp.InStr("e") &lt;&gt; 0 Then</SourceLine>
+   <SourceLine>// Only specially format high precision doubles.</SourceLine>
+   <SourceLine>tmp = Str(Owner.Value, Owner.kDoubleFormatString)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check to see if there is an exponent in the string. If so, this number </SourceLine>
+   <SourceLine>// has too many digits in either the integer-part or fractional-part.</SourceLine>
+   <SourceLine>If tmp.InStr("e") &lt;&gt; 0 Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "The Number.each_digit() method only " + _</SourceLine>
+   <SourceLine>"supports numbers with integer-parts or fractional-parts &lt;= 30 digits. " + _</SourceLine>
+   <SourceLine>"This number is " + tmp)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim s() As String = tmp.Split("")</SourceLine>
+   <SourceLine>Dim digits() As RooNumber</SourceLine>
+   <SourceLine>Dim i As Integer</SourceLine>
+   <SourceLine>For i = 0 To s.Ubound</SourceLine>
+   <SourceLine>// Ignore decimal points and minus signs.</SourceLine>
+   <SourceLine>If s(i) &lt;&gt; "." And s(i) &lt;&gt; "-" Then digits.Append(New RooNumber(Val(s(i))))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>For i = 0 To digits.Ubound</SourceLine>
+   <SourceLine>// Inject the digit as the first argument to `func`.</SourceLine>
+   <SourceLine>funcArgs.Insert(0, digits(i))</SourceLine>
+   <SourceLine>// Call the function for this digit.</SourceLine>
+   <SourceLine>Call func.Invoke(interpreter, funcArgs, where)</SourceLine>
+   <SourceLine>// Remove the digit from the argument list prior to the next iteration.</SourceLine>
+   <SourceLine>funcArgs.Remove(0)</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return the number of digits.</SourceLine>
+   <SourceLine>Return New RooNumber(i)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken, interpreter As RooInterpreter</ItemParams>
+  <ItemResult>RooNumber</ItemResult>
+ </Method>
+ <Property>
+  <ItemName>Name</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>809861119</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Name As String</SourceLine>
+   <SourceLine>The name of this Text object method.</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Name As String</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Owner</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>25626623</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Owner As RooNumber</SourceLine>
+   <SourceLine>The RooNumber object that owns this method.</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Owner As RooNumber</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

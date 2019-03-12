@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="447547391">
+ <ObjName>RooDateTime</ObjName>
+ <ObjContainerID>1431838719</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Superclass>RooInstance</Superclass>
+ <Interfaces>Dateable,  RooNativeClass</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1449891839</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(value As Xojo.Core.Date)</SourceLine>
+   <SourceLine>Super.Constructor(Nil) // No metaclass.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Self.Value = value</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>value As Xojo.Core.Date</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>946931711</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>Return If(Value = Nil, "Nothing", Value.ToText)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DateValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1843558399</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DateValue() As Xojo.Core.Date</SourceLine>
+   <SourceLine>Return Self.Value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Xojo.Core.Date</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Type</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1579077631</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Type() As String</SourceLine>
+   <SourceLine>Return "DateTime"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>GetterWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1106335743</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function GetterWithName(name As RooToken) As Variant</SourceLine>
+   <SourceLine>// Return the result of the requested getter operation.</SourceLine>
+   <SourceLine>If StrComp(name.Lexeme, "day_name", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooText(Roo.DayNameFromDate(Value))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "friday?", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooBoolean(If(Value.DayOfWeek = 6, True, False))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "hour", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(Value.Hour)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "leap?", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoLeap</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "long_month", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooText(Roo.LongMonthFromDate(Value))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "mday", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(Value.Day) // The day of the month (1-31)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "meridiem", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooText(Roo.MeridiemFromDate(Value))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "minute", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(Value.Minute)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "monday?", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooBoolean(If(Value.DayOfWeek = 2, True, False))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "month", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(Value.Month)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "nanosecond", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(Value.Nanosecond)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "saturday?", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooBoolean(If(Value.DayOfWeek = 7, True, False))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "second", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(Value.Second)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "short_month", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooText(Roo.ShortMonthFromDate(Value))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "sunday?", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooBoolean(If(Value.DayOfWeek = 1, True, False))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "thursday?", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooBoolean(If(Value.DayOfWeek = 5, True, False))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "time", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoTime</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "to_http_header", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooText(ToHTTPHeaderFormat)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "today?", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoToday</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "tomorrow?", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoTomorrow</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "tuesday?", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooBoolean(If(Value.DayOfWeek = 3, True, False))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "two_digit_hour", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooText(Roo.TwoDigitHourFromDate(Value))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "two_digit_minute", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooText(Roo.TwoDigitMinuteFromDate(Value))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "two_digit_second", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooText(Roo.TwoDigitSecondFromDate(Value))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "unix_time", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(Roo.DoubleToInteger(Value.SecondsFrom1970))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "wday", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(Value.DayOfWeek) // 1 = Sunday, 7 = Saturday.</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "wednesday?", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooBoolean(If(Value.DayOfWeek = 4, True, False))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "yday", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(Value.DayOfYear) // Jan 1st = 1.</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "year", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(Value.Year)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "yesterday?", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoYesterday</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasGetterWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>324380671</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasGetterWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Query the global Roo dictionary of DateTime object getters for the existence of a getter </SourceLine>
+   <SourceLine>// with the passed name.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return RooSLCache.DateTimeGetters.HasKey(name)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasMethodWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1808615423</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasMethodWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Query the global Roo dictionary of DateTime object methods for the existence of a method </SourceLine>
+   <SourceLine>// with the passed name.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return RooSLCache.DateTimeMethods.HasKey(name)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>MethodWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>570001407</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function MethodWithName(name As RooToken) As Invokable</SourceLine>
+   <SourceLine>// Return a new instance of a DateTime object method initialised with the name of the method </SourceLine>
+   <SourceLine>// being called. That way, when the returned method is invoked, it will know what operation </SourceLine>
+   <SourceLine>// to perform.</SourceLine>
+   <SourceLine>Return New RooDateTimeMethod(Self, name.Lexeme)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>Invokable</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Arity</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2056148991</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Arity() As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Raise New RooRuntimeError(New RooToken, "Cannot invoke the native DateTime type.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Invoke</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1546201087</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Invoke(interpreter As RooInterpreter, arguments() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused interpreter</SourceLine>
+   <SourceLine>#Pragma Unused arguments</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Cannot invoke the native DateTime type.")</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter, arguments() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoLeap</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>379846655</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoLeap() As RooBoolean</SourceLine>
+   <SourceLine>// DateTime.leap? As Boolean object</SourceLine>
+   <SourceLine>// Returns True if this DateTime object is a leap year in the Gregorian calendar. False if not.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooBoolean(RooDateTime.IsLeapYear(Value.Year))</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooBoolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoTime</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>882917375</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoTime() As RooText</SourceLine>
+   <SourceLine>// DateTime.time As Text object.</SourceLine>
+   <SourceLine>// Returns (in human-readable form with meridian) this DateTime object's time.</SourceLine>
+   <SourceLine>// E.g: 9:15 am  or  8:24 pm</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim meridian As String = Roo.MeridiemFromDate(Value)</SourceLine>
+   <SourceLine>Dim h As String = Str(If(Value.Hour &lt; 13, Value.Hour, Value.Hour - 12))</SourceLine>
+   <SourceLine>Dim m As String = Roo.TwoDigitMinuteFromDate(Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooText(h + ":" + m + " " + meridian)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooText</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ToHTTPHeaderFormat</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1365749759</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ToHTTPHeaderFormat() As String</SourceLine>
+   <SourceLine>// Returns this DateTime object in a String format that can be used in HTTP headers.</SourceLine>
+   <SourceLine>// Format: &lt;day-name&gt;, &lt;day&gt; &lt;month&gt; &lt;year&gt; &lt;hour&gt;:&lt;minute&gt;:&lt;second&gt; GMT</SourceLine>
+   <SourceLine>// As per: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-Modified-Since</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim dayName As String = Roo.DayNameFromDate(Value)</SourceLine>
+   <SourceLine>Dim day As String = Roo.TwoDigitDayFromDate(Value)</SourceLine>
+   <SourceLine>Dim month As String = Roo.ShortMonthFromDate(Value)</SourceLine>
+   <SourceLine>Dim year As String = Str(Value.Year)</SourceLine>
+   <SourceLine>Dim hour As String = Roo.TwoDigitHourFromDate(Value)</SourceLine>
+   <SourceLine>Dim minute As String = Roo.TwoDigitMinuteFromDate(Value)</SourceLine>
+   <SourceLine>Dim second As String = Roo.TwoDigitSecondFromDate(Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return dayName + ", " + day + " " + month + " " + year + " " + _</SourceLine>
+   <SourceLine>hour + ":" + minute + ":" + second + " GMT"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoToday</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>365760511</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoToday() As RooBoolean</SourceLine>
+   <SourceLine>// Returns a new Boolean object that is True if this date is today and False if it's not.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim today As Xojo.Core.Date = Xojo.Core.Date.Now</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Value.Year = today.Year And Value.Month = today.Month And Value.Day = today.Day Then</SourceLine>
+   <SourceLine>Return New RooBoolean(True)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return New RooBoolean(False)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooBoolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoTomorrow</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>153147391</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoTomorrow() As RooBoolean</SourceLine>
+   <SourceLine>// DateTime.tomorrow? As Boolean object.</SourceLine>
+   <SourceLine>// Returns a new Boolean object - True if this DateTime object is tomorrow, False if not.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get tomorrow's date.</SourceLine>
+   <SourceLine>Dim di As New Xojo.Core.DateInterval(0, 0, 1) // 0 years, 0 months, 1 day.</SourceLine>
+   <SourceLine>Dim tomorrow As Xojo.Core.Date = Xojo.Core.Date.Now + di</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Is today's date and tomorrow's date the same year, month and day?</SourceLine>
+   <SourceLine>If Value.Year = tomorrow.Year And Value.Month = tomorrow.Month And Value.Day = tomorrow.Day Then</SourceLine>
+   <SourceLine>Return New RooBoolean(True)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return New RooBoolean(False)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooBoolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoYesterday</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>529526783</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoYesterday() As RooBoolean</SourceLine>
+   <SourceLine>// DateTime.yesterday? As Boolean object.</SourceLine>
+   <SourceLine>// Returns a new Boolean object - True if this DateTime object is yesterday, False if not.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get yesterday's date.</SourceLine>
+   <SourceLine>Dim di As New Xojo.Core.DateInterval(0, 0, 1) // 0 years, 0 months, 1 day.</SourceLine>
+   <SourceLine>Dim yesterday As Xojo.Core.Date = Xojo.Core.Date.Now - di</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Is today's date and yesterday's date the same year, month and day?</SourceLine>
+   <SourceLine>If Value.Year = yesterday.Year And Value.Month = yesterday.Month And Value.Day = yesterday.Day Then</SourceLine>
+   <SourceLine>Return New RooBoolean(True)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return New RooBoolean(False)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooBoolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>IsLeapYear</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1638334463</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Shared Function IsLeapYear(year As Integer) As Boolean</SourceLine>
+   <SourceLine>// Returns True if `year` is a leap year in the Gregorian calendar. False if not.</SourceLine>
+   <SourceLine>// Algorithm courtesy of Wikipedia: https://en.wikipedia.org/wiki/Leap_year#Algorithm</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If (year Mod 4 = 0) And (year Mod 100 &lt;&gt; 0) Or (year Mod 400 = 0) Then</SourceLine>
+   <SourceLine>Return True</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>1</IsShared>
+  <ItemParams>year As Integer</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Property>
+  <ItemName>Value</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1660188671</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Value As Xojo.Core.Date</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Value As Xojo.Core.Date</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

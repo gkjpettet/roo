@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="852090879">
+ <ObjName>RooSLInput</ObjName>
+ <ObjContainerID>2009554943</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Interfaces>Invokable, Stringable</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Arity</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1083138047</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Arity() As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine>// The input() function has two definitions:</SourceLine>
+   <SourceLine>// input()</SourceLine>
+   <SourceLine>// input(prompt As TextObject)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Array(0, 1)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Invoke</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2037514239</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Invoke(interpreter As RooInterpreter, arguments() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine>// Used to get input from the user into the running script. </SourceLine>
+   <SourceLine>// We will fire the interpreter's Input() event by calling into its InputHook() method.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim prompt As String = ""</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Has a prompt been provided?</SourceLine>
+   <SourceLine>If arguments.Ubound = 0 Then prompt = Stringable(arguments(0)).StringValue</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Fire the intepreter's Input() event.</SourceLine>
+   <SourceLine>Dim userInput As Variant = interpreter.InputHook(prompt)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert the user-provided value into a runtime representation.</SourceLine>
+   <SourceLine>Return New RooText(userInput)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "If a parameter is passed to the input() method, " + _</SourceLine>
+   <SourceLine>"it must have a text representation.")</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter, arguments() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1714350079</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>// Part of the Stringable interface.</SourceLine>
+   <SourceLine>// Return this function's name.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return "&lt;function: input&gt;"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

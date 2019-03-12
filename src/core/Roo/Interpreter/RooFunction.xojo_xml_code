@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20070100">
+<block type="Module" ID="1205241855">
+ <ObjName>RooFunction</ObjName>
+ <ObjContainerID>1782206463</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Interfaces>Invokable,  Stringable</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Arity</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1980561407</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Arity() As Variant</SourceLine>
+   <SourceLine>Return Declaration.Parameters.Ubound + 1</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Bind</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1912178687</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Bind(instance As RooInstance) As RooFunction</SourceLine>
+   <SourceLine>// Create a new environment nestled inside the function's original closure. Sort of a </SourceLine>
+   <SourceLine>// closure-within-a-closure. </SourceLine>
+   <SourceLine>// When the function is called, that environment will become the parent of the function </SourceLine>
+   <SourceLine>// body’s environment.</SourceLine>
+   <SourceLine>// We declare "self" as a variable in that environment and bind it to the given </SourceLine>
+   <SourceLine>// instance (the instance that the function is being accessed from). Now the returned </SourceLine>
+   <SourceLine>// RooFunction carries around its own little persistent world where "self" is bound to the object.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim environment As New RooEnvironment(Closure)</SourceLine>
+   <SourceLine>environment.Define("self", instance)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooFunction(declaration, environment, IsInitialiser)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>instance As RooInstance</ItemParams>
+  <ItemResult>RooFunction</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2020069375</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(declaration As RooFunctionStmt, closure As RooEnvironment, isInitialiser As Boolean)</SourceLine>
+   <SourceLine>Self.Declaration = declaration</SourceLine>
+   <SourceLine>Self.Closure = closure</SourceLine>
+   <SourceLine>Self.IsInitialiser = isInitialiser</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>declaration As RooFunctionStmt, closure As RooEnvironment, isInitialiser As Boolean</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Invoke</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>917647359</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Invoke(interpreter As RooInterpreter, arguments() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>#Pragma Unused where</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim environment As New RooEnvironment(Closure)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Declaration.Parameters &lt;&gt; Nil Then // Remember that getters will have a Nil parameters array.</SourceLine>
+   <SourceLine>For i As Integer = 0 To Declaration.Parameters.Ubound</SourceLine>
+   <SourceLine>environment.Define(Declaration.Parameters(i).Lexeme, arguments(i))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Execute the body of this method/function.</SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine>interpreter.ExecuteBlock(Declaration.Body, environment)</SourceLine>
+   <SourceLine>Catch r As RooReturn</SourceLine>
+   <SourceLine>// The function/method is returning.</SourceLine>
+   <SourceLine>If IsInitialiser Then</SourceLine>
+   <SourceLine>// An empty return from a class initialiser returns `self`.</SourceLine>
+   <SourceLine>Return Closure.GetAt(0, "self")</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// Return whatever the function/method returned.</SourceLine>
+   <SourceLine>Return r.Value</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>end Try</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If this invokable object is a class initialiser then we override the actual return value </SourceLine>
+   <SourceLine>// and forcibly return `self`.</SourceLine>
+   <SourceLine>If IsInitialiser Then Return Closure.GetAt(0, "self")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If no return specified then return Nothing.</SourceLine>
+   <SourceLine>Return interpreter.Nothing</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter, arguments() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>635973631</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>Return "&lt;function " + Declaration.Name.Lexeme + "&gt;"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Property>
+  <ItemName>Closure</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1323606015</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Closure As RooEnvironment</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Closure As RooEnvironment</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Declaration</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1782816767</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Declaration As RooFunctionStmt</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Declaration As RooFunctionStmt</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>IsInitialiser</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1306130431</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>IsInitialiser As Boolean</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>IsInitialiser As Boolean</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

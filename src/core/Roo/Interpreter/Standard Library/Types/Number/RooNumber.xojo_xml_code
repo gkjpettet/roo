@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="586373119">
+ <ObjName>RooNumber</ObjName>
+ <ObjContainerID>367458303</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Superclass>RooInstance</Superclass>
+ <Interfaces> RooNativeClass</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1605904383</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(value As Double)</SourceLine>
+   <SourceLine>Super.Constructor(Nil)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Self.Value = value</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>value As Double</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1976512511</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>If Roo.IsInteger(Self.Value) Then</SourceLine>
+   <SourceLine>Dim i As Integer = Self.Value</SourceLine>
+   <SourceLine>Return Str(i, kIntegerFormatString)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Dim tmp As String = Str(Self.Value)</SourceLine>
+   <SourceLine>If tmp.InStr("e") = 0 Then</SourceLine>
+   <SourceLine>Return tmp</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// Only format high precision doubles</SourceLine>
+   <SourceLine>Return Str(Self.Value, kDoubleFormatString)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Type</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>802295807</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Type() As String</SourceLine>
+   <SourceLine>Return "Number"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>GetterWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>184002559</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function GetterWithName(name As RooToken) As Variant</SourceLine>
+   <SourceLine>// Return the result of the requested getter operation.</SourceLine>
+   <SourceLine>If StrComp(name.Lexeme, "abs", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(Abs(Value))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "acos", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(ACos(Value))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "asin", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(ASin(Value))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "atan", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(ATan(Value))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "ceil", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(Ceil(Value))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "cos", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(Cos(Value))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "digits", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoDigits(name)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "even?", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooBoolean(Even)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "floor", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(Floor(Value))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "integer?", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooBoolean(Roo.IsInteger(Value))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "odd?", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooBoolean(Odd)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "round", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(Round(Value))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "sign", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(Sign(Value))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "sin", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(Sin(Value))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "sqrt", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(Sqrt(Value))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "tan", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(Tan(Value))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "to_degrees", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(Value * 57.295779513) // 57.295779513 is 180/π</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "to_radians", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(Value / 57.295779513) // 57.295779513 is 180/π</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasGetterWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1865431039</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasGetterWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Query the global Roo dictionary of Number object getters for the existence of a getter </SourceLine>
+   <SourceLine>// with the passed name.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return RooSLCache.NumberGetters.HasKey(name)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasMethodWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>902526975</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasMethodWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Query the global Roo dictionary of Number object methods for the existence of a method </SourceLine>
+   <SourceLine>// with the passed name.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return RooSLCache.NumberMethods.HasKey(name)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>MethodWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>417265663</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function MethodWithName(name As RooToken) As Invokable</SourceLine>
+   <SourceLine>// Return a new instance of a Number object method initialised with the name of the method </SourceLine>
+   <SourceLine>// being called. That way, when the returned method is invoked, it will know what operation </SourceLine>
+   <SourceLine>// to perform.</SourceLine>
+   <SourceLine>Return New RooNumberMethod(Self, name.Lexeme)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>Invokable</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Arity</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>436547583</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Arity() As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Raise New RooRuntimeError(New RooToken, "Cannot invoke the native Number type.")</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Invoke</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>915232767</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Invoke(interpreter As RooInterpreter, arguments() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused interpreter</SourceLine>
+   <SourceLine>#Pragma Unused arguments</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Cannot invoke the native Number type.")</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter, arguments() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Even</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2001364991</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Even() As Boolean</SourceLine>
+   <SourceLine>// Returns True if this number object is an even integer.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Not Roo.IsInteger(Value) Then Return False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return If(Value Mod 2 = 0, True, False)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Odd</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1237665791</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Odd() As Boolean</SourceLine>
+   <SourceLine>// Returns True if this number object is an odd integer.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Not Roo.IsInteger(Value) Then Return False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return If(Value Mod 2 = 0, False, True)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoDigits</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>760346623</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoDigits(where As RooToken) As RooArray</SourceLine>
+   <SourceLine>// Number.digits As Array object.</SourceLine>
+   <SourceLine>// Returns each digit as a separate element within a array.</SourceLine>
+   <SourceLine>// Decimal points are ignored.</SourceLine>
+   <SourceLine>// E.g: 1234 -&gt; [1, 2, 3, 4]</SourceLine>
+   <SourceLine>// E.g: 0 -&gt; [0]</SourceLine>
+   <SourceLine>// E.g: 42.5 -&gt; [4, 2, 5]</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim a As New RooArray</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Quick zero check.</SourceLine>
+   <SourceLine>If Value = 0 Then</SourceLine>
+   <SourceLine>a.Elements.Append(New RooNumber(0))</SourceLine>
+   <SourceLine>Return a</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert the value to a String then split that into </SourceLine>
+   <SourceLine>// its individual characters.</SourceLine>
+   <SourceLine>Dim s As String = Str(Value, kDoubleFormatString)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check to see if there is an exponent in the string. If so, this number </SourceLine>
+   <SourceLine>// has too many digits in either the integer-part or fractional-part.</SourceLine>
+   <SourceLine>If s.InStr("e") &lt;&gt; 0 Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "The Number.digits getter only " + _</SourceLine>
+   <SourceLine>"supports numbers with integer-parts or fractional-parts &lt;= 30 digits. " + _</SourceLine>
+   <SourceLine>"This number is " + s)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim chars() As String = s.Split("")</SourceLine>
+   <SourceLine>For i As Integer = 0 To chars.Ubound</SourceLine>
+   <SourceLine>If chars(i) &lt;&gt; "." And chars(i) &lt;&gt; "-" Then // Ignore decimal points and minus signs.</SourceLine>
+   <SourceLine>a.Elements.Append(New RooNumber(Val(chars(i))))</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return a</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken</ItemParams>
+  <ItemResult>RooArray</ItemResult>
+ </Method>
+ <Note>
+  <ItemName>About</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1272279039</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <NoteLine>About</NoteLine>
+   <NoteLine>The Number.digits, Number.each_digit(), Number.starts_with?() and Number.ends_with?() </NoteLine>
+   <NoteLine>only work correctly with integer-parts and fractional_parts that are &lt;= 30 digits long.</NoteLine>
+   <NoteLine>This due to how Xojo's Built-in Str() function works. I have elected to hard code this </NoteLine>
+   <NoteLine>value in the Str format String (RooNumber.kDoubleFormatString).</NoteLine>
+   <NoteLine></NoteLine>
+  </ItemSource>
+  <ItemFlags>0</ItemFlags>
+ </Note>
+ <Property>
+  <ItemName>Value</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1170483199</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Value As Double</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Value As Double</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Value</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>Double</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+ <Constant>
+  <ItemName>kDoubleFormatString</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>619530239</PartID>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemType>0</ItemType>
+  <ItemDef>-##############################.##############################</ItemDef>
+  <ItemFlags>0</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>kIntegerFormatString</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1148712959</PartID>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemType>0</ItemType>
+  <ItemDef>-##############################</ItemDef>
+  <ItemFlags>0</ItemFlags>
+ </Constant>
+</block>
+</RBProject>

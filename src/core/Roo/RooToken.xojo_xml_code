@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="1209081855">
+ <ObjName>RooToken</ObjName>
+ <ObjContainerID>339822591</ObjContainerID>
+ <IsClass>1</IsClass>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>418254847</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor()</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1811914751</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(type As Roo.TokenType)</SourceLine>
+   <SourceLine>Self.Type = type</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>type As Roo.TokenType</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>TypeToString</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1238673407</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Shared Function TypeToString(type As Roo.TokenType) As String</SourceLine>
+   <SourceLine>' Returns a String representation of a TokenType enumeration.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case type</SourceLine>
+   <SourceLine>Case Roo.TokenType.AMPERSAND</SourceLine>
+   <SourceLine>Return "AMPERSAND"</SourceLine>
+   <SourceLine>Case Roo.TokenType.AND_KEYWORD</SourceLine>
+   <SourceLine>Return "AND"</SourceLine>
+   <SourceLine>Case Roo.TokenType.ARROW</SourceLine>
+   <SourceLine>Return "ARROW"</SourceLine>
+   <SourceLine>Case Roo.TokenType.BANG</SourceLine>
+   <SourceLine>Return "BANG"</SourceLine>
+   <SourceLine>Case Roo.TokenType.Boolean</SourceLine>
+   <SourceLine>Return "BOOLEAN"</SourceLine>
+   <SourceLine>Case Roo.TokenType.BREAK_KEYWORD</SourceLine>
+   <SourceLine>Return "BREAK"</SourceLine>
+   <SourceLine>Case Roo.TokenType.CARET</SourceLine>
+   <SourceLine>Return "CARET"</SourceLine>
+   <SourceLine>Case Roo.TokenType.CLASS_KEYWORD</SourceLine>
+   <SourceLine>Return "CLASS"</SourceLine>
+   <SourceLine>Case Roo.TokenType.COLON</SourceLine>
+   <SourceLine>Return "COLON"</SourceLine>
+   <SourceLine>Case Roo.TokenType.COMMA</SourceLine>
+   <SourceLine>Return "COMMA"</SourceLine>
+   <SourceLine>Case Roo.TokenType.DEDENT</SourceLine>
+   <SourceLine>Return "DEDENT"</SourceLine>
+   <SourceLine>Case Roo.TokenType.DEF_KEYWORD</SourceLine>
+   <SourceLine>Return "DEF"</SourceLine>
+   <SourceLine>Case Roo.TokenType.DOT</SourceLine>
+   <SourceLine>Return "DOT"</SourceLine>
+   <SourceLine>Case Roo.TokenType.ELSE_KEYWORD</SourceLine>
+   <SourceLine>Return "ELSE"</SourceLine>
+   <SourceLine>Case Roo.TokenType.EOF</SourceLine>
+   <SourceLine>Return "EOF"</SourceLine>
+   <SourceLine>Case Roo.TokenType.EQUAL</SourceLine>
+   <SourceLine>Return "EQUAL"</SourceLine>
+   <SourceLine>Case Roo.TokenType.EQUAL_EQUAL</SourceLine>
+   <SourceLine>Return "EQUAL_EQUAL"</SourceLine>
+   <SourceLine>Case Roo.TokenType.Error</SourceLine>
+   <SourceLine>Return "ERROR"</SourceLine>
+   <SourceLine>Case Roo.TokenType.EXIT_KEYWORD</SourceLine>
+   <SourceLine>Return "EXIT"</SourceLine>
+   <SourceLine>Case Roo.TokenType.FOR_KEYWORD</SourceLine>
+   <SourceLine>Return "FOR"</SourceLine>
+   <SourceLine>Case Roo.TokenType.GREATER</SourceLine>
+   <SourceLine>Return "GREATER"</SourceLine>
+   <SourceLine>Case Roo.TokenType.GREATER_EQUAL</SourceLine>
+   <SourceLine>Return "GREATER_EQUAL"</SourceLine>
+   <SourceLine>Case Roo.TokenType.GREATER_GREATER</SourceLine>
+   <SourceLine>Return "GREATER_GREATER"</SourceLine>
+   <SourceLine>Case Roo.TokenType.IDENTIFIER</SourceLine>
+   <SourceLine>Return "IDENTIFIER"</SourceLine>
+   <SourceLine>Case Roo.TokenType.IF_KEYWORD</SourceLine>
+   <SourceLine>Return "IF"</SourceLine>
+   <SourceLine>Case Roo.TokenType.INDENT</SourceLine>
+   <SourceLine>Return "INDENT"</SourceLine>
+   <SourceLine>Case Roo.TokenType.LCURLY</SourceLine>
+   <SourceLine>Return "LCURLY"</SourceLine>
+   <SourceLine>Case Roo.TokenType.LESS</SourceLine>
+   <SourceLine>Return "LESS"</SourceLine>
+   <SourceLine>Case Roo.TokenType.LESS_EQUAL</SourceLine>
+   <SourceLine>Return "LESS_EQUAL"</SourceLine>
+   <SourceLine>Case Roo.TokenType.LESS_LESS</SourceLine>
+   <SourceLine>Return "LESS_LESS"</SourceLine>
+   <SourceLine>Case Roo.TokenType.LPAREN</SourceLine>
+   <SourceLine>Return "LPAREN"</SourceLine>
+   <SourceLine>Case Roo.TokenType.LSQUARE</SourceLine>
+   <SourceLine>Return "LSQUARE"</SourceLine>
+   <SourceLine>Case Roo.TokenType.MINUS</SourceLine>
+   <SourceLine>Return "MINUS"</SourceLine>
+   <SourceLine>Case Roo.TokenType.MINUS_EQUAL</SourceLine>
+   <SourceLine>Return "MINUS_EQUAL"</SourceLine>
+   <SourceLine>Case Roo.TokenType.MINUS_MINUS</SourceLine>
+   <SourceLine>Return "MINUS_MINUS"</SourceLine>
+   <SourceLine>Case Roo.TokenType.MODULE_KEYWORD</SourceLine>
+   <SourceLine>Return "MODULE"</SourceLine>
+   <SourceLine>Case Roo.TokenType.NOT_EQUAL</SourceLine>
+   <SourceLine>Return "NOT_EQUAL"</SourceLine>
+   <SourceLine>Case Roo.TokenType.NOTHING</SourceLine>
+   <SourceLine>Return "NOTHING"</SourceLine>
+   <SourceLine>Case Roo.TokenType.NOT_KEYWORD</SourceLine>
+   <SourceLine>Return "NOT"</SourceLine>
+   <SourceLine>Case Roo.TokenType.NUMBER</SourceLine>
+   <SourceLine>Return "NUMBER"</SourceLine>
+   <SourceLine>Case Roo.TokenType.OR_KEYWORD</SourceLine>
+   <SourceLine>Return "OR"</SourceLine>
+   <SourceLine>Case ROo.TokenType.PASS_KEYWORD</SourceLine>
+   <SourceLine>Return "PASS"</SourceLine>
+   <SourceLine>Case Roo.TokenType.PERCENT</SourceLine>
+   <SourceLine>Return "PERCENT"</SourceLine>
+   <SourceLine>Case Roo.TokenType.PERCENT_EQUAL</SourceLine>
+   <SourceLine>Return "PERCENT_EQUAL"</SourceLine>
+   <SourceLine>Case Roo.TokenType.PIPE</SourceLine>
+   <SourceLine>Return "PIPE"</SourceLine>
+   <SourceLine>Case Roo.TokenType.PLUS</SourceLine>
+   <SourceLine>Return "PLUS"</SourceLine>
+   <SourceLine>Case Roo.TokenType.PLUS_EQUAL</SourceLine>
+   <SourceLine>Return "PLUS_EQUAL"</SourceLine>
+   <SourceLine>Case Roo.TokenType.PLUS_PLUS</SourceLine>
+   <SourceLine>Return "PLUS_PLUS"</SourceLine>
+   <SourceLine>Case Roo.TokenType.QUERY</SourceLine>
+   <SourceLine>Return "QUERY"</SourceLine>
+   <SourceLine>Case Roo.TokenType.QUIT_KEYWORD</SourceLine>
+   <SourceLine>Return "QUIT"</SourceLine>
+   <SourceLine>Case Roo.TokenType.RCURLY</SourceLine>
+   <SourceLine>Return "RCURLY"</SourceLine>
+   <SourceLine>Case Roo.TokenType.REQUIRE_KEYWORD</SourceLine>
+   <SourceLine>Return "REQUIRE"</SourceLine>
+   <SourceLine>Case Roo.TokenType.RETURN_KEYWORD</SourceLine>
+   <SourceLine>Return "RETURN"</SourceLine>
+   <SourceLine>Case Roo.TokenType.RPAREN</SourceLine>
+   <SourceLine>Return "RPAREN"</SourceLine>
+   <SourceLine>Case Roo.TokenType.RSQUARE</SourceLine>
+   <SourceLine>Return "RSQUARE"</SourceLine>
+   <SourceLine>Case Roo.TokenType.SELF_KEYWORD</SourceLine>
+   <SourceLine>Return "SELF"</SourceLine>
+   <SourceLine>Case Roo.TokenType.SLASH</SourceLine>
+   <SourceLine>Return "SLASH"</SourceLine>
+   <SourceLine>Case Roo.TokenType.SLASH_EQUAL</SourceLine>
+   <SourceLine>Return "SLASH_EQUAL"</SourceLine>
+   <SourceLine>Case Roo.TokenType.STATIC_KEYWORD</SourceLine>
+   <SourceLine>Return "STATIC"</SourceLine>
+   <SourceLine>Case Roo.TokenType.STAR</SourceLine>
+   <SourceLine>Return "STAR"</SourceLine>
+   <SourceLine>Case Roo.TokenType.STAR_EQUAL</SourceLine>
+   <SourceLine>Return "STAR_EQUAL"</SourceLine>
+   <SourceLine>Case Roo.TokenType.SUPER_KEYWORD</SourceLine>
+   <SourceLine>Return "SUPER"</SourceLine>
+   <SourceLine>Case Roo.TokenType.TERMINATOR</SourceLine>
+   <SourceLine>Return "TERMINATOR"</SourceLine>
+   <SourceLine>Case Roo.TokenType.TEXT</SourceLine>
+   <SourceLine>Return "TEXT"</SourceLine>
+   <SourceLine>Case Roo.TokenType.TILDE</SourceLine>
+   <SourceLine>Return "TILDE"</SourceLine>
+   <SourceLine>Case Roo.TokenType.VAR</SourceLine>
+   <SourceLine>Return "VAR"</SourceLine>
+   <SourceLine>Case Roo.TokenType.WHILE_KEYWORD</SourceLine>
+   <SourceLine>Return "WHILE"</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return "UNKNOWN TOKEN"</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>1</IsShared>
+  <ItemParams>type As Roo.TokenType</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Property>
+  <ItemName>File</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1180456959</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>File As FolderItem</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>File As FolderItem</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Finish</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2097135615</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Finish As Integer</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Finish As Integer</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Length</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>264306687</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Length As Integer</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Length As Integer</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Lexeme</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>831905791</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Lexeme As String</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Lexeme As String</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Line</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>3917823</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Line As Integer</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Line As Integer</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Start</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>745836543</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Start As Integer</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Start As Integer</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Type</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>97228799</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Type As Roo.TokenType</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Type As Roo.TokenType</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Base</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1269284863</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Base As RooToken.BaseType</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Base As RooToken.BaseType</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Type</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>Roo.TokenType</ItemType>
+   <EditorType>Enum</EditorType>
+   <Enumeration>
+    <ItemDef>0 - AMPERSAND</ItemDef>
+    <ItemDef>1 - AND_KEYWORD</ItemDef>
+    <ItemDef>2 - ARROW</ItemDef>
+    <ItemDef>3 - BANG</ItemDef>
+    <ItemDef>4 - BOOLEAN</ItemDef>
+    <ItemDef>5 - BREAK_KEYWORD</ItemDef>
+    <ItemDef>6 - CARET</ItemDef>
+    <ItemDef>7 - CLASS_KEYWORD</ItemDef>
+    <ItemDef>8 - COLON</ItemDef>
+    <ItemDef>9 - COMMA</ItemDef>
+    <ItemDef>10 - DEDENT</ItemDef>
+    <ItemDef>11 - DEF_KEYWORD</ItemDef>
+    <ItemDef>12 - DOT</ItemDef>
+    <ItemDef>13 - ELSE_KEYWORD</ItemDef>
+    <ItemDef>14 - EQUAL</ItemDef>
+    <ItemDef>15 - EQUAL_EQUAL</ItemDef>
+    <ItemDef>16 - EOF</ItemDef>
+    <ItemDef>17 - ERROR</ItemDef>
+    <ItemDef>18 - EXIT_KEYWORD</ItemDef>
+    <ItemDef>19 - FOR_KEYWORD</ItemDef>
+    <ItemDef>20 - GREATER</ItemDef>
+    <ItemDef>21 - GREATER_EQUAL</ItemDef>
+    <ItemDef>22 - GREATER_GREATER</ItemDef>
+    <ItemDef>23 - IDENTIFIER</ItemDef>
+    <ItemDef>24 - IF_KEYWORD</ItemDef>
+    <ItemDef>25 - INDENT</ItemDef>
+    <ItemDef>26 - LCURLY</ItemDef>
+    <ItemDef>27 - LESS</ItemDef>
+    <ItemDef>28 - LESS_EQUAL</ItemDef>
+    <ItemDef>29 - LESS_LESS</ItemDef>
+    <ItemDef>30 - LPAREN</ItemDef>
+    <ItemDef>31 - LSQUARE</ItemDef>
+    <ItemDef>32 - MINUS</ItemDef>
+    <ItemDef>33 - MINUS_EQUAL</ItemDef>
+    <ItemDef>34 - MINUS_MINUS</ItemDef>
+    <ItemDef>35 - MODULE_KEYWORD</ItemDef>
+    <ItemDef>36 - NOT_EQUAL</ItemDef>
+    <ItemDef>37 - NOT_KEYWORD</ItemDef>
+    <ItemDef>38 - NOTHING</ItemDef>
+    <ItemDef>39 - NUMBER</ItemDef>
+    <ItemDef>40 - OR_KEYWORD</ItemDef>
+    <ItemDef>41 - PASS_KEYWORD</ItemDef>
+    <ItemDef>42 - PERCENT</ItemDef>
+    <ItemDef>43 - PERCENT_EQUAL</ItemDef>
+    <ItemDef>44 - PIPE</ItemDef>
+    <ItemDef>45 - PLUS</ItemDef>
+    <ItemDef>46 - PLUS_EQUAL</ItemDef>
+    <ItemDef>47 - PLUS_PLUS</ItemDef>
+    <ItemDef>48 - QUERY</ItemDef>
+    <ItemDef>49 - QUIT_KEYWORD</ItemDef>
+    <ItemDef>50 - RCURLY</ItemDef>
+    <ItemDef>51 - REQUIRE_KEYWORD</ItemDef>
+    <ItemDef>52 - RETURN_KEYWORD</ItemDef>
+    <ItemDef>53 - RPAREN</ItemDef>
+    <ItemDef>54 - RSQUARE</ItemDef>
+    <ItemDef>55 - SELF_KEYWORD</ItemDef>
+    <ItemDef>56 - SLASH</ItemDef>
+    <ItemDef>57 - SLASH_EQUAL</ItemDef>
+    <ItemDef>58 - STAR_EQUAL</ItemDef>
+    <ItemDef>59 - STAR</ItemDef>
+    <ItemDef>60 - STATIC_KEYWORD</ItemDef>
+    <ItemDef>61 - SUPER_KEYWORD</ItemDef>
+    <ItemDef>62 - TERMINATOR</ItemDef>
+    <ItemDef>63 - TEXT</ItemDef>
+    <ItemDef>64 - TILDE</ItemDef>
+    <ItemDef>65 - VAR</ItemDef>
+    <ItemDef>66 - WHILE_KEYWORD</ItemDef>
+   </Enumeration>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Finish</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Length</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Lexeme</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>String</ItemType>
+   <EditorType>MultiLineEditor</EditorType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Line</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Start</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+ <Enumeration>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>BaseType</ItemName>
+  <ItemFlags>0</ItemFlags>
+  <ItemName>BaseType</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>345653247</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Binary</SourceLine>
+   <SourceLine>Decimal</SourceLine>
+   <SourceLine>Hexadecimal</SourceLine>
+   <SourceLine>Octal</SourceLine>
+  </ItemSource>
+ </Enumeration>
+</block>
+</RBProject>

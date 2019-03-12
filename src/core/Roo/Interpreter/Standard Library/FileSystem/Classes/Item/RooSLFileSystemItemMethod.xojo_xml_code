@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="600012799">
+ <ObjName>RooSLFileSystemItemMethod</ObjName>
+ <ObjContainerID>413112319</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Interfaces>Invokable, Stringable</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Arity</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1529855</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Arity() As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine>// Return the arity of this method. This is stored in the cached </SourceLine>
+   <SourceLine>// FileSystemItemMethods dictionary.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return RooSLCache.FileSystemItemMethods.Value(Name)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Invoke</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1065996287</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Invoke(interpreter As RooInterpreter, arguments() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case Name</SourceLine>
+   <SourceLine>Case "append"</SourceLine>
+   <SourceLine>Return Write(arguments, where, False, True)</SourceLine>
+   <SourceLine>Case "append_line"</SourceLine>
+   <SourceLine>Return Write(arguments, where, True, True)</SourceLine>
+   <SourceLine>Case "copy_to"</SourceLine>
+   <SourceLine>Return Copy(arguments, where, interpreter)</SourceLine>
+   <SourceLine>Case "each_char"</SourceLine>
+   <SourceLine>Return EachChar(arguments, where, interpreter)</SourceLine>
+   <SourceLine>Case "each_line"</SourceLine>
+   <SourceLine>Return EachLine(arguments, where, interpreter)</SourceLine>
+   <SourceLine>Case "move_to"</SourceLine>
+   <SourceLine>Return Move(arguments, where, interpreter)</SourceLine>
+   <SourceLine>Case "write"</SourceLine>
+   <SourceLine>Return Write(arguments, where, False, False)</SourceLine>
+   <SourceLine>Case "write_line"</SourceLine>
+   <SourceLine>Return Write(arguments, where, True, False)</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter, arguments() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>530634751</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>// Part of the Stringable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return "&lt;function " + Name + "&gt;"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>937783295</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(owner As RooSLFileSystemItem, name As String)</SourceLine>
+   <SourceLine>Self.Owner = owner</SourceLine>
+   <SourceLine>Self.Name = name</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>owner As RooSLFileSystemItem, name As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Write</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>280459263</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Write(args() As Variant, where As RooToken, addEOL As Boolean, append As Boolean) As Variant</SourceLine>
+   <SourceLine>// FileSystem.Item.write(data as Text) as Integer</SourceLine>
+   <SourceLine>// or:</SourceLine>
+   <SourceLine>// FileSystem.Item.append(data as Text) as Integer</SourceLine>
+   <SourceLine>// Writes (or appends) the passed text to this FileSystem.Item object's file.</SourceLine>
+   <SourceLine>// If a Text argument is not passed then Roo will convert the passed argument to its text representation.</SourceLine>
+   <SourceLine>// Returns the number of bytes written to disk.</SourceLine>
+   <SourceLine>' If `addEOL` is True then we will add the end of line delimiter to the data to write.</SourceLine>
+   <SourceLine>// If the method fails for any reason then 0 is returned.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check the file is valid.</SourceLine>
+   <SourceLine>If Not Owner.ValidFile(True) Then Return New RooNumber(0)</SourceLine>
+   <SourceLine>If Owner.File.Directory Then Return New RooNumber(0)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the data to write.</SourceLine>
+   <SourceLine>Roo.AssertIsStringable(where, args(0))</SourceLine>
+   <SourceLine>Dim data As String = Stringable(args(0)).StringValue</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Add an EOL to the end of the data?</SourceLine>
+   <SourceLine>data = If(addEOL, data + EndOfLine, data)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create a TextOutputStream.</SourceLine>
+   <SourceLine>Dim tout As TextOutputStream</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Set the TextOutputStream to either append or create as needed.</SourceLine>
+   <SourceLine>If append Then</SourceLine>
+   <SourceLine>tout = TextOutputStream.Append(Owner.File)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>tout = TextOutputStream.Create(Owner.File)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Write the data.</SourceLine>
+   <SourceLine>tout.Write(data)</SourceLine>
+   <SourceLine>tout.Close</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return the number of bytes written.</SourceLine>
+   <SourceLine>Return New RooNumber(data.LenB)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Any error is handled by returning zero bytes written.</SourceLine>
+   <SourceLine>Exception err</SourceLine>
+   <SourceLine>Return New RooNumber(0)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken, addEOL As Boolean, append As Boolean</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>EachChar</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1037049855</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function EachChar(args() As Variant, where As RooToken, interpreter As RooInterpreter) As RooNumber</SourceLine>
+   <SourceLine>// FileSystem.Item.each_char(func as Invokable, optional arguments as Array) as Number</SourceLine>
+   <SourceLine>// Invokes the passed function for each character within this file, passing to the function the </SourceLine>
+   <SourceLine>// character as the first argument.</SourceLine>
+   <SourceLine>// The file must be encoded as UTF-8 or else bad things will probably happen.</SourceLine>
+   <SourceLine>// Optionally the method can take a second argument in the form of an Array. The elements of this</SourceLine>
+   <SourceLine>// Array will be passed to the function as additional arguments.</SourceLine>
+   <SourceLine>// Returns the number of characters invoked.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// E.g: </SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' def listChar(char):</SourceLine>
+   <SourceLine>'   print(char)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' def prefixChar(char, what):</SourceLine>
+   <SourceLine>'   print(what + char)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' Assume test.txt file contents is:</SourceLine>
+   <SourceLine>' Iron Man</SourceLine>
+   <SourceLine>' Hulk</SourceLine>
+   <SourceLine>' Thor</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' var f = FileSystem.Item("/Users/garry/Desktop/test.txt")</SourceLine>
+   <SourceLine>' f.each_char(listChar)</SourceLine>
+   <SourceLine>' # Prints:</SourceLine>
+   <SourceLine>' I</SourceLine>
+   <SourceLine>' r</SourceLine>
+   <SourceLine>' o   etc</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' f.each_char(prefixChar, ["Char: "])</SourceLine>
+   <SourceLine>' # Prints:</SourceLine>
+   <SourceLine>' Char: I</SourceLine>
+   <SourceLine>' Char: r</SourceLine>
+   <SourceLine>' Char: o   etc</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim funcArgs() As Variant</SourceLine>
+   <SourceLine>Dim func As Invokable</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that `func` is invokable.</SourceLine>
+   <SourceLine>Roo.AssertIsInvokable(where, args(0))</SourceLine>
+   <SourceLine>func = args(0)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If a second argument has been passed, check that it's an Array object.</SourceLine>
+   <SourceLine>If args.Ubound = 1 Then</SourceLine>
+   <SourceLine>Roo.AssertIsArray(where, args(1))</SourceLine>
+   <SourceLine>// Get an array of the additional arguments to pass to the function that we will invoke.</SourceLine>
+   <SourceLine>Dim limit As Integer = RooArray(args(1)).Elements.Ubound</SourceLine>
+   <SourceLine>For i As Integer = 0 To limit</SourceLine>
+   <SourceLine>funcArgs.Append(RooArray(args(1)).Elements(i))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that we have the correct number of arguments for `func`.</SourceLine>
+   <SourceLine>// NB: +2 as we will pass in each character as the first argument.</SourceLine>
+   <SourceLine>If Not Interpreter.CorrectArity(func, funcArgs.Ubound + 2) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Incorrect number of arguments passed to the " +_</SourceLine>
+   <SourceLine>Stringable(func).StringValue + " function.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Is the file valid?</SourceLine>
+   <SourceLine>If Not Owner.ValidFile(False) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "The FileSystem.Item object's file is not valid.")</SourceLine>
+   <SourceLine>ElseIf Owner.File.Directory Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "The FileSystem.Item object is a folder, not a file.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Open the file.</SourceLine>
+   <SourceLine>Dim char As RooText</SourceLine>
+   <SourceLine>Dim tin As TextInputStream</SourceLine>
+   <SourceLine>Dim charCount As Integer = 0</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>tin = TextInputStream.Open(Owner.File)</SourceLine>
+   <SourceLine>Do</SourceLine>
+   <SourceLine>char = New RooText(tin.Read(1, Encodings.UTF8))</SourceLine>
+   <SourceLine>charCount = charCount + 1</SourceLine>
+   <SourceLine>// Inject the character as the first argument to `func`.</SourceLine>
+   <SourceLine>funcArgs.Insert(0, char)</SourceLine>
+   <SourceLine>// Call the function for this character.</SourceLine>
+   <SourceLine>Call func.Invoke(interpreter, funcArgs, where)</SourceLine>
+   <SourceLine>// Remove the character from the argument list prior to the next iteration.</SourceLine>
+   <SourceLine>funcArgs.Remove(0)</SourceLine>
+   <SourceLine>Loop Until tin.EOF</SourceLine>
+   <SourceLine>tin.Close</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return the number of characters.</SourceLine>
+   <SourceLine>Return New RooNumber(charCount)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err As IOException</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Unable to open or read the FileSystem.Item object's TextInputStream.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken, interpreter As RooInterpreter</ItemParams>
+  <ItemResult>RooNumber</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>EachLine</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1090848767</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function EachLine(args() As Variant, where As RooToken, interpreter As RooInterpreter) As RooNumber</SourceLine>
+   <SourceLine>// FileSystem.Item.each_line(func as Invokable, optional arguments as Array) as Number</SourceLine>
+   <SourceLine>// Invokes the passed function for each line within this file, passing to the function the </SourceLine>
+   <SourceLine>// line as the first argument and the line number (zero-based) as the second argument.</SourceLine>
+   <SourceLine>// Optionally the method can take a second argument in the form of an Array. The elements of this</SourceLine>
+   <SourceLine>// Array will be passed to the function as additional arguments.</SourceLine>
+   <SourceLine>// Returns the number of lines invoked.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// E.g: </SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' def itemise(line, number):</SourceLine>
+   <SourceLine>'   print(number + ". " + line)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' def suffix(line, number, what):</SourceLine>
+   <SourceLine>'   print(line + what)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' Assume test.txt file contents are:</SourceLine>
+   <SourceLine>' Iron Man</SourceLine>
+   <SourceLine>' Hulk</SourceLine>
+   <SourceLine>' Thor</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' var f = FileSystem.Item("/Users/garry/Desktop/test.txt")</SourceLine>
+   <SourceLine>' f.each_line(itemise)</SourceLine>
+   <SourceLine>' # Prints:</SourceLine>
+   <SourceLine>' # 0. Iron Man</SourceLine>
+   <SourceLine>' # 2. Hulk</SourceLine>
+   <SourceLine>' # 3. Thor</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' f.each_line(suffix, ["!"])</SourceLine>
+   <SourceLine>' # Prints:</SourceLine>
+   <SourceLine>' # Iron Man!</SourceLine>
+   <SourceLine>' # Hulk!</SourceLine>
+   <SourceLine>' # Thor!</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim funcArgs() As Variant</SourceLine>
+   <SourceLine>Dim func As Invokable</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that `func` is invokable.</SourceLine>
+   <SourceLine>Roo.AssertIsInvokable(where, args(0))</SourceLine>
+   <SourceLine>func = args(0)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If a second argument has been passed, check that it's an Array object.</SourceLine>
+   <SourceLine>If args.Ubound = 1 Then</SourceLine>
+   <SourceLine>Roo.AssertIsArray(where, args(1))</SourceLine>
+   <SourceLine>// Get an array of the additional arguments to pass to the function we will invoke.</SourceLine>
+   <SourceLine>Dim limit As Integer = RooArray(args(1)).Elements.Ubound</SourceLine>
+   <SourceLine>For i As Integer = 0 To limit</SourceLine>
+   <SourceLine>funcArgs.Append(RooArray(args(1)).Elements(i))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that we have the correct number of arguments for `func`.</SourceLine>
+   <SourceLine>// NB: +3 as we will pass in each line and line number as the first two arguments.</SourceLine>
+   <SourceLine>If Not Interpreter.CorrectArity(func, funcArgs.Ubound + 3) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Incorrect number of arguments passed to the " +_</SourceLine>
+   <SourceLine>Stringable(func).StringValue + " function.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Is the file valid?</SourceLine>
+   <SourceLine>If Not Owner.ValidFile(False) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "The FileSystem.Item object's file is not valid.")</SourceLine>
+   <SourceLine>ElseIf Owner.File.Directory Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "The FileSystem.Item object is a folder, not a file.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Open the file.</SourceLine>
+   <SourceLine>Dim tin As TextInputStream</SourceLine>
+   <SourceLine>Dim lineNumber As Integer = -1</SourceLine>
+   <SourceLine>Dim line As RooText</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>tin = TextInputStream.Open(Owner.File)</SourceLine>
+   <SourceLine>Do</SourceLine>
+   <SourceLine>lineNumber = lineNumber + 1</SourceLine>
+   <SourceLine>line = New RooText(tin.ReadLine(Encodings.UTF8))</SourceLine>
+   <SourceLine>// Inject the line number as the second argument to `func`.</SourceLine>
+   <SourceLine>funcArgs.Insert(0, New RooNumber(lineNumber))</SourceLine>
+   <SourceLine>// Inject the line contents as the first argument to `func`.</SourceLine>
+   <SourceLine>funcArgs.Insert(0, line)</SourceLine>
+   <SourceLine>// Call the function for this line.</SourceLine>
+   <SourceLine>Call func.Invoke(interpreter, funcArgs, where)</SourceLine>
+   <SourceLine>// Remove the line from the argument list prior to the next iteration.</SourceLine>
+   <SourceLine>funcArgs.Remove(0)</SourceLine>
+   <SourceLine>// Remove the line number from the argument list prior to the next iteration.</SourceLine>
+   <SourceLine>funcArgs.Remove(0)</SourceLine>
+   <SourceLine>Loop Until tin.EOF</SourceLine>
+   <SourceLine>tin.Close</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return the number of lines invoked.</SourceLine>
+   <SourceLine>Return New RooNumber(lineNumber + 1)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Unable to open the FileSystem.Item object's TextInputStream.")</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken, interpreter As RooInterpreter</ItemParams>
+  <ItemResult>RooNumber</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Move</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1238534143</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Move(args() As Variant, where As RooToken, interpreter As RooInterpreter) As RooBoolean</SourceLine>
+   <SourceLine>// FileSystem.Item.move_to(destination, overwrite) as Boolean</SourceLine>
+   <SourceLine>// Moves this file/folder to the specified destination.</SourceLine>
+   <SourceLine>// `destination` may be either a relative/absolute text path or a </SourceLine>
+   <SourceLine>// FileSystem.Item object.</SourceLine>
+   <SourceLine>// If `overwrite` is True then we will permit the overwriting of files/folder.</SourceLine>
+   <SourceLine>// Returns a Boolean object - True if successful, False if not.</SourceLine>
+   <SourceLine>// Essentially an alias to FileSystem.move</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Inject this File object as the first argument.</SourceLine>
+   <SourceLine>args.Insert(0, Owner)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get a reference to the FileSystem.move method for this interpreter.</SourceLine>
+   <SourceLine>Dim name As New RooToken</SourceLine>
+   <SourceLine>name.Lexeme = "move"</SourceLine>
+   <SourceLine>Dim moveMethod As Invokable = Owner.Owner.MethodWithName(name)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Invoke the FileSystem.move method with the altered arguments.</SourceLine>
+   <SourceLine>Return moveMethod.Invoke(interpreter, args, where)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Internal error occurred in RooSLFileSystemItemMethod.Move")</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken, interpreter As RooInterpreter</ItemParams>
+  <ItemResult>RooBoolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Copy</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1975418879</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Copy(args() As Variant, where As RooToken, interpreter As RooInterpreter) As RooBoolean</SourceLine>
+   <SourceLine>// FileSystem.Item.copy_to(destination, overwrite) as Boolean</SourceLine>
+   <SourceLine>// Copies this file/folder to the specified destination.</SourceLine>
+   <SourceLine>// `destination` may be either a relative/absolute text path or a </SourceLine>
+   <SourceLine>// FileSystem.Item object.</SourceLine>
+   <SourceLine>// If `overwrite` is True then we will permit the overwriting of files/folder.</SourceLine>
+   <SourceLine>// Returns a Boolean object - True if successful, False if not.</SourceLine>
+   <SourceLine>// Essentially an alias to FileSystem.copy</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Inject this File object as the first argument.</SourceLine>
+   <SourceLine>args.Insert(0, Owner)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get a reference to the FileSystem.copy method for this interpreter.</SourceLine>
+   <SourceLine>Dim name As New RooToken</SourceLine>
+   <SourceLine>name.Lexeme = "copy"</SourceLine>
+   <SourceLine>Dim copyMethod As Invokable = Owner.Owner.MethodWithName(name)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Invoke the FileSystem.copy method with the altered arguments.</SourceLine>
+   <SourceLine>Return copyMethod.Invoke(interpreter, args, where)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Internal error occurred in RooSLFileSystemItemMethod.Copy")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken, interpreter As RooInterpreter</ItemParams>
+  <ItemResult>RooBoolean</ItemResult>
+ </Method>
+ <Property>
+  <ItemName>Name</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>7069695</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Name As String</SourceLine>
+   <SourceLine>The name of this Text object method.</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Name As String</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Owner</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1559111679</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Owner As RooSLFileSystemItem</SourceLine>
+   <SourceLine>The RooSLFileSystemItem object that owns this method.</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Owner As RooSLFileSystemItem</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

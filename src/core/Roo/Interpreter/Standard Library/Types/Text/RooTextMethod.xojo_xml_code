@@ -1,0 +1,939 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="627918847">
+ <ObjName>RooTextMethod</ObjName>
+ <ObjContainerID>983572479</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Interfaces>Invokable, Stringable</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Arity</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>665950207</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Arity() As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine>// Return the arity of this method. This is stored in the cached TextMethods dictionary.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return RooSLCache.TextMethods.Value(Name)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Invoke</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1249650687</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Invoke(interpreter As RooInterpreter, arguments() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine>// Perform the required method operation on this Text object.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused interpreter</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case Name</SourceLine>
+   <SourceLine>Case "each_char"</SourceLine>
+   <SourceLine>Return DoEachChar(arguments, where, interpreter)</SourceLine>
+   <SourceLine>Case "ends_with?"</SourceLine>
+   <SourceLine>Return DoEndsWith(arguments, where)</SourceLine>
+   <SourceLine>Case "first_match"</SourceLine>
+   <SourceLine>Dim result As Variant = DoMatch(arguments, where)</SourceLine>
+   <SourceLine>If result IsA RooNothing Then Return result</SourceLine>
+   <SourceLine>If result IsA RooArray Then Return RooArray(result).Elements(0)</SourceLine>
+   <SourceLine>Case "lpad"</SourceLine>
+   <SourceLine>Return DoLPad(arguments, where, False)</SourceLine>
+   <SourceLine>Case "lpad!"</SourceLine>
+   <SourceLine>Return DoLPad(arguments, where, True)</SourceLine>
+   <SourceLine>Case "include?"</SourceLine>
+   <SourceLine>Return DoInclude(arguments, where)</SourceLine>
+   <SourceLine>Case "index"</SourceLine>
+   <SourceLine>Return DoIndex(arguments, where)</SourceLine>
+   <SourceLine>Case "match"</SourceLine>
+   <SourceLine>Return DoMatch(arguments, where)</SourceLine>
+   <SourceLine>Case "matches?"</SourceLine>
+   <SourceLine>Return DoMatches(arguments, where)</SourceLine>
+   <SourceLine>Case "replace_all"</SourceLine>
+   <SourceLine>Return DoReplaceAll(arguments, False, where)</SourceLine>
+   <SourceLine>Case "replace_all!"</SourceLine>
+   <SourceLine>Return DoReplaceAll(arguments, True, where)</SourceLine>
+   <SourceLine>Case "replace_first"</SourceLine>
+   <SourceLine>Return DoReplaceFirst(arguments, False, where)</SourceLine>
+   <SourceLine>Case "replace_first!"</SourceLine>
+   <SourceLine>Return DoReplaceFirst(arguments, True, where)</SourceLine>
+   <SourceLine>Case "rpad"</SourceLine>
+   <SourceLine>Return DoRPad(arguments, where, False)</SourceLine>
+   <SourceLine>Case "rpad!"</SourceLine>
+   <SourceLine>Return DoRPad(arguments, where, True)</SourceLine>
+   <SourceLine>Case "slice"</SourceLine>
+   <SourceLine>Return DoSlice(arguments, False, where)</SourceLine>
+   <SourceLine>Case "slice!"</SourceLine>
+   <SourceLine>Return DoSlice(arguments, True, where)</SourceLine>
+   <SourceLine>Case "starts_with?"</SourceLine>
+   <SourceLine>Return DoStartsWith(arguments, where)</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter, arguments() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1582966783</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>// Part of the Stringable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return "&lt;function " + Name + "&gt;"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1211105279</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(owner As RooText, name As String)</SourceLine>
+   <SourceLine>Self.Owner = owner</SourceLine>
+   <SourceLine>Self.Name = name</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>owner As RooText, name As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoEndsWith</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>769427455</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoEndsWith(args() As Variant, where As RooToken) As RooBoolean</SourceLine>
+   <SourceLine>// Text.ends_with?(what as Text or Array) as Boolean.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused where</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim what As String</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The first (and only) argument passed is the query string.</SourceLine>
+   <SourceLine>// It will be either an array or a single value.</SourceLine>
+   <SourceLine>If args(0) IsA RooArray Then</SourceLine>
+   <SourceLine>// Loop through each element of the passed array comparing its </SourceLine>
+   <SourceLine>// text value to the end of this object's text value.</SourceLine>
+   <SourceLine>Dim limit As Integer = RooArray(args(0)).Elements.Ubound</SourceLine>
+   <SourceLine>For i As Integer = 0 To limit</SourceLine>
+   <SourceLine>what = Stringable(RooArray(args(0)).Elements(i)).StringValue</SourceLine>
+   <SourceLine>If what.Len &lt;= Owner.Value.Len Then</SourceLine>
+   <SourceLine>If StrComp(Owner.Value.Right(what.Len), what, 0) = 0 Then</SourceLine>
+   <SourceLine>// Matches.</SourceLine>
+   <SourceLine>Return New RooBoolean(True)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>// No match.</SourceLine>
+   <SourceLine>Return New RooBoolean(False)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>what = Stringable(args(0)).StringValue</SourceLine>
+   <SourceLine>Return New RooBoolean(StrComp(Owner.Value.Right(what.Len), what, 0) = 0)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken</ItemParams>
+  <ItemResult>RooBoolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoInclude</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>41121791</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoInclude(arguments() As Variant, where As RooToken) As RooBoolean</SourceLine>
+   <SourceLine>// Text.include?(needle As Text) As Boolean.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused where</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the string to look for.</SourceLine>
+   <SourceLine>Dim needle As String = Stringable(arguments(0)).StringValue</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Do a case-sensitive search.</SourceLine>
+   <SourceLine>Return New RooBoolean( Owner.Value.InStrB(needle) &gt; 0 )</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>arguments() As Variant, where As RooToken</ItemParams>
+  <ItemResult>RooBoolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoIndex</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1078894591</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoIndex(arguments() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Text.index(what As Text) As Number or Nothing</SourceLine>
+   <SourceLine>// Returns the position (zero-based index) of the first character of the passed query text. </SourceLine>
+   <SourceLine>// If not found it returns Nothing.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused where</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim what As String = Stringable(arguments(0)).StringValue</SourceLine>
+   <SourceLine>Dim index As Integer</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Do a case-sensitive search.</SourceLine>
+   <SourceLine>index = Owner.Value.InStrB(what) - 1</SourceLine>
+   <SourceLine>If index = -1 Then</SourceLine>
+   <SourceLine>Return New RooNothing</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return New RooNumber(index)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>arguments() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoReplaceAll</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>814295039</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoReplaceAll(arguments() As Variant, destructive As Boolean, where As RooToken) As RooText</SourceLine>
+   <SourceLine>// Text.replace_all(what As Text, replacement As Text) as Text</SourceLine>
+   <SourceLine>// Text.replace_all!(what As Text, replacement As Text) As Text</SourceLine>
+   <SourceLine>// Returns a new Text object where every occurrence of `what` is replaced with `replacement`.</SourceLine>
+   <SourceLine>// If destructive then is Text object's value is also mutated.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure that both arguments are Text objects.</SourceLine>
+   <SourceLine>Roo.AssertAreTextObjects(where, arguments(0), arguments(1))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim what As String = RooText(arguments(0)).Value</SourceLine>
+   <SourceLine>Dim replacement As String = RooText(arguments(1)).Value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Do the search and replace</SourceLine>
+   <SourceLine>Dim result As String = Owner.Value.ReplaceAllB(what, replacement)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Destructive operation?</SourceLine>
+   <SourceLine>Owner.Value = If(destructive, result, Owner.Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooText(result)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>arguments() As Variant, destructive As Boolean, where As RooToken</ItemParams>
+  <ItemResult>RooText</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoReplaceFirst</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1632047103</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoReplaceFirst(arguments() As Variant, destructive As Boolean, where As RooToken) As RooText</SourceLine>
+   <SourceLine>// Text.replace_first(what As Text, replacement As Text) as Text</SourceLine>
+   <SourceLine>// Text.replace_first!(what As Text, replacement As Text) As Text</SourceLine>
+   <SourceLine>// Returns a new Text object where the first occurrence of `what` is replaced with `replacement`.</SourceLine>
+   <SourceLine>// If destructive then is Text object's value is also mutated.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure that both arguments are Text objects.</SourceLine>
+   <SourceLine>Roo.AssertAreTextObjects(where, arguments(0), arguments(1))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim what As String = RooText(arguments(0)).Value</SourceLine>
+   <SourceLine>Dim replacement As String = RooText(arguments(1)).Value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Do the search and replace</SourceLine>
+   <SourceLine>Dim result As String = Owner.Value.ReplaceB(what, replacement)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Destructive operation?</SourceLine>
+   <SourceLine>Owner.Value = If(destructive, result, Owner.Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooText(result)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>arguments() As Variant, destructive As Boolean, where As RooToken</ItemParams>
+  <ItemResult>RooText</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoSlice</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>239980543</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoSlice(arguments() As Variant, destructive As Boolean, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Text.slice(pos)  |  Text.slice(start, end)</SourceLine>
+   <SourceLine>// Text.slice!(pos) |  Text.slice!(start, end)</SourceLine>
+   <SourceLine>// If one argument is passed then we return the character at that position.</SourceLine>
+   <SourceLine>// If two arguments are passed then we return the text starting at position `start` </SourceLine>
+   <SourceLine>// and ending at `end`.</SourceLine>
+   <SourceLine>// Positions are zero based.</SourceLine>
+   <SourceLine>// If `pos` or `start` are negative then we count backwards.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Quick check to see if we can get away with doing nothing.</SourceLine>
+   <SourceLine>If Owner.Value = "" Then Return New RooText("")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Dispatch to the correct method depending on the number of arguments passed.</SourceLine>
+   <SourceLine>If arguments.Ubound = 0 Then // Text.slice(pos) or Text.slice!(pos)</SourceLine>
+   <SourceLine>// Check that `pos` is an Integer.</SourceLine>
+   <SourceLine>Roo.AssertAreIntegers(where, arguments(0))</SourceLine>
+   <SourceLine>Return DoSlicePos(RooNumber(arguments(0)).Value, destructive)</SourceLine>
+   <SourceLine>ElseIf arguments.Ubound = 1 Then // Text.slice(start, end) or Text.slice!(start, end)</SourceLine>
+   <SourceLine>// Check both arguments are integers.</SourceLine>
+   <SourceLine>Roo.AssertAreIntegers(where, arguments(0), arguments(1))</SourceLine>
+   <SourceLine>Return DoSliceStartEnd(RooNumber(arguments(0)).Value, _</SourceLine>
+   <SourceLine>RooNumber(arguments(1)).Value, destructive, where)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>arguments() As Variant, destructive As Boolean, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoSlicePos</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1404424191</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoSlicePos(pos As Integer, destructive As Boolean) As Variant</SourceLine>
+   <SourceLine>// Text.slice(pos) as Text  |  Text.slice!(pos) as Text</SourceLine>
+   <SourceLine>// Returns a new Text object containing the character at position `pos`. </SourceLine>
+   <SourceLine>// If pos &lt; 0 we count backwards from the end of the text to find the character. </SourceLine>
+   <SourceLine>// Position is zero-based.</SourceLine>
+   <SourceLine>// If `pos` &gt; length of the text then we return Nothing.</SourceLine>
+   <SourceLine>// If destructive then we will also change the value of this Text object's value to </SourceLine>
+   <SourceLine>// the sliced value.</SourceLine>
+   <SourceLine>// Whenever Nothing is returned, we leave the original text alone </SourceLine>
+   <SourceLine>// (even if it's a destructive operation).</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim tmp, result As String</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If pos + 1 &gt; Owner.Value.Len Then Return New RooNothing</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If pos &gt;= 0 Then</SourceLine>
+   <SourceLine>result = Owner.Value.Mid(pos + 1, 1)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>pos = Abs(pos)</SourceLine>
+   <SourceLine>If pos &gt; Owner.Value.Len Then Return New RooNothing</SourceLine>
+   <SourceLine>tmp = Reverse(Owner.Value)</SourceLine>
+   <SourceLine>result = tmp.Mid(pos, 1)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If result = "" Then Return New RooNothing</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Is this a destructive operation? - slice!()</SourceLine>
+   <SourceLine>Owner.Value = If(destructive, result, Owner.Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooText(result)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>pos As Integer, destructive As Boolean</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoSliceStartEnd</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>859797503</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoSliceStartEnd(start As Integer, length As Integer, destructive As Boolean, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Text.slice(start, length) as Text  |  Text.slice!(start, length) as Text</SourceLine>
+   <SourceLine>// Indices are zero-based.</SourceLine>
+   <SourceLine>// Returns a new Text object of length `length` starting from position `start`. </SourceLine>
+   <SourceLine>// If start &lt; 0 then we count backwards from the end of the text to find the start character. </SourceLine>
+   <SourceLine>// Whenever Nothing is returned, we leave the original text alone </SourceLine>
+   <SourceLine>// (even if it's a destructive operation).</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// E.g:</SourceLine>
+   <SourceLine>// var t = "Hello World"</SourceLine>
+   <SourceLine>// t.slice(0, 3)  # "Hel"</SourceLine>
+   <SourceLine>// t.slice(2, 6)  # "llo Wo"</SourceLine>
+   <SourceLine>// t.slice(-3, 2) # "rl"</SourceLine>
+   <SourceLine>// t.slice(2, -5) # Nothing</SourceLine>
+   <SourceLine>// t.slice(7, 2)  # "or"</SourceLine>
+   <SourceLine>// t.slice(7, 4)  # "orld"</SourceLine>
+   <SourceLine>// t.slice(7, 8)  # "orld"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused where</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim result As String</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure `length` is valid.</SourceLine>
+   <SourceLine>If length &lt;= 0 Then Return New RooNothing</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure a valid start position has been passed.</SourceLine>
+   <SourceLine>If Abs(start) &gt; Owner.Value.Len Then Return New RooNothing</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Adjust the start position as required.</SourceLine>
+   <SourceLine>If start &lt; 0 Then start = Owner.Value.Len + start</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If the user has passed a length greater than the number of characters remaining between </SourceLine>
+   <SourceLine>// `start` and the end of the text, adjust `length` such that we return all characters from </SourceLine>
+   <SourceLine>// `start` to the end of the text.</SourceLine>
+   <SourceLine>length = If(start + length &gt; Owner.Value.Len, Owner.Value.Len - start, length)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Do the slice.</SourceLine>
+   <SourceLine>result = Owner.Value.Mid(start + 1, length)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If result = "" Then Return New RooNothing</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Destructive operation?</SourceLine>
+   <SourceLine>Owner.Value = If(destructive, result, Owner.Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooText(result)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>start As Integer, length As Integer, destructive As Boolean, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Reverse</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1754458111</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Reverse(s As String) As String</SourceLine>
+   <SourceLine>// Internal helper method. Returns `s` with the characters in reverse order.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Len(s) &lt; 2 Then Return s</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim characters() As String = Split(s, "")</SourceLine>
+   <SourceLine>Dim leftIndex As Integer = 0</SourceLine>
+   <SourceLine>Dim rightIndex As Integer = UBound(characters)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim temp As String</SourceLine>
+   <SourceLine>#Pragma BackgroundTasks False</SourceLine>
+   <SourceLine>While leftIndex &lt; rightIndex</SourceLine>
+   <SourceLine>temp = characters(leftIndex)</SourceLine>
+   <SourceLine>characters(leftIndex) = characters(rightIndex)</SourceLine>
+   <SourceLine>characters(rightIndex) = temp</SourceLine>
+   <SourceLine>leftIndex = leftIndex + 1</SourceLine>
+   <SourceLine>rightIndex = rightIndex - 1</SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Join(characters, "")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>s As String</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoStartsWith</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1137467391</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoStartsWith(args() As Variant, where As RooToken) As RooBoolean</SourceLine>
+   <SourceLine>// Text.starts_with?(what as Text or Array) as Boolean.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused where</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim what As String</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The first (and only) argument passed is the query string.</SourceLine>
+   <SourceLine>// It will be either an array or a single value.</SourceLine>
+   <SourceLine>If args(0) IsA RooArray Then</SourceLine>
+   <SourceLine>// Loop through each element of the passed array comparing its </SourceLine>
+   <SourceLine>// text value to the start of this object's text value.</SourceLine>
+   <SourceLine>Dim limit As Integer = RooArray(args(0)).Elements.Ubound</SourceLine>
+   <SourceLine>For i As Integer = 0 To limit</SourceLine>
+   <SourceLine>what = Stringable(RooArray(args(0)).Elements(i)).StringValue</SourceLine>
+   <SourceLine>If what.Len &lt;= Owner.Value.Len Then</SourceLine>
+   <SourceLine>If StrComp(Owner.Value.Left(what.Len), what, 0) = 0 Then</SourceLine>
+   <SourceLine>// Matches.</SourceLine>
+   <SourceLine>Return New RooBoolean(True)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>// No match.</SourceLine>
+   <SourceLine>Return New RooBoolean(False)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>what = Stringable(args(0)).StringValue</SourceLine>
+   <SourceLine>Return New RooBoolean(StrComp(Owner.Value.Left(what.Len), what, 0) = 0)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken</ItemParams>
+  <ItemResult>RooBoolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoMatch</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>217368575</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoMatch(args() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Text.match(pattern as Regex) as array of RegexMatch objects or Nothing</SourceLine>
+   <SourceLine>// Text.match(pattern as Regex, start as Integer) as array of RegexMatch objects or Nothing</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma BreakOnExceptions False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Has a regex object been passed?</SourceLine>
+   <SourceLine>Roo.AssertIsRegex(where, args(0))</SourceLine>
+   <SourceLine>Dim re As RooRegex = RooRegex(args(0))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If the optional `start` argument is passed make sure it's a positive integer.</SourceLine>
+   <SourceLine>Dim start As Integer = 0</SourceLine>
+   <SourceLine>If args.Ubound = 1 Then</SourceLine>
+   <SourceLine>Roo.AssertIsPositiveInteger(where, args(1))</SourceLine>
+   <SourceLine>start = RooNumber(args(1)).Value</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the text to search.</SourceLine>
+   <SourceLine>Dim what As String = Owner.Value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert the passed start position into a byte start position.</SourceLine>
+   <SourceLine>// The Xojo Regex library requires a byte position which does not always align with </SourceLine>
+   <SourceLine>// the character position in multibyte (i.e: UTF-8) strings.</SourceLine>
+   <SourceLine>start = what.Left(start).LenB</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Do the search.</SourceLine>
+   <SourceLine>Dim numCaptureGroups, matchStart As Integer</SourceLine>
+   <SourceLine>Dim matchValue As String</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim m, matches() As RooRegexMatch</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim match As RegExMatch = re.Regex.Search(what, start)</SourceLine>
+   <SourceLine>Do Until match = Nil</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create a new Roo RegexMatch object.</SourceLine>
+   <SourceLine>matchValue = match.SubExpressionString(0)</SourceLine>
+   <SourceLine>matchStart = RooRegex.ZeroBasedPos(match.SubExpressionStartB(0), what)</SourceLine>
+   <SourceLine>m = New RooRegexMatch(matchStart, matchValue)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Handle any capture groups.</SourceLine>
+   <SourceLine>numCaptureGroups = match.SubExpressionCount - 1</SourceLine>
+   <SourceLine>If numCaptureGroups &gt; 0 Then</SourceLine>
+   <SourceLine>For i As Integer = 1 To numCaptureGroups</SourceLine>
+   <SourceLine>// Create a dictionary to hold the value, start pos and length of this </SourceLine>
+   <SourceLine>// capture group's content.</SourceLine>
+   <SourceLine>Dim d As Xojo.Core.Dictionary = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine>d.Value("start") = RooRegex.ZeroBasedPos(match.SubExpressionStartB(i), what)</SourceLine>
+   <SourceLine>d.Value("value") = match.SubExpressionString(i)</SourceLine>
+   <SourceLine>d.Value("length") = match.SubExpressionString(i).Len</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Add this dictionary to this match's array of capture group dictionaries.</SourceLine>
+   <SourceLine>// NB: m.Groups(0) = first capture group, m.Groups(1) = 2nd group, etc.</SourceLine>
+   <SourceLine>m.Groups.Append(d)</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Add this match to our array of matches.</SourceLine>
+   <SourceLine>matches.Append(m)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Keep searching the query string.</SourceLine>
+   <SourceLine>match = re.Regex.Search</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Loop</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If there were no matches, return Nothing.</SourceLine>
+   <SourceLine>If matches.Ubound &lt; 0 Then Return New RooNothing</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// There was at least one match. Return an array of RegexMatch objects.</SourceLine>
+   <SourceLine>Dim a As New RooArray</SourceLine>
+   <SourceLine>For i As Integer = 0 To matches.Ubound</SourceLine>
+   <SourceLine>a.Elements.Append(matches(i))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>Return a</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err As RegExSearchPatternException</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Invalid regular expression (" + err.Message + _</SourceLine>
+   <SourceLine>"): " + re.Regex.SearchPattern)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoMatches</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1823127551</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoMatches(args() As Variant, where As RooToken) As RooBoolean</SourceLine>
+   <SourceLine>// Text.matches?(pattern as Regex) as Boolean.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused where</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that a Regex object has been passed as the parameter.</SourceLine>
+   <SourceLine>Roo.AssertIsRegex(where, args(0))</SourceLine>
+   <SourceLine>Dim re As RooRegex = RooRegex(args(0))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Run the search query, looking for at least one match.</SourceLine>
+   <SourceLine>Dim match As RegExMatch = re.Regex.Search(Owner.Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return whether there is a match or not.</SourceLine>
+   <SourceLine>Return New RooBoolean(If(match &lt;&gt; Nil, True, False))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken</ItemParams>
+  <ItemResult>RooBoolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoLPad</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2046748671</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoLPad(args() As Variant, where As RooToken, destructive As Boolean) As RooText</SourceLine>
+   <SourceLine>// Text.lpad(width as Number, optional padding As Text) As Text</SourceLine>
+   <SourceLine>// Returns a new Text object where the value has been padded to at least the specified width </SourceLine>
+   <SourceLine>// with whatever `padding` is.</SourceLine>
+   <SourceLine>// If `padding` is omitted we use " ".</SourceLine>
+   <SourceLine>// If destructive then is Text object's value is also mutated.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the width as a positive integer.</SourceLine>
+   <SourceLine>Roo.AssertIsPositiveInteger(where, args(0))</SourceLine>
+   <SourceLine>Dim width As Integer = RooNumber(args(0)).Value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the padding character(s). Default to " ".</SourceLine>
+   <SourceLine>Dim padding As String = " "</SourceLine>
+   <SourceLine>If args.Ubound = 1 Then</SourceLine>
+   <SourceLine>padding = Stringable(args(1)).StringValue</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim length As Integer = Owner.Value.Len</SourceLine>
+   <SourceLine>Dim newValue As String</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If length &gt;= width Then</SourceLine>
+   <SourceLine>newValue = Owner.Value</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Dim mostToRepeat As Integer</SourceLine>
+   <SourceLine>mostToRepeat = Ceil((width - length) / Len(padding))</SourceLine>
+   <SourceLine>newValue = Mid(Repeat(padding, mostToRepeat), 1, width - length) + Owner.Value</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Destructive operation?</SourceLine>
+   <SourceLine>Owner.Value = If(destructive, newValue, Owner.Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooText(newValue)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken, destructive As Boolean</ItemParams>
+  <ItemResult>RooText</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Repeat</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>326219775</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Repeat(s As String, repeatCount As Integer) As String</SourceLine>
+   <SourceLine>// Concatenate a string to itself `repeatCount` times.</SourceLine>
+   <SourceLine>// Example: Repeat("spam ", 5) = "spam spam spam spam spam ".</SourceLine>
+   <SourceLine>// Credit Joe Strout: http://www.strout.net/files/rb/stringutils.zip</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma DisableBackgroundTasks</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If repeatCount &lt;= 0 Then Return ""</SourceLine>
+   <SourceLine>If repeatCount = 1 Then Return s</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Implementation note: normally, you don't want to use string concatenation</SourceLine>
+   <SourceLine>// for something like this, since that creates a new string on each operation.</SourceLine>
+   <SourceLine>// But in this case, we can double the size of the string on iteration, which</SourceLine>
+   <SourceLine>// quickly reduces the overhead of concatenation to insignificance.  This method</SourceLine>
+   <SourceLine>// is faster than any other we've found (short of declares, which were only</SourceLine>
+   <SourceLine>// about 2X faster and were quite platform-specific).</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim desiredLenB As Integer = LenB(s) * repeatCount</SourceLine>
+   <SourceLine>Dim output As String = s</SourceLine>
+   <SourceLine>Dim cutoff As Integer = (desiredLenB + 1)\2</SourceLine>
+   <SourceLine>Dim curLenB As Integer = LenB(output)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>While curLenB &lt; cutoff</SourceLine>
+   <SourceLine>output = output + output</SourceLine>
+   <SourceLine>curLenB = curLenB + curLenB</SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>output = output + LeftB(output, desiredLenB - curLenB)</SourceLine>
+   <SourceLine>Return output</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>s As String, repeatCount As Integer</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoRPad</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1922195455</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoRPad(args() As Variant, where As RooToken, destructive As Boolean) As RooText</SourceLine>
+   <SourceLine>// Text.rpad(width as Number, optional padding As Text) As Text</SourceLine>
+   <SourceLine>// Returns a new Text object where the value has been right-padded to at least the </SourceLine>
+   <SourceLine>// specified width with whatever `padding` is.</SourceLine>
+   <SourceLine>// If `padding` is omitted we use " ".</SourceLine>
+   <SourceLine>// If destructive then is Text object's value is also mutated.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the width as a positive integer.</SourceLine>
+   <SourceLine>Roo.AssertIsPositiveInteger(where, args(0))</SourceLine>
+   <SourceLine>Dim width As Integer = RooNumber(args(0)).Value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the padding character(s). Default to " ".</SourceLine>
+   <SourceLine>Dim padding As String = " "</SourceLine>
+   <SourceLine>If args.Ubound = 1 Then</SourceLine>
+   <SourceLine>padding = Stringable(args(1)).StringValue</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim length As Integer = Owner.Value.Len</SourceLine>
+   <SourceLine>Dim newValue As String</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If length &gt;= width Then</SourceLine>
+   <SourceLine>newValue = Owner.Value</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Dim mostToRepeat As Integer</SourceLine>
+   <SourceLine>mostToRepeat = Ceil((width - length) / Len(padding))</SourceLine>
+   <SourceLine>newValue = Owner.Value + Mid(Repeat(padding, mostToRepeat), 1, width - length)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Destructive operation?</SourceLine>
+   <SourceLine>Owner.Value = If(destructive, newValue, Owner.Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooText(newValue)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken, destructive As Boolean</ItemParams>
+  <ItemResult>RooText</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoEachChar</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2137581567</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoEachChar(args() As Variant, where As RooToken, interpreter As RooInterpreter) As RooArray</SourceLine>
+   <SourceLine>// Text.each_char(func as Invokable, optional arguments as Array) as Array</SourceLine>
+   <SourceLine>// Invokes the passed `func` for each character of this text object, passing to `func` the character </SourceLine>
+   <SourceLine>// as the first argument. Optionally, `each_char` can take a second argument in the form of an Array object. </SourceLine>
+   <SourceLine>// The elements of this array will be passed to `func` as additional arguments.</SourceLine>
+   <SourceLine>// Returns a new array containing the values returned by `func`.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim funcArgs(), result() As Variant</SourceLine>
+   <SourceLine>Dim charsUbound, i As Integer</SourceLine>
+   <SourceLine>Dim func As Invokable</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that `func` is invokable.</SourceLine>
+   <SourceLine>Roo.AssertIsInvokable(where, args(0))</SourceLine>
+   <SourceLine>func = args(0)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If a second argument has been passed, check that it's an Array object.</SourceLine>
+   <SourceLine>if args.Ubound = 1 then</SourceLine>
+   <SourceLine>Roo.AssertIsArray(where, args(1))</SourceLine>
+   <SourceLine>// Get an array of the additional arguments to pass to the function we will invoke.</SourceLine>
+   <SourceLine>Dim limit As Integer = RooArray(args(1)).Elements.Ubound</SourceLine>
+   <SourceLine>For i = 0 To limit</SourceLine>
+   <SourceLine>funcArgs.Append(RooArray(args(1)).Elements(i))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that we have the correct number of arguments for `func`.</SourceLine>
+   <SourceLine>// NB: +2 as we will pass in each character as the first argument.</SourceLine>
+   <SourceLine>If Not Interpreter.CorrectArity(func, funcArgs.Ubound + 2) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Incorrect number of arguments passed to the " +_</SourceLine>
+   <SourceLine>Stringable(func).StringValue + " function.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Split this text object into characters.</SourceLine>
+   <SourceLine>Dim chars() As String = Owner.Value.Split("")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>charsUbound = chars.Ubound</SourceLine>
+   <SourceLine>For i = 0 To charsUbound</SourceLine>
+   <SourceLine>funcArgs.Insert(0, New RooText(chars(i))) // Inject this character as the first argument to `func`.</SourceLine>
+   <SourceLine>result.Append(func.Invoke(interpreter, funcArgs, where))</SourceLine>
+   <SourceLine>funcArgs.Remove(0) // Remove this character from the argument list prior to the next iteration.</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooArray(result)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken, interpreter As RooInterpreter</ItemParams>
+  <ItemResult>RooArray</ItemResult>
+ </Method>
+ <Property>
+  <ItemName>Name</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1689927679</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Name As String</SourceLine>
+   <SourceLine>The name of this Text object method.</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Name As String</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Owner</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1992611839</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Owner As RooText</SourceLine>
+   <SourceLine>The RooText object that owns this method.</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Owner As RooText</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

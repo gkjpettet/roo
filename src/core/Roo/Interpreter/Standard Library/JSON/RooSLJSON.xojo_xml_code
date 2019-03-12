@@ -1,0 +1,1048 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="1674647551">
+ <ObjName>RooSLJSON</ObjName>
+ <ObjContainerID>1512333311</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Superclass>RooInstance</Superclass>
+ <Interfaces>RooNativeModule</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>GetterWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1291083775</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function GetterWithName(name As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The JSON module has no getters.</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(name, "The JSON method has no getter named " + _</SourceLine>
+   <SourceLine>"`" + name.Lexeme + "`.")</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasGetterWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>808648703</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasGetterWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused name</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The JSON module has no getters.</SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasMethodWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>300523519</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasMethodWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Methods.HasKey(name)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>MethodWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2068303871</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function MethodWithName(name As RooToken) As Invokable</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Methods.Value(name.Lexeme)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err As KeyNotFoundException</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(name, "The JSON module has no method named " + _</SourceLine>
+   <SourceLine>"`" + name.Lexeme + "`.")</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>Invokable</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Type</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>355000319</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Type() As String</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return "Module"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ClassWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>608856063</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ClassWithName(name As RooToken) As RooNativeClass</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Raise New RooRuntimeError(name, "The JSON module has no class named " + _</SourceLine>
+   <SourceLine>"`" + name.Lexeme + "`.")</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>RooNativeClass</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ModuleWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>911933439</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ModuleWithName(name As RooToken) As RooNativeModule</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Raise New RooRuntimeError(name, "The JSON module has no submodule named " + _</SourceLine>
+   <SourceLine>"`" + name.Lexeme + "`.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>RooNativeModule</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasClassWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1142214655</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasClassWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused name</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The JSON module has no classes.</SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasModuleWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2019817471</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasModuleWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused name</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The JSON module has no submodules.</SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>558092287</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>// Part of the Stringable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return "JSON module"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1144858623</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor()</SourceLine>
+   <SourceLine>Super.Constructor(Nil)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Initialise the properties required for parsing JSON.</SourceLine>
+   <SourceLine>kCarriageReturn = Chr(13).ToText</SourceLine>
+   <SourceLine>kLineFeed = Chr(10).ToText</SourceLine>
+   <SourceLine>kSpace = " "</SourceLine>
+   <SourceLine>kTab = Chr(9).ToText</SourceLine>
+   <SourceLine>kQuote = """"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create this module's methods.</SourceLine>
+   <SourceLine>Methods = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine>Methods.Value("generate") = New RooSLJSONGenerate(Self)</SourceLine>
+   <SourceLine>Methods.Value("parse") = New RooSLJSONParse(Self)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// It's getters.</SourceLine>
+   <SourceLine>// None.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Submodules.</SourceLine>
+   <SourceLine>// None.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Add any classes.</SourceLine>
+   <SourceLine>// None.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Escape</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1794473983</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Escape() As Text</SourceLine>
+   <SourceLine>Dim char As Text = GetChar</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case char</SourceLine>
+   <SourceLine>Case """", "\", "/"</SourceLine>
+   <SourceLine>Return char</SourceLine>
+   <SourceLine>Case "b"</SourceLine>
+   <SourceLine>Return Text.FromUnicodeCodepoint(8)</SourceLine>
+   <SourceLine>Case "f"</SourceLine>
+   <SourceLine>Return Text.FromUnicodeCodepoint(12)</SourceLine>
+   <SourceLine>Case "n"</SourceLine>
+   <SourceLine>Return Text.FromUnicodeCodepoint(10)</SourceLine>
+   <SourceLine>Case "r"</SourceLine>
+   <SourceLine>Return Text.FromUnicodeCodepoint(13)</SourceLine>
+   <SourceLine>Case "t"</SourceLine>
+   <SourceLine>Return Text.FromUnicodeCodepoint(9)</SourceLine>
+   <SourceLine>Case "u"</SourceLine>
+   <SourceLine>Dim unicode As Text = "&amp;h"</SourceLine>
+   <SourceLine>For i As Integer = 1 to 4</SourceLine>
+   <SourceLine>char = GetChar</SourceLine>
+   <SourceLine>If char = "" Then</SourceLine>
+   <SourceLine>Raise New UnsupportedFormatException</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>unicode = unicode + char</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>Return Text.FromUnicodeCodepoint(Val(unicode))</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err</SourceLine>
+   <SourceLine>Raise New UnsupportedFormatException</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Text</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>EscapeSpecialCharacters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1569589247</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function EscapeSpecialCharacters(s As String) As String</SourceLine>
+   <SourceLine>Return s.ReplaceAll("\","\\") _</SourceLine>
+   <SourceLine>.ReplaceAll("/","\/") _</SourceLine>
+   <SourceLine>.ReplaceAll("""","\""") _</SourceLine>
+   <SourceLine>.ReplaceAll(chr(8),"\b") _</SourceLine>
+   <SourceLine>.ReplaceAll(chr(12),"\f") _</SourceLine>
+   <SourceLine>.ReplaceAll(chr(10),"\n") _</SourceLine>
+   <SourceLine>.ReplaceAll(chr(13),"\r") _</SourceLine>
+   <SourceLine>.ReplaceAll(chr(9),"\t")</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>s As String</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>GetChar</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>44324863</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function GetChar() As Text</SourceLine>
+   <SourceLine>' Returns the character at the current pointer position and increments the pointer.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim char As Text = jsonText.Mid(pointer, 1)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>pointer =  pointer + 1</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return char</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err</SourceLine>
+   <SourceLine>Return ""</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Text</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Parse</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>961247231</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Parse(t As Text) As Variant</SourceLine>
+   <SourceLine>// Takes JSON as Xojo Text and parses it into a Roo data structure (an array or a hash).</SourceLine>
+   <SourceLine>// If invalid JSON then return Nothing.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>pointer = 0</SourceLine>
+   <SourceLine>jsonText = t</SourceLine>
+   <SourceLine>SkipWhiteSpace</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim char As Text = GetChar</SourceLine>
+   <SourceLine>If char = "{" Then</SourceLine>
+   <SourceLine>pointer = pointer - 1</SourceLine>
+   <SourceLine>Return ParseObject</SourceLine>
+   <SourceLine>ElseIf char = "[" Then</SourceLine>
+   <SourceLine>pointer = pointer - 1</SourceLine>
+   <SourceLine>Return ParseArray</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return New RooNothing</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>t As Text</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ParseArray</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>352618495</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ParseArray() As RooArray</SourceLine>
+   <SourceLine>Dim result As New RooArray</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim char As Text = GetChar</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If char &lt;&gt; "[" Then Raise New UnsupportedFormatException</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check for an empty array.</SourceLine>
+   <SourceLine>SkipWhiteSpace</SourceLine>
+   <SourceLine>If GetChar = "]" Then</SourceLine>
+   <SourceLine>Return result</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>pointer = pointer - 1</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Do</SourceLine>
+   <SourceLine>SkipWhiteSpace</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>result.Elements.Append(ParseValue)</SourceLine>
+   <SourceLine>SkipWhiteSpace</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>char = GetChar</SourceLine>
+   <SourceLine>If char = "]" Then</SourceLine>
+   <SourceLine>Return result</SourceLine>
+   <SourceLine>ElseIf char = "," Then</SourceLine>
+   <SourceLine>// Keep looping.</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Raise New UnsupportedFormatException</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Loop</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooArray</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ParseNumber</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1003558911</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ParseNumber() As Double</SourceLine>
+   <SourceLine>Dim number As Text</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim char As Text = GetChar</SourceLine>
+   <SourceLine>If char = "-" Then</SourceLine>
+   <SourceLine>number = "-"</SourceLine>
+   <SourceLine>char = GetChar</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case char</SourceLine>
+   <SourceLine>Case "0"</SourceLine>
+   <SourceLine>Select Case GetChar</SourceLine>
+   <SourceLine>Case "."</SourceLine>
+   <SourceLine>GoTo gDecimalPart</SourceLine>
+   <SourceLine>Case "e"</SourceLine>
+   <SourceLine>GoTo gExponentPart</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>pointer = pointer - 1</SourceLine>
+   <SourceLine>GoTo gFinish</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>Case "1", "2", "3", "4", "5", "6", "7", "8", "9"</SourceLine>
+   <SourceLine>number = number + char</SourceLine>
+   <SourceLine>GoTo gIntegerPart</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Raise New UnsupportedFormatException</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>gIntegerPart:</SourceLine>
+   <SourceLine>char = GetChar</SourceLine>
+   <SourceLine>Select Case char</SourceLine>
+   <SourceLine>Case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"</SourceLine>
+   <SourceLine>number = number + char</SourceLine>
+   <SourceLine>GoTo gIntegerPart</SourceLine>
+   <SourceLine>Case "."</SourceLine>
+   <SourceLine>number = number + char</SourceLine>
+   <SourceLine>GoTo gDecimalPart</SourceLine>
+   <SourceLine>Case "e", "E"</SourceLine>
+   <SourceLine>number = number + char</SourceLine>
+   <SourceLine>GoTo gExponentPart</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>pointer = pointer - 1</SourceLine>
+   <SourceLine>GoTo gFinish</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>gDecimalPart:</SourceLine>
+   <SourceLine>char = GetChar</SourceLine>
+   <SourceLine>Select Case char</SourceLine>
+   <SourceLine>Case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"</SourceLine>
+   <SourceLine>number = number + char</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Raise New UnsupportedFormatException</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>gContinueDecimal:</SourceLine>
+   <SourceLine>char = GetChar</SourceLine>
+   <SourceLine>Select Case char</SourceLine>
+   <SourceLine>Case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"</SourceLine>
+   <SourceLine>number = number + char</SourceLine>
+   <SourceLine>GoTo gContinueDecimal</SourceLine>
+   <SourceLine>Case "e", "E"</SourceLine>
+   <SourceLine>GoTo gExponentPart</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>pointer = pointer - 1</SourceLine>
+   <SourceLine>GoTo gFinish</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>gExponentPart:</SourceLine>
+   <SourceLine>char = GetChar</SourceLine>
+   <SourceLine>Select Case char</SourceLine>
+   <SourceLine>Case "+", "-"</SourceLine>
+   <SourceLine>number = number + char</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>pointer = pointer - 1</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>gContinueExponent:</SourceLine>
+   <SourceLine>char = GetChar</SourceLine>
+   <SourceLine>Select Case char</SourceLine>
+   <SourceLine>Case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"</SourceLine>
+   <SourceLine>number = number + char</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>pointer = pointer - 1</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>gFinish:</SourceLine>
+   <SourceLine>Return Double.FromText(number)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Double</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ParseNumberObject</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>24946687</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ParseNumberObject() As RooNumber</SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine>Return New RooNumber(ParseNumber)</SourceLine>
+   <SourceLine>Catch err</SourceLine>
+   <SourceLine>Raise New UnsupportedFormatException</SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooNumber</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ParseObject</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>72869887</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ParseObject() As Variant</SourceLine>
+   <SourceLine>Dim hash As New RooHash</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim char As Text = GetChar</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If char &lt;&gt; "{" Then Return New RooNothing</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Empty object?</SourceLine>
+   <SourceLine>SkipWhiteSpace</SourceLine>
+   <SourceLine>If GetChar = "}" Then</SourceLine>
+   <SourceLine>Return hash</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// Rewind the pointer.</SourceLine>
+   <SourceLine>pointer = pointer - 1</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Do</SourceLine>
+   <SourceLine>// Get the key.</SourceLine>
+   <SourceLine>SkipWhiteSpace</SourceLine>
+   <SourceLine>Dim key As String = ParseText</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check for a separator.</SourceLine>
+   <SourceLine>SkipWhiteSpace</SourceLine>
+   <SourceLine>If GetChar &lt;&gt; ":" Then Return New RooNothing</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the value.</SourceLine>
+   <SourceLine>SkipWhiteSpace</SourceLine>
+   <SourceLine>Dim value As Variant = ParseValue</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Add this key/value pair to this hash.</SourceLine>
+   <SourceLine>hash.Dict.Value(key) = value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>SkipWhiteSpace</SourceLine>
+   <SourceLine>char = GetChar</SourceLine>
+   <SourceLine>If char = "," Then</SourceLine>
+   <SourceLine>// Keep looping</SourceLine>
+   <SourceLine>ElseIf char = "}" Then</SourceLine>
+   <SourceLine>Return hash</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return New RooNothing</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Loop</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err</SourceLine>
+   <SourceLine>Return New RooNothing</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ParseText</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1944795135</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ParseText() As Text</SourceLine>
+   <SourceLine>Dim result As Text</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim char As Text = GetChar</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure we encounter a double quote first.</SourceLine>
+   <SourceLine>If char &lt;&gt; kQuote Then Raise New UnsupportedFormatException</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Do</SourceLine>
+   <SourceLine>char = GetChar</SourceLine>
+   <SourceLine>Select Case char</SourceLine>
+   <SourceLine>Case kQuote</SourceLine>
+   <SourceLine>Return result</SourceLine>
+   <SourceLine>Case "\"</SourceLine>
+   <SourceLine>result = result + Escape</SourceLine>
+   <SourceLine>Case ""</SourceLine>
+   <SourceLine>// End of input.</SourceLine>
+   <SourceLine>Return result</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>result = result + char</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>Loop</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Text</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ParseTextObject</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1720016895</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ParseTextObject() As RooText</SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine>Return New RooText(ParseText)</SourceLine>
+   <SourceLine>Catch err</SourceLine>
+   <SourceLine>Raise New UnsupportedFormatException</SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooText</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ParseValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>147591167</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ParseValue() As Variant</SourceLine>
+   <SourceLine>// Boolean?</SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine>Dim tmp As Text = jsonText.Mid(pointer, 4)</SourceLine>
+   <SourceLine>Select Case tmp</SourceLine>
+   <SourceLine>Case "true"</SourceLine>
+   <SourceLine>Return New RooBoolean(True)</SourceLine>
+   <SourceLine>Case "fals"</SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine>If jsonText.Mid(pointer + 4, 1) = "e" Then Return New RooBoolean(False)</SourceLine>
+   <SourceLine>Catch err</SourceLine>
+   <SourceLine>// Ignore.</SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine>Case "null"</SourceLine>
+   <SourceLine>Return New RooNothing</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>Catch err</SourceLine>
+   <SourceLine>// Ignore.</SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim char As Text = GetChar</SourceLine>
+   <SourceLine>Select Case char</SourceLine>
+   <SourceLine>Case "-", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"</SourceLine>
+   <SourceLine>// Rewind the pointer.</SourceLine>
+   <SourceLine>pointer = pointer - 1</SourceLine>
+   <SourceLine>Return ParseNumberObject</SourceLine>
+   <SourceLine>Case """"</SourceLine>
+   <SourceLine>// Rewind the pointer.</SourceLine>
+   <SourceLine>pointer = pointer - 1</SourceLine>
+   <SourceLine>Return ParseTextObject</SourceLine>
+   <SourceLine>Case "{"</SourceLine>
+   <SourceLine>// Rewind the pointer.</SourceLine>
+   <SourceLine>pointer = pointer - 1</SourceLine>
+   <SourceLine>Return ParseObject</SourceLine>
+   <SourceLine>Case "["</SourceLine>
+   <SourceLine>// Rewind the pointer.</SourceLine>
+   <SourceLine>pointer = pointer - 1</SourceLine>
+   <SourceLine>Return ParseArray</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Raise New UnsupportedFormatException</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Serialise</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>133208063</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Serialise(v As Variant) As String</SourceLine>
+   <SourceLine>// Takes a value and converts it to a JSON String.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim result As String</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If v IsA RooHash Then</SourceLine>
+   <SourceLine>result = SerialiseHash(v)</SourceLine>
+   <SourceLine>ElseIf v IsA RooArray Then</SourceLine>
+   <SourceLine>result = SerialiseArray(v)</SourceLine>
+   <SourceLine>ElseIf v IsA Stringable Then</SourceLine>
+   <SourceLine>result = EscapeSpecialCharacters(Stringable(v).StringValue)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>result = EscapeSpecialCharacters(v.StringValue)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If result.Right(1) = "," Then result = result.Left(result.Len - 1)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return result</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>v As Variant</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>SerialiseArray</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>477526015</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function SerialiseArray(a As RooArray) As String</SourceLine>
+   <SourceLine>Dim buffer As String</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Empty array?</SourceLine>
+   <SourceLine>If a.Elements.Ubound &lt; 0 Then Return "[]"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>buffer = buffer + "["</SourceLine>
+   <SourceLine>Dim limit As Integer = a.Elements.Ubound</SourceLine>
+   <SourceLine>For i As Integer = 0 To limit</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>buffer = buffer + Serialise(a.Elements(i))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If i &lt; limit Then buffer = buffer + ","</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>buffer = buffer + "]"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return buffer</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>a As RooArray</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>SerialiseHash</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>864876543</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function SerialiseHash(h As RooHash) As String</SourceLine>
+   <SourceLine>Dim buffer As String</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Empty hash?</SourceLine>
+   <SourceLine>If h.Dict.Count = 0 Then Return "{}"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>buffer = buffer + "{"</SourceLine>
+   <SourceLine>For Each entry As Xojo.Core.DictionaryEntry In h.Dict</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>buffer = buffer + """" + EscapeSpecialCharacters(entry.Key) + """:"</SourceLine>
+   <SourceLine>buffer = buffer + Serialise(entry.Value) + ","</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Next entry</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If buffer.Right(1) = "," Then buffer = buffer.Left(buffer.Len - 1)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>buffer = buffer + "}"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return buffer</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>h As RooHash</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>SkipWhiteSpace</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1255802879</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub SkipWhiteSpace()</SourceLine>
+   <SourceLine>Do</SourceLine>
+   <SourceLine>Select Case GetChar</SourceLine>
+   <SourceLine>Case kCarriageReturn, kLineFeed, kSpace, kTab</SourceLine>
+   <SourceLine>// Keep consuming the whitespace.</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// Rewind the pointer and exit.</SourceLine>
+   <SourceLine>pointer = pointer - 1</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>Loop</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Property>
+  <ItemName>Methods</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>957739007</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Methods As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Methods As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>jsonText</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>15548415</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>jsonText As Text</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>jsonText As Text</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>kCarriageReturn</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2121054207</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>kCarriageReturn As Text</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>kCarriageReturn As Text</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>kLineFeed</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>186798079</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>kLineFeed As Text</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>kLineFeed As Text</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>kQuote</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1583970303</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>kQuote As Text</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>kQuote As Text</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>kSpace</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>476223487</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>kSpace As Text</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>kSpace As Text</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>kTab</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>623202303</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>kTab As Text</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>kTab As Text</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>pointer</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>25221119</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>pointer As Integer</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>pointer As Integer</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="1987651583">
+ <ObjName>RooClass</ObjName>
+ <ObjContainerID>532322303</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Superclass>RooInstance</Superclass>
+ <Interfaces>Invokable</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Arity</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1858963455</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Arity() As Variant</SourceLine>
+   <SourceLine>// If there's an initializer, that method’s arity determines how many arguments must be passed </SourceLine>
+   <SourceLine>// when the user invokes the class itself. </SourceLine>
+   <SourceLine>// Note that Roo doesn’t force a class to define an initializer.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim initialiser As RooFunction = Methods.Lookup("init", Nil)</SourceLine>
+   <SourceLine>If initialiser = Nil Then</SourceLine>
+   <SourceLine>Return 0</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return initialiser.Arity</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1807820799</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(metaclass As RooClass, superclass As RooClass, name As String, methods As Xojo.Core.Dictionary, interpreter As RooInterpreter)</SourceLine>
+   <SourceLine>Super.Constructor(metaclass)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Self.Superclass = superclass</SourceLine>
+   <SourceLine>Self.Name = name</SourceLine>
+   <SourceLine>Self.Methods = If(methods &lt;&gt; Nil, methods, Roo.CaseSensitiveDictionary)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Self.Interpreter = interpreter</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>metaclass As RooClass, superclass As RooClass, name As String, methods As Xojo.Core.Dictionary, interpreter As RooInterpreter</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Invoke</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1082030079</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Invoke(interpreter As RooInterpreter, arguments() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Create a new instance of this class.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim instance As New RooInstance(Self)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// When a class is called, after the RooInstance is created, we look for an "init" method. </SourceLine>
+   <SourceLine>// If we find one, we immediately bind and invoke it just like a normal method call. </SourceLine>
+   <SourceLine>// The argument list is forwarded along.</SourceLine>
+   <SourceLine>Dim initialiser As RooFunction = Methods.Lookup("init", Nil)</SourceLine>
+   <SourceLine>If initialiser &lt;&gt; Nil Then Call initialiser.Bind(instance).Invoke(interpreter, arguments, where)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return this newly initialised class.</SourceLine>
+   <SourceLine>Return instance</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter, arguments() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1570230271</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>Return "&lt;" + Name + " class&gt;"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>FindMethod</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>621508607</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function FindMethod(instance As RooInstance, name As String) As RooFunction</SourceLine>
+   <SourceLine>// Is this an instance method?</SourceLine>
+   <SourceLine>If methods.HasKey(name) Then Return RooFunction(methods.Value(name)).Bind(instance)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Is it a method inherited from the superclass?</SourceLine>
+   <SourceLine>If superclass &lt;&gt; Nil Then Return superclass.FindMethod(instance, name)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// This class does not have a method with this name.</SourceLine>
+   <SourceLine>Return Nil</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>instance As RooInstance, name As String</ItemParams>
+  <ItemResult>RooFunction</ItemResult>
+ </Method>
+ <Property>
+  <ItemName>Methods</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1316896767</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Methods As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Methods As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Name</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>785291263</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Name As String</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Name As String</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Superclass</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1388003327</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Superclass As RooClass</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Superclass As RooClass</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Interpreter</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>794365951</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Interpreter As RooInterpreter</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Interpreter As RooInterpreter</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>name</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

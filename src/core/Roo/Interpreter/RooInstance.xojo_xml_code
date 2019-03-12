@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="838467583">
+ <ObjName>RooInstance</ObjName>
+ <ObjContainerID>532322303</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Interfaces>Stringable</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>992780287</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>// Part of the Stringable interface.</SourceLine>
+   <SourceLine>// Should be overridden by subclasses.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Klass &lt;&gt; Nil Then</SourceLine>
+   <SourceLine>// Custom class. Has it defined an overriding to_text getter?</SourceLine>
+   <SourceLine>Dim override As RooFunction = Klass.FindMethod(Self, "to_text")</SourceLine>
+   <SourceLine>If override &lt;&gt; Nil Then </SourceLine>
+   <SourceLine>Dim funcArgs() As Variant</SourceLine>
+   <SourceLine>Dim overrideResult As Variant = override.Invoke(Klass.interpreter, funcArgs, New RooToken) // HACK.</SourceLine>
+   <SourceLine>Return Stringable(overrideResult).StringValue</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// This custom class has not defined an override for the `to_text` getter.</SourceLine>
+   <SourceLine>Return "&lt;" + Klass.Name + " instance&gt;"</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return "&lt;instance&gt;"</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1796560895</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(klass As RooClass)</SourceLine>
+   <SourceLine>Self.Klass = klass</SourceLine>
+   <SourceLine>Self.Fields = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine>Self.IndexOrKey = Nil</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>klass As RooClass</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Set</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>349439999</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Set(name As RooToken, value As Variant)</SourceLine>
+   <SourceLine>// Set the value of the named field to the passed value. </SourceLine>
+   <SourceLine>// If there is no field with this name, create one.</SourceLine>
+   <SourceLine>Fields.Value(name.Lexeme) = value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken, value As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Get</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>451581951</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Get(name As RooToken) As Variant</SourceLine>
+   <SourceLine>// Is this a get request for a generic object getter or method?</SourceLine>
+   <SourceLine>Dim result As Variant = GenericGet(name)</SourceLine>
+   <SourceLine>If result &lt;&gt; Nil Then Return result</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Handle get requests differently for native types and classes.</SourceLine>
+   <SourceLine>If Self IsA RooNativeClass Then</SourceLine>
+   <SourceLine>If RooNativeClass(Self).HasGetterWithName(name.Lexeme) Then Return RooNativeClass(Self).GetterWithName(name)</SourceLine>
+   <SourceLine>If RooNativeClass(Self).HasMethodWithName(name.Lexeme) Then Return RooNativeClass(Self).MethodWithName(name)</SourceLine>
+   <SourceLine>// This native class doesn't have the requested getter or method.</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(name, "Undefined property `" + _</SourceLine>
+   <SourceLine>name.Lexeme + "` on " + RooNativeClass(Self).Type + " object.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Handle get requests differently for native modules.</SourceLine>
+   <SourceLine>If Self IsA RooNativeModule Then</SourceLine>
+   <SourceLine>If RooNativeModule(Self).HasModuleWithName(name.Lexeme) Then Return RooNativeModule(Self).ModuleWithName(name)</SourceLine>
+   <SourceLine>If RooNativeModule(Self).HasClassWithName(name.Lexeme) Then Return RooNativeModule(Self).ClassWithName(name)</SourceLine>
+   <SourceLine>If RooNativeModule(Self).HasGetterWithName(name.Lexeme) Then Return RooNativeModule(Self).GetterWithName(name)</SourceLine>
+   <SourceLine>If RooNativeModule(Self).HasMethodWithName(name.Lexeme) Then Return RooNativeModule(Self).MethodWithName(name)</SourceLine>
+   <SourceLine>// This native module doesn't have the requested field.</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(name, "Undefined field `" + _</SourceLine>
+   <SourceLine>name.Lexeme + "` on " + Stringable(Self).StringValue)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return the requested property value if this instance has a property with the requested name.</SourceLine>
+   <SourceLine>If Fields.HasKey(name.Lexeme) Then</SourceLine>
+   <SourceLine>If IndexOrKey &lt;&gt; Nil Then</SourceLine>
+   <SourceLine>// This property is either an array or a hash object.</SourceLine>
+   <SourceLine>Dim prop As Variant = Fields.Value(name.Lexeme)</SourceLine>
+   <SourceLine>If prop IsA RooArray Then</SourceLine>
+   <SourceLine>// Return the element at the specified index.</SourceLine>
+   <SourceLine>Return ArrayElementAtIndex(prop, name)</SourceLine>
+   <SourceLine>ElseIf prop IsA RooHash Then</SourceLine>
+   <SourceLine>// Return the value of the specified key.</SourceLine>
+   <SourceLine>Return HashValueForKey(prop)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(name, "You are treating `" + name.Lexeme + "` like an array " + _</SourceLine>
+   <SourceLine>"or hash but it's not one.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return Fields.Value(name.Lexeme)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// When looking up a property on an instance, if we don’t find a matching field, we look for a </SourceLine>
+   <SourceLine>// method with that name on the instance’s class. If found, we return that. </SourceLine>
+   <SourceLine>Dim method As RooFunction = Klass.FindMethod(Self, name.Lexeme)</SourceLine>
+   <SourceLine>If method &lt;&gt; Nil Then Return method</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Raise New RooRuntimeError(name, "Undefined property `" + _</SourceLine>
+   <SourceLine>name.Lexeme + "` on " + StringValue + ".")</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HashValueForKey</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1636091903</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HashValueForKey(hash As RooHash) As Variant</SourceLine>
+   <SourceLine>// Returns the value of the specified hash key (this instance's `IndexOrKey` property, set by the </SourceLine>
+   <SourceLine>// interpreter in its VisitGetExpr method) for the passed Hash object.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return hash.GetValue(IndexOrKey)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>hash As RooHash</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ArrayElementAtIndex</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1317371903</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ArrayElementAtIndex(a As RooArray, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Takes an array object and (if possible) returns the element specified by this instance's </SourceLine>
+   <SourceLine>// `IndexOrKey` property (set by the Interpreter.VisitGetExpr method).</SourceLine>
+   <SourceLine>// Raises a runtime error if there's a problem.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure that index is a Number object.</SourceLine>
+   <SourceLine>If Not IndexOrKey IsA RooNumber Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Invalid array index. Expected a Number object. Instead got `" + _</SourceLine>
+   <SourceLine>Roo.VariantTypeAsString(IndexOrKey) + "`.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' Make sure the index Number object is an integer.</SourceLine>
+   <SourceLine>If Not Roo.IsInteger(RooNumber(IndexOrKey).Value) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Invalid array index. Expected an integer. Instead got `" + _</SourceLine>
+   <SourceLine>Str(RooNumber(IndexOrKey).Value) + "`.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine>Return a.Elements(RooNumber(IndexOrKey).Value)</SourceLine>
+   <SourceLine>Catch err</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Invalid array index: `" + _</SourceLine>
+   <SourceLine>Str(RooNumber(IndexOrKey).Value) + "`.")</SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>a As RooArray, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>GenericGet</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2061629439</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function GenericGet(name As RooToken) As Variant</SourceLine>
+   <SourceLine>// Generic object getters.</SourceLine>
+   <SourceLine>// Remember, if you add more getters here you MUST add them to RooSLCache.GenericGetters as well.</SourceLine>
+   <SourceLine>If StrComp(name.Lexeme, "nothing?", 0) = 0 Then</SourceLine>
+   <SourceLine>If Klass &lt;&gt; Nil Then</SourceLine>
+   <SourceLine>Return If(Klass IsA RooNothing, New RooBoolean(True), New RooBoolean(False))</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return If(Self IsA RooNothing, New RooBoolean(True), New RooBoolean(False))</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "number?", 0) = 0 Then</SourceLine>
+   <SourceLine>If Klass &lt;&gt; Nil Then</SourceLine>
+   <SourceLine>Return If(Klass IsA RooNumber, New RooBoolean(True), New RooBoolean(False))</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return If(Self IsA RooNumber, New RooBoolean(True), New RooBoolean(False))</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "to_text", 0) = 0 Then</SourceLine>
+   <SourceLine>If Klass &lt;&gt; Nil Then</SourceLine>
+   <SourceLine>// Check to see if this class has provided an override for the to_text getter.</SourceLine>
+   <SourceLine>Dim method As RooFunction = Klass.FindMethod(Self, name.Lexeme)</SourceLine>
+   <SourceLine>If method &lt;&gt; Nil Then</SourceLine>
+   <SourceLine>Return method</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return New RooText(StringValue)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// Not a custom class.</SourceLine>
+   <SourceLine>Return New RooText(StringValue)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "type", 0) = 0 Then</SourceLine>
+   <SourceLine>If Self IsA RooNativeClass Then</SourceLine>
+   <SourceLine>Return New RooText(RooNativeClass(Self).Type)</SourceLine>
+   <SourceLine>ElseIf Self IsA RooNativeModule Then</SourceLine>
+   <SourceLine>Return New RooText(RooNativeModule(Self).Type)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return New RooText(Klass.Name)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Generic object methods.</SourceLine>
+   <SourceLine>// Remember, if you add more methods here you MUST add them to RooSLCache.GenericMethods as well.</SourceLine>
+   <SourceLine>If StrComp(name.Lexeme, "responds_to?", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooGenericRespondsTo(Self)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Unrecognised generic method.</SourceLine>
+   <SourceLine>Return Nil</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Property>
+  <ItemName>Fields</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1728835583</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Fields As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine>Key:   Property name (String)</SourceLine>
+   <SourceLine>Value: Property Value</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Fields As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Klass</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>59299839</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Klass As RooClass</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Klass As RooClass</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>IndexOrKey</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1912569855</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>IndexOrKey As Variant</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>IndexOrKey As Variant</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="741318655">
+ <ObjName>RooSLRegex</ObjName>
+ <ObjContainerID>0</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Interfaces>Invokable, Stringable</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Arity</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1979580415</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Arity() As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine>// There are two Regex constructor function signatures:</SourceLine>
+   <SourceLine>// var r1 = Regex(PATTERN)</SourceLine>
+   <SourceLine>// var d2 = Regex(PATTERN, OPTIONS)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Array(1, 2)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Invoke</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>555132927</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Invoke(interpreter As RooInterpreter, arguments() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine>// Create a new Regex object instance.</SourceLine>
+   <SourceLine>// There are two Regex constructor function signatures:</SourceLine>
+   <SourceLine>// var r1 = Regex(PATTERN)</SourceLine>
+   <SourceLine>// var d2 = Regex(PATTERN, OPTIONS)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused interpreter</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If arguments.Ubound = 0 Then // Regex(PATTERN)</SourceLine>
+   <SourceLine>Return DoRegexFromPattern(arguments(0), where)</SourceLine>
+   <SourceLine>ElseIf arguments.Ubound = 1 Then // Regex(PATTERN, OPTIONS)</SourceLine>
+   <SourceLine>Return DoRegexFromPatternWithOptions(arguments(0), arguments(1), where)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter, arguments() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>377106431</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>// Part of the Stringable interface.</SourceLine>
+   <SourceLine>// Return this function's name.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return "&lt;function: Regex&gt;"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoRegexFromPattern</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1246044159</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoRegexFromPattern(argument As Variant, where As RooToken) As RooRegex</SourceLine>
+   <SourceLine>// Returns a new Regex object, instantiated with the specified pattern and default options.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the pattern.</SourceLine>
+   <SourceLine>Dim pattern As String = Stringable(argument).StringValue</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create and return the new object.</SourceLine>
+   <SourceLine>Return New RooRegex(where, pattern, "")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>argument As Variant, where As RooToken</ItemParams>
+  <ItemResult>RooRegex</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoRegexFromPatternWithOptions</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>962226175</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoRegexFromPatternWithOptions(arg1 As Variant, arg2 As Variant, where As RooToken) As RooRegex</SourceLine>
+   <SourceLine>// Returns a new Regex object, instantiated with the specified pattern and the </SourceLine>
+   <SourceLine>// specified options.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the pattern string.</SourceLine>
+   <SourceLine>Dim pattern As String = Stringable(arg1).StringValue</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the option string.</SourceLine>
+   <SourceLine>Dim options As String = Stringable(arg2).StringValue</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create and return the new object.</SourceLine>
+   <SourceLine>Return New RooRegex(where, pattern, options)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>arg1 As Variant, arg2 As Variant, where As RooToken</ItemParams>
+  <ItemResult>RooRegex</ItemResult>
+ </Method>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

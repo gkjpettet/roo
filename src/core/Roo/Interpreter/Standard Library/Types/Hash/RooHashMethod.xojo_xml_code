@@ -1,0 +1,838 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="1676591103">
+ <ObjName>RooHashMethod</ObjName>
+ <ObjContainerID>360427519</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Interfaces>Invokable, Stringable</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Arity</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1704396799</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Arity() As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine>// Return the arity of this method. This is stored in the cached HashMethods dictionary.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return RooSLCache.HashMethods.Value(Name)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Invoke</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>280109055</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Invoke(interpreter As RooInterpreter, arguments() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case Name</SourceLine>
+   <SourceLine>Case "delete!"</SourceLine>
+   <SourceLine>Return DoDelete(arguments)</SourceLine>
+   <SourceLine>Case "each"</SourceLine>
+   <SourceLine>Return DoEach(arguments, where, interpreter)</SourceLine>
+   <SourceLine>Case "each_key"</SourceLine>
+   <SourceLine>Return DoEachKey(arguments, where, interpreter)</SourceLine>
+   <SourceLine>Case "each_value"</SourceLine>
+   <SourceLine>Return DoEachValue(arguments, where, interpreter)</SourceLine>
+   <SourceLine>Case "fetch"</SourceLine>
+   <SourceLine>Return DoFetch(arguments)</SourceLine>
+   <SourceLine>Case "fetch_values"</SourceLine>
+   <SourceLine>Return DoFetchValues(arguments, where)</SourceLine>
+   <SourceLine>Case "has_key?"</SourceLine>
+   <SourceLine>Return New RooBoolean(Owner.HasKey(arguments(0)))</SourceLine>
+   <SourceLine>Case "has_value?"</SourceLine>
+   <SourceLine>Return New RooBoolean(Owner.HasValue(arguments(0)))</SourceLine>
+   <SourceLine>Case "keep"</SourceLine>
+   <SourceLine>Return DoKeep(arguments, where, interpreter, False)</SourceLine>
+   <SourceLine>Case "keep!"</SourceLine>
+   <SourceLine>Return DoKeep(arguments, where, interpreter, True)</SourceLine>
+   <SourceLine>Case "merge"</SourceLine>
+   <SourceLine>Return DoMerge(arguments, where, interpreter, False)</SourceLine>
+   <SourceLine>Case "merge!"</SourceLine>
+   <SourceLine>Return DoMerge(arguments, where, interpreter, True)</SourceLine>
+   <SourceLine>Case "reject"</SourceLine>
+   <SourceLine>Return DoReject(arguments, where, interpreter, False)</SourceLine>
+   <SourceLine>Case "reject!"</SourceLine>
+   <SourceLine>Return DoReject(arguments, where, interpreter, True)</SourceLine>
+   <SourceLine>Case "value"</SourceLine>
+   <SourceLine>Return Owner.GetValue(arguments(0))</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter, arguments() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1085227007</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>// Part of the Stringable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return "&lt;function " + Name + "&gt;"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1041498111</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(owner As RooHash, name As String)</SourceLine>
+   <SourceLine>Self.Owner = owner</SourceLine>
+   <SourceLine>Self.Name = name</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>owner As RooHash, name As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoDelete</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1453381631</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoDelete(args() As Variant) As Variant</SourceLine>
+   <SourceLine>// Hash.delete!(key as Object) as Object</SourceLine>
+   <SourceLine>// Deletes the key-value pair whose key matches `key`. </SourceLine>
+   <SourceLine>// If this Hash contains `key` then it is removed and its value is returned. </SourceLine>
+   <SourceLine>// If `key` does not exist, it returns Nothing.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim key As Variant = args(0)</SourceLine>
+   <SourceLine>Dim value As Variant</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If key IsA RooText Then</SourceLine>
+   <SourceLine>key = RooText(key).Value</SourceLine>
+   <SourceLine>ElseIf key IsA RooNumber Then</SourceLine>
+   <SourceLine>key = RooNumber(key).Value</SourceLine>
+   <SourceLine>ElseIf key IsA RooBoolean Then</SourceLine>
+   <SourceLine>key = RooBoolean(key).Value</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Not Owner.Dict.HasKey(key) Then Return New RooNothing</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>value = Owner.Dict.Value(key)</SourceLine>
+   <SourceLine>Call Owner.Dict.Remove(key)</SourceLine>
+   <SourceLine>Return value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoEach</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1432182783</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoEach(args() As Variant, where As RooToken, interpreter As RooInterpreter) As RooHash</SourceLine>
+   <SourceLine>// Hash.each(func as Invokable, optional arguments as Array) as Hash</SourceLine>
+   <SourceLine>// Invokes the passed function for each key-value pair of this hash, passing to the function the </SourceLine>
+   <SourceLine>// key as the first argument and the value as the second argument.</SourceLine>
+   <SourceLine>// Optionally the method can take a second argument in the form of an Array. The elements of this</SourceLine>
+   <SourceLine>// Array will be passed to the function as additional arguments.</SourceLine>
+   <SourceLine>// Returns this hash (unaltered).</SourceLine>
+   <SourceLine>// E.g: </SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' def put(key, value):</SourceLine>
+   <SourceLine>' print(key + " is " + value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' def putPrefix(key, value, prefix):</SourceLine>
+   <SourceLine>' print(prefix + key + " is " + value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' var h = {"a" =&gt; 100, "b" =&gt; 200}</SourceLine>
+   <SourceLine>' h.each(put)</SourceLine>
+   <SourceLine>' # Prints:</SourceLine>
+   <SourceLine>' # a is 100</SourceLine>
+   <SourceLine>' # b is 200</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' h.each(putPrefix, ["* "])</SourceLine>
+   <SourceLine>' # Prints:</SourceLine>
+   <SourceLine>' # * a is 100</SourceLine>
+   <SourceLine>' # * b is 200</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim funcArgs() As Variant</SourceLine>
+   <SourceLine>Dim func As Invokable</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that `func` is invokable.</SourceLine>
+   <SourceLine>Roo.AssertIsInvokable(where, args(0))</SourceLine>
+   <SourceLine>func = args(0)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If a second argument has been passed, check that it's an Array object.</SourceLine>
+   <SourceLine>If args.Ubound = 1 Then</SourceLine>
+   <SourceLine>Roo.AssertIsArray(where, args(1))</SourceLine>
+   <SourceLine>// Get an array of the additional arguments to pass to the function we will invoke.</SourceLine>
+   <SourceLine>Dim limit As Integer = RooArray(args(1)).Elements.Ubound</SourceLine>
+   <SourceLine>For i As Integer = 0 To limit</SourceLine>
+   <SourceLine>funcArgs.Append(RooArray(args(1)).Elements(i))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that we have the correct number of arguments for `func`.</SourceLine>
+   <SourceLine>// NB: +3 as we will pass in the key and the value as the first two arguments.</SourceLine>
+   <SourceLine>If Not Interpreter.CorrectArity(func, funcArgs.Ubound + 3) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Incorrect number of arguments passed to the " +_</SourceLine>
+   <SourceLine>Stringable(func).StringValue + " function.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>For Each entry As Xojo.Core.DictionaryEntry In Owner.Dict</SourceLine>
+   <SourceLine>// Inject the value as an argument to `func`.</SourceLine>
+   <SourceLine>funcArgs.Insert(0, entry.Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Inject the key as an argument to `func`. Remember that text, numbers and booleans are stored </SourceLine>
+   <SourceLine>// in the backing dictionary as their Xojo values, not runtime representations. We therefore need </SourceLine>
+   <SourceLine>// to convert them first.</SourceLine>
+   <SourceLine>Select Case Roo.AutoType(entry.Key)</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoString, Roo.ObjectType.XojoText</SourceLine>
+   <SourceLine>funcArgs.Insert(0, New RooText(entry.Key))</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoDouble, Roo.ObjectType.XojoInteger</SourceLine>
+   <SourceLine>funcArgs.Insert(0, New RooNumber(entry.Key))</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoBoolean</SourceLine>
+   <SourceLine>funcArgs.Insert(0, New RooBoolean(entry.Key))</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>funcArgs.Insert(0, entry.Key)</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Invoke the function.</SourceLine>
+   <SourceLine>Call func.Invoke(interpreter, funcArgs, where)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Remove the key and value from the argument list prior to the next iteration.</SourceLine>
+   <SourceLine>funcArgs.Remove(0)</SourceLine>
+   <SourceLine>funcArgs.Remove(0)</SourceLine>
+   <SourceLine>Next entry</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return this hash.</SourceLine>
+   <SourceLine>Return Owner</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken, interpreter As RooInterpreter</ItemParams>
+  <ItemResult>RooHash</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoEachKey</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>30754815</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoEachKey(args() As Variant, where As RooToken, interpreter As RooInterpreter) As RooHash</SourceLine>
+   <SourceLine>// Hash.each_key(func as Invokable, optional arguments as Array) as Hash</SourceLine>
+   <SourceLine>// Invokes the passed function for each key of this hash, passing to the function the </SourceLine>
+   <SourceLine>// key as the first argument.</SourceLine>
+   <SourceLine>// Optionally the method can take a second argument in the form of an Array. The elements of this</SourceLine>
+   <SourceLine>// Array will be passed to the function as additional arguments.</SourceLine>
+   <SourceLine>// Returns this hash (unaltered).</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim funcArgs() As Variant</SourceLine>
+   <SourceLine>Dim func As Invokable</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that `func` is invokable.</SourceLine>
+   <SourceLine>Roo.AssertIsInvokable(where, args(0))</SourceLine>
+   <SourceLine>func = args(0)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If a second argument has been passed, check that it's an ArrayObject.</SourceLine>
+   <SourceLine>If args.Ubound = 1 Then</SourceLine>
+   <SourceLine>Roo.AssertIsArray(where, args(1))</SourceLine>
+   <SourceLine>// Get an array of the additional arguments to pass to the function we will invoke.</SourceLine>
+   <SourceLine>Dim limit As Integer = RooArray(args(1)).Elements.Ubound</SourceLine>
+   <SourceLine>For i As Integer = 0 To limit</SourceLine>
+   <SourceLine>funcArgs.Append(RooArray(args(1)).Elements(i))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that we have the correct number of arguments for `func`.</SourceLine>
+   <SourceLine>// NB: +2 as we will pass in the key as the first argument.</SourceLine>
+   <SourceLine>If Not Interpreter.CorrectArity(func, funcArgs.Ubound + 2) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Incorrect number of arguments passed to the " +_</SourceLine>
+   <SourceLine>Stringable(func).StringValue + " function.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>For Each entry As Xojo.Core.DictionaryEntry In Owner.Dict</SourceLine>
+   <SourceLine>// Inject the key as the first argument to `func`. Remember that text, numbers and </SourceLine>
+   <SourceLine>// booleans are stored in the backing dictionary as their Xojo values, not runtime </SourceLine>
+   <SourceLine>// representations. We therefore need to convert them first.</SourceLine>
+   <SourceLine>Select Case Roo.AutoType(entry.Key)</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoString, Roo.ObjectType.XojoText</SourceLine>
+   <SourceLine>funcArgs.Insert(0, New RooText(entry.Key))</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoDouble, Roo.ObjectType.XojoInteger</SourceLine>
+   <SourceLine>funcArgs.Insert(0, New RooNumber(entry.Key))</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoBoolean</SourceLine>
+   <SourceLine>funcArgs.Insert(0, New RooBoolean(entry.Key))</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>funcArgs.Insert(0, entry.Key)</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Invoke the function.</SourceLine>
+   <SourceLine>Call func.Invoke(interpreter, funcArgs, where)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Remove the key from the argument list prior to the next iteration.</SourceLine>
+   <SourceLine>funcArgs.Remove(0)</SourceLine>
+   <SourceLine>Next entry</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return this hash.</SourceLine>
+   <SourceLine>Return Owner</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken, interpreter As RooInterpreter</ItemParams>
+  <ItemResult>RooHash</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoEachValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>290803711</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoEachValue(args() As Variant, where As RooToken, interpreter As RooInterpreter) As RooHash</SourceLine>
+   <SourceLine>// Hash.each_value(func as Invokable, optional arguments as Array) as Hash</SourceLine>
+   <SourceLine>// Invokes the passed function for each value of this hash, passing to the function the </SourceLine>
+   <SourceLine>// value as the first argument.</SourceLine>
+   <SourceLine>// Optionally the method can take a second argument in the form of an Array. The elements of this</SourceLine>
+   <SourceLine>// Array will be passed to the function as additional arguments.</SourceLine>
+   <SourceLine>// Returns this hash (unaltered).</SourceLine>
+   <SourceLine>// E.g: </SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' def put(v):</SourceLine>
+   <SourceLine>' print("The value is: " + v)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' def putSuffix(v, suffix): </SourceLine>
+   <SourceLine>' print("The value is: " + v + suffix)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' var h = {"a" =&gt; 100, "b" =&gt; 200}</SourceLine>
+   <SourceLine>' h.each_value(put)</SourceLine>
+   <SourceLine>' # Prints:</SourceLine>
+   <SourceLine>' # The value is 100</SourceLine>
+   <SourceLine>' # The value is 200</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' h.each_value(putSuffix, [" silly!"])</SourceLine>
+   <SourceLine>' # Prints:</SourceLine>
+   <SourceLine>' # The value is 100 silly!</SourceLine>
+   <SourceLine>' # The value is 200 silly!</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim funcArgs() As Variant</SourceLine>
+   <SourceLine>Dim func As Invokable</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that `func` is invokable.</SourceLine>
+   <SourceLine>Roo.AssertIsInvokable(where, args(0))</SourceLine>
+   <SourceLine>func = args(0)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If a second argument has been passed, check that it's an ArrayObject.</SourceLine>
+   <SourceLine>If args.Ubound = 1 Then</SourceLine>
+   <SourceLine>Roo.AssertIsArray(where, args(1))</SourceLine>
+   <SourceLine>// Get an array of the additional arguments to pass to the function we will invoke.</SourceLine>
+   <SourceLine>Dim limit As Integer = RooArray(args(1)).Elements.Ubound</SourceLine>
+   <SourceLine>For i As Integer = 0 To limit</SourceLine>
+   <SourceLine>funcArgs.Append(RooArray(args(1)).Elements(i))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that we have the correct number of arguments for `func`.</SourceLine>
+   <SourceLine>// NB: +2 as we will pass in the value as the first argument.</SourceLine>
+   <SourceLine>If Not Interpreter.CorrectArity(func, funcArgs.Ubound + 2) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Incorrect number of arguments passed to the " +_</SourceLine>
+   <SourceLine>Stringable(func).StringValue + " function.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>For Each entry As Xojo.Core.DictionaryEntry In Owner.Dict</SourceLine>
+   <SourceLine>// Inject the value as an argument to `func`.</SourceLine>
+   <SourceLine>funcArgs.Insert(0, entry.Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Invoke the function.</SourceLine>
+   <SourceLine>Call func.Invoke(interpreter, funcArgs, where)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Remove the value from the argument list prior to the next iteration.</SourceLine>
+   <SourceLine>funcArgs.Remove(0)</SourceLine>
+   <SourceLine>Next entry</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return this hash.</SourceLine>
+   <SourceLine>Return Owner</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken, interpreter As RooInterpreter</ItemParams>
+  <ItemResult>RooHash</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoFetch</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1176903679</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoFetch(args() As Variant) As Variant</SourceLine>
+   <SourceLine>// Hash.fetch(key as Object, default as Object) as Object</SourceLine>
+   <SourceLine>// Returns the value for the specified key. If there is no matching key in the Hash </SourceLine>
+   <SourceLine>// then `default` is returned.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Owner.HasKey(args(0)) Then</SourceLine>
+   <SourceLine>Return Owner.GetValue(args(0))</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return args(1)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoFetchValues</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1234403327</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoFetchValues(args() As Variant, where As RooToken) As RooArray</SourceLine>
+   <SourceLine>// Hash.fetch_values(keys as Array) as Array</SourceLine>
+   <SourceLine>// Takes an array of keys and returns an array containing the values of those keys. </SourceLine>
+   <SourceLine>// If a key is missing from this Hash then Nothing is substituted in its place.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim keys() As Variant</SourceLine>
+   <SourceLine>Dim result As New RooArray</SourceLine>
+   <SourceLine>Dim i, limit As Integer</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that the argument passed is an array</SourceLine>
+   <SourceLine>Roo.AssertIsArray(where, args(0))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the keys as a Xojo array.</SourceLine>
+   <SourceLine>keys = RooArray(args(0)).Elements</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>limit = keys.Ubound</SourceLine>
+   <SourceLine>For i = 0 To limit</SourceLine>
+   <SourceLine>If Owner.HasKey(keys(i)) Then</SourceLine>
+   <SourceLine>result.Elements.Append(Owner.GetValue(keys(i)))</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>result.Elements.Append(New RooNothing)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return result</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken</ItemParams>
+  <ItemResult>RooArray</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoKeep</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1435760639</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoKeep(args() As Variant, where As RooToken, interpreter As RooInterpreter, destructive As Boolean) As RooHash</SourceLine>
+   <SourceLine>// Hash.keep(func as Invokable, optional arguments as Array) as Hash</SourceLine>
+   <SourceLine>// Hash.keep!(func as Invokable, optional arguments as Array) as Hash</SourceLine>
+   <SourceLine>// Invokes `func` for each key-value pair of this hash, passing the key and value to `func` as </SourceLine>
+   <SourceLine>// the first two arguments. </SourceLine>
+   <SourceLine>// Returns a new Hash consisting of entries for which `func` returns True. </SourceLine>
+   <SourceLine>// Essentially the opposite of Hash.reject(). </SourceLine>
+   <SourceLine>// If `destructive` = True then the original Hash is mutated.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim funcArgs(), funcResult As Variant</SourceLine>
+   <SourceLine>Dim func As Invokable</SourceLine>
+   <SourceLine>Dim newHash As New RooHash</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that `func` is invokable.</SourceLine>
+   <SourceLine>Roo.AssertIsInvokable(where, args(0))</SourceLine>
+   <SourceLine>func = args(0)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If a second argument has been passed, check that it's an ArrayObject.</SourceLine>
+   <SourceLine>If args.Ubound = 1 Then</SourceLine>
+   <SourceLine>Roo.AssertIsArray(where, args(1))</SourceLine>
+   <SourceLine>// Get an array of the additional arguments to pass to the function we will invoke.</SourceLine>
+   <SourceLine>Dim limit As Integer = RooArray(args(1)).Elements.Ubound</SourceLine>
+   <SourceLine>For i As Integer = 0 To limit</SourceLine>
+   <SourceLine>funcArgs.Append(RooArray(args(1)).Elements(i))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that we have the correct number of arguments for `func`.</SourceLine>
+   <SourceLine>// NB: +3 as we will pass in the key and the value as the first two arguments.</SourceLine>
+   <SourceLine>If Not Interpreter.CorrectArity(func, funcArgs.Ubound + 3) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Incorrect number of arguments passed to the " +_</SourceLine>
+   <SourceLine>Stringable(func).StringValue + " function.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>For Each entry As Xojo.Core.DictionaryEntry In Owner.Dict</SourceLine>
+   <SourceLine>// Inject the value as an argument to `func`.</SourceLine>
+   <SourceLine>funcArgs.Insert(0, entry.Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Inject the key as an argument to `func`. Remember that text, numbers and booleans are stored </SourceLine>
+   <SourceLine>// in the backing hash dictionary as their Xojo values, not runtime representations. </SourceLine>
+   <SourceLine>// We therefore need to convert them first.</SourceLine>
+   <SourceLine>Select Case Roo.AutoType(entry.Key)</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoString, Roo.ObjectType.XojoText</SourceLine>
+   <SourceLine>funcArgs.Insert(0, New RooText(entry.Key))</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoDouble, Roo.ObjectType.XojoInteger</SourceLine>
+   <SourceLine>funcArgs.Insert(0, New RooNumber(entry.Key))</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoBoolean</SourceLine>
+   <SourceLine>funcArgs.Insert(0, New RooBoolean(entry.Key))</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>funcArgs.Insert(0, entry.Key)</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Invoke the function. If it returns True then keep this key-value pair in the new hash.</SourceLine>
+   <SourceLine>funcResult = func.Invoke(interpreter, funcArgs, where)</SourceLine>
+   <SourceLine>If funcResult IsA RooBoolean And RooBoolean(funcResult).Value = True Then</SourceLine>
+   <SourceLine>newHash.Dict.Value(entry.Key) = entry.Value</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Remove the key and value from the argument list prior to the next iteration.</SourceLine>
+   <SourceLine>funcArgs.Remove(0)</SourceLine>
+   <SourceLine>funcArgs.Remove(0)</SourceLine>
+   <SourceLine>Next entry</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If destructive Then Owner.Dict = newHash.Dict.Clone</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return the new hash.</SourceLine>
+   <SourceLine>Return newHash</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken, interpreter As RooInterpreter, destructive As Boolean</ItemParams>
+  <ItemResult>RooHash</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoMerge</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1824565247</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoMerge(args() As Variant, where As RooToken, interpreter As RooInterpreter, destructive As Boolean) As RooHash</SourceLine>
+   <SourceLine>// Wrapper method for the multiple Hash.merge() methods.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check the first argument is a hash object.</SourceLine>
+   <SourceLine>Roo.AssertIsHash(where, args(0))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Hash.merge(other) as Hash</SourceLine>
+   <SourceLine>If args.Ubound = 0 Then</SourceLine>
+   <SourceLine>Return DoMergeOther(args(0), destructive)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Hash.merge(other, func) as Hash</SourceLine>
+   <SourceLine>Roo.AssertIsInvokable(where, args(1))</SourceLine>
+   <SourceLine>Return DoMergeOtherFunc(args(0), args(1), interpreter, where, destructive)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken, interpreter As RooInterpreter, destructive As Boolean</ItemParams>
+  <ItemResult>RooHash</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoMergeOther</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>333252607</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoMergeOther(other As RooHash, destructive As Boolean) As RooHash</SourceLine>
+   <SourceLine>// Hash.merge(other as Hash) as Hash</SourceLine>
+   <SourceLine>// Hash.merge!(other as Hash) as Hash</SourceLine>
+   <SourceLine>// Merges the passed `other` Hash with this one. </SourceLine>
+   <SourceLine>// The value for entries with duplicate keys will be that of `other` Hash. </SourceLine>
+   <SourceLine>// Returns the newly created Hash</SourceLine>
+   <SourceLine>// If `destructive` = True, then this Hash is mutated.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create a new Hash and clone this Hash's dictionary into it.</SourceLine>
+   <SourceLine>Dim newHash As New RooHash</SourceLine>
+   <SourceLine>newHash.Dict = Owner.Dict.Clone</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Merge in the keys from the `other` Hash, overwriting as needed.</SourceLine>
+   <SourceLine>For Each entry As Xojo.Core.DictionaryEntry In other.Dict</SourceLine>
+   <SourceLine>newHash.Dict.Value(entry.Key) = entry.Value</SourceLine>
+   <SourceLine>Next entry</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Destructive operation?</SourceLine>
+   <SourceLine>If destructive Then Owner.Dict = newHash.Dict.Clone</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return newHash</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>other As RooHash, destructive As Boolean</ItemParams>
+  <ItemResult>RooHash</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoMergeOtherFunc</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2147022847</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoMergeOtherFunc(other As RooHash, func As Invokable, interpreter As RooInterpreter, where As RooToken, destructive As Boolean) As RooHash</SourceLine>
+   <SourceLine>// Hash.merge(other as Hash, func as Invokable) as Hash</SourceLine>
+   <SourceLine>// Hash.merge!(other as Hash, func as Invokable) as Hash</SourceLine>
+   <SourceLine>// Merges the passed `other` Hash with this one. The value for entries with duplicate keys will be </SourceLine>
+   <SourceLine>// determined by the return value of `func`</SourceLine>
+   <SourceLine>// `func` is passed 3 arguments: `key`, `currentValue`, `otherValue`.</SourceLine>
+   <SourceLine>// Returns the newly created Hash.</SourceLine>
+   <SourceLine>// If `destructive` = True then this Hash is mutated.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create a new Hash and clone this Hash's dictionary into it.</SourceLine>
+   <SourceLine>Dim newHash As New RooHash</SourceLine>
+   <SourceLine>newHash.Dict = Owner.Dict.Clone</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim funcArgs() As Variant</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Merge in the keys from the `other` Hash, invoking `func` as needed.</SourceLine>
+   <SourceLine>For Each entry As Xojo.Core.DictionaryEntry In other.Dict</SourceLine>
+   <SourceLine>If newHash.HasKey(entry.Key) Then</SourceLine>
+   <SourceLine>// Check that we have the correct number of arguments for `func`.</SourceLine>
+   <SourceLine>If Not Interpreter.CorrectArity(func, 3) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "The " + Stringable(func).StringValue + _</SourceLine>
+   <SourceLine>" function must accept 3 arguments (key, value1, value2.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Invoke the passed function, passing in the necessary arguments.</SourceLine>
+   <SourceLine>Redim funcArgs(-1)</SourceLine>
+   <SourceLine>funcArgs.Append(entry.Key)</SourceLine>
+   <SourceLine>funcArgs.Append(Owner.GetValue(entry.Key))</SourceLine>
+   <SourceLine>funcArgs.Append(entry.Value)</SourceLine>
+   <SourceLine>newHash.Dict.Value(entry.Key) = func.Invoke(interpreter, funcArgs, where)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>newHash.Dict.Value(entry.Key) = entry.Value</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next entry</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Destructive operation?</SourceLine>
+   <SourceLine>If destructive Then Owner.Dict = newHash.Dict.Clone</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return newHash</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>other As RooHash, func As Invokable, interpreter As RooInterpreter, where As RooToken, destructive As Boolean</ItemParams>
+  <ItemResult>RooHash</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoReject</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>882337791</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoReject(args() As Variant, where As RooToken, interpreter As RooInterpreter, destructive As Boolean) As RooHash</SourceLine>
+   <SourceLine>// Hash.reject(func as Invokable, optional arguments as Array) as Hash</SourceLine>
+   <SourceLine>// Hash.reject!(func as Invokable, optional arguments as Array) as Hash</SourceLine>
+   <SourceLine>// Invokes `func` for each key-value pair of this hash, passing the key and value to `func` as </SourceLine>
+   <SourceLine>// the first two arguments. </SourceLine>
+   <SourceLine>// Returns a new Hash consisting of entries for which `func` returns False. </SourceLine>
+   <SourceLine>// Essentially the opposite of Hash.keep(). </SourceLine>
+   <SourceLine>// If `destructive` = True then the original Hash is mutated.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim funcArgs(), funcResult As Variant</SourceLine>
+   <SourceLine>Dim func As Invokable</SourceLine>
+   <SourceLine>Dim newHash As New RooHash</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that `func` is invokable.</SourceLine>
+   <SourceLine>Roo.AssertIsInvokable(where, args(0))</SourceLine>
+   <SourceLine>func = args(0)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If a second argument has been passed, check that it's an Array object.</SourceLine>
+   <SourceLine>If args.Ubound = 1 Then</SourceLine>
+   <SourceLine>Roo.AssertIsArray(where, args(1))</SourceLine>
+   <SourceLine>// Get an array of the additional arguments to pass to the function we will invoke.</SourceLine>
+   <SourceLine>Dim limit As Integer = RooArray(args(1)).Elements.Ubound</SourceLine>
+   <SourceLine>For i As Integer = 0 To limit</SourceLine>
+   <SourceLine>funcArgs.Append(RooArray(args(1)).Elements(i))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that we have the correct number of arguments for `func`.</SourceLine>
+   <SourceLine>// NB: +3 as we will pass in the key and the value as the first two arguments.</SourceLine>
+   <SourceLine>If Not Interpreter.CorrectArity(func, funcArgs.Ubound + 3) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Incorrect number of arguments passed to the " +_</SourceLine>
+   <SourceLine>Stringable(func).StringValue + " function.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>For Each entry As Xojo.Core.DictionaryEntry In Owner.Dict</SourceLine>
+   <SourceLine>// Inject the value as an argument to `func`.</SourceLine>
+   <SourceLine>funcArgs.Insert(0, entry.Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Inject the key as an argument to `func`. Remember that text, numbers and booleans are stored </SourceLine>
+   <SourceLine>// in the backing hash dictionary as their Xojo values, not runtime representations. </SourceLine>
+   <SourceLine>// We therefore need to convert them first.</SourceLine>
+   <SourceLine>Select Case Roo.AutoType(entry.Key)</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoString, Roo.ObjectType.XojoText</SourceLine>
+   <SourceLine>funcArgs.Insert(0, New RooText(entry.Key))</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoDouble, Roo.ObjectType.XojoInteger</SourceLine>
+   <SourceLine>funcArgs.Insert(0, New RooNumber(entry.Key))</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoBoolean</SourceLine>
+   <SourceLine>funcArgs.Insert(0, New RooBoolean(entry.Key))</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>funcArgs.Insert(0, entry.Key)</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Invoke the function. If it returns False then keep this key-value pair in the new hash.</SourceLine>
+   <SourceLine>funcResult = func.Invoke(interpreter, funcArgs, where)</SourceLine>
+   <SourceLine>If funcResult IsA RooBoolean And RooBoolean(funcResult).Value = False Then</SourceLine>
+   <SourceLine>newHash.Dict.Value(entry.Key) = entry.Value</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Remove the key and value from the argument list prior to the next iteration.</SourceLine>
+   <SourceLine>funcArgs.Remove(0)</SourceLine>
+   <SourceLine>funcArgs.Remove(0)</SourceLine>
+   <SourceLine>Next entry</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If destructive Then Owner.Dict = newHash.Dict.Clone</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return the new hash.</SourceLine>
+   <SourceLine>Return newHash</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken, interpreter As RooInterpreter, destructive As Boolean</ItemParams>
+  <ItemResult>RooHash</ItemResult>
+ </Method>
+ <Property>
+  <ItemName>Name</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>277946367</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Name As String</SourceLine>
+   <SourceLine>The name of this Text object method.</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Name As String</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Owner</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1739454463</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Owner As RooHash</SourceLine>
+   <SourceLine>The RooHash object that owns this method.</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Owner As RooHash</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

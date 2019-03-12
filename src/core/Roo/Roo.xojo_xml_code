@@ -1,0 +1,1197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="1019557887">
+ <ObjName>Roo</ObjName>
+ <ObjContainerID>339822591</ObjContainerID>
+ <IsClass>0</IsClass>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Version</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>132970495</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Version() As String</SourceLine>
+   <SourceLine>Return Str(kVersionMajor) + "." + Str(kVersionMinor) + "." + Str(kVersionBug)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>IsInteger</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1986945023</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function IsInteger(d As Double) As Boolean</SourceLine>
+   <SourceLine>// Returns True if d is an integer. False if it's a double.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return If(Round(d) = d, True, False)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>d As Double</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>CaseSensitiveDictionary</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1180319743</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function CaseSensitiveDictionary() As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine>// Returns a new Xojo.Core.Dictionary that is case-sensitive.</SourceLine>
+   <SourceLine>// Exploits a bug (feature?) of Xojo.Data.ParseJSON that returns a case-sensitive dictionary.</SourceLine>
+   <SourceLine>Return Xojo.Data.ParseJSON("{}")</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Xojo.Core.Dictionary</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>IsCaseSensitive</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2113507327</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function IsCaseSensitive(d As Xojo.Core.Dictionary) As Boolean</SourceLine>
+   <SourceLine>// Returns True if the passed Dictionary is case-sensitive.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Add a random lowercase text value.</SourceLine>
+   <SourceLine>Dim test As Text = "±§,./abc"</SourceLine>
+   <SourceLine>d.Value(test) = ""</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Query the dictionary with the uppercase variant of the random text.</SourceLine>
+   <SourceLine>// If the dictionary believes this is present then this can't be a case-sensitive dictionary.</SourceLine>
+   <SourceLine>Dim result As Boolean = Not d.HasKey(test.Uppercase)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Remove the random key we added.</SourceLine>
+   <SourceLine>d.Remove(test)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return result</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>d As Xojo.Core.Dictionary</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AutoType</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1553336319</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function AutoType(a As Auto) As Roo.ObjectType</SourceLine>
+   <SourceLine>If a = Nil Then Return ObjectType.XojoNil</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim ti As Xojo.Introspection.TypeInfo = Xojo.Introspection.GetType(a)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If ti.IsArray Then Return ObjectType.XojoArray</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case ti.FullName</SourceLine>
+   <SourceLine>Case "String"</SourceLine>
+   <SourceLine>Return ObjectType.XojoString</SourceLine>
+   <SourceLine>Case "Text"</SourceLine>
+   <SourceLine>Return ObjectType.XojoText</SourceLine>
+   <SourceLine>Case "Int64", "Int32", "Int16", "Int8", "UInt64", "UInt32", "UInt16", "UInt8"</SourceLine>
+   <SourceLine>Return ObjectType.XojoInteger</SourceLine>
+   <SourceLine>Case "Boolean"</SourceLine>
+   <SourceLine>Return ObjectType.XojoBoolean</SourceLine>
+   <SourceLine>Case "Double"</SourceLine>
+   <SourceLine>Return ObjectType.XojoDouble</SourceLine>
+   <SourceLine>Case "RooArray"</SourceLine>
+   <SourceLine>Return ObjectType.RooArray</SourceLine>
+   <SourceLine>Case "RooBoolean"</SourceLine>
+   <SourceLine>Return ObjectType.RooBoolean</SourceLine>
+   <SourceLine>Case "RooDateTime"</SourceLine>
+   <SourceLine>Return ObjectType.RooDateTime</SourceLine>
+   <SourceLine>Case "RooHash"</SourceLine>
+   <SourceLine>Return ObjectType.RooHash</SourceLine>
+   <SourceLine>Case "RooNothing"</SourceLine>
+   <SourceLine>Return ObjectType.RooNothing</SourceLine>
+   <SourceLine>Case "RooNumber"</SourceLine>
+   <SourceLine>Return ObjectType.RooNumber</SourceLine>
+   <SourceLine>Case "RooText"</SourceLine>
+   <SourceLine>Return ObjectType.RooText</SourceLine>
+   <SourceLine>Case "Xojo.Core.Dictionary"</SourceLine>
+   <SourceLine>Return If(IsCaseSensitive(a), ObjectType.XojoCaseSensitiveDictionary, ObjectType.XojoModernDictionary)</SourceLine>
+   <SourceLine>Case "Xojo.Core.Date"</SourceLine>
+   <SourceLine>Return ObjectType.XojoDate</SourceLine>
+   <SourceLine>Case "Dictionary"</SourceLine>
+   <SourceLine>Return ObjectType.XojoClassicDictionary</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return ObjectType.Unknown</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>a As Auto</ItemParams>
+  <ItemResult>Roo.ObjectType</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoubleToInteger</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1479610367</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoubleToInteger(d As Double) As Integer</SourceLine>
+   <SourceLine>// Returns this double as an integer.</SourceLine>
+   <SourceLine>Dim i As Integer = d</SourceLine>
+   <SourceLine>Return i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>d As Double</ItemParams>
+  <ItemResult>Integer</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VariantTypeAsString</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>3504127</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VariantTypeAsString(v As Variant) As String</SourceLine>
+   <SourceLine>Dim type As ObjectType = AutoType(v)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case type</SourceLine>
+   <SourceLine>Case ObjectType.RooArray</SourceLine>
+   <SourceLine>Return "RooArray"</SourceLine>
+   <SourceLine>Case ObjectType.RooBoolean</SourceLine>
+   <SourceLine>Return "RooBoolean"</SourceLine>
+   <SourceLine>Case ObjectType.RooDateTime</SourceLine>
+   <SourceLine>Return "RooDateTime"</SourceLine>
+   <SourceLine>Case ObjectType.RooHash</SourceLine>
+   <SourceLine>Return "RooHash"</SourceLine>
+   <SourceLine>Case ObjectType.RooNothing</SourceLine>
+   <SourceLine>Return "RooNothing"</SourceLine>
+   <SourceLine>Case ObjectType.RooNumber</SourceLine>
+   <SourceLine>Return "RooNumber"</SourceLine>
+   <SourceLine>Case ObjectType.RooText</SourceLine>
+   <SourceLine>Return "RooText"</SourceLine>
+   <SourceLine>Case ObjectType.Unknown</SourceLine>
+   <SourceLine>Return "Unknown"</SourceLine>
+   <SourceLine>Case ObjectType.XojoArray</SourceLine>
+   <SourceLine>Return "Xojo Array"</SourceLine>
+   <SourceLine>Case ObjectType.XojoBoolean</SourceLine>
+   <SourceLine>Return "Xojo Boolean"</SourceLine>
+   <SourceLine>Case ObjectType.XojoCaseSensitiveDictionary</SourceLine>
+   <SourceLine>Return "Xojo Case Sensitive Dictionary"</SourceLine>
+   <SourceLine>Case ObjectType.XojoClassicDictionary</SourceLine>
+   <SourceLine>Return "Xojo Classic Dictionary"</SourceLine>
+   <SourceLine>Case ObjectType.XojoDate</SourceLine>
+   <SourceLine>Return "Xojo Date"</SourceLine>
+   <SourceLine>Case ObjectType.XojoDouble</SourceLine>
+   <SourceLine>Return "Xojo Double"</SourceLine>
+   <SourceLine>Case ObjectType.XojoInteger</SourceLine>
+   <SourceLine>Return "Xojo Integer"</SourceLine>
+   <SourceLine>Case ObjectType.XojoModernDictionary</SourceLine>
+   <SourceLine>Return "Xojo Modern Dictionary"</SourceLine>
+   <SourceLine>Case ObjectType.XojoNil</SourceLine>
+   <SourceLine>Return "Nil"</SourceLine>
+   <SourceLine>Case ObjectType.XojoObject</SourceLine>
+   <SourceLine>Return "Xojo Object"</SourceLine>
+   <SourceLine>Case ObjectType.XojoString</SourceLine>
+   <SourceLine>Return "Xojo String"</SourceLine>
+   <SourceLine>Case ObjectType.XojoText</SourceLine>
+   <SourceLine>Return "Xojo Text"</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>v As Variant</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Initialise</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>223440895</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Initialise()</SourceLine>
+   <SourceLine>If mInitialised Then Return</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>RooSLCache.Initialise</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>mInitialised = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AssertAreNumbers</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1812160511</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AssertAreNumbers(where As RooToken, ParamArray operands As Variant)</SourceLine>
+   <SourceLine>// Asserts that the passed operands are RooNumbers. If any aren't, raise an error.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>For Each operand As Variant In operands</SourceLine>
+   <SourceLine>If operand IsA RooNumber = False Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Expected a number operand.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next operand</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken, ParamArray operands As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AssertAreIntegers</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>398923775</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AssertAreIntegers(where As RooToken, ParamArray operands As Variant)</SourceLine>
+   <SourceLine>// Check that the passed operands are integer RooNumbers. If any aren't, raise an error.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>For Each operand As Variant In operands</SourceLine>
+   <SourceLine>If operand IsA RooNumber = False Then</SourceLine>
+   <SourceLine>Dim type As String</SourceLine>
+   <SourceLine>If operand IsA RooNativeClass Then</SourceLine>
+   <SourceLine>type = RooNativeClass(operand).Type + " object"</SourceLine>
+   <SourceLine>ElseIf operand IsA RooNativeModule Then</SourceLine>
+   <SourceLine>type = "module"</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>type = Stringable(operand).StringValue</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Expected a number operand but got " + type)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>If Not IsInteger(RooNumber(operand).Value) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Expected an integer operand but got a double")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next operand</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken, ParamArray operands As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AssertAreTextObjects</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>36386815</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AssertAreTextObjects(where As RooToken, ParamArray operands As Variant)</SourceLine>
+   <SourceLine>// Asserts that the passed operands are RooText objects. If any aren't, raise an error.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>For Each operand As Variant In operands</SourceLine>
+   <SourceLine>If operand IsA RooText = False Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Expected a Text object operand.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next operand</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken, ParamArray operands As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DayNameFromDate</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1477801983</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DayNameFromDate(d As Xojo.Core.Date) As String</SourceLine>
+   <SourceLine>// Returns the name of the passed Xojo Date object (1 = Sunday, 7 = Saturday). </SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case d.DayOfWeek</SourceLine>
+   <SourceLine>Case 1</SourceLine>
+   <SourceLine>Return "Sunday"</SourceLine>
+   <SourceLine>Case 2</SourceLine>
+   <SourceLine>Return "Monday"</SourceLine>
+   <SourceLine>Case 3</SourceLine>
+   <SourceLine>Return "Tuesday"</SourceLine>
+   <SourceLine>Case 4</SourceLine>
+   <SourceLine>Return "Wednesday"</SourceLine>
+   <SourceLine>Case 5</SourceLine>
+   <SourceLine>Return "Thursday"</SourceLine>
+   <SourceLine>Case 6</SourceLine>
+   <SourceLine>Return "Friday"</SourceLine>
+   <SourceLine>Case 7</SourceLine>
+   <SourceLine>Return "Saturday"</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return ""</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>d As Xojo.Core.Date</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>LongMonthFromDate</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>659533823</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function LongMonthFromDate(d As Xojo.Core.Date) As String</SourceLine>
+   <SourceLine>// Returns the passed Xojo Date's month in human-readable form.</SourceLine>
+   <SourceLine>// E.g: 1 --&gt; "January"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case d.Month</SourceLine>
+   <SourceLine>Case 1</SourceLine>
+   <SourceLine>Return "January"</SourceLine>
+   <SourceLine>Case 2</SourceLine>
+   <SourceLine>Return "February"</SourceLine>
+   <SourceLine>Case 3</SourceLine>
+   <SourceLine>Return "March"</SourceLine>
+   <SourceLine>Case 4</SourceLine>
+   <SourceLine>Return "April"</SourceLine>
+   <SourceLine>Case 5</SourceLine>
+   <SourceLine>Return "May"</SourceLine>
+   <SourceLine>Case 6</SourceLine>
+   <SourceLine>Return "June"</SourceLine>
+   <SourceLine>Case 7</SourceLine>
+   <SourceLine>Return "July"</SourceLine>
+   <SourceLine>Case 8</SourceLine>
+   <SourceLine>Return "August"</SourceLine>
+   <SourceLine>Case 9</SourceLine>
+   <SourceLine>Return "September"</SourceLine>
+   <SourceLine>Case 10</SourceLine>
+   <SourceLine>Return "October"</SourceLine>
+   <SourceLine>Case 11</SourceLine>
+   <SourceLine>Return "November"</SourceLine>
+   <SourceLine>Case 12</SourceLine>
+   <SourceLine>Return "December"</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return ""</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>d As Xojo.Core.Date</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>MeridiemFromDate</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1975365631</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function MeridiemFromDate(d As Xojo.Core.Date) As String</SourceLine>
+   <SourceLine>// Returns the passed Xojo Date's meridiem</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return If(d.Hour &lt; 12, "AM", "PM")</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>d As Xojo.Core.Date</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ShortMonthFromDate</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1642995711</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ShortMonthFromDate(d As Xojo.Core.Date) As String</SourceLine>
+   <SourceLine>// Returns the passed Xojo Date's month as a three character month.</SourceLine>
+   <SourceLine>// E.g: 1 --&gt; "Jan"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case d.Month</SourceLine>
+   <SourceLine>Case 1</SourceLine>
+   <SourceLine>Return "Jan"</SourceLine>
+   <SourceLine>Case 2</SourceLine>
+   <SourceLine>Return "Feb"</SourceLine>
+   <SourceLine>Case 3</SourceLine>
+   <SourceLine>Return "Mar"</SourceLine>
+   <SourceLine>Case 4</SourceLine>
+   <SourceLine>Return "Apr"</SourceLine>
+   <SourceLine>Case 5</SourceLine>
+   <SourceLine>Return "May"</SourceLine>
+   <SourceLine>Case 6</SourceLine>
+   <SourceLine>Return "Jun"</SourceLine>
+   <SourceLine>Case 7</SourceLine>
+   <SourceLine>Return "Jul"</SourceLine>
+   <SourceLine>Case 8</SourceLine>
+   <SourceLine>Return "Aug"</SourceLine>
+   <SourceLine>Case 9</SourceLine>
+   <SourceLine>Return "Sep"</SourceLine>
+   <SourceLine>Case 10</SourceLine>
+   <SourceLine>Return "Oct"</SourceLine>
+   <SourceLine>Case 11</SourceLine>
+   <SourceLine>Return "Nov"</SourceLine>
+   <SourceLine>Case 12</SourceLine>
+   <SourceLine>Return "Dec"</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return ""</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>d As Xojo.Core.Date</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>TwoDigitMinuteFromDate</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1116733439</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function TwoDigitMinuteFromDate(d As Xojo.Core.Date) As String</SourceLine>
+   <SourceLine>// Returns the passed Xojo Date's minute value as a two digit String.</SourceLine>
+   <SourceLine>// E.g: 1 --&gt; "01"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If d.Minute &lt; 10 Then</SourceLine>
+   <SourceLine>Return "0" + Str(d.Minute)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return Str(d.Minute)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>d As Xojo.Core.Date</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>TwoDigitDayFromDate</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1474078719</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function TwoDigitDayFromDate(d As Xojo.Core.Date) As String</SourceLine>
+   <SourceLine>// Returns the passed Xojo Date's day value as a two digit String.</SourceLine>
+   <SourceLine>// E.g: 1 --&gt; "01"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If d.Day &lt; 10 Then</SourceLine>
+   <SourceLine>Return "0" + Str(d.Day)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return Str(d.Day)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>d As Xojo.Core.Date</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>TwoDigitHourFromDate</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>778815487</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function TwoDigitHourFromDate(d As Xojo.Core.Date) As String</SourceLine>
+   <SourceLine>// Returns the passed Xojo Date's hour value as a two digit String.</SourceLine>
+   <SourceLine>// E.g: 1 --&gt; "01"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If d.Hour &lt; 10 Then</SourceLine>
+   <SourceLine>Return "0" + Str(d.Hour)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return Str(d.Hour)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>d As Xojo.Core.Date</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>TwoDigitSecondFromDate</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>229642239</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function TwoDigitSecondFromDate(d As Xojo.Core.Date) As String</SourceLine>
+   <SourceLine>// Returns the passed Xojo Date's second value as a two digit String.</SourceLine>
+   <SourceLine>// E.g: 1 --&gt; "01"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If d.Second &lt; 10 Then</SourceLine>
+   <SourceLine>Return "0" + Str(d.Second)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return Str(d.Second)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>d As Xojo.Core.Date</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AssertArePositiveIntegers</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1528651775</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AssertArePositiveIntegers(where As RooToken, ParamArray operands As Variant)</SourceLine>
+   <SourceLine>// Asserts that the passed operands are positive integer RooNumbers. If any aren't, raise an error.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>For Each operand As Variant In operands</SourceLine>
+   <SourceLine>If operand IsA RooNumber = False Then</SourceLine>
+   <SourceLine>Dim type As String</SourceLine>
+   <SourceLine>If operand IsA RooNativeClass Then</SourceLine>
+   <SourceLine>type = RooNativeClass(operand).Type + " object"</SourceLine>
+   <SourceLine>ElseIf operand IsA RooNativeModule Then</SourceLine>
+   <SourceLine>type = "module"</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>type = Stringable(operand).StringValue</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Expected a number operand but got " + type + ".")</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>If Not IsInteger(RooNumber(operand).Value) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Expected an integer operand but got a double.")</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>If RooNumber(operand).Value &lt; 0 Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Expected a positive integer operand but got a negative one.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next operand</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken, ParamArray operands As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>LongMonthFromInteger</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>390637567</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function LongMonthFromInteger(i As Integer) As String</SourceLine>
+   <SourceLine>// Takes an integer month value (1 to 12) and returns it as a month String value.</SourceLine>
+   <SourceLine>// E.g: 1 --&gt; "January"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case i</SourceLine>
+   <SourceLine>Case 1</SourceLine>
+   <SourceLine>Return "January"</SourceLine>
+   <SourceLine>Case 2</SourceLine>
+   <SourceLine>Return "February"</SourceLine>
+   <SourceLine>Case 3</SourceLine>
+   <SourceLine>Return "March"</SourceLine>
+   <SourceLine>Case 4</SourceLine>
+   <SourceLine>Return "April"</SourceLine>
+   <SourceLine>Case 5</SourceLine>
+   <SourceLine>Return "May"</SourceLine>
+   <SourceLine>Case 6</SourceLine>
+   <SourceLine>Return "June"</SourceLine>
+   <SourceLine>Case 7</SourceLine>
+   <SourceLine>Return "July"</SourceLine>
+   <SourceLine>Case 8</SourceLine>
+   <SourceLine>Return "August"</SourceLine>
+   <SourceLine>Case 9</SourceLine>
+   <SourceLine>Return "September"</SourceLine>
+   <SourceLine>Case 10</SourceLine>
+   <SourceLine>Return "October"</SourceLine>
+   <SourceLine>Case 11</SourceLine>
+   <SourceLine>Return "November"</SourceLine>
+   <SourceLine>Case 12</SourceLine>
+   <SourceLine>Return "December"</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return ""</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>i As Integer</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AssertIsInvokable</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>454316031</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AssertIsInvokable(where As RooToken, operand As Variant)</SourceLine>
+   <SourceLine>// Checks that the passed operand adheres to the Invokable interface. Raises an error if it doesn't.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If operand IsA Invokable = False Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Expected an invokable operand.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken, operand As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AssertIsArray</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>628539391</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AssertIsArray(where As RooToken, operand As Variant)</SourceLine>
+   <SourceLine>// Checks that the passed operand is an Array object. Raises an error if it isn't.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If operand IsA RooArray = False Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Expected an array operand.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken, operand As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AssertIsPositiveInteger</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1673666559</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AssertIsPositiveInteger(where As RooToken, operand As Variant)</SourceLine>
+   <SourceLine>// Asserts that the passed operand is positive integer RooNumber. If any not, raise an error.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If operand IsA RooNumber = False Then</SourceLine>
+   <SourceLine>Dim type As String</SourceLine>
+   <SourceLine>If operand IsA RooNativeClass Then</SourceLine>
+   <SourceLine>type = RooNativeClass(operand).Type + " object"</SourceLine>
+   <SourceLine>ElseIf operand IsA RooNativeModule Then</SourceLine>
+   <SourceLine>type = "module"</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>type = Stringable(operand).StringValue</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Expected a number operand but got " + type + ".")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Not IsInteger(RooNumber(operand).Value) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Expected an integer operand but got a double.")</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>If RooNumber(operand).Value &lt; 0 Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Expected a positive integer operand but got a negative one.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken, operand As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AssertIsInteger</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>314845183</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AssertIsInteger(where As RooToken, operand As Variant)</SourceLine>
+   <SourceLine>// Checks that the passed operand is an integer RooNumber. If any not, raise an error.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If operand IsA RooNumber = False Then</SourceLine>
+   <SourceLine>Dim type As String</SourceLine>
+   <SourceLine>If operand IsA RooNativeClass Then</SourceLine>
+   <SourceLine>type = RooNativeClass(operand).Type + " object"</SourceLine>
+   <SourceLine>ElseIf operand IsA RooNativeModule Then</SourceLine>
+   <SourceLine>type = "module"</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>type = Stringable(operand).StringValue</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Expected a number operand but got " + type)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Not IsInteger(RooNumber(operand).Value) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Expected an integer operand but got a double")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken, operand As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AssertIsHash</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1848082431</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AssertIsHash(where As RooToken, operand As Variant)</SourceLine>
+   <SourceLine>// Checks that the passed operand is a Hash object Raises an error if it doesn't.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If operand IsA RooHash = False Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Expected an array operand.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken, operand As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AssertIsBoolean</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>469688319</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AssertIsBoolean(where As RooToken, operand As Variant)</SourceLine>
+   <SourceLine>// Checks that the passed operand is a Roo Boolean object. Raises an error if it doesn't.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If operand IsA RooBoolean = False Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Expected a Boolean operand.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken, operand As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>XojoDictionaryToRooHash</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>728295423</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function XojoDictionaryToRooHash(d As Xojo.Core.Dictionary) As RooHash</SourceLine>
+   <SourceLine>// Converts the passed Xojo dictionary to a Roo hash object.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If d = Nil Or d.Count = 0 Then Return New RooHash</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim h As New RooHash</SourceLine>
+   <SourceLine>Dim value As Variant</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>For Each entry As Xojo.Core.DictionaryEntry In d</SourceLine>
+   <SourceLine>Select Case Roo.AutoType(entry.Value)</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoString, Roo.ObjectType.XojoText</SourceLine>
+   <SourceLine>value = New RooText(entry.Value)</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoDouble, Roo.ObjectType.XojoInteger</SourceLine>
+   <SourceLine>value = New RooNumber(entry.Value)</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoBoolean</SourceLine>
+   <SourceLine>value = New RooBoolean(entry.Value)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>value = entry.Value</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>h.Dict.Value(entry.Key) = value</SourceLine>
+   <SourceLine>Next entry</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return h</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>d As Xojo.Core.Dictionary</ItemParams>
+  <ItemResult>RooHash</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AssertIsRegex</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>301555711</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AssertIsRegex(where As RooToken, operand As Variant)</SourceLine>
+   <SourceLine>// Checks that the passed operand is a Regex object. Raises an error if it isn't.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If operand IsA RooRegex = False Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Expected a Regex operand.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken, operand As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AssertIsStringable</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1785786367</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AssertIsStringable(where As RooToken, operand As Variant)</SourceLine>
+   <SourceLine>// Checks that the passed operand adheres to the Stringable interface. Raises an error if it doesn't.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If operand IsA Stringable = False Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Expected an object with a text representation.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken, operand As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AssertIsTextObject</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1588785151</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AssertIsTextObject(where As RooToken, operand As Variant)</SourceLine>
+   <SourceLine>// Checks that the passed operand is a Roo Boolean object. Raises an error if it doesn't.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If operand IsA RooText = False Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Expected a Text operand.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken, operand As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>FolderItemToRooPath</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1437954047</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function FolderItemToRooPath(f As FolderItem) As String</SourceLine>
+   <SourceLine>// Returns this FolderItem's path as a Roo path. A Roo path is essentially a UNIX path.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If f = Nil Then Return ""</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim tmp As New FolderItem(f.NativePath, FolderItem.PathTypeNative)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim path As String</SourceLine>
+   <SourceLine>Do</SourceLine>
+   <SourceLine>If tmp.Parent &lt;&gt; Nil Then</SourceLine>
+   <SourceLine>path = "/" + tmp.Name + path</SourceLine>
+   <SourceLine>tmp = tmp.Parent</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Exit</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Loop</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return path</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>f As FolderItem</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Property>
+  <ItemName>mInitialised</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1669050367</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>mInitialised As Boolean = False</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>mInitialised As Boolean = False</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+ <Constant>
+  <ItemName>kVersionMajor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>406917119</PartID>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemType>2</ItemType>
+  <ItemDef>3</ItemDef>
+  <ItemFlags>1</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>kVersionMinor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2029719551</PartID>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemType>2</ItemType>
+  <ItemDef>0</ItemDef>
+  <ItemFlags>1</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>kVersionBug</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>109295615</PartID>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemType>2</ItemType>
+  <ItemDef>0</ItemDef>
+  <ItemFlags>1</ItemFlags>
+ </Constant>
+ <Enumeration>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>TokenType</ItemName>
+  <ItemFlags>1</ItemFlags>
+  <ItemType>Integer</ItemType>
+  <ItemName>TokenType</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1995544575</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>AMPERSAND</SourceLine>
+   <SourceLine>AND_KEYWORD</SourceLine>
+   <SourceLine>ARROW</SourceLine>
+   <SourceLine>BANG</SourceLine>
+   <SourceLine>BOOLEAN</SourceLine>
+   <SourceLine>BREAK_KEYWORD</SourceLine>
+   <SourceLine>CARET</SourceLine>
+   <SourceLine>CLASS_KEYWORD</SourceLine>
+   <SourceLine>COLON</SourceLine>
+   <SourceLine>COMMA</SourceLine>
+   <SourceLine>DEDENT</SourceLine>
+   <SourceLine>DEF_KEYWORD</SourceLine>
+   <SourceLine>DOT</SourceLine>
+   <SourceLine>ELSE_KEYWORD</SourceLine>
+   <SourceLine>EQUAL</SourceLine>
+   <SourceLine>EQUAL_EQUAL</SourceLine>
+   <SourceLine>EOF</SourceLine>
+   <SourceLine>ERROR</SourceLine>
+   <SourceLine>EXIT_KEYWORD</SourceLine>
+   <SourceLine>FOR_KEYWORD</SourceLine>
+   <SourceLine>GREATER</SourceLine>
+   <SourceLine>GREATER_EQUAL</SourceLine>
+   <SourceLine>GREATER_GREATER</SourceLine>
+   <SourceLine>IDENTIFIER</SourceLine>
+   <SourceLine>IF_KEYWORD</SourceLine>
+   <SourceLine>INDENT</SourceLine>
+   <SourceLine>LCURLY</SourceLine>
+   <SourceLine>LESS</SourceLine>
+   <SourceLine>LESS_EQUAL</SourceLine>
+   <SourceLine>LESS_LESS</SourceLine>
+   <SourceLine>LPAREN</SourceLine>
+   <SourceLine>LSQUARE</SourceLine>
+   <SourceLine>MINUS</SourceLine>
+   <SourceLine>MINUS_EQUAL</SourceLine>
+   <SourceLine>MINUS_MINUS</SourceLine>
+   <SourceLine>MODULE_KEYWORD</SourceLine>
+   <SourceLine>NOT_EQUAL</SourceLine>
+   <SourceLine>NOT_KEYWORD</SourceLine>
+   <SourceLine>NOTHING</SourceLine>
+   <SourceLine>NUMBER</SourceLine>
+   <SourceLine>OR_KEYWORD</SourceLine>
+   <SourceLine>PASS_KEYWORD</SourceLine>
+   <SourceLine>PERCENT</SourceLine>
+   <SourceLine>PERCENT_EQUAL</SourceLine>
+   <SourceLine>PIPE</SourceLine>
+   <SourceLine>PLUS</SourceLine>
+   <SourceLine>PLUS_EQUAL</SourceLine>
+   <SourceLine>PLUS_PLUS</SourceLine>
+   <SourceLine>QUERY</SourceLine>
+   <SourceLine>QUIT_KEYWORD</SourceLine>
+   <SourceLine>RCURLY</SourceLine>
+   <SourceLine>REQUIRE_KEYWORD</SourceLine>
+   <SourceLine>RETURN_KEYWORD</SourceLine>
+   <SourceLine>RPAREN</SourceLine>
+   <SourceLine>RSQUARE</SourceLine>
+   <SourceLine>SELF_KEYWORD</SourceLine>
+   <SourceLine>SLASH</SourceLine>
+   <SourceLine>SLASH_EQUAL</SourceLine>
+   <SourceLine>STAR_EQUAL</SourceLine>
+   <SourceLine>STAR</SourceLine>
+   <SourceLine>STATIC_KEYWORD</SourceLine>
+   <SourceLine>SUPER_KEYWORD</SourceLine>
+   <SourceLine>TERMINATOR</SourceLine>
+   <SourceLine>TEXT</SourceLine>
+   <SourceLine>TILDE</SourceLine>
+   <SourceLine>VAR</SourceLine>
+   <SourceLine>WHILE_KEYWORD</SourceLine>
+  </ItemSource>
+ </Enumeration>
+ <Enumeration>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>ObjectType</ItemName>
+  <ItemFlags>1</ItemFlags>
+  <ItemName>ObjectType</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1498648575</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>RooArray</SourceLine>
+   <SourceLine>RooBoolean</SourceLine>
+   <SourceLine>RooDateTime</SourceLine>
+   <SourceLine>RooHash</SourceLine>
+   <SourceLine>RooNothing</SourceLine>
+   <SourceLine>RooNumber</SourceLine>
+   <SourceLine>RooText</SourceLine>
+   <SourceLine>XojoArray</SourceLine>
+   <SourceLine>XojoBoolean</SourceLine>
+   <SourceLine>XojoCaseSensitiveDictionary</SourceLine>
+   <SourceLine>XojoClassicDictionary</SourceLine>
+   <SourceLine>XojoDate</SourceLine>
+   <SourceLine>XojoDouble</SourceLine>
+   <SourceLine>XojoInteger</SourceLine>
+   <SourceLine>XojoModernDictionary</SourceLine>
+   <SourceLine>XojoObject</SourceLine>
+   <SourceLine>XojoNil</SourceLine>
+   <SourceLine>XojoString</SourceLine>
+   <SourceLine>XojoText</SourceLine>
+   <SourceLine>Unknown</SourceLine>
+  </ItemSource>
+ </Enumeration>
+</block>
+</RBProject>

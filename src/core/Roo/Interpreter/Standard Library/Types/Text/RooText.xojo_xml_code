@@ -1,0 +1,645 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="634179583">
+ <ObjName>RooText</ObjName>
+ <ObjContainerID>1510785023</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Superclass>RooInstance</Superclass>
+ <Interfaces> RooNativeClass,  Dateable</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>837736447</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>Return Self.Value</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1730084863</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(value As String)</SourceLine>
+   <SourceLine>Super.Constructor(Nil)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Self.Value = value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>value As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Type</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>680613887</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Type() As String</SourceLine>
+   <SourceLine>Return "Text"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasGetterWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1098622975</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasGetterWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Query the global Roo dictionary of Text object getters for the existence of a getter </SourceLine>
+   <SourceLine>// with the passed name.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return RooSLCache.TextGetters.HasKey(name)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasMethodWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>21624831</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasMethodWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Query the global Roo dictionary of Text object methods for the existence of a method </SourceLine>
+   <SourceLine>// with the passed name.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return RooSLCache.TextMethods.HasKey(name)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>GetterWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>172666879</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function GetterWithName(name As RooToken) As Variant</SourceLine>
+   <SourceLine>// Return the result of the requested getter operation.</SourceLine>
+   <SourceLine>If StrComp(name.Lexeme, "capitalise", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooText(Value.Titlecase)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "capitalise!", 0) = 0 Then</SourceLine>
+   <SourceLine>Value = Value.Titlecase</SourceLine>
+   <SourceLine>Return New RooText(Value)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "chars", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoChars</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "define_utf8", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoDefineUTF8(False)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "define_utf8!", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoDefineUTF8(True)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "empty?", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooBoolean(If(Value = "", True, False))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "length", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(Value.Len)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "lowercase", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooText(Value.Lowercase)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "lowercase!", 0) = 0 Then</SourceLine>
+   <SourceLine>Value = Value.Lowercase</SourceLine>
+   <SourceLine>Return New RooText(Value)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "lstrip", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooText(Value.LTrim)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "lstrip!", 0) = 0 Then</SourceLine>
+   <SourceLine>Value = Value.LTrim</SourceLine>
+   <SourceLine>Return New RooText(Value)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "reverse", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoReverse(False)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "reverse!", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoReverse(True)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "rstrip", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooText(Value.RTrim)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "rstrip!", 0) = 0 Then</SourceLine>
+   <SourceLine>Value = Value.RTrim</SourceLine>
+   <SourceLine>Return New RooText(Value)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "strip", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooText(Value.Trim)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "strip!", 0) = 0 Then</SourceLine>
+   <SourceLine>Value = Value.Trim</SourceLine>
+   <SourceLine>Return New RooText(Value)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "swapcase", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoSwapCase(False)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "swapcase!", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoSwapCase(True)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "to_date", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoToDate</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "to_number", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoToNumber</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "uppercase", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooText(Value.Uppercase)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "uppercase!", 0) = 0 Then</SourceLine>
+   <SourceLine>Value = Value.Uppercase</SourceLine>
+   <SourceLine>Return New RooText(Value)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>MethodWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1874407423</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function MethodWithName(name As RooToken) As Invokable</SourceLine>
+   <SourceLine>// Return a new instance of a Text object method initialised with the name of the method </SourceLine>
+   <SourceLine>// being called. That way, when the returned method is invoked, it will know what operation </SourceLine>
+   <SourceLine>// to perform.</SourceLine>
+   <SourceLine>Return New RooTextMethod(Self, name.Lexeme)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>Invokable</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Arity</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>604600319</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Arity() As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Raise New RooRuntimeError(New RooToken, "Cannot invoke the native Text type.")</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Invoke</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2074972159</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Invoke(interpreter As RooInterpreter, arguments() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused interpreter</SourceLine>
+   <SourceLine>#Pragma Unused arguments</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Cannot invoke the native Text type.")</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter, arguments() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoChars</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>375707647</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoChars() As RooArray</SourceLine>
+   <SourceLine>// Text.chars As Array</SourceLine>
+   <SourceLine>// Converts this Text object's value to its constituent characters and returns them as a </SourceLine>
+   <SourceLine>// new RooArray.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim chars() As String</SourceLine>
+   <SourceLine>Dim a As New RooArray</SourceLine>
+   <SourceLine>Dim i, limit as Integer</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>chars = Value.Split("")</SourceLine>
+   <SourceLine>limit = chars.Ubound</SourceLine>
+   <SourceLine>For i = 0 To limit</SourceLine>
+   <SourceLine>// Each character needs to be converted to a Roo Text object NOT left as a Xojo String!</SourceLine>
+   <SourceLine>a.Elements.Append(New RooText(chars(i)))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return a</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooArray</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoDefineUTF8</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1877874687</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoDefineUTF8(destructive As Boolean) As Variant</SourceLine>
+   <SourceLine>// Text.define_utf8  |  Text.define_utf8!</SourceLine>
+   <SourceLine>// Returns a new Text object where the value is defined as being UTF-8 encoded.</SourceLine>
+   <SourceLine>// If `destructive` is True then we also mutate the original value.</SourceLine>
+   <SourceLine>// If Xojo is unable to define the encoding as UTF-8 then we return Nothing.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim result As String</SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine>result = DefineEncoding(Value, Encodings.UTF8)</SourceLine>
+   <SourceLine>Catch</SourceLine>
+   <SourceLine>Return New RooNothing</SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Value = If(destructive, result, Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooText(result)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>destructive As Boolean</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoReverse</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>720383999</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoReverse(destructive as Boolean) As RooText</SourceLine>
+   <SourceLine>// Text.reverse As Text |  Text.reverse! As Text</SourceLine>
+   <SourceLine>// Returns a new Text object where the value has been reversed. </SourceLine>
+   <SourceLine>// If `destructive` is True then we also mutate the original value.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Len(Value) &lt; 2 Then Return New RooText(Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim characters() As String = Split(Value, "")</SourceLine>
+   <SourceLine>Dim leftIndex as Integer = 0</SourceLine>
+   <SourceLine>Dim rightIndex as Integer = UBound(characters)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma BackgroundTasks False</SourceLine>
+   <SourceLine>Dim temp As String</SourceLine>
+   <SourceLine>While leftIndex &lt; rightIndex</SourceLine>
+   <SourceLine>temp = characters(leftIndex)</SourceLine>
+   <SourceLine>characters(leftIndex) = characters(rightIndex)</SourceLine>
+   <SourceLine>characters(rightIndex) = temp</SourceLine>
+   <SourceLine>leftIndex = leftIndex + 1</SourceLine>
+   <SourceLine>rightIndex = rightIndex - 1</SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine>temp = Join( characters, "" )</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Alter this object's value too?</SourceLine>
+   <SourceLine>Value = If(destructive, temp, Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooText(temp)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>destructive as Boolean</ItemParams>
+  <ItemResult>RooText</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoSwapCase</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1004795903</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoSwapCase(destructive as Boolean) As RooText</SourceLine>
+   <SourceLine>// Text.swapcase  | Text.swapcase!</SourceLine>
+   <SourceLine>// Returns a new Text object where the case of each character has been swapped.</SourceLine>
+   <SourceLine>// If destructive then we will also mutate this Text object's value.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim chars() As String = Value.Split("")</SourceLine>
+   <SourceLine>Dim result, tmp() As String</SourceLine>
+   <SourceLine>Dim i, limit, codePoint As Integer</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Redim tmp(Value.Len - 1)</SourceLine>
+   <SourceLine>limit = chars.Ubound</SourceLine>
+   <SourceLine>#Pragma BackgroundTasks False</SourceLine>
+   <SourceLine>For i = 0 To limit</SourceLine>
+   <SourceLine>codePoint = Asc(chars(i))</SourceLine>
+   <SourceLine>Select Case codePoint</SourceLine>
+   <SourceLine>Case 65 To 90 // Uppercase ASCII character. Add 32 to make it lowercase.</SourceLine>
+   <SourceLine>tmp(i) = Chr(codePoint + 32)</SourceLine>
+   <SourceLine>Case 97 To 122 // Lowercase ASCII character. Subtract 32 to make it uppercase.</SourceLine>
+   <SourceLine>tmp(i) = Chr(codePoint - 32)</SourceLine>
+   <SourceLine>Else // Leave it alone.</SourceLine>
+   <SourceLine>tmp(i) = chars(i)</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>result = Join(tmp, "")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Value = If(destructive, result, value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooText(result)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>destructive as Boolean</ItemParams>
+  <ItemResult>RooText</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoToDate</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>9424895</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoToDate() As Variant</SourceLine>
+   <SourceLine>// Text.to_date as DateTime or Nothing</SourceLine>
+   <SourceLine>// If this Text object is in one of the following two formats:</SourceLine>
+   <SourceLine>// YYYY-MM-DD HH:MM</SourceLine>
+   <SourceLine>// YYYY-MM-DD</SourceLine>
+   <SourceLine>// Then this method returns a new DateTime object instantiated to that date and time. If not it </SourceLine>
+   <SourceLine>// returns Nothing.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim d As Xojo.Core.Date = DateValue</SourceLine>
+   <SourceLine>If d = Nil Then</SourceLine>
+   <SourceLine>Return New RooNothing</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return New RooDateTime(d)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DateValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1385113599</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DateValue() As Xojo.Core.Date</SourceLine>
+   <SourceLine>// Part of the Dateable interface.</SourceLine>
+   <SourceLine>// If possible, convert this Text object to a Xojo.Core.Date.</SourceLine>
+   <SourceLine>// Roo Text is considered to be a date if it is in one of the following two formats:</SourceLine>
+   <SourceLine>// YYYY-MM-DD HH:MM or YYYY-MM-DD</SourceLine>
+   <SourceLine>// If not possible, return Nil.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine>Return Xojo.Core.Date.FromText(Value.ToText)</SourceLine>
+   <SourceLine>Catch err</SourceLine>
+   <SourceLine>Return Nil</SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Xojo.Core.Date</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoToNumber</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1821972479</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoToNumber() As RooNumber</SourceLine>
+   <SourceLine>// Text.to_number As Number object</SourceLine>
+   <SourceLine>// Convert this Text object to a Number object.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Prefixed number?</SourceLine>
+   <SourceLine>If Value.Left(2) = "0x" And Value.Len &gt; 2 Then</SourceLine>
+   <SourceLine>Dim chars() As String = Value.Split("")</SourceLine>
+   <SourceLine>Call chars.Remove(0) // Remove "0"</SourceLine>
+   <SourceLine>Call chars.Remove(0) // Remove "x"</SourceLine>
+   <SourceLine>For i As Integer = 0 To chars.Ubound</SourceLine>
+   <SourceLine>If Not IsHexadecimal(chars(i)) Then Return New RooNumber(0)</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>Return New RooNumber(Integer.FromHex(Join(chars, "").ToText))</SourceLine>
+   <SourceLine>ElseIf Value.Left(2) = "0b" And Value.Len &gt; 2 Then</SourceLine>
+   <SourceLine>Dim chars() As String = Value.Split("")</SourceLine>
+   <SourceLine>Call chars.Remove(0) // Remove "0"</SourceLine>
+   <SourceLine>Call chars.Remove(0) // Remove "b"</SourceLine>
+   <SourceLine>For i As Integer = 0 To chars.Ubound</SourceLine>
+   <SourceLine>If Not IsBinary(chars(i)) Then Return New RooNumber(0)</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>Return New RooNumber(Integer.FromBinary(Join(chars, "").ToText))</SourceLine>
+   <SourceLine>ElseIf Value.Left(2) = "0o" And Value.Len &gt; 2 Then</SourceLine>
+   <SourceLine>Dim chars() As String = Value.Split("")</SourceLine>
+   <SourceLine>Call chars.Remove(0) // Remove "0"</SourceLine>
+   <SourceLine>Call chars.Remove(0) // Remove "o"</SourceLine>
+   <SourceLine>For i As Integer = 0 To chars.Ubound</SourceLine>
+   <SourceLine>If Not IsOctal(chars(i)) Then Return New RooNumber(0)</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>Return New RooNumber(Integer.FromOctal(Join(chars, "").ToText))</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// Let Xojo do the conversion for us.</SourceLine>
+   <SourceLine>Return New RooNumber(Val(Value))</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooNumber</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>IsHexadecimal</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1894262783</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function IsHexadecimal(char As String) As Boolean</SourceLine>
+   <SourceLine>// Returns True if `char` is a hexadecimal digit.</SourceLine>
+   <SourceLine>// Case-insensitive.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case char</SourceLine>
+   <SourceLine>Case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"</SourceLine>
+   <SourceLine>Return True</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>char As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>IsBinary</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1637142527</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function IsBinary(char As String) As Boolean</SourceLine>
+   <SourceLine>// Returns True if `char` is 0 or 1.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case char</SourceLine>
+   <SourceLine>Case "0", "1"</SourceLine>
+   <SourceLine>Return True</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>char As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>IsOctal</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1668872191</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function IsOctal(char As String) As Boolean</SourceLine>
+   <SourceLine>// Returns True if `char` is an octal numeral.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case char</SourceLine>
+   <SourceLine>Case "0", "1", "2", "3", "4", "5", "6", "7"</SourceLine>
+   <SourceLine>Return True</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>char As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Property>
+  <ItemName>Value</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1220286463</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Value As String</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Value As String</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Value</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>String</ItemType>
+   <EditorType>MultiLineEditor</EditorType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

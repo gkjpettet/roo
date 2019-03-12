@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="331862015">
+ <ObjName>RooRegex</ObjName>
+ <ObjContainerID>834615295</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Superclass>RooInstance</Superclass>
+ <Interfaces> RooNativeClass,  RooNativeSettable</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1744775167</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(where As RooToken, pattern As String, optionString As String)</SourceLine>
+   <SourceLine>Super.Constructor(Nil) // No metaclass.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Self.Regex = New RegEx</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Self.Regex.SearchPattern = pattern</SourceLine>
+   <SourceLine>Self.Options = optionString</SourceLine>
+   <SourceLine>ParseOptionsString(where)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken, pattern As String, optionString As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Type</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1337470975</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Type() As String</SourceLine>
+   <SourceLine>// Part of the RooNativeClass interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return "Regex"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasGetterWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2004156415</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasGetterWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Query the global Roo dictionary of Regex object getters for the existence of a getter </SourceLine>
+   <SourceLine>// with the passed name.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return RooSLCache.RegexGetters.HasKey(name)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasMethodWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2039351295</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasMethodWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Part of the RooNativeClass interface.</SourceLine>
+   <SourceLine>// Query the global Roo dictionary of Regex object methods for the existence of a method </SourceLine>
+   <SourceLine>// with the passed name.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return RooSLCache.RegexMethods.HasKey(name)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>GetterWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2106652671</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function GetterWithName(name As RooToken) As Variant</SourceLine>
+   <SourceLine>// Return the result of the requested getter operation.</SourceLine>
+   <SourceLine>If StrComp(name.Lexeme, "case_sensitive", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooBoolean(Self.Regex.Options.CaseSensitive)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "dot_matches_all", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooBoolean(Self.Regex.Options.DotMatchAll)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "greedy", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooBoolean(Self.Regex.Options.Greedy)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "match_empty", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooBoolean(Self.Regex.Options.MatchEmpty)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "multiline", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooBoolean(Not Self.Regex.Options.TreatTargetAsOneLine)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>MethodWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>509179903</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function MethodWithName(name As RooToken) As Invokable</SourceLine>
+   <SourceLine>// Part of the RooNativeClass interface.</SourceLine>
+   <SourceLine>// Return a new instance of a Regex object method initialised with the name of the method </SourceLine>
+   <SourceLine>// being called. That way, when the returned method is invoked, it will know what operation </SourceLine>
+   <SourceLine>// to perform.</SourceLine>
+   <SourceLine>Return New RooRegexMethod(Self, name.Lexeme)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>Invokable</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Arity</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>547880959</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Arity() As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Raise New RooRuntimeError(New RooToken, "Cannot invoke the native Regex type.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Invoke</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>775825407</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Invoke(interpreter As RooInterpreter, arguments() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused interpreter</SourceLine>
+   <SourceLine>#Pragma Unused arguments</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Cannot invoke the native Regex type.")</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter, arguments() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1129730047</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>// Part of the Stringable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Self.Regex.SearchPattern + "(" + Options + ")"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ParseOptionsString</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>66844671</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub ParseOptionsString(where As RooToken)</SourceLine>
+   <SourceLine>// Internal helper method.</SourceLine>
+   <SourceLine>// Parses a Roo Regex option string into Xojo RegEx options.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Default options:</SourceLine>
+   <SourceLine>// Case sensitive (c): False</SourceLine>
+   <SourceLine>// Dot matches All (d): False</SourceLine>
+   <SourceLine>// Greedy (g): True</SourceLine>
+   <SourceLine>// Match empty (e): True</SourceLine>
+   <SourceLine>// Multiline (m): True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Bail early if we're using the option defaults.</SourceLine>
+   <SourceLine>If Options = "" Then Return</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// c, d, g, e, m.</SourceLine>
+   <SourceLine>Dim chars() As String = Options.Split("")</SourceLine>
+   <SourceLine>Dim limit As Integer = chars.Ubound</SourceLine>
+   <SourceLine>For i As Integer = 0 To limit</SourceLine>
+   <SourceLine>Select Case chars(i)</SourceLine>
+   <SourceLine>Case "c" // Case sensitive.</SourceLine>
+   <SourceLine>Self.Regex.Options.CaseSensitive = True</SourceLine>
+   <SourceLine>Case "d" // Dot matches all.</SourceLine>
+   <SourceLine>Self.Regex.Options.DotMatchAll = True</SourceLine>
+   <SourceLine>Case "g" //  Greedy.</SourceLine>
+   <SourceLine>Self.Regex.Options.Greedy = True</SourceLine>
+   <SourceLine>Case "e" // Match empty.</SourceLine>
+   <SourceLine>Self.Regex.Options.MatchEmpty = True</SourceLine>
+   <SourceLine>Case "m" // Multiline.</SourceLine>
+   <SourceLine>Self.Regex.Options.TreatTargetAsOneLine = False</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "invalid regex option `" + chars(i) + "`.")</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ZeroBasedPos</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>751099903</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Shared Function ZeroBasedPos(bytePosition As Integer, originalString As String) As Integer</SourceLine>
+   <SourceLine>// Takes the value provided by Xojo's RegexMatch SubExpressionStartB and converts </SourceLine>
+   <SourceLine>// it into a zero-based character position. </SourceLine>
+   <SourceLine>// This is required because multibute strings (e.g: UTF-8) do not represent a single </SourceLine>
+   <SourceLine>// character with a single byte.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return originalString.LeftB(bytePosition).Len</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>1</IsShared>
+  <ItemParams>bytePosition As Integer, originalString As String</ItemParams>
+  <ItemResult>Integer</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Set</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>480763903</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Set(name As RooToken, value As Variant)</SourceLine>
+   <SourceLine>// Part of the RooNativeSettable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If StrComp(name.Lexeme, "case_sensitive", 0) = 0 Then</SourceLine>
+   <SourceLine>Roo.AssertIsBoolean(name, value)</SourceLine>
+   <SourceLine>Self.Regex.Options.CaseSensitive = RooBoolean(value).Value</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "dot_matches_all", 0) = 0 Then</SourceLine>
+   <SourceLine>Roo.AssertIsBoolean(name, value)</SourceLine>
+   <SourceLine>Self.Regex.Options.DotMatchAll = RooBoolean(value).Value</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "greedy", 0) = 0 Then</SourceLine>
+   <SourceLine>Roo.AssertIsBoolean(name, value)</SourceLine>
+   <SourceLine>Self.Regex.Options.Greedy = RooBoolean(value).Value</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "match_empty", 0) = 0 Then</SourceLine>
+   <SourceLine>Roo.AssertIsBoolean(name, value)</SourceLine>
+   <SourceLine>Self.Regex.Options.MatchEmpty = RooBoolean(value).Value</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "multiline", 0) = 0 Then</SourceLine>
+   <SourceLine>Roo.AssertIsBoolean(name, value)</SourceLine>
+   <SourceLine>Self.Regex.Options.TreatTargetAsOneLine = Not RooBoolean(value).Value</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(name, "The Regex data type has no property named `" + _</SourceLine>
+   <SourceLine>name.Lexeme + "`.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken, value As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Property>
+  <ItemName>Options</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>54972415</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Options As String</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Options As String</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Regex</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1753890815</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Regex As RegEx</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Regex As RegEx</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Options</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>String</ItemType>
+   <EditorType>MultiLineEditor</EditorType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

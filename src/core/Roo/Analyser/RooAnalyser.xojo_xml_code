@@ -1,0 +1,1395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="852336639">
+ <ObjName>RooAnalyser</ObjName>
+ <ObjContainerID>0</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Interfaces>RooExprVisitor, RooStmtVisitor</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>VisitVariableExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>290103295</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitVariableExpr(expr As RooVariableExpr) As Variant</SourceLine>
+   <SourceLine>// Check to see if the variable is being accessed inside its own initializer. </SourceLine>
+   <SourceLine>// This is where the values in the scope map come into play. If the variable exists in the </SourceLine>
+   <SourceLine>// current scope but its value is False, that means we have declared it but not yet defined it. </SourceLine>
+   <SourceLine>// We report that error.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Scopes.Ubound &gt;= 0 And Scopes(Scopes.Ubound).HasKey(expr.Name.Lexeme) And _</SourceLine>
+   <SourceLine>Scopes(Scopes.Ubound).Value(expr.Name.Lexeme) = False Then</SourceLine>
+   <SourceLine>HasError = True</SourceLine>
+   <SourceLine>Raise New RooAnalyserError(expr.Name, "Cannot read a local variable in its own initialiser.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Now let's actually analyse the variable.</SourceLine>
+   <SourceLine>AnalyseLocal(expr, expr.Name)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooVariableExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitGetExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1718427647</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitGetExpr(expr As RooGetExpr) As Variant</SourceLine>
+   <SourceLine>// Since properties are looked up dynamically, they don’t get resolved. </SourceLine>
+   <SourceLine>// Therefore we only recurse into the expression to the left of the dot. </SourceLine>
+   <SourceLine>// The actual property access happens in the interpreter.</SourceLine>
+   <SourceLine>Analyse(expr.Obj)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooGetExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitAssignExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1642237951</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitAssignExpr(expr As RooAssignExpr) As Variant</SourceLine>
+   <SourceLine>// Analyse the expression for the assigned value in case it contains references to other variables.</SourceLine>
+   <SourceLine>// Then use AnalyseLocal() to analyse the variable that’s being assigned to.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Analyse(expr.Value)</SourceLine>
+   <SourceLine>AnalyseLocal(expr, expr.Name)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooAssignExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitArrayExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>251439103</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitArrayExpr(expr As RooArrayExpr) As Variant</SourceLine>
+   <SourceLine>AnalyseLocal(expr, expr.Name)</SourceLine>
+   <SourceLine>Analyse(expr.Index)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooArrayExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitHashExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1292083199</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitHashExpr(expr As RooHashExpr) As Variant</SourceLine>
+   <SourceLine>AnalyseLocal(expr, expr.Name)</SourceLine>
+   <SourceLine>Analyse(expr.Key)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooHashExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitSetExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2110654463</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitSetExpr(expr As RooSetExpr) As Variant</SourceLine>
+   <SourceLine>// Recurse into the two subexpressions of this set expression (the object whose property is being set </SourceLine>
+   <SourceLine>// and the value it’s being set to) and analyse them.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Analyse(expr.Value)</SourceLine>
+   <SourceLine>Analyse(expr.Obj)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooSetExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitArrayAssignExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1552795647</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitArrayAssignExpr(expr As RooArrayAssignExpr) As Variant</SourceLine>
+   <SourceLine>// Analyse the expression for the assigned value in case it contains references to other variables.</SourceLine>
+   <SourceLine>Analyse(expr.Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Now resolve the variable that’s being assigned to.</SourceLine>
+   <SourceLine>AnalyseLocal(expr, expr.Name)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooArrayAssignExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitHashAssignExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>911976447</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitHashAssignExpr(expr As RooHashAssignExpr) As Variant</SourceLine>
+   <SourceLine>// Analyse the expression for the assigned value in case it also contains references to other variables.</SourceLine>
+   <SourceLine>Analyse(expr.Value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Now analyse the variable that’s being assigned to.</SourceLine>
+   <SourceLine>AnalyseLocal(expr, expr.Name)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooHashAssignExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitTernaryExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1547270143</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitTernaryExpr(ternaryExpression As RooTernaryExpr) As Variant</SourceLine>
+   <SourceLine>Analyse(ternaryExpression.Expression)</SourceLine>
+   <SourceLine>Analyse(ternaryExpression.ElseBranch)</SourceLine>
+   <SourceLine>Analyse(ternaryExpression.ThenBranch)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>ternaryExpression As RooTernaryExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitLogicalExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1660192767</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitLogicalExpr(expr As RooLogicalExpr) As Variant</SourceLine>
+   <SourceLine>Analyse(expr.Left)</SourceLine>
+   <SourceLine>Analyse(expr.Right)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooLogicalExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitBinaryExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>435566591</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitBinaryExpr(expr As RooBinaryExpr) As Variant</SourceLine>
+   <SourceLine>// Analyse both sides of the binary operation.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Analyse(expr.Left)</SourceLine>
+   <SourceLine>Analyse(expr.Right)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooBinaryExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitUnaryExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1567858687</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitUnaryExpr(unaryExpression As RooUnaryExpr) As Variant</SourceLine>
+   <SourceLine>Analyse(unaryExpression.Right)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>unaryExpression As RooUnaryExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitBooleanLiteralExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>464990207</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitBooleanLiteralExpr(expr As RooBooleanLiteralExpr) As Variant</SourceLine>
+   <SourceLine>// As literal expressions don't mention variables and don't contain any subexpressions </SourceLine>
+   <SourceLine>// there's nothing to do.</SourceLine>
+   <SourceLine>#Pragma Unused expr</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooBooleanLiteralExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitNumberLiteralExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>911908863</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitNumberLiteralExpr(expr As RooNumberLiteralExpr) As Variant</SourceLine>
+   <SourceLine>// As literal expressions don't mention variables and don't contain any subexpressions </SourceLine>
+   <SourceLine>// there's nothing to do.</SourceLine>
+   <SourceLine>#Pragma Unused expr</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooNumberLiteralExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitNothingExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1745786879</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitNothingExpr(expr As RooNothingExpr) As Variant</SourceLine>
+   <SourceLine>// As literal expressions don't mention variables and don't contain any subexpressions </SourceLine>
+   <SourceLine>// there's nothing to do.</SourceLine>
+   <SourceLine>#Pragma Unused expr</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooNothingExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitTextLiteralExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1125031935</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitTextLiteralExpr(expr As RooTextLiteralExpr) As Variant</SourceLine>
+   <SourceLine>// As literal expressions don't mention variables and don't contain any subexpressions </SourceLine>
+   <SourceLine>// there's nothing to do.</SourceLine>
+   <SourceLine>#Pragma Unused expr</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooTextLiteralExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitArrayLiteralExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1191299071</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitArrayLiteralExpr(expr As RooArrayLiteralExpr) As Variant</SourceLine>
+   <SourceLine>// Resolve each element of this array.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim i, limit As Integer</SourceLine>
+   <SourceLine>limit = expr.Elements.Ubound</SourceLine>
+   <SourceLine>For i = 0 To limit</SourceLine>
+   <SourceLine>Analyse(expr.Elements(i))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooArrayLiteralExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitHashLiteralExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>987459583</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitHashLiteralExpr(expr As RooHashLiteralExpr) As Variant</SourceLine>
+   <SourceLine>// Resolve each key and value in this hash's backing Dictionary.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>For Each entry As Xojo.Core.DictionaryEntry in expr.Dict</SourceLine>
+   <SourceLine>Analyse(RooExpr(entry.Key))</SourceLine>
+   <SourceLine>Analyse(RooExpr(expr.Dict.Value(entry.Key)))</SourceLine>
+   <SourceLine>Next entry</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooHashLiteralExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitSelfExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1239304191</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitSelfExpr(selfExpression As RooSelfExpr) As Variant</SourceLine>
+   <SourceLine>If CurrentClass = ClassType.None Then</SourceLine>
+   <SourceLine>HasError = True</SourceLine>
+   <SourceLine>Raise New RooAnalyserError(selfExpression.Keyword, "Cannot use `self` outside of a class.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>AnalyseLocal(selfExpression, selfExpression.Keyword)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>selfExpression As RooSelfExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitSuperExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1142726655</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitSuperExpr(superExpression As RooSuperExpr) As Variant</SourceLine>
+   <SourceLine>// Catch cases when the user is trying to use `super` outside of a class or in a </SourceLine>
+   <SourceLine>// class with no superclass.</SourceLine>
+   <SourceLine>If CurrentClass = ClassType.None Then</SourceLine>
+   <SourceLine>HasError = True</SourceLine>
+   <SourceLine>Raise New RooAnalyserError(superExpression.Keyword, "Cannot use `super` outside of a class. ")</SourceLine>
+   <SourceLine>ElseIf CurrentClass &lt;&gt; ClassType.Subclass Then</SourceLine>
+   <SourceLine>HasError = True</SourceLine>
+   <SourceLine>Raise New RooAnalyserError(superExpression.Keyword, "Cannot use `super` in a class with no superclass.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// We analyse the `super` token exactly as if it were a variable. </SourceLine>
+   <SourceLine>// We'll store the number of hops along the environment chain that the interpreter needs to traverse </SourceLine>
+   <SourceLine>// to find the environment where the superclass is stored.</SourceLine>
+   <SourceLine>AnalyseLocal(superExpression, superExpression.Keyword)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>superExpression As RooSuperExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitGroupingExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1595709439</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitGroupingExpr(expr As RooGroupingExpr) As Variant</SourceLine>
+   <SourceLine>Analyse(expr.Expression)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooGroupingExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitInvokeExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1608982527</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitInvokeExpr(expr As RooInvokeExpr) As Variant</SourceLine>
+   <SourceLine>Analyse(expr.Invokee)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>For Each argument As RooExpr In expr.Arguments</SourceLine>
+   <SourceLine>Analyse(argument)</SourceLine>
+   <SourceLine>Next argument</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooInvokeExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitFunctionStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1337683967</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitFunctionStmt(functionStatement As RooFunctionStmt) As Variant</SourceLine>
+   <SourceLine>// Like we do with variables, we declare and define the name of the function in the current scope. </SourceLine>
+   <SourceLine>// Unlike variables, we define the name eagerly, before resolving the function’s body. </SourceLine>
+   <SourceLine>// This lets a function recursively refer to itself inside its own body.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>DeclareSymbol(functionStatement.Name)</SourceLine>
+   <SourceLine>DefineSymbol(functionStatement.Name)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>AnalyseFunction(functionStatement, FunctionType.Func)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>functionStatement As RooFunctionStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitModuleStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2144184319</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitModuleStmt(moduleStatement As RooModuleStmt) As Variant</SourceLine>
+   <SourceLine>Dim i, limit As Integer</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>DeclareSymbol(moduleStatement.Name)</SourceLine>
+   <SourceLine>DefineSymbol(moduleStatement.Name)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim enclosingClass As ClassType = CurrentClass</SourceLine>
+   <SourceLine>currentClass = ClassType.ModuleType</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Analyse any classes in this module.</SourceLine>
+   <SourceLine>limit = moduleStatement.Classes.Ubound</SourceLine>
+   <SourceLine>For i = 0 To limit</SourceLine>
+   <SourceLine>Call VisitClassStmt(moduleStatement.Classes(i))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Before we start analysing the method bodies we start a new scope and define `self` as if it were </SourceLine>
+   <SourceLine>// a new variable.</SourceLine>
+   <SourceLine>BeginScope</SourceLine>
+   <SourceLine>Scopes(Scopes.Ubound).Value("self") = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Analyse methods.</SourceLine>
+   <SourceLine>limit = moduleStatement.Methods.Ubound</SourceLine>
+   <SourceLine>For i = 0 To limit</SourceLine>
+   <SourceLine>BeginScope</SourceLine>
+   <SourceLine>Scopes(Scopes.Ubound).Value("self") = True</SourceLine>
+   <SourceLine>AnalyseFunction(moduleStatement.Methods(i), FunctionType.METHOD) </SourceLine>
+   <SourceLine>EndScope</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>EndScope</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>CurrentClass = enclosingClass</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>moduleStatement As RooModuleStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitClassStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2006472703</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitClassStmt(classStmt As RooClassStmt) As Variant</SourceLine>
+   <SourceLine>Dim i, limit As Integer</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>DeclareSymbol(classStmt.Name)</SourceLine>
+   <SourceLine>DefineSymbol(classStmt.Name)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// We need to track if the current code is within a class or not. This will help us prevent </SourceLine>
+   <SourceLine>// erroneous uses of the `self` keyword outside of a class.</SourceLine>
+   <SourceLine>Dim enclosingClass as ClassType = CurrentClass</SourceLine>
+   <SourceLine>CurrentClass = ClassType.Klass</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Handle this class' (optional) superclass.</SourceLine>
+   <SourceLine>If classStmt.Superclass &lt;&gt; Nil Then</SourceLine>
+   <SourceLine>CurrentClass = ClassType.Subclass</SourceLine>
+   <SourceLine>Analyse(classStmt.Superclass)</SourceLine>
+   <SourceLine>// Create a new scope surrounding all of the superclass' methods. </SourceLine>
+   <SourceLine>// In this scope, we define the name "super". </SourceLine>
+   <SourceLine>BeginScope</SourceLine>
+   <SourceLine>Scopes(Scopes.Ubound).Value("super") = True</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Static methods.</SourceLine>
+   <SourceLine>limit = classStmt.StaticMethods.Ubound</SourceLine>
+   <SourceLine>For i = 0 To limit</SourceLine>
+   <SourceLine>BeginScope</SourceLine>
+   <SourceLine>Scopes(Scopes.UBound).Value("self") = True</SourceLine>
+   <SourceLine>AnalyseFunction(classStmt.staticMethods(i), FunctionType.Method)</SourceLine>
+   <SourceLine>EndScope</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Before we start resolving the instance method bodies, we push a new scope and </SourceLine>
+   <SourceLine>// define "self" in it as if it were a variable.</SourceLine>
+   <SourceLine>BeginScope</SourceLine>
+   <SourceLine>Scopes(Scopes.UBound).Value("self") = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Instance methods.</SourceLine>
+   <SourceLine>limit = classStmt.Methods.Ubound</SourceLine>
+   <SourceLine>For i = 0 To limit</SourceLine>
+   <SourceLine>If classStmt.Methods(i).Name.Lexeme = "init" Then</SourceLine>
+   <SourceLine>AnalyseFunction(classStmt.Methods(i), FunctionType.Initialiser)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>AnalyseFunction(classStmt.Methods(i), FunctionType.Method)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>EndScope</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If a superclass was defined then we need to end the scope we created above that defined "super".</SourceLine>
+   <SourceLine>If classStmt.Superclass &lt;&gt; Nil Then EndScope</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>CurrentClass = enclosingClass</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>classStmt As RooClassStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitBlockStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1363603455</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitBlockStmt(statement As RooBlockStmt) As Variant</SourceLine>
+   <SourceLine>// Begins a new scope, traverses into the statements inside the block, and then discards the scope. </SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>BeginScope</SourceLine>
+   <SourceLine>Analyse(statement.Statements)</SourceLine>
+   <SourceLine>EndScope</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>statement As RooBlockStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitVarStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>915318783</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitVarStmt(stmt As RooVarStmt) As Variant</SourceLine>
+   <SourceLine>DeclareSymbol(stmt.Name)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Not stmt.Initialiser IsA RooNothingExpr And stmt.Initialiser &lt;&gt; Nil Then Analyse(stmt.Initialiser)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>DefineSymbol(stmt.Name)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>stmt As RooVarStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitExitStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>618661887</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitExitStmt(statement As RooExitStmt) As Variant</SourceLine>
+   <SourceLine>#Pragma BreakOnExceptions False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure that the `exit` keyword is only called from within an `if` construct. </SourceLine>
+   <SourceLine>// It doesn't make sense otherwise.</SourceLine>
+   <SourceLine>If IfLevel &lt;= 0 Then</SourceLine>
+   <SourceLine>HasError = True</SourceLine>
+   <SourceLine>Raise New RooAnalyserError(statement.Keyword, "Cannot break when not in an `if` construct.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>statement As RooExitStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitQuitStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>812877823</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitQuitStmt(stmt As RooQuitStmt) As Variant</SourceLine>
+   <SourceLine>// Nothing to do.</SourceLine>
+   <SourceLine>#Pragma Unused stmt</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>stmt As RooQuitStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitReturnStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1746237439</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitReturnStmt(returnStatement As RooReturnStmt) As Variant</SourceLine>
+   <SourceLine>// Check that this return statement is being called from within a function and not from top level code.</SourceLine>
+   <SourceLine>If CurrentFunction = FunctionType.None Then</SourceLine>
+   <SourceLine>HasError = True</SourceLine>
+   <SourceLine>Raise New RooAnalyserError(returnStatement.keyword, "Cannot return from top-level code.")</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma BreakOnExceptions True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Analyse the return value (if any).</SourceLine>
+   <SourceLine>If returnStatement.Value &lt;&gt; Nil And Not returnStatement.Value IsA RooNothingExpr Then</SourceLine>
+   <SourceLine>If CurrentFunction = FunctionType.Initialiser Then</SourceLine>
+   <SourceLine>HasError = True</SourceLine>
+   <SourceLine>Raise New RooAnalyserError(returnStatement.Keyword, "Cannot return a value from an initialiser.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Analyse(returnStatement.Value)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>returnStatement As RooReturnStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitBreakStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1223897087</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitBreakStmt(statement As RooBreakStmt) As Variant</SourceLine>
+   <SourceLine>#Pragma BreakOnExceptions False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure that the`break` keyword is only called from within a loop. It doesn't make sense otherwise.</SourceLine>
+   <SourceLine>If LoopLevel &lt;= 0 Then</SourceLine>
+   <SourceLine>HasError = True</SourceLine>
+   <SourceLine>Raise New RooAnalyserError(statement.Keyword, "Cannot break when not in a loop.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Analyse the optional break condition.</SourceLine>
+   <SourceLine>If statement.Condition &lt;&gt; Nil Then Analyse(statement.Condition)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>statement As RooBreakStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitWhileStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>905297919</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitWhileStmt(stmt As RooWhileStmt) As Variant</SourceLine>
+   <SourceLine>// Enter the loop.</SourceLine>
+   <SourceLine>LoopLevel = LoopLevel + 1</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Analyse any symbols within the while statement's condition and its body.</SourceLine>
+   <SourceLine>Analyse(stmt.Condition)</SourceLine>
+   <SourceLine>Analyse(stmt.Body)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Exit the loop.</SourceLine>
+   <SourceLine>LoopLevel = LoopLevel - 1</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>stmt As RooWhileStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitExpressionStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1793263615</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitExpressionStmt(statement As RooStmt) As Variant</SourceLine>
+   <SourceLine>Analyse(statement.Expression)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>statement As RooStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitIfStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1189847039</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitIfStmt(ifStatement As RooIfStmt) As Variant</SourceLine>
+   <SourceLine>IfLevel = IfLevel + 1</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Analyse(ifStatement.Condition)</SourceLine>
+   <SourceLine>Analyse(ifStatement.ThenBranch)</SourceLine>
+   <SourceLine>For Each orStatement As RooOrStmt In ifStatement.OrStatements</SourceLine>
+   <SourceLine>Analyse(orStatement)</SourceLine>
+   <SourceLine>Next orStatement</SourceLine>
+   <SourceLine>If ifStatement.ElseBranch &lt;&gt; Nil Then Analyse(ifStatement.ElseBranch)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>IfLevel = IfLevel - 1</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>ifStatement As RooIfStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Analyse</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1953314815</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Analyse(statements() As RooStmt)</SourceLine>
+   <SourceLine>// Analyse each statement individually.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim i, limit As Integer</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>limit = statements.Ubound</SourceLine>
+   <SourceLine>For i = 0 To limit</SourceLine>
+   <SourceLine>Analyse(statements(i))</SourceLine>
+   <SourceLine>If HasError Then Return</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>statements() As RooStmt</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Analyse</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1477130239</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Analyse(statement As RooStmt)</SourceLine>
+   <SourceLine>// Analyse this statement.</SourceLine>
+   <SourceLine>Call statement.Accept(Self)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err As NilObjectException</SourceLine>
+   <SourceLine>HasError = True</SourceLine>
+   <SourceLine>Error(New RooToken(Roo.TokenType.ERROR), "NilObjectException in RooAnalyser.Analyse(statement)")</SourceLine>
+   <SourceLine>Exception err As RooAnalyserError</SourceLine>
+   <SourceLine>HasError = True</SourceLine>
+   <SourceLine>Error(err.Token, err.Message)</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>statement As RooStmt</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Analyse</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>6649855</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Analyse(expr As RooExpr)</SourceLine>
+   <SourceLine>// Analyse this expression.</SourceLine>
+   <SourceLine>Call expr.Accept(Self)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err As NilObjectException</SourceLine>
+   <SourceLine>HasError = True</SourceLine>
+   <SourceLine>Error(New RooToken(Roo.TokenType.ERROR), "NilObjectException in RooAnalyser.Analyse(expression)")</SourceLine>
+   <SourceLine>Exception err As RooAnalyserError</SourceLine>
+   <SourceLine>HasError = True</SourceLine>
+   <SourceLine>Error(err.Token, err.Message)</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooExpr</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AnalyseLocal</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>262705151</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AnalyseLocal(expr As RooExpr, name As RooToken)</SourceLine>
+   <SourceLine>// Start at the innermost scope and work outwards, looking in each scope for a matching name. </SourceLine>
+   <SourceLine>// If we find the variable, we tell the interpreter that it's has been resolved, passing in </SourceLine>
+   <SourceLine>// the number of scopes between the current innermost scope and the scope where the variable was found. </SourceLine>
+   <SourceLine>// So, if the variable was found in the current scope, it passes 0 to the interpreter. </SourceLine>
+   <SourceLine>// If it’s in the immediately enclosing scope it passes it 1, etc.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim top As Integer = scopes.Ubound</SourceLine>
+   <SourceLine>Dim i As Integer</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>For i = top DownTo 0</SourceLine>
+   <SourceLine>If Scopes(i).HasKey(name.Lexeme) Then</SourceLine>
+   <SourceLine>interpreter.Resolve(expr, top - i)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Not found. Assume the variable is global in scope.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooExpr, name As RooToken</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>BeginScope</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>591982591</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub BeginScope()</SourceLine>
+   <SourceLine>// Create a new scope (represented by a Dictionary) by pushing it to our scope stack.</SourceLine>
+   <SourceLine>Scopes.Append(New Dictionary) // &lt;Key: String, Value: Boolean&gt;</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>EndScope</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>710354943</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub EndScope()</SourceLine>
+   <SourceLine>// End this scope by removing it from our scope stack.</SourceLine>
+   <SourceLine>Call Scopes.Pop</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>991840255</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(interpreter As RooInterpreter)</SourceLine>
+   <SourceLine>Self.Interpreter = interpreter</SourceLine>
+   <SourceLine>Redim Self.Scopes(-1)</SourceLine>
+   <SourceLine>Self.CurrentFunction = FunctionType.None</SourceLine>
+   <SourceLine>Self.CurrentClass = ClassType.None</SourceLine>
+   <SourceLine>Self.LoopLevel = 0</SourceLine>
+   <SourceLine>Self.IfLevel = 0</SourceLine>
+   <SourceLine>Self.HasError = False</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AnalyseFunction</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2104973311</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AnalyseFunction(func As RooFunctionStmt, type As RooAnalyser.FunctionType)</SourceLine>
+   <SourceLine>// Resolve a function's body.</SourceLine>
+   <SourceLine>// We do this separately from its definition since we also use it for resolving Roo methods in classes. </SourceLine>
+   <SourceLine>// It creates a new scope for the body and then binds variables for each of the function’s parameters.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim i, limit As Integer</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// We need to track if the current code is within a function or not.</SourceLine>
+   <SourceLine>Dim enclosingFunction As RooAnalyser.FunctionType = CurrentFunction</SourceLine>
+   <SourceLine>CurrentFunction = type</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>BeginScope</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If func.Parameters &lt;&gt; Nil Then // Remember, getters will have a Nil parameter list.</SourceLine>
+   <SourceLine>limit = func.Parameters.Ubound</SourceLine>
+   <SourceLine>For i = 0 To limit</SourceLine>
+   <SourceLine>DeclareSymbol(func.Parameters(i))</SourceLine>
+   <SourceLine>DefineSymbol(func.Parameters(i))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Analyse(func.Body)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>EndScope</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Restore the current function.</SourceLine>
+   <SourceLine>CurrentFunction = enclosingFunction</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>func As RooFunctionStmt, type As RooAnalyser.FunctionType</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DeclareSymbol</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>383877119</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub DeclareSymbol(name As RooToken)</SourceLine>
+   <SourceLine>// Add this variable to the innermost scope so that it shadows any outer one and so that we know the </SourceLine>
+   <SourceLine>// variable exists. We mark it as "not ready yet" by binding its name to False. Each value in the </SourceLine>
+   <SourceLine>// Scope Dictionary translates to "is finished being initialized" (True/False).</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Scopes.Ubound &lt; 0 Then Return</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure the user doesn't try to re-declare a variable within the current scope.</SourceLine>
+   <SourceLine>If Scopes(Scopes.Ubound).HasKey(name.Lexeme) Then</SourceLine>
+   <SourceLine>HasError = True</SourceLine>
+   <SourceLine>Raise New RooAnalyserError(name, "A variable named `" + name.Lexeme + _</SourceLine>
+   <SourceLine>"` has already been declared in the current scope.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Scopes(Scopes.Ubound).Value(name.Lexeme) = False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DefineSymbol</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>766326783</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub DefineSymbol(name As RooToken)</SourceLine>
+   <SourceLine>// Done defining the symbol.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Scopes.Ubound &lt; 0 Then Return</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Scopes(Scopes.Ubound).Value(name.Lexeme) = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitOrStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>233641983</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitOrStmt(orStmt As RooOrStmt) As Variant</SourceLine>
+   <SourceLine>IfLevel = IfLevel + 1</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Analyse(orStmt.Condition)</SourceLine>
+   <SourceLine>Analyse(orStmt.ThenBranch)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>IfLevel = IfLevel - 1</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>orStmt As RooOrStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitPassStmt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>680859647</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitPassStmt(stmt As RooPassStmt) As Variant</SourceLine>
+   <SourceLine>// Nothing to do. The `pass` statement is a no-op.</SourceLine>
+   <SourceLine>#Pragma Unused stmt</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>stmt As RooPassStmt</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VisitBitwiseExpr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1002907647</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VisitBitwiseExpr(expr As RooBitwiseExpr) As Variant</SourceLine>
+   <SourceLine>// Analyse both sides of the bitwise operation.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Analyse(expr.Left)</SourceLine>
+   <SourceLine>Analyse(expr.Right)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expr As RooBitwiseExpr</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Hook>
+  <ItemName>Error</ItemName>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemFlags>33</ItemFlags>
+  <SystemFlags>0</SystemFlags>
+  <ItemParams>token As RooToken, message As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Hook>
+ <Property>
+  <ItemName>HasError</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>65622015</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>HasError As Boolean = False</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>HasError As Boolean = False</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Interpreter</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1972434943</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Interpreter As RooInterpreter</SourceLine>
+   <SourceLine>A reference to the interpreter that this resolver works for.</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Interpreter As RooInterpreter</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Scopes()</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2019850239</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Scopes() As Dictionary</SourceLine>
+   <SourceLine>Keeps track of the stack of scopes currently in scope.</SourceLine>
+   <SourceLine>Each element in the stack is a Dictionary representing a single block scope.</SourceLine>
+   <SourceLine>Key = variable name.</SourceLine>
+   <SourceLine>Value = Boolean. True means the variable is finished being initialised.</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Scopes() As Dictionary</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>LoopLevel</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1658365951</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>LoopLevel As Integer = 0</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>LoopLevel As Integer = 0</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>CurrentClass</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>675850239</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>CurrentClass As RooAnalyser.ClassType</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>CurrentClass As RooAnalyser.ClassType</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>IfLevel</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>58376191</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>IfLevel As Integer = 0</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>IfLevel As Integer = 0</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>CurrentFunction</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>952416255</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>CurrentFunction As RooAnalyser.FunctionType</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>CurrentFunction As RooAnalyser.FunctionType</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>HasError</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <PropertyValue>False</PropertyValue>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>IfLevel</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+ <Enumeration>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>ClassType</ItemName>
+  <ItemFlags>33</ItemFlags>
+  <ItemType>Integer</ItemType>
+  <ItemName>ClassType</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1091549183</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>None</SourceLine>
+   <SourceLine>Klass</SourceLine>
+   <SourceLine>ModuleType</SourceLine>
+   <SourceLine>Subclass</SourceLine>
+  </ItemSource>
+ </Enumeration>
+ <Enumeration>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>FunctionType</ItemName>
+  <ItemFlags>0</ItemFlags>
+  <ItemName>FunctionType</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>211597311</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>None</SourceLine>
+   <SourceLine>Func</SourceLine>
+   <SourceLine>Initialiser</SourceLine>
+   <SourceLine>Method</SourceLine>
+  </ItemSource>
+ </Enumeration>
+</block>
+</RBProject>

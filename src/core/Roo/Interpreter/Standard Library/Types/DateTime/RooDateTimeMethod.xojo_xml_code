@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20070100">
+<block type="Module" ID="319508479">
+ <ObjName>RooDateTimeMethod</ObjName>
+ <ObjContainerID>0</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Interfaces>Invokable, Stringable</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Arity</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>813527039</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Arity() As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine>// Return the arity of this method. This is stored in the cached DateTimeMethods dictionary.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return RooSLCache.DateTimeMethods.Value(Name)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Invoke</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1878036479</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Invoke(interpreter As RooInterpreter, arguments() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine>// Perform the required method operation on this DateTime object.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused interpreter</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case Name</SourceLine>
+   <SourceLine>Case "add_days"</SourceLine>
+   <SourceLine>Return DoModifyDays(arguments, where)</SourceLine>
+   <SourceLine>Case "add_hours"</SourceLine>
+   <SourceLine>Return DoModifyHours(arguments, where)</SourceLine>
+   <SourceLine>Case "add_months"</SourceLine>
+   <SourceLine>Return DoModifyMonths(arguments, where)</SourceLine>
+   <SourceLine>Case "add_nanoseconds"</SourceLine>
+   <SourceLine>Return DoModifyNanoseconds(arguments, where)</SourceLine>
+   <SourceLine>Case "add_seconds"</SourceLine>
+   <SourceLine>Return DoModifySeconds(arguments, where)</SourceLine>
+   <SourceLine>Case "add_years"</SourceLine>
+   <SourceLine>Return DoModifyYears(arguments, where)</SourceLine>
+   <SourceLine>Case "sub_days"</SourceLine>
+   <SourceLine>Return DoModifyDays(arguments, where, True)</SourceLine>
+   <SourceLine>Case "sub_hours"</SourceLine>
+   <SourceLine>Return DoModifyHours(arguments, where, True)</SourceLine>
+   <SourceLine>Case "sub_months"</SourceLine>
+   <SourceLine>Return DoModifyMonths(arguments, where, True)</SourceLine>
+   <SourceLine>Case "sub_nanoseconds"</SourceLine>
+   <SourceLine>Return DoModifyNanoseconds(arguments, where, True)</SourceLine>
+   <SourceLine>Case "sub_seconds"</SourceLine>
+   <SourceLine>Return DoModifySeconds(arguments, where, True)</SourceLine>
+   <SourceLine>Case "sub_years"</SourceLine>
+   <SourceLine>Return DoModifyYears(arguments, where, True)</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter, arguments() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>245587967</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>// Part of the Stringable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return "&lt;function " + Name + "&gt;"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>684718079</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(owner As RooDateTime, name As String)</SourceLine>
+   <SourceLine>Self.Owner = owner</SourceLine>
+   <SourceLine>Self.Name = name</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>owner As RooDateTime, name As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoModifyDays</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1717247999</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoModifyDays(arguments() As Variant, where As RooToken, subtract As Boolean = False) As RooDateTime</SourceLine>
+   <SourceLine>// DateTime.add_days(value As Number) As DateTime</SourceLine>
+   <SourceLine>// or</SourceLine>
+   <SourceLine>// DateTime.sub_days(value As Number) As DateTime (if `subtract` = True).</SourceLine>
+   <SourceLine>// Returns a new DateTime object with the specified number of days added or subtracted.</SourceLine>
+   <SourceLine>// This DateTime object is unaltered.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure an integer has been passed.</SourceLine>
+   <SourceLine>Roo.AssertAreIntegers(where, arguments(0))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create and return a new DateTime object.</SourceLine>
+   <SourceLine>Dim di As New Xojo.Core.DateInterval(0, 0, RooNumber(arguments(0)).Value)</SourceLine>
+   <SourceLine>Return New RooDateTime(If(subtract, Owner.Value - di, Owner.Value + di))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>arguments() As Variant, where As RooToken, subtract As Boolean = False</ItemParams>
+  <ItemResult>RooDateTime</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoModifyHours</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>131516415</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoModifyHours(arguments() As Variant, where As RooToken, subtract As Boolean = False) As RooDateTime</SourceLine>
+   <SourceLine>// DateTime.add_hours(value As Number) As DateTime.</SourceLine>
+   <SourceLine>// or</SourceLine>
+   <SourceLine>// DateTime.sub_hours(value As Number) As DateTime (if `subtract` = True).</SourceLine>
+   <SourceLine>// Returns a new DateTime object with the specified number of hours added or subtracted.</SourceLine>
+   <SourceLine>// This DateTime object is unaltered.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure an integer has been passed.</SourceLine>
+   <SourceLine>Roo.AssertAreIntegers(where, arguments(0))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create and return a new DateTime object.</SourceLine>
+   <SourceLine>Dim di As New Xojo.Core.DateInterval(0, 0, 0, RooNumber(arguments(0)).Value)</SourceLine>
+   <SourceLine>Return New RooDateTime(If(subtract, Owner.Value - di, Owner.Value + di))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>arguments() As Variant, where As RooToken, subtract As Boolean = False</ItemParams>
+  <ItemResult>RooDateTime</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoModifyMonths</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>842094591</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoModifyMonths(arguments() As Variant, where As RooToken, subtract As Boolean = False) As RooDateTime</SourceLine>
+   <SourceLine>// DateTime.add_months(value As Number) As DateTime.</SourceLine>
+   <SourceLine>// or</SourceLine>
+   <SourceLine>// DateTime.sub_months(value As Number) As DateTime (if `subtract` = True).</SourceLine>
+   <SourceLine>// Returns a new DateTime object with the specified number of months added or subtracted.</SourceLine>
+   <SourceLine>// This DateTime object is unaltered.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure an integer has been passed.</SourceLine>
+   <SourceLine>Roo.AssertAreIntegers(where, arguments(0))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create and return a new DateTime object.</SourceLine>
+   <SourceLine>Dim di As New Xojo.Core.DateInterval(0, RooNumber(arguments(0)).Value)</SourceLine>
+   <SourceLine>Return New RooDateTime(If(subtract, Owner.Value - di, Owner.Value + di))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>arguments() As Variant, where As RooToken, subtract As Boolean = False</ItemParams>
+  <ItemResult>RooDateTime</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoModifyNanoseconds</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>139892735</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoModifyNanoseconds(arguments() As Variant, where As RooToken, subtract As Boolean = False) As RooDateTime</SourceLine>
+   <SourceLine>// DateTime.add_nanoseconds(value As Number) As DateTime.</SourceLine>
+   <SourceLine>// or</SourceLine>
+   <SourceLine>// DateTime.sub_nanoseconds(value As Number) As DateTime (if `subtract` = True).</SourceLine>
+   <SourceLine>// Returns a new DateTime object with the specified number of nanoseconds added or subtracted.</SourceLine>
+   <SourceLine>// This DateTime object is unaltered.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure an integer has been passed.</SourceLine>
+   <SourceLine>Roo.AssertAreIntegers(where, arguments(0))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create and return a new DateTime object.</SourceLine>
+   <SourceLine>Dim di As New Xojo.Core.DateInterval(0, 0, 0, 0, 0, 0, RooNumber(arguments(0)).Value)</SourceLine>
+   <SourceLine>Return New RooDateTime(If(subtract, Owner.Value - di, Owner.Value + di))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>arguments() As Variant, where As RooToken, subtract As Boolean = False</ItemParams>
+  <ItemResult>RooDateTime</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoModifySeconds</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>323450879</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoModifySeconds(arguments() As Variant, where As RooToken, subtract As Boolean = False) As RooDateTime</SourceLine>
+   <SourceLine>// DateTime.add_seconds(value as Number) as DateTime.</SourceLine>
+   <SourceLine>// or</SourceLine>
+   <SourceLine>// DateTime.sub_seconds(value As Number) As DateTime (if `subtract` = True).</SourceLine>
+   <SourceLine>// Returns a new DateTime object with the specified number of seconds added or subtracted,</SourceLine>
+   <SourceLine>// This DateTime object is unaltered.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure an integer has been passed.</SourceLine>
+   <SourceLine>Roo.AssertAreIntegers(where, arguments(0))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create and return a new DateTime object.</SourceLine>
+   <SourceLine>Dim di As New Xojo.Core.DateInterval(0, 0, 0, 0, 0, RooNumber(arguments(0)).Value)</SourceLine>
+   <SourceLine>Return New RooDateTime(If(subtract, Owner.Value - di, Owner.Value + di))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>arguments() As Variant, where As RooToken, subtract As Boolean = False</ItemParams>
+  <ItemResult>RooDateTime</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoModifyYears</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1391509503</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoModifyYears(arguments() As Variant, where As RooToken, subtract As Boolean = False) As RooDateTime</SourceLine>
+   <SourceLine>// DateTime.add_years(value As Number) As DateTime.</SourceLine>
+   <SourceLine>// or</SourceLine>
+   <SourceLine>// DateTime.sub_years(value As Number) As DateTime (if `subtract` = True).</SourceLine>
+   <SourceLine>// Returns a new DateTime object with the specified number of years added or subtracted.</SourceLine>
+   <SourceLine>// This DateTime object is unaltered.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure an integer has been passed.</SourceLine>
+   <SourceLine>Roo.AssertAreIntegers(where, arguments(0))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create and return a new DateTime object.</SourceLine>
+   <SourceLine>Dim di As New Xojo.Core.DateInterval(RooNumber(arguments(0)).Value)</SourceLine>
+   <SourceLine>Return New RooDateTime(If(subtract, Owner.Value - di, Owner.Value + di))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>arguments() As Variant, where As RooToken, subtract As Boolean = False</ItemParams>
+  <ItemResult>RooDateTime</ItemResult>
+ </Method>
+ <Property>
+  <ItemName>Name</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>516587519</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Name As String</SourceLine>
+   <SourceLine>The name of this DateTime object method.</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Name As String</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Owner</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>432795647</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Owner As RooDateTime</SourceLine>
+   <SourceLine>The RooDateTime object that owns this method.</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Owner As RooDateTime</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

@@ -1,0 +1,2015 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="1988868095">
+ <ObjName>RooScanner</ObjName>
+ <ObjContainerID>675903487</ObjContainerID>
+ <IsClass>1</IsClass>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Advance</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>661788671</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Advance() As String</SourceLine>
+   <SourceLine>// Consumes and returns the current character in the source.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>AtLogicalLineStart = False</SourceLine>
+   <SourceLine>Current = Current + 1</SourceLine>
+   <SourceLine>Return Source.Mid(Current - 1, 1)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>783183871</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(source As String, doNotRequire As Dictionary = Nil, requireRoot As FolderItem = Nil)</SourceLine>
+   <SourceLine>// Construct a new lexer from the passed source code.</SourceLine>
+   <SourceLine>// Takes an optional dictionary which specifies the paths of </SourceLine>
+   <SourceLine>// any files that have already been required by this scrip and </SourceLine>
+   <SourceLine>// need not be required again.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Initialise(source, Nil, doNotRequire, requireRoot)</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>source As String, doNotRequire As Dictionary = Nil, requireRoot As FolderItem = Nil</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2076641279</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(sourceFile As FolderItem, doNotRequire As Dictionary = Nil, requireRoot As FolderItem = Nil)</SourceLine>
+   <SourceLine>// Construct a new lexer from the passed source file.</SourceLine>
+   <SourceLine>// Takes an optional dictionary which specifies the paths of </SourceLine>
+   <SourceLine>// any files that have already been required by this scrip and </SourceLine>
+   <SourceLine>// need not be required again.</SourceLine>
+   <SourceLine>// May raise an IOException if the passed source file is not valid.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the contents of the file.</SourceLine>
+   <SourceLine>Dim s As String</SourceLine>
+   <SourceLine>Dim tin As TextInputStream</SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine>tin = TextInputStream.Open(sourceFile)</SourceLine>
+   <SourceLine>s = tin.ReadAll</SourceLine>
+   <SourceLine>tin.Close</SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Initialise(s, sourceFile, doNotRequire, requireRoot)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>sourceFile As FolderItem, doNotRequire As Dictionary = Nil, requireRoot As FolderItem = Nil</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HandleRequire</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1346080767</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub HandleRequire()</SourceLine>
+   <SourceLine>// The scanner has just encountered (and consumed) a REQUIRE token.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The next token must be a text literal in order for this to be a valid require statement.</SourceLine>
+   <SourceLine>ScanToken</SourceLine>
+   <SourceLine>Dim pathToken As RooToken = Tokens.Pop</SourceLine>
+   <SourceLine>If pathToken.Type &lt;&gt; Roo.TokenType.TEXT Then</SourceLine>
+   <SourceLine>Raise New RooScannerError(SourceFile, "Expected a Text literal after the `require` keyword.", _</SourceLine>
+   <SourceLine>Line, Start)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The next token must be either a newline or the EOF.</SourceLine>
+   <SourceLine>If Peek = &amp;u0A Then // It's a newline.</SourceLine>
+   <SourceLine>Line = Line + 1</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>Else // EOF?</SourceLine>
+   <SourceLine>ScanToken</SourceLine>
+   <SourceLine>Dim t As RooToken = Tokens.Pop</SourceLine>
+   <SourceLine>If t.Type &lt;&gt; Roo.TokenType.EOF Then</SourceLine>
+   <SourceLine>Raise New RooScannerError(SourceFile, "Expected a newline or EOF after the `require` " + _</SourceLine>
+   <SourceLine>"statement's Text literal.", Line, Start)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// This is a syntactically valid require statement.</SourceLine>
+   <SourceLine>// Now check that the target path is valid and, if so, do the require.</SourceLine>
+   <SourceLine>Require(pathToken.Lexeme)</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Identifier</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>158724095</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Identifier() As RooToken</SourceLine>
+   <SourceLine>#Pragma BreakOnExceptions False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Consumes an identifier and returns a token of the correct type.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Do</SourceLine>
+   <SourceLine>// Get the next character.</SourceLine>
+   <SourceLine>mPeekChar = Peek</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get its ASCII value/codepoint.</SourceLine>
+   <SourceLine>mCodePoint = Asc(mPeekChar)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// NB: We are limiting ourselves to traditional ASCII character values.</SourceLine>
+   <SourceLine>Select Case mCodePoint</SourceLine>
+   <SourceLine>Case 48 To 57, 65 To 90, 95, 97 To 122 // a-z, A-Z, 0-9, _</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Exit</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>Loop</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Identifiers can end with `?` or `!`</SourceLine>
+   <SourceLine>Select Case Peek</SourceLine>
+   <SourceLine>Case "?", "!"</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Since identifiers can be reserved words, we need to determine </SourceLine>
+   <SourceLine>// the correct identifier type.</SourceLine>
+   <SourceLine>Return MakeToken(IdentifierType)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err As OutOfBoundsException</SourceLine>
+   <SourceLine>// This happens when we call Source.Mid and we're at the end of the source code.</SourceLine>
+   <SourceLine>Return MakeToken(IdentifierType)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooToken</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>IdentifierType</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>172447743</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function IdentifierType() As Roo.TokenType</SourceLine>
+   <SourceLine>// Since identifiers can also be reserved words, we need to determine the </SourceLine>
+   <SourceLine>// correct token type.</SourceLine>
+   <SourceLine>// NB: Reserved words/identifiers are case sensitive.</SourceLine>
+   <SourceLine>//                                         ---------</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim lexeme As String = Source.Mid(Start, Current - Start)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Types.</SourceLine>
+   <SourceLine>If StrComp(lexeme, "True", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Roo.TokenType.BOOLEAN</SourceLine>
+   <SourceLine>ElseIf StrComp(lexeme, "False", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Roo.TokenType.BOOLEAN</SourceLine>
+   <SourceLine>ElseIf StrComp(lexeme, "Nothing", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Roo.TokenType.NOTHING</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Keywords.</SourceLine>
+   <SourceLine>If StrComp(lexeme, "and", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Roo.TokenType.AND_KEYWORD</SourceLine>
+   <SourceLine>ElseIf StrComp(lexeme, "break", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Roo.TokenType.BREAK_KEYWORD</SourceLine>
+   <SourceLine>ElseIf StrComp(lexeme, "class", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Roo.TokenType.CLASS_KEYWORD</SourceLine>
+   <SourceLine>ElseIf StrComp(lexeme, "def", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Roo.TokenType.DEF_KEYWORD</SourceLine>
+   <SourceLine>ElseIf StrComp(lexeme, "else", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Roo.TokenType.ELSE_KEYWORD</SourceLine>
+   <SourceLine>ElseIf StrComp(lexeme, "exit", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Roo.TokenType.EXIT_KEYWORD</SourceLine>
+   <SourceLine>ElseIf StrComp(lexeme, "for", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Roo.TokenType.FOR_KEYWORD</SourceLine>
+   <SourceLine>ElseIf StrComp(lexeme, "if", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Roo.TokenType.IF_KEYWORD</SourceLine>
+   <SourceLine>ElseIf StrComp(lexeme, "module", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Roo.TokenType.MODULE_KEYWORD</SourceLine>
+   <SourceLine>ElseIf StrComp(lexeme, "not", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Roo.TokenType.NOT_KEYWORD</SourceLine>
+   <SourceLine>ElseIf StrComp(lexeme, "or", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Roo.TokenType.OR_KEYWORD</SourceLine>
+   <SourceLine>ElseIf StrComp(lexeme, "pass", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Roo.TokenType.PASS_KEYWORD</SourceLine>
+   <SourceLine>ElseIf StrComp(lexeme, "quit", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Roo.TokenType.QUIT_KEYWORD</SourceLine>
+   <SourceLine>ElseIf StrComp(lexeme, "require", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Roo.TokenType.REQUIRE_KEYWORD</SourceLine>
+   <SourceLine>ElseIf StrComp(lexeme, "return", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Roo.TokenType.RETURN_KEYWORD</SourceLine>
+   <SourceLine>ElseIf StrComp(lexeme, "self", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Roo.TokenType.SELF_KEYWORD</SourceLine>
+   <SourceLine>ElseIf StrComp(lexeme, "static", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Roo.TokenType.STATIC_KEYWORD</SourceLine>
+   <SourceLine>ElseIf StrComp(lexeme, "super", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Roo.TokenType.SUPER_KEYWORD</SourceLine>
+   <SourceLine>ElseIf StrComp(lexeme, "var", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Roo.TokenType.VAR</SourceLine>
+   <SourceLine>ElseIf StrComp(lexeme, "while", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Roo.TokenType.WHILE_KEYWORD</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return Roo.TokenType.IDENTIFIER</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Roo.TokenType</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Initialise</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1948897279</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Initialise(source As String, sourceFile As FolderItem, doNotRequire As Dictionary, requireRoot As FolderItem = Nil)</SourceLine>
+   <SourceLine>// Common setup tasks required by the scanner regardless of whether or not </SourceLine>
+   <SourceLine>// it's tokenising source code or a file.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If requireRoot = Nil Then</SourceLine>
+   <SourceLine>// Default to the root drive or volume that this application is running on.</SourceLine>
+   <SourceLine>Dim f As FolderItem = App.ExecutableFile.Parent</SourceLine>
+   <SourceLine>Do</SourceLine>
+   <SourceLine>If f.Parent = Nil Or Not f.Parent.Exists Then Exit</SourceLine>
+   <SourceLine>f = f.Parent</SourceLine>
+   <SourceLine>Loop</SourceLine>
+   <SourceLine>Self.RequireRoot = f</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Self.RequireRoot = requireRoot</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Are there any files that do not need re-requiring?</SourceLine>
+   <SourceLine>If doNotRequire = Nil Then</SourceLine>
+   <SourceLine>Self.DoNotRequire = New Dictionary</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Self.DoNotRequire = doNotRequire</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Setup the AlphaCharacter dictionary.</SourceLine>
+   <SourceLine>InitialiseAlphaCharactersDictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Assign properties.</SourceLine>
+   <SourceLine>Self.Source = StandardiseLineEndings(source)</SourceLine>
+   <SourceLine>Self.SourceLength = Self.Source.Len</SourceLine>
+   <SourceLine>Self.SourceFile = sourceFile</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Reset.</SourceLine>
+   <SourceLine>Reset</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>source As String, sourceFile As FolderItem, doNotRequire As Dictionary, requireRoot As FolderItem = Nil</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InitialiseAlphaCharactersDictionary</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1101285375</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InitialiseAlphaCharactersDictionary()</SourceLine>
+   <SourceLine>// This dictionary acts as a fast lookup table for determining </SourceLine>
+   <SourceLine>// if a character is A-Z, a-z or _</SourceLine>
+   <SourceLine>// We will use a case-sensitive dictionary.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>AlphaCharacters = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>AlphaCharacters.Value("a") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("b") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("c") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("d") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("e") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("f") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("g") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("h") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("i") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("j") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("k") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("l") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("m") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("n") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("o") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("p") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("q") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("r") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("s") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("t") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("u") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("v") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("w") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("x") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("y") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("z") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("A") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("B") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("C") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("D") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("E") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("F") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("G") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("H") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("I") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("J") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("K") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("L") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("M") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("N") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("O") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("P") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("Q") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("R") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("S") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("T") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("U") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("V") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("W") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("X") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("Y") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("Z") = 0</SourceLine>
+   <SourceLine>AlphaCharacters.Value("_") = 0</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>IsAlpha</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1723252735</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function IsAlpha(char As String) As Boolean</SourceLine>
+   <SourceLine>' Returns True if `char` is any of the following: a-z, A-Z, _</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return AlphaCharacters.HasKey(char)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>char As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>IsDigit</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1586259967</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function IsDigit(char As String) As Boolean</SourceLine>
+   <SourceLine>// Returns True if `char` is a digit.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case char</SourceLine>
+   <SourceLine>Case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"</SourceLine>
+   <SourceLine>Return True</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>char As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AddToken</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1478660095</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AddToken(type As Roo.TokenType)</SourceLine>
+   <SourceLine>// Adds a new token of the specified type based on the current position in the source.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Tokens.Append(MakeToken(type))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>type As Roo.TokenType</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Match</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1101705215</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Match(expected As Text) As Boolean</SourceLine>
+   <SourceLine>// If the next character in the source is `expected` then we consume it </SourceLine>
+   <SourceLine>// and return True. Otherwise we leave it alone and return False.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Current &gt; SourceLength Then Return False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If source.Mid(Current, 1) = expected Then</SourceLine>
+   <SourceLine>Advance // Consume the character by incrementing the pointer.</SourceLine>
+   <SourceLine>Return True</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>expected As Text</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Number</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2014382079</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Number() As RooToken</SourceLine>
+   <SourceLine>// Consumes a number.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>While IsDigit(Peek)</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Is this a Double?</SourceLine>
+   <SourceLine>If Peek = "." And IsDigit(PeekNext) Then</SourceLine>
+   <SourceLine>Advance // Advance to consume the dot.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>While IsDigit(Peek)</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// So far we have a number (either an integer or a double). Is there a valid exponent?</SourceLine>
+   <SourceLine>If Peek = "e" Then</SourceLine>
+   <SourceLine>Select Case PeekNext</SourceLine>
+   <SourceLine>Case "-", "+"</SourceLine>
+   <SourceLine>// Advance twice to consume the `e` and sign character.</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>While IsDigit(Peek)</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine>Case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"</SourceLine>
+   <SourceLine>Advance // Advance to consume the `e`.</SourceLine>
+   <SourceLine>While IsDigit(Peek)</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return MakeNumberToken(RooToken.BaseType.Decimal)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooToken</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>PeekNext</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1655306239</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function PeekNext() As String</SourceLine>
+   <SourceLine>// Similar to Peek.</SourceLine>
+   <SourceLine>// Returns the character one past the current one in the source code </SourceLine>
+   <SourceLine>// but DOESN'T consume it. If we've reached the end of the source </SourceLine>
+   <SourceLine>// code we'll return "".</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If current + 1 &gt; SourceLength Then</SourceLine>
+   <SourceLine>Return ""</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return source.Mid(Current + 1, 1)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Scan</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>782798847</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Scan() As RooToken()</SourceLine>
+   <SourceLine>// Scans the source code and either returns an array of tokens or raises a ScannerError.</SourceLine>
+   <SourceLine>// NB: If an exception occurs, it will happen in ScanToken().</SourceLine>
+   <SourceLine>// If an error occurs then we return an empty array.</SourceLine>
+   <SourceLine>// NB: If a `require` statement is encountered, it is handled within the ScanToken() method </SourceLine>
+   <SourceLine>// but returns a token of type TokenType.REQUIRE_KEYWORD</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Redim Tokens(-1)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Do</SourceLine>
+   <SourceLine>ScanToken</SourceLine>
+   <SourceLine>Loop Until Tokens(Tokens.Ubound).Type = Roo.TokenType.EOF</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure that we close any open blocks by adding in any required DEDENT tokens.</SourceLine>
+   <SourceLine>If IndentationStack.Ubound &gt; 0 Then</SourceLine>
+   <SourceLine>// Pop off the EOF token.</SourceLine>
+   <SourceLine>Dim eofToken As RooToken = Tokens.Pop</SourceLine>
+   <SourceLine>// At the end of the file, add any required DEDENT tokens.</SourceLine>
+   <SourceLine>While 0 &lt; IndentationStack(IndentationStack.Ubound)</SourceLine>
+   <SourceLine>AddDedentToken</SourceLine>
+   <SourceLine>Call IndentationStack.Pop</SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine>// Add back the EOF token.</SourceLine>
+   <SourceLine>Tokens.Append(eofToken)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Tokens</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If an exception occurs we fire the scanner's custom Error event.</SourceLine>
+   <SourceLine>Exception err As RooScannerError</SourceLine>
+   <SourceLine>Error(err.File, err.Message, err.Line, err.Position)</SourceLine>
+   <SourceLine>Redim Tokens(-1)</SourceLine>
+   <SourceLine>Return Tokens</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooToken()</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ScanToken</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1989603327</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub ScanToken()</SourceLine>
+   <SourceLine>// Adds the next token to the scanner's Tokens() array.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>SkipWhitespace</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Start = Current</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Finished?</SourceLine>
+   <SourceLine>If Current &gt; SourceLength Then</SourceLine>
+   <SourceLine>AddEOFToken</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the next character.</SourceLine>
+   <SourceLine>Dim c As String = Advance</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Is this a 0base-prefixed number?</SourceLine>
+   <SourceLine>If c = "0" Then</SourceLine>
+   <SourceLine>Dim base As String = Peek</SourceLine>
+   <SourceLine>If base = "x" Or base = "b" Or base = "o" Then</SourceLine>
+   <SourceLine>// Consume the base.</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>Select Case base</SourceLine>
+   <SourceLine>Case "x"</SourceLine>
+   <SourceLine>Tokens.Append(PrefixedNumber(RooToken.BaseType.Hexadecimal))</SourceLine>
+   <SourceLine>Case "b"</SourceLine>
+   <SourceLine>Tokens.Append(PrefixedNumber(RooToken.BaseType.Binary))</SourceLine>
+   <SourceLine>Case "o"</SourceLine>
+   <SourceLine>Tokens.Append(PrefixedNumber(RooToken.BaseType.Octal))</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Is the character a number?</SourceLine>
+   <SourceLine>If IsDigit(c) Then</SourceLine>
+   <SourceLine>Tokens.Append(Number)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Not a number.</SourceLine>
+   <SourceLine>Select Case c</SourceLine>
+   <SourceLine>// ---------------------------------------------------------------</SourceLine>
+   <SourceLine>// Single character tokens.</SourceLine>
+   <SourceLine>// ---------------------------------------------------------------</SourceLine>
+   <SourceLine>Case "("</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.LPAREN)</SourceLine>
+   <SourceLine>mUnclosedParenCount = mUnclosedParenCount + 1</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Case ")"</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.RPAREN)</SourceLine>
+   <SourceLine>mUnclosedParenCount = mUnclosedParenCount - 1</SourceLine>
+   <SourceLine>If mUnclosedParenCount &lt; 0 Then</SourceLine>
+   <SourceLine>Raise New RooScannerError(SourceFile, "Unmatched closing parenthesis encountered", Line, Start)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Case "{"</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.LCURLY)</SourceLine>
+   <SourceLine>mUnclosedCurlyCount = mUnclosedCurlyCount + 1</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Case "}"</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.RCURLY)</SourceLine>
+   <SourceLine>mUnclosedCurlyCount = mUnclosedCurlyCount - 1</SourceLine>
+   <SourceLine>If mUnclosedCurlyCount &lt; 0 Then</SourceLine>
+   <SourceLine>Raise New RooScannerError(SourceFile, "Unmatched closing curly brace encountered", Line, Start)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Case "["</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.LSQUARE)</SourceLine>
+   <SourceLine>mUnclosedSquareCount = mUnclosedSquareCount + 1</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Case "]"</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.RSQUARE)</SourceLine>
+   <SourceLine>mUnclosedSquareCount = mUnclosedSquareCount - 1</SourceLine>
+   <SourceLine>If mUnclosedSquareCount &lt; 0 Then</SourceLine>
+   <SourceLine>Raise New RooScannerError(SourceFile, "Unmatched closing square bracket encountered", Line, Start)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Case ","</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.COMMA)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Case "."</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.DOT)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Case "|"</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.PIPE)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Case "&amp;"</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.AMPERSAND)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Case "~"</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.TILDE)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Case "!"</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.BANG)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Case "^"</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.CARET)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Case "?"</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.QUERY)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Case ":"</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.COLON)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Case ";"</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.TERMINATOR)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// ---------------------------------------------------------------</SourceLine>
+   <SourceLine>// Single OR double character tokens.</SourceLine>
+   <SourceLine>// ---------------------------------------------------------------</SourceLine>
+   <SourceLine>Case "=" // =, ==, =&gt;</SourceLine>
+   <SourceLine>If Match("=") Then</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.EQUAL_EQUAL)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>AddToken(If(Match("&gt;"), Roo.TokenType.ARROW, Roo.TokenType.EQUAL))</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Case "+" ' +=, ++, +</SourceLine>
+   <SourceLine>If Match("=") Then</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.PLUS_EQUAL)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>AddToken(If(Match("+"), Roo.TokenType.PLUS_PLUS, Roo.TokenType.PLUS))</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Case "-" ' -=, --, -</SourceLine>
+   <SourceLine>If Match("=") Then</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.MINUS_EQUAL)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>AddToken(If(Match("-"), Roo.TokenType.MINUS_MINUS, Roo.TokenType.MINUS))</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Case "*" ' *, *=</SourceLine>
+   <SourceLine>If Match("=") Then</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.STAR_EQUAL)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.STAR)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Case "/" ' /, /=</SourceLine>
+   <SourceLine>If Match("=") Then</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.SLASH_EQUAL)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.SLASH)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Case "%" ' %, /%</SourceLine>
+   <SourceLine>If Match("=") Then</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.PERCENT_EQUAL)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.PERCENT)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Case "&gt;" ' &gt;, &gt;=, &gt;&gt;</SourceLine>
+   <SourceLine>If Match("=") Then</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.GREATER_EQUAL)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>ElseIf Match("&gt;") Then</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.GREATER_GREATER)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.GREATER)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Case "&lt;" ' &lt;, &lt;=, &lt;&gt;, &lt;&lt;</SourceLine>
+   <SourceLine>If Match("=") Then</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.LESS_EQUAL)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>ElseIf Match("&gt;") Then</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.NOT_EQUAL)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>ElseIf Match("&lt;") Then</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.LESS_LESS)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>AddToken(Roo.TokenType.LESS)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// ---------------------------------------------------------------</SourceLine>
+   <SourceLine>// Text.</SourceLine>
+   <SourceLine>// ---------------------------------------------------------------</SourceLine>
+   <SourceLine>Case """"</SourceLine>
+   <SourceLine>Tokens.Append(TextToken(TextDelimiter.DoubleQuote))</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Case "'"</SourceLine>
+   <SourceLine>Tokens.Append(TextToken(TextDelimiter.SingleQuote))</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Identifier?</SourceLine>
+   <SourceLine>If IsAlpha(c) Then</SourceLine>
+   <SourceLine>Dim tok As RooToken = Identifier</SourceLine>
+   <SourceLine>If tok.type = Roo.TokenType.REQUIRE_KEYWORD Then</SourceLine>
+   <SourceLine>HandleRequire</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Tokens.Append(tok)</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Houston we have a problem.</SourceLine>
+   <SourceLine>Raise New RooScannerError(SourceFile, "Unexpected character (" + c + ")", Line, Start)</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>SkipWhitespace</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>672282623</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub SkipWhitespace()</SourceLine>
+   <SourceLine>// Advance the scanner past meaningless whitespace.</SourceLine>
+   <SourceLine>// We also need to handle indentation and dedentation.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Do</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case Peek</SourceLine>
+   <SourceLine>Case " " // Simple space.</SourceLine>
+   <SourceLine>If AtLogicalLineStart Then</SourceLine>
+   <SourceLine>// Whitespace other tabs is not allowed at the beginning of a logical line.</SourceLine>
+   <SourceLine>Raise New RooScannerError(SourceFile, "Unexpected whitespace at beginning of line", Line, Start)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case &amp;u09 // Tab.</SourceLine>
+   <SourceLine>If AtLogicalLineStart Then</SourceLine>
+   <SourceLine>HandleIndentation</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case &amp;u0A // Newline.</SourceLine>
+   <SourceLine>Line = Line + 1</SourceLine>
+   <SourceLine>If EndOfLogicalLine Then</SourceLine>
+   <SourceLine>AddTerminatorToken</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>AtLogicalLineStart = True // Since we've just advanced past the newline character.</SourceLine>
+   <SourceLine>HandleIndentation</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Case "#" // Comment. These go to the end of the line.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Do</SourceLine>
+   <SourceLine>mPeekChar = Peek</SourceLine>
+   <SourceLine>If mPeekChar = &amp;u0A Or mPeekChar = "" Then Exit</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>Loop</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If mPeekChar = &amp;u0A Then</SourceLine>
+   <SourceLine>Line = Line + 1 // Remember to increment the line number.</SourceLine>
+   <SourceLine>If EndOfLogicalLine Then</SourceLine>
+   <SourceLine>AddTerminatorToken</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>AtLogicalLineStart = True // Since we've just advanced past the newline character.</SourceLine>
+   <SourceLine>HandleIndentation</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Loop</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StandardiseLineEndings</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1024255999</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StandardiseLineEndings(s As String) As String</SourceLine>
+   <SourceLine>// Convert all line endings in `s` to UNIX ones (i.e. LF, &amp;u0A).</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return ReplaceLineEndings(s, &amp;u0A)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>s As String</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>TextToken</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>399544319</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function TextToken(delimiterType As TextDelimiter) As RooToken</SourceLine>
+   <SourceLine>Dim delimiter As Text = If(delimiterType = TextDelimiter.DoubleQuote, """", "'")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim previousChar As String = ""</SourceLine>
+   <SourceLine>Dim escapedDelimiterCount As Integer = 0</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Do</SourceLine>
+   <SourceLine>If Current &gt; SourceLength Then Exit</SourceLine>
+   <SourceLine>mPeekChar = Source.Mid(current, 1)</SourceLine>
+   <SourceLine>If mPeekChar = delimiter Then</SourceLine>
+   <SourceLine>// We've found the closing delimiter UNLESS it's been escaped with `\`.</SourceLine>
+   <SourceLine>If previousChar &lt;&gt; "\" Then</SourceLine>
+   <SourceLine>Exit</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// This is an escaped delimiter. Flag that it needs removing later.</SourceLine>
+   <SourceLine>escapedDelimiterCount = escapedDelimiterCount + 1</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>If mPeekChar = &amp;u0A Then Line = Line + 1 // Handle multiline text.</SourceLine>
+   <SourceLine>Advance // Advance to consume the character.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Keep track of this character before we loop again.</SourceLine>
+   <SourceLine>previousChar = mPeekChar</SourceLine>
+   <SourceLine>Loop</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Did the user terminate the text?</SourceLine>
+   <SourceLine>If Current &gt; SourceLength Then</SourceLine>
+   <SourceLine>Raise New RooScannerError(sourceFile, "Unterminated text literal", Line, Start)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Consume the closing delimiter.</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create the token. We do it here rather than MakeToken() because the </SourceLine>
+   <SourceLine>// lexeme is handled differently.</SourceLine>
+   <SourceLine>Dim token As New RooToken</SourceLine>
+   <SourceLine>token.Type = Roo.TokenType.TEXT</SourceLine>
+   <SourceLine>token.Start = Start - 1</SourceLine>
+   <SourceLine>token.Length = Current - Start - 2 // The lexeme won't contain the flanking delimiters.</SourceLine>
+   <SourceLine>token.Finish = Current - 2</SourceLine>
+   <SourceLine>token.Lexeme = source.Mid(Start + 1, token.Length) // Need to remove the flanking delimiters.</SourceLine>
+   <SourceLine>token.Line = Line</SourceLine>
+   <SourceLine>token.File = SourceFile</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Do we need to handle escaped delimiters?</SourceLine>
+   <SourceLine>If escapedDelimiterCount &gt; 0 Then</SourceLine>
+   <SourceLine>If delimiterType = TextDelimiter.DoubleQuote Then</SourceLine>
+   <SourceLine>token.Lexeme = token.Lexeme.ReplaceAll("\" + Chr(34), Chr(34))</SourceLine>
+   <SourceLine>ElseIf delimiterType = TextDelimiter.SingleQuote Then</SourceLine>
+   <SourceLine>token.Lexeme = token.Lexeme.ReplaceAll("\'", "'")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return token</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>delimiterType As TextDelimiter</ItemParams>
+  <ItemResult>RooToken</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Reset</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>480620543</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Reset()</SourceLine>
+   <SourceLine>Current = 1</SourceLine>
+   <SourceLine>Start = 1</SourceLine>
+   <SourceLine>Line = 1</SourceLine>
+   <SourceLine>Redim Tokens(-1)</SourceLine>
+   <SourceLine>mUnclosedCurlyCount = 0</SourceLine>
+   <SourceLine>mUnclosedParenCount = 0</SourceLine>
+   <SourceLine>mUnclosedSquareCount = 0</SourceLine>
+   <SourceLine>AtLogicalLineStart = True</SourceLine>
+   <SourceLine>Redim IndentationStack(-1)</SourceLine>
+   <SourceLine>IndentationStack.Append(0)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>mPeekChar = ""</SourceLine>
+   <SourceLine>mCodePoint = 0</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>SingleCharacterCodePoint</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>308725759</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function SingleCharacterCodePoint(t As Text) As UInt32</SourceLine>
+   <SourceLine>// This method returns the unicode codepoint of the first character in the passed Text object.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>For Each c As UInt32 In t.Codepoints</SourceLine>
+   <SourceLine>Return c</SourceLine>
+   <SourceLine>Next c</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>t As Text</ItemParams>
+  <ItemResult>UInt32</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Peek</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1499682815</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Peek() As String</SourceLine>
+   <SourceLine>// Returns the current character at the pointer in the source code but DOESN'T consume it.</SourceLine>
+   <SourceLine>// If we've reached the end of the source code we'll return "".</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Current &lt;= SourceLength Then Return Source.Mid(Current, 1)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Require</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1790857215</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Require(path As String)</SourceLine>
+   <SourceLine>// This method is called by HandleRequire when a potentially valid `require` statement is </SourceLine>
+   <SourceLine>// encountered. It takes the path of the file to require.</SourceLine>
+   <SourceLine>// Valid require paths can be relative or absolute. </SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Removing any superfluous trailing slash.</SourceLine>
+   <SourceLine>If path.Right(1) = "/" Then path = path.Left(path.Len - 1)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The .roo extension for the file to require is optional but necessary for later so </SourceLine>
+   <SourceLine>// we will add it if omitted.</SourceLine>
+   <SourceLine>If path.Right(4) &lt;&gt; ".roo" Then path = path + ".roo"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Is `path` valid?</SourceLine>
+   <SourceLine>// Attempt to convert the Roo path to a Xojo FolderItem.</SourceLine>
+   <SourceLine>Dim fileToRequire As FolderItem = RooPathToFolderItem(path, Self.SourceFile)</SourceLine>
+   <SourceLine>If fileToRequire = Nil Or fileToRequire.Exists = False Then</SourceLine>
+   <SourceLine>Raise New RooScannerError(SourceFile, "Invalid require path: `" + path + "`.", Line, Start)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure `fileToRequire` is a file and not a folder.</SourceLine>
+   <SourceLine>If fileToRequire.Directory Then</SourceLine>
+   <SourceLine>Raise New RooScannerError(SourceFile, "Invalid require path. Expected a file not a folder: " + _</SourceLine>
+   <SourceLine>"`" + path + "`.", Line, Start)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that the file is readable.</SourceLine>
+   <SourceLine>If fileToRequire.IsReadable = False Then</SourceLine>
+   <SourceLine>Raise New RooScannerError(SourceFile, "Unable to open the required file for reading: `" + _</SourceLine>
+   <SourceLine>path + "`.", Line, Start)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Has this file already been required? (If so, we're done).</SourceLine>
+   <SourceLine>If doNotRequire.HasKey(fileToRequire.NativePath) Then Return</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Record that this file has been required to prevent it be re-required within the same script.</SourceLine>
+   <SourceLine>doNotRequire.Value(fileToRequire.NativePath) = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Spin up a new scanner to tokenise the file.</SourceLine>
+   <SourceLine>Dim scanner As New RooScanner(fileToRequire, doNotRequire, mRequireRoot)</SourceLine>
+   <SourceLine>Dim requireTokens() As RooToken = scanner.Scan</SourceLine>
+   <SourceLine>If requireTokens.Ubound &gt;= 0 Then</SourceLine>
+   <SourceLine>// Remove the EOF token if this is the last token.</SourceLine>
+   <SourceLine>If requireTokens(requireTokens.Ubound).Type = Roo.TokenType.EOF Then Call requireTokens.Pop</SourceLine>
+   <SourceLine>// Append these tokens to THIS scanner's tokens.</SourceLine>
+   <SourceLine>For Each t As RooToken In requireTokens</SourceLine>
+   <SourceLine>Self.Tokens.Append(t)</SourceLine>
+   <SourceLine>Next t</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>path As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HandleIndentation</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>659046399</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub HandleIndentation()</SourceLine>
+   <SourceLine>// This method is called when the scanner has just moved to the beginning of a new logical line.</SourceLine>
+   <SourceLine>// We need to check if we need to create any INDENT or DEDENT tokens.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Ignore this line if it is empty.</SourceLine>
+   <SourceLine>mPeekChar = Peek</SourceLine>
+   <SourceLine>If mPeekChar = &amp;u0A Or mPeekChar = "" Then Return</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim lineLevel As Integer = 0</SourceLine>
+   <SourceLine>Dim currentLevel As Integer = IndentationStack(IndentationStack.Ubound)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// How many levels of indentation is this line?</SourceLine>
+   <SourceLine>While Peek = &amp;u09</SourceLine>
+   <SourceLine>lineLevel = lineLevel + 1</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Has the indentation level stayed the same?</SourceLine>
+   <SourceLine>If lineLevel = currentLevel Then Return</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Are we at a greater indentation level than the line above?</SourceLine>
+   <SourceLine>If lineLevel &gt; currentLevel Then</SourceLine>
+   <SourceLine>IndentationStack.Append(lineLevel)</SourceLine>
+   <SourceLine>AddIndentToken</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// We have dedented.</SourceLine>
+   <SourceLine>// This line's indentation level MUST be the same as one of the others on the stack.</SourceLine>
+   <SourceLine>If IndentationStack.IndexOf(lineLevel) = -1 Then</SourceLine>
+   <SourceLine>Raise New RooScannerError(SourceFile, "Unmatched indentation", Line, Start)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>// All numbers on the stack that are larger than this line's level are popped off </SourceLine>
+   <SourceLine>// and for each number popped off a DEDENT token is generated.</SourceLine>
+   <SourceLine>While lineLevel &lt; IndentationStack(IndentationStack.Ubound)</SourceLine>
+   <SourceLine>AddDedentToken</SourceLine>
+   <SourceLine>Call IndentationStack.Pop</SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Flag that we're no longer at the start of a logical line.</SourceLine>
+   <SourceLine>AtLogicalLineStart = False</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>EndOfLogicalLine</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1375944703</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function EndOfLogicalLine() As Boolean</SourceLine>
+   <SourceLine>// This method is called when the scanner encounters a newline character.</SourceLine>
+   <SourceLine>// Roo considers there to be two types of line: physical and logical.</SourceLine>
+   <SourceLine>// Physical lines are visibly distinct lines we can see in source code. They are never more </SourceLine>
+   <SourceLine>// than one line long.</SourceLine>
+   <SourceLine>// Logical lines can span multiple physical lines of source code. An example would be the following </SourceLine>
+   <SourceLine>// Array literal definition:</SourceLine>
+   <SourceLine>' var h = {</SourceLine>
+   <SourceLine>'   "name" =&gt; "Garry"</SourceLine>
+   <SourceLine>'   "age" =&gt; 37</SourceLine>
+   <SourceLine>' }</SourceLine>
+   <SourceLine>// Roo considers the above example to be a single logical line because at the time it encounters </SourceLine>
+   <SourceLine>// the newline character there is an unmatched curly brace.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If mUnclosedCurlyCount &gt; 0 Or mUnclosedParenCount &gt; 0 Or mUnclosedSquareCount &gt; 0 Then</SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return True</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AddTerminatorToken</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1663391743</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AddTerminatorToken()</SourceLine>
+   <SourceLine>// Add a new TERMINATOR token if required.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// There is no point having consecutive TERMINATOR tokens as they just marke statement </SourceLine>
+   <SourceLine>// boundaries or function as no-ops.</SourceLine>
+   <SourceLine>// Don't add a TERMINATOR token if the preceding token is another TERMINATOR token, </SourceLine>
+   <SourceLine>// a colon, indent or dedent token.</SourceLine>
+   <SourceLine>If Tokens.Ubound &gt;= 0 Then</SourceLine>
+   <SourceLine>Select Case Tokens(Tokens.Ubound).Type</SourceLine>
+   <SourceLine>Case Roo.TokenType.TERMINATOR, Roo.TokenType.COLON, _</SourceLine>
+   <SourceLine>Roo.TokenType.INDENT, Roo.TokenType.DEDENT</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim token As New RooToken</SourceLine>
+   <SourceLine>token.Type = Roo.TokenType.TERMINATOR</SourceLine>
+   <SourceLine>token.Start = Start - 1</SourceLine>
+   <SourceLine>token.Length = 1</SourceLine>
+   <SourceLine>token.Finish = Current - 1</SourceLine>
+   <SourceLine>token.Lexeme = "Terminator"</SourceLine>
+   <SourceLine>token.Line = Line</SourceLine>
+   <SourceLine>token.File = SourceFile</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Tokens.Append(token)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Advance</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>54956031</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Advance()</SourceLine>
+   <SourceLine>// Consumes (without returning) the current character in the source.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>AtLogicalLineStart = False</SourceLine>
+   <SourceLine>Current = Current + 1</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AddIndentToken</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2115303423</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AddIndentToken()</SourceLine>
+   <SourceLine>// Adds a new INDENT token.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim token As New RooToken</SourceLine>
+   <SourceLine>token.Type = Roo.TokenType.INDENT</SourceLine>
+   <SourceLine>token.Start = Start - 1</SourceLine>
+   <SourceLine>token.Length = 1</SourceLine>
+   <SourceLine>token.Finish = Current - 1</SourceLine>
+   <SourceLine>token.Lexeme = "Indent"</SourceLine>
+   <SourceLine>token.Line = Line</SourceLine>
+   <SourceLine>token.File = SourceFile</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Tokens.Append(token)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AddDedentToken</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1658583039</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AddDedentToken()</SourceLine>
+   <SourceLine>// Adds a new DEDENT token.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim token As New RooToken</SourceLine>
+   <SourceLine>token.Type = Roo.TokenType.DEDENT</SourceLine>
+   <SourceLine>token.Start = Start - 1</SourceLine>
+   <SourceLine>token.Length = 1</SourceLine>
+   <SourceLine>token.Finish = Current - 1</SourceLine>
+   <SourceLine>token.Lexeme = "Dedent"</SourceLine>
+   <SourceLine>token.Line = Line</SourceLine>
+   <SourceLine>token.File = SourceFile</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Tokens.Append(token)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>MakeToken</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>368465919</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function MakeToken(type As Roo.TokenType) As RooToken</SourceLine>
+   <SourceLine>// Returns a new token of the specified type based on the current position </SourceLine>
+   <SourceLine>// in the source.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim token As New RooToken</SourceLine>
+   <SourceLine>token.Type = type</SourceLine>
+   <SourceLine>token.Start = Start - 1</SourceLine>
+   <SourceLine>token.Length = Current - Start</SourceLine>
+   <SourceLine>token.Finish = Current - 2</SourceLine>
+   <SourceLine>token.Lexeme = Source.Mid(Start, token.Length)</SourceLine>
+   <SourceLine>token.Line = Line</SourceLine>
+   <SourceLine>token.File = SourceFile</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return token</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>type As Roo.TokenType</ItemParams>
+  <ItemResult>RooToken</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AddEOFToken</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>934242303</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AddEOFToken()</SourceLine>
+   <SourceLine>// Adds the EOF token.</SourceLine>
+   <SourceLine>// To handle several edge cases, it's best to ensure that there is always a TERMINATOR token </SourceLine>
+   <SourceLine>// before the EOF token. This catches issues such as an expression statement at the </SourceLine>
+   <SourceLine>// end of a file.</SourceLine>
+   <SourceLine>AddTerminatorToken</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim token As New RooToken</SourceLine>
+   <SourceLine>token.Type = Roo.TokenType.EOF</SourceLine>
+   <SourceLine>token.Start = Start - 1</SourceLine>
+   <SourceLine>token.Length = 1</SourceLine>
+   <SourceLine>token.Finish = Current - 1</SourceLine>
+   <SourceLine>token.Lexeme = "EOF"</SourceLine>
+   <SourceLine>token.Line = Line</SourceLine>
+   <SourceLine>token.File = SourceFile</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Tokens.Append(token)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>RooPathToFolderItem</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>443205631</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function RooPathToFolderItem(path As String, baseFile As FolderItem) As FolderItem</SourceLine>
+   <SourceLine>// Takes a Roo file path and returns it as a FolderItem or Nil if it's not possible to derive one.</SourceLine>
+   <SourceLine>// File paths in Roo are separated by forward slashes.</SourceLine>
+   <SourceLine>// `../` moves up the hierarchy to the parent.</SourceLine>
+   <SourceLine>// If a path starts with a `/` it is absolute, otherwise it is taken to be relative to `baseFile`.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// An empty path refers to the base file.</SourceLine>
+   <SourceLine>If path = "" Then Return baseFile</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Is this an absolute path? If so it will begin with `/`.</SourceLine>
+   <SourceLine>Dim absolute As Boolean = False</SourceLine>
+   <SourceLine>If path.Left(1) = "/" Then</SourceLine>
+   <SourceLine>absolute = True</SourceLine>
+   <SourceLine>path = path.Right(path.Len - 1)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Split the path into it's constituent parts.</SourceLine>
+   <SourceLine>Dim chars() As String = path.Split("")</SourceLine>
+   <SourceLine>Dim char, part, parts() As String</SourceLine>
+   <SourceLine>For Each char In chars</SourceLine>
+   <SourceLine>If char = "/" Then</SourceLine>
+   <SourceLine>parts.Append(part)</SourceLine>
+   <SourceLine>part = ""</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>part = part + char</SourceLine>
+   <SourceLine>End if</SourceLine>
+   <SourceLine>Next char</SourceLine>
+   <SourceLine>If char &lt;&gt; "/" Then parts.Append(part)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim result As FolderItem</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Handle absolute paths.</SourceLine>
+   <SourceLine>If absolute Then</SourceLine>
+   <SourceLine>result = New FolderItem(mRequireRoot.NativePath, FolderItem.PathTypeNative)</SourceLine>
+   <SourceLine>For Each part In parts</SourceLine>
+   <SourceLine>If part = ".." Then</SourceLine>
+   <SourceLine>result = result.Parent</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>result = result.Child(part)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next part</SourceLine>
+   <SourceLine>Return result</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Handle relative paths.</SourceLine>
+   <SourceLine>If baseFile = Nil Then</SourceLine>
+   <SourceLine>result = mRequireRoot</SourceLine>
+   <SourceLine>ElseIf Not baseFile.Directory Then // Use this file's parent folder as our starting point.</SourceLine>
+   <SourceLine>result = New FolderItem(baseFile.Parent.NativePath, FolderItem.PathTypeNative)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>result = New FolderItem(baseFile.NativePath, FolderItem.PathTypeNative)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>For Each part In parts</SourceLine>
+   <SourceLine>If part = ".." Then</SourceLine>
+   <SourceLine>result = result.Parent</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>result = result.Child(part)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next part</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return result</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err</SourceLine>
+   <SourceLine>Return Nil</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>path As String, baseFile As FolderItem</ItemParams>
+  <ItemResult>FolderItem</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>PrefixedNumber</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>629796863</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function PrefixedNumber(base As RooToken.BaseType) As RooToken</SourceLine>
+   <SourceLine>// Consumes a 0x-prefixed number.</SourceLine>
+   <SourceLine>// Acceptable formats:</SourceLine>
+   <SourceLine>// 0b (binary), 0o (octal), ox (hexadecimal).</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case base</SourceLine>
+   <SourceLine>Case RooToken.BaseType.Hexadecimal</SourceLine>
+   <SourceLine>While IsHexadecimal(Peek)</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine>Return MakeNumberToken(RooToken.BaseType.Hexadecimal)</SourceLine>
+   <SourceLine>Case RooToken.BaseType.Binary</SourceLine>
+   <SourceLine>While IsBinary(Peek)</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine>Return MakeNumberToken(RooToken.BaseType.Binary)</SourceLine>
+   <SourceLine>Case RooToken.BaseType.Octal</SourceLine>
+   <SourceLine>While IsOctal(Peek)</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine>Return MakeNumberToken(RooToken.BaseType.Octal)</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>base As RooToken.BaseType</ItemParams>
+  <ItemResult>RooToken</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>IsHexadecimal</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2094243839</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function IsHexadecimal(char As String) As Boolean</SourceLine>
+   <SourceLine>// Returns True if `char` is a hexadecimal digit.</SourceLine>
+   <SourceLine>// Case-insensitive.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case char</SourceLine>
+   <SourceLine>Case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"</SourceLine>
+   <SourceLine>Return True</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>char As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>IsOctal</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>820883455</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function IsOctal(char As String) As Boolean</SourceLine>
+   <SourceLine>// Returns True if `char` is an octal numeral.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case char</SourceLine>
+   <SourceLine>Case "0", "1", "2", "3", "4", "5", "6", "7"</SourceLine>
+   <SourceLine>Return True</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>char As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>IsBinary</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1423751167</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function IsBinary(char As String) As Boolean</SourceLine>
+   <SourceLine>// Returns True if `char` is 0 or 1.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case char</SourceLine>
+   <SourceLine>Case "0", "1"</SourceLine>
+   <SourceLine>Return True</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>char As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>MakeNumberToken</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>839952383</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function MakeNumberToken(base As RooToken.BaseType) As RooToken</SourceLine>
+   <SourceLine>// Returns a new number token of the specified base based on the current position </SourceLine>
+   <SourceLine>// in the source.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim token As New RooToken</SourceLine>
+   <SourceLine>token.Type = Roo.TokenType.NUMBER</SourceLine>
+   <SourceLine>token.Base = base</SourceLine>
+   <SourceLine>token.Start = Start - 1</SourceLine>
+   <SourceLine>token.Length = Current - Start</SourceLine>
+   <SourceLine>token.Finish = Current - 2</SourceLine>
+   <SourceLine>token.Lexeme = Source.Mid(Start, token.Length)</SourceLine>
+   <SourceLine>token.Line = Line</SourceLine>
+   <SourceLine>token.File = SourceFile</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return token</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>base As RooToken.BaseType</ItemParams>
+  <ItemResult>RooToken</ItemResult>
+ </Method>
+ <Hook>
+  <ItemName>Error</ItemName>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemFlags>33</ItemFlags>
+  <SystemFlags>0</SystemFlags>
+  <ItemParams>file As FolderItem, message As String, line As Integer, position As Integer</ItemParams>
+  <ItemResult></ItemResult>
+ </Hook>
+ <Property>
+  <ItemName>AlphaCharacters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>982632447</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>AlphaCharacters As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine>Contains the alpha characters A-Z, a-z and _ for fast lookup.</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>AlphaCharacters As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Current</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1078448127</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Current As Integer</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Current As Integer</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>DoNotRequire</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>30582783</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>DoNotRequire As Dictionary</SourceLine>
+   <SourceLine>Stores files that do not need to be required again as they have previously</SourceLine>
+   <SourceLine>already been required by the script.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Key = Native path of the file</SourceLine>
+   <SourceLine>Value = True</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>DoNotRequire As Dictionary</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Line</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>304564223</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Line As Integer</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Line As Integer</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Source</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>858847231</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Source As String</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Source As String</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>SourceFile</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1416361983</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>SourceFile As FolderItem</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>SourceFile As FolderItem</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>SourceLength</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>207083519</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>SourceLength As Integer</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>SourceLength As Integer</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Start</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1148436479</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Start As Integer</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Start As Integer</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Tokens()</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1818906623</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Tokens() As RooToken</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Tokens() As RooToken</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>mPeekChar</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1016602623</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>mPeekChar As String</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>mPeekChar As String</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>mCodePoint</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>635260927</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>mCodePoint As Integer</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>mCodePoint As Integer</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>mRequireRoot</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>873461759</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>mRequireRoot As FolderItem</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>mRequireRoot As FolderItem</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>RequireRoot</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1147580415</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>RequireRoot As FolderItem</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>RequireRoot As FolderItem</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <SetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Set</SourceLine>
+   <SourceLine>// The require root folder must be a directory and must exist.</SourceLine>
+   <SourceLine>If value = Nil Or Not value.Exists Or Not value.Directory Then</SourceLine>
+   <SourceLine>Dim err As NilObjectException</SourceLine>
+   <SourceLine>err.Message = "The RootFolder property of a RooScanner must be a valid directory"</SourceLine>
+   <SourceLine>Raise err</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>mRequireRoot = value</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End Set</SourceLine>
+  </SetAccessor>
+  <GetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Get</SourceLine>
+   <SourceLine>Return mRequireRoot</SourceLine>
+   <SourceLine>End Get</SourceLine>
+  </GetAccessor>
+ </Property>
+ <Property>
+  <ItemName>mUnclosedParenCount</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1085810687</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>mUnclosedParenCount As Integer = 0</SourceLine>
+   <SourceLine>Every time the scanner encounter a LPAREN token, this value is incremented. Everytime a </SourceLine>
+   <SourceLine>RPAREN token is encounted, it is decremented. This is used to determine whether a NEWLINE token </SourceLine>
+   <SourceLine>should be generated or not.</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>mUnclosedParenCount As Integer = 0</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>mUnclosedSquareCount</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1544083455</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>mUnclosedSquareCount As Integer = 0</SourceLine>
+   <SourceLine>Every time the scanner encounter a LSQUARE token, this value is incremented. Everytime a </SourceLine>
+   <SourceLine>RSQUARE token is encounted, it is decremented. This is used to determine whether a NEWLINE token </SourceLine>
+   <SourceLine>should be generated or not.</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>mUnclosedSquareCount As Integer = 0</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>mUnclosedCurlyCount</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>793122815</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>mUnclosedCurlyCount As Integer = 0</SourceLine>
+   <SourceLine>Every time the scanner encounter a LCURLY token, this value is incremented. Everytime a </SourceLine>
+   <SourceLine>RCURLY token is encounted, it is decremented. This is used to determine whether a NEWLINE token </SourceLine>
+   <SourceLine>should be generated or not.</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>mUnclosedCurlyCount As Integer = 0</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>AtLogicalLineStart</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1850511359</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>AtLogicalLineStart As Boolean = True</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>AtLogicalLineStart As Boolean = True</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>IndentationStack()</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1995935743</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>IndentationStack() As Integer</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>IndentationStack() As Integer</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+ <Constant>
+  <ItemName>kQuote</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1522063359</PartID>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemType>0</ItemType>
+  <ItemDef>"</ItemDef>
+  <ItemFlags>0</ItemFlags>
+ </Constant>
+ <Enumeration>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>TextDelimiter</ItemName>
+  <ItemFlags>0</ItemFlags>
+  <ItemName>TextDelimiter</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>959690751</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>SingleQuote</SourceLine>
+   <SourceLine>DoubleQuote</SourceLine>
+  </ItemSource>
+ </Enumeration>
+</block>
+</RBProject>

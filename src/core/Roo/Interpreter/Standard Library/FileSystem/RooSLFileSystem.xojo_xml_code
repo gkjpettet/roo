@@ -1,0 +1,1348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="1264232447">
+ <ObjName>RooSLFileSystem</ObjName>
+ <ObjContainerID>2087188479</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Superclass>RooInstance</Superclass>
+ <Interfaces>RooNativeModule</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>GetterWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>770459647</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function GetterWithName(name As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If StrComp(name.Lexeme, "cwd", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoCwd(name)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "cwd_path", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoCwdPath(name)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasGetterWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2099945471</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasGetterWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Getters.HasKey(name)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasMethodWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2053494783</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasMethodWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Methods.HasKey(name)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>MethodWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1660358655</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function MethodWithName(name As RooToken) As Invokable</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Methods.Value(name.Lexeme)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err As KeyNotFoundException</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(name, "Cannot find a method named `" + name.Lexeme + _</SourceLine>
+   <SourceLine>"` for the FileSystem module.")</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>Invokable</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Type</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1676902399</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Type() As String</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return "Module"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ClassWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1225113599</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ClassWithName(name As RooToken) As RooNativeClass</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If StrComp(name.Lexeme, "Item", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooSLFileSystemItem(Self, Nil)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Unknown class.</SourceLine>
+   <SourceLine>Return Nil</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>RooNativeClass</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ModuleWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1012131839</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ModuleWithName(name As RooToken) As RooNativeModule</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused name</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The Filesystem module has no submodules.</SourceLine>
+   <SourceLine>Return Nil</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>RooNativeModule</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasClassWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>189032447</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasClassWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Classes.HasKey(name)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasModuleWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1035980799</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasModuleWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused name</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The FileSystem module has no submodules.</SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>924968959</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>// Part of the Stringable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return "FileSystem Module"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>146825215</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(interpreter As RooInterpreter)</SourceLine>
+   <SourceLine>Super.Constructor(Nil)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>mInterpreter = interpreter</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Initialise the dictionary containing protected file locations.</SourceLine>
+   <SourceLine>SetupProtectedFiles</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create this module's methods.</SourceLine>
+   <SourceLine>Methods = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine>Methods.Value("copy") = New RooSLFileSystemCopy(Self)</SourceLine>
+   <SourceLine>Methods.Value("delete") = New RooSLFileSystemDelete(Self)</SourceLine>
+   <SourceLine>Methods.Value("mkdir") = New RooSLFileSystemMkDir</SourceLine>
+   <SourceLine>Methods.Value("move") = New RooSLFileSystemMove(Self)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// It's getters.</SourceLine>
+   <SourceLine>Getters = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine>Getters.Value("cwd") = True</SourceLine>
+   <SourceLine>Getters.Value("cwd_path") = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Submodules.</SourceLine>
+   <SourceLine>// None.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Add any classes.</SourceLine>
+   <SourceLine>Classes = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine>Classes.Value("Item") = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>WindowsMoveFolder</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1431410687</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function WindowsMoveFolder(folder As FolderItem, destination As FolderItem) As Error</SourceLine>
+   <SourceLine>// Windows-only.</SourceLine>
+   <SourceLine>// Moves the `source` folder to the `destination` folder using the shell and the `move` command.</SourceLine>
+   <SourceLine>// `source` is the folder to move.</SourceLine>
+   <SourceLine>// `destination` specifies the folder that will become the parent of `source`.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The method assumes that checks have already been made for the following conditions:</SourceLine>
+   <SourceLine>// `source` &lt;&gt; Nil and `source` exists</SourceLine>
+   <SourceLine>// `destination` &lt;&gt; Nil and `destination` exists and `destination` is a folder and </SourceLine>
+   <SourceLine>// `destination` does NOT contain an identically named folder as `source`.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure that the source folder path does NOT have a trailing slash.</SourceLine>
+   <SourceLine>Dim sourcePath As String = folder.NativePath</SourceLine>
+   <SourceLine>If sourcePath.Right(1) = "\" Then sourcePath = sourcePath.Left(sourcePath.Len - 1)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Use the `move` command to actually move the folder.</SourceLine>
+   <SourceLine>Dim s As New Shell</SourceLine>
+   <SourceLine>s.Mode = 0</SourceLine>
+   <SourceLine>Dim command As String = "move /Y " + kQuote + sourcePath + kQuote + " " + _</SourceLine>
+   <SourceLine>kQuote + destination.NativePath + kQuote</SourceLine>
+   <SourceLine>s.Execute(command)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return move's error code (if any).</SourceLine>
+   <SourceLine>If s.ErrorCode = 0 Then</SourceLine>
+   <SourceLine>Return Error.None</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return Error.MoveError</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>folder As FolderItem, destination As FolderItem</ItemParams>
+  <ItemResult>Error</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Copy</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1956931583</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Copy(source As FolderItem, destination As FolderItem, overwrite As Boolean = False) As RooSLFileSystem.Error</SourceLine>
+   <SourceLine>// Copies the source file or folder to the specified destination.</SourceLine>
+   <SourceLine>// `source` is the file or folder to copy.</SourceLine>
+   <SourceLine>// `destination` must be a folder and must exist. </SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Sanity checks.</SourceLine>
+   <SourceLine>If source = Nil Then Return Error.SourceIsNil</SourceLine>
+   <SourceLine>If destination = Nil Then Return Error.DestinationIsNil</SourceLine>
+   <SourceLine>If Not source.Exists Then Return Error.SourceDoesNotExist</SourceLine>
+   <SourceLine>If Not destination.Exists Then Return Error.DestinationDoesNotExist</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim count, i As Integer</SourceLine>
+   <SourceLine>Dim item As FolderItem</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Copy a file</SourceLine>
+   <SourceLine>// -----------</SourceLine>
+   <SourceLine>If source.Directory = False Then</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Does `destination` contain a file with the same name as `source`?</SourceLine>
+   <SourceLine>count = destination.Count</SourceLine>
+   <SourceLine>For i = 1 To count</SourceLine>
+   <SourceLine>item = destination.Item(i)</SourceLine>
+   <SourceLine>If Not item.Directory And item.Name = source.Name Then</SourceLine>
+   <SourceLine>// Destination contains an identically named file. Should we overwrite?</SourceLine>
+   <SourceLine>If overwrite Then // Yes.</SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine>If ReallyDelete(item, SafeMode) &lt;&gt; 0 Then Return Error.UnableToDeleteFile</SourceLine>
+   <SourceLine>Exit</SourceLine>
+   <SourceLine>Catch err</SourceLine>
+   <SourceLine>If SafeMode Then</SourceLine>
+   <SourceLine>Return Error.AttemptToDeleteProtectedFolderItem</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return Error.UnableToDeleteFile</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine>Else // Do not overwrite the existing file - abort.</SourceLine>
+   <SourceLine>Return Error.Aborted</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// At this point, we are copying a file to a valid destination folder and we are sure there is </SourceLine>
+   <SourceLine>// not a file at this destination with the same name. All that's left is to do the file copy.</SourceLine>
+   <SourceLine>#If TargetWindows</SourceLine>
+   <SourceLine>Return WindowsCopyFile(source, destination)</SourceLine>
+   <SourceLine>#Else</SourceLine>
+   <SourceLine>Return UnixCopyFile(source, destination)</SourceLine>
+   <SourceLine>#EndIf</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Copy a folder</SourceLine>
+   <SourceLine>// -------------</SourceLine>
+   <SourceLine>If source.Directory Then</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Does `destination` contain a folder with the same name as `source`?</SourceLine>
+   <SourceLine>count = destination.Count</SourceLine>
+   <SourceLine>For i = 1 To count</SourceLine>
+   <SourceLine>item = destination.Item(i)</SourceLine>
+   <SourceLine>If item.Directory And item.Name = source.Name Then</SourceLine>
+   <SourceLine>// `destination` contains an identically named folder. Should we overwrite?</SourceLine>
+   <SourceLine>If overwrite Then // Yes.</SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine>If ReallyDelete(item, SafeMode) &lt;&gt; 0 Then Return Error.UnableToDeleteFolder</SourceLine>
+   <SourceLine>Exit</SourceLine>
+   <SourceLine>Catch err</SourceLine>
+   <SourceLine>If SafeMode Then</SourceLine>
+   <SourceLine>Return Error.AttemptToDeleteProtectedFolderItem</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return Error.UnableToDeleteFolder</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine>Else // Do not overwrite the existing folder - abort.</SourceLine>
+   <SourceLine>Return Error.Aborted</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// At this point, we are copying a folder to a valid destination folder and we are sure there is </SourceLine>
+   <SourceLine>// not a folder at this destination with the same name. All that's left is to do the folder copy.</SourceLine>
+   <SourceLine>#If TargetWindows</SourceLine>
+   <SourceLine>Return WindowsCopyFolder(source, destination)</SourceLine>
+   <SourceLine>#Else</SourceLine>
+   <SourceLine>Return UnixCopyFolder(source, destination)</SourceLine>
+   <SourceLine>#EndIf</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If we've got here something went wrong.</SourceLine>
+   <SourceLine>Return Error.Unknown</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>source As FolderItem, destination As FolderItem, overwrite As Boolean = False</ItemParams>
+  <ItemResult>RooSLFileSystem.Error</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>FileSystemErrorAsString</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1755992063</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function FileSystemErrorAsString(e As RooSLFileSystem.Error) As String</SourceLine>
+   <SourceLine>Select Case e</SourceLine>
+   <SourceLine>Case Error.Aborted</SourceLine>
+   <SourceLine>Return "Aborted"</SourceLine>
+   <SourceLine>Case Error.AttemptToDeleteProtectedFolderItem</SourceLine>
+   <SourceLine>Return "Attempt to delete protected FolderItem"</SourceLine>
+   <SourceLine>Case Error.CpError</SourceLine>
+   <SourceLine>Return "cp command error"</SourceLine>
+   <SourceLine>Case Error.DestinationDoesNotExist</SourceLine>
+   <SourceLine>Return "Destination does not exist"</SourceLine>
+   <SourceLine>Case Error.DestinationIsNil</SourceLine>
+   <SourceLine>Return "Destination is Nil"</SourceLine>
+   <SourceLine>Case Error.MoveError</SourceLine>
+   <SourceLine>Return "move command error"</SourceLine>
+   <SourceLine>Case Error.None</SourceLine>
+   <SourceLine>Return "None"</SourceLine>
+   <SourceLine>Case Error.SourceDoesNotExist</SourceLine>
+   <SourceLine>Return "Source does not exist"</SourceLine>
+   <SourceLine>Case Error.SourceIsNil</SourceLine>
+   <SourceLine>Return "Source is Nil"</SourceLine>
+   <SourceLine>Case Error.UnableToCreateDestinationFolder</SourceLine>
+   <SourceLine>Return "Unable to create destination folder"</SourceLine>
+   <SourceLine>Case Error.UnableToDeleteFile</SourceLine>
+   <SourceLine>Return "Unable to delete file"</SourceLine>
+   <SourceLine>Case Error.UnableToDeleteFolder</SourceLine>
+   <SourceLine>Return "Unable to delete folder"</SourceLine>
+   <SourceLine>Case Error.Unknown</SourceLine>
+   <SourceLine>Return "Unknown"</SourceLine>
+   <SourceLine>Case Error.XcopyDiskWriteError</SourceLine>
+   <SourceLine>Return "xcopy disk write error"</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>e As RooSLFileSystem.Error</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Move</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1753667583</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Move(source As FolderItem, destination As FolderItem, overwrite As Boolean = False) As Error</SourceLine>
+   <SourceLine>// Moves the source file or folder to the specified destination.</SourceLine>
+   <SourceLine>// `source` is the file or folder to move.</SourceLine>
+   <SourceLine>// `destination` must be a folder.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Sanity checks.</SourceLine>
+   <SourceLine>If source = Nil Then Return Error.SourceIsNil</SourceLine>
+   <SourceLine>If destination = Nil Then Return Error.DestinationIsNil</SourceLine>
+   <SourceLine>If Not source.Exists Then Return Error.SourceDoesNotExist</SourceLine>
+   <SourceLine>If Not destination.Exists Then Return Error.DestinationDoesNotExist</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim count, i As Integer</SourceLine>
+   <SourceLine>Dim item As FolderItem</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Move a file</SourceLine>
+   <SourceLine>// -----------</SourceLine>
+   <SourceLine>If source.Directory = False Then</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Does `destination` contain a file with the same name as `source`?</SourceLine>
+   <SourceLine>count = destination.Count</SourceLine>
+   <SourceLine>For i = 1 To count</SourceLine>
+   <SourceLine>item = destination.Item(i)</SourceLine>
+   <SourceLine>If Not item.Directory And item.Name = source.Name Then</SourceLine>
+   <SourceLine>// Destination contains an identically named file. Should we overwrite?</SourceLine>
+   <SourceLine>If overwrite Then // Yes.</SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine>If ReallyDelete(item, SafeMode) &lt;&gt; 0 Then Return Error.UnableToDeleteFile</SourceLine>
+   <SourceLine>Exit</SourceLine>
+   <SourceLine>Catch err</SourceLine>
+   <SourceLine>If SafeMode Then</SourceLine>
+   <SourceLine>Return Error.AttemptToDeleteProtectedFolderItem</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return Error.UnableToDeleteFile</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine>Else // Do not overwrite the existing file - abort.</SourceLine>
+   <SourceLine>Return Error.Aborted</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// At this point, we are moving a file to a valid destination folder and we are sure there is </SourceLine>
+   <SourceLine>// not a file at this destination with the same name. All that's left to do is move the file.</SourceLine>
+   <SourceLine>#If TargetWindows</SourceLine>
+   <SourceLine>Return WindowsMoveFile(source, destination)</SourceLine>
+   <SourceLine>#Else</SourceLine>
+   <SourceLine>Return UnixMoveFile(source, destination)</SourceLine>
+   <SourceLine>#EndIf</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Move a folder</SourceLine>
+   <SourceLine>// -------------</SourceLine>
+   <SourceLine>If source.Directory Then</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Does `destination` contain a folder with the same name as `source`?</SourceLine>
+   <SourceLine>count = destination.Count</SourceLine>
+   <SourceLine>For i = 1 To count</SourceLine>
+   <SourceLine>item = destination.Item(i)</SourceLine>
+   <SourceLine>If item.Directory And item.Name = source.Name Then</SourceLine>
+   <SourceLine>// Destination contains an identically named folder. Should we overwrite?</SourceLine>
+   <SourceLine>If overwrite Then // Yes.</SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine>If ReallyDelete(item, SafeMode) &lt;&gt; 0 Then Return Error.UnableToDeleteFolder</SourceLine>
+   <SourceLine>Exit</SourceLine>
+   <SourceLine>Catch err</SourceLine>
+   <SourceLine>If SafeMode Then</SourceLine>
+   <SourceLine>Return Error.AttemptToDeleteProtectedFolderItem</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return Error.UnableToDeleteFolder</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine>Else // Do not overwrite the existing folder - abort.</SourceLine>
+   <SourceLine>Return Error.Aborted</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// At this point, we are moving a folder to a valid destination folder and we are sure there is </SourceLine>
+   <SourceLine>// not a folder at this destination with the same name. All that's left to do is move the folder.</SourceLine>
+   <SourceLine>#If TargetWindows</SourceLine>
+   <SourceLine>Return WindowsMoveFolder(source, destination)</SourceLine>
+   <SourceLine>#Else</SourceLine>
+   <SourceLine>Return UnixMoveFolder(source, destination)</SourceLine>
+   <SourceLine>#EndIf</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If we've got here something went wrong.</SourceLine>
+   <SourceLine>Return Error.Unknown</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>source As FolderItem, destination As FolderItem, overwrite As Boolean = False</ItemParams>
+  <ItemResult>Error</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ReallyDelete</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>36351999</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ReallyDelete(what As FolderItem, SafeMode As Boolean = True) As Integer</SourceLine>
+   <SourceLine>// Returns an error code if it fails, or zero if the folder was deleted successfully.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Do NOT permit the deletion of important special folders if in safe mode.</SourceLine>
+   <SourceLine>If SafeMode And ProtectedFolderItems.HasKey(what.NativePath) Then</SourceLine>
+   <SourceLine>Raise New RooSLFileSystemException(what, "An attempt was made to delete a protected " + _</SourceLine>
+   <SourceLine>"Deletion aborted. FolderItem.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim returnCode, lastErr, itemCount As Integer</SourceLine>
+   <SourceLine>Dim files(), dirs() As FolderItem</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If what = Nil Or Not what.Exists() Then Return 0</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Is this a file?</SourceLine>
+   <SourceLine>If Not what.Directory Then</SourceLine>
+   <SourceLine>what.Delete</SourceLine>
+   <SourceLine>Return what.LastErrorCode</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Collect the folder‘s contents first.</SourceLine>
+   <SourceLine>// This is faster than collecting them in reverse order and deleting them right away.</SourceLine>
+   <SourceLine>itemCount = what.Count</SourceLine>
+   <SourceLine>For i As Integer = 1 To itemCount</SourceLine>
+   <SourceLine>Dim f As FolderItem</SourceLine>
+   <SourceLine>f = what.TrueItem(i)</SourceLine>
+   <SourceLine>If f &lt;&gt; Nil Then</SourceLine>
+   <SourceLine>If f.Directory Then</SourceLine>
+   <SourceLine>dirs.Append(f)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>files.Append(f)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Now delete the files.</SourceLine>
+   <SourceLine>For Each f As FolderItem In files</SourceLine>
+   <SourceLine>f.Delete</SourceLine>
+   <SourceLine>lastErr = f.LastErrorCode // Check if an error occurred.</SourceLine>
+   <SourceLine>If lastErr &lt;&gt; 0 Then</SourceLine>
+   <SourceLine>// Return the error code if any. This will cancel further deletion.</SourceLine>
+   <SourceLine>Return lastErr</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Redim files(-1) // Free the memory used by the files array before we enter recursion.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Now delete the directories.</SourceLine>
+   <SourceLine>For Each f As FolderItem In dirs</SourceLine>
+   <SourceLine>lastErr = ReallyDelete(f, SafeMode)</SourceLine>
+   <SourceLine>If lastErr &lt;&gt; 0 Then</SourceLine>
+   <SourceLine>// Return the error code if any. This will cancel the deletion.</SourceLine>
+   <SourceLine>Return lastErr</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If returnCode = 0 Then</SourceLine>
+   <SourceLine>// We‘re done without error, so the folder should be empty and we can delete it.</SourceLine>
+   <SourceLine>what.Delete</SourceLine>
+   <SourceLine>returnCode = what.LastErrorCode</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return returnCode</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>what As FolderItem, SafeMode As Boolean = True</ItemParams>
+  <ItemResult>Integer</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>SetupProtectedFiles</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>906637311</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub SetupProtectedFiles()</SourceLine>
+   <SourceLine>// Initialises the Dictionary that stores the FolderItems that must never be deleted by </SourceLine>
+   <SourceLine>// the ReallyDelete method. </SourceLine>
+   <SourceLine>// Which locations are protected depends upon the platform that the app is currently running on.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The following locations are protected on:</SourceLine>
+   <SourceLine>// Windows:</SourceLine>
+   <SourceLine>// ApplicationData, Applications, Desktop, Documents, Extensions, Favourites, Fonts, </SourceLine>
+   <SourceLine>// Movies, Music, Pictures, Printers, SharedApplicationData, SharedDocuments, System, UserHome, Windows</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// macOS: </SourceLine>
+   <SourceLine>// ApplicationData, Applications, Bin, Desktop, Documents, Etc, Favourites, Fonts, Home, </SourceLine>
+   <SourceLine>// Library, Mount, Movies, Music, Pictures, Preferences, Printers, SBin, SharedApplicationData, </SourceLine>
+   <SourceLine>// SharedDocuments, SharedPreferences, System, UserBin, UserHome, UserLibrary, UsersBin</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Linux:</SourceLine>
+   <SourceLine>// ApplicationData, Bin, Desktop, Documents, Etc, Home, Library, Mount, Movies, Music, Pictures, </SourceLine>
+   <SourceLine>// SBin, UserBin, UserHome, UserLibrary, UsersBin</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>ProtectedFolderItems = New Xojo.Core.Dictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Protect the root folder that the app is running upon on all platforms.</SourceLine>
+   <SourceLine>Dim root As FolderItem = App.ExecutableFile.Parent</SourceLine>
+   <SourceLine>Do</SourceLine>
+   <SourceLine>If root.Parent = Nil Or Not root.Parent.Exists Then Exit</SourceLine>
+   <SourceLine>root = root.Parent</SourceLine>
+   <SourceLine>Loop</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(root.NativePath) = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Setup platform-specific locations to protect.</SourceLine>
+   <SourceLine>#If TargetWindows</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.ApplicationData.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Applications.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Desktop.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Documents.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Extensions.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Favorites.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Fonts.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Movies.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Music.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Pictures.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Printers.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.SharedApplicationData.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.SharedDocuments.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.System.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.UserHome.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Windows.NativePath) = True</SourceLine>
+   <SourceLine>#ElseIf TargetMacOS</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.ApplicationData.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Applications.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Bin.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Desktop.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Documents.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Etc.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Favorites.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Fonts.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Home.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Library.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Mount.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Movies.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Music.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Pictures.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Preferences.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Printers.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.SBin.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.SharedApplicationData.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.SharedDocuments.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.SharedPreferences.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.System.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.UserBin.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.UserHome.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.UserLibrary.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.UserSBin.NativePath) = True</SourceLine>
+   <SourceLine>#Else</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.ApplicationData.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Bin.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Desktop.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Documents.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Etc.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Home.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Library.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Mount.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Movies.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Music.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.Pictures.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.SBin.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.UserBin.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.UserHome.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.UserLibrary.NativePath) = True</SourceLine>
+   <SourceLine>ProtectedFolderItems.Value(SpecialFolder.UserSBin.NativePath) = True</SourceLine>
+   <SourceLine>#EndIf</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>UnixCopyFile</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1513867263</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function UnixCopyFile(file As FolderItem, destination As FolderItem) As Error</SourceLine>
+   <SourceLine>// macOS and Linux only.</SourceLine>
+   <SourceLine>// Copies the `source` file to the `destination` folder using the shell and the `cp` command.</SourceLine>
+   <SourceLine>// `source` is the file to copy.</SourceLine>
+   <SourceLine>// `destination` specifies the folder that will become the parent of `source`.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The method assumes that checks have already been made for the following conditions:</SourceLine>
+   <SourceLine>// `source` &lt;&gt; Nil and `source` exists</SourceLine>
+   <SourceLine>// `destination` &lt;&gt; Nil and `destination` exists and `destination` does NOT contain an identically </SourceLine>
+   <SourceLine>// named file as `source`.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Use cp to do the copy.</SourceLine>
+   <SourceLine>Dim s As New Shell</SourceLine>
+   <SourceLine>s.Mode = 0</SourceLine>
+   <SourceLine>Dim command As String = "cp " + kQuote + file.NativePath + kQuote + " " + _</SourceLine>
+   <SourceLine>kQuote + destination.NativePath + kQuote</SourceLine>
+   <SourceLine>s.Execute(command)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return cp's error code (if any).</SourceLine>
+   <SourceLine>If s.ErrorCode = 0 Then</SourceLine>
+   <SourceLine>Return Error.None</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return Error.CpError</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>file As FolderItem, destination As FolderItem</ItemParams>
+  <ItemResult>Error</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>UnixCopyFolder</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1190672383</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function UnixCopyFolder(folder As FolderItem, destination As FolderItem) As Error</SourceLine>
+   <SourceLine>// macOS and Linux only..</SourceLine>
+   <SourceLine>// Copies the `source` folder to the `destination` folder using the shell and the `cp` command.</SourceLine>
+   <SourceLine>// `source` is the folder to copy.</SourceLine>
+   <SourceLine>// `destination` specifies the folder that will become the parent of `source`.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The method assumes that checks have already been made for the following conditions:</SourceLine>
+   <SourceLine>// `source` &lt;&gt; Nil and `source` exists</SourceLine>
+   <SourceLine>// `destination` &lt;&gt; Nil and `destination` exists and `destination` is a folder and </SourceLine>
+   <SourceLine>// `destination` does NOT contain an identically named folder as `source`.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure there is NO trailing slash after the source path.</SourceLine>
+   <SourceLine>Dim sourcePath As String = folder.NativePath</SourceLine>
+   <SourceLine>If sourcePath.Right(1) = "/" Then sourcePath = sourcePath.Left(sourcePath.Len - 1)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure there IS a trailing slash at the end of the destination path.</SourceLine>
+   <SourceLine>Dim destinationPath As String = destination.NativePath</SourceLine>
+   <SourceLine>If destinationPath.Right(1) &lt;&gt; "/" Then destinationPath = destinationPath + "/"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Use cp to do the copy.</SourceLine>
+   <SourceLine>Dim s As New Shell</SourceLine>
+   <SourceLine>s.Mode = 0</SourceLine>
+   <SourceLine>Dim command As String = "cp -R " + kQuote + sourcePath + kQuote + " " + kQuote + destinationPath + kQuote</SourceLine>
+   <SourceLine>s.Execute(command)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return cp's error code (if any).</SourceLine>
+   <SourceLine>If s.ErrorCode = 0 Then</SourceLine>
+   <SourceLine>Return Error.None</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return Error.CpError</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>folder As FolderItem, destination As FolderItem</ItemParams>
+  <ItemResult>Error</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>UnixMoveFile</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>694384639</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function UnixMoveFile(file As FolderItem, destination As FolderItem) As Error</SourceLine>
+   <SourceLine>// macOS and Linux only.</SourceLine>
+   <SourceLine>// Moves the `source` file to the `destination` folder using the shell and the `mv` command.</SourceLine>
+   <SourceLine>// `source` is the file to move.</SourceLine>
+   <SourceLine>// `destination` specifies the folder that will become the parent of `source`.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The method assumes that checks have already been made for the following conditions:</SourceLine>
+   <SourceLine>// `source` &lt;&gt; Nil and `source` exists</SourceLine>
+   <SourceLine>// `destination` &lt;&gt; Nil and `destination` exists and `destination` does NOT contain an identically </SourceLine>
+   <SourceLine>// named file as `source`.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// To determine the destination path, we need to append the file's name to it.</SourceLine>
+   <SourceLine>Dim destinationPath As String = destination.NativePath</SourceLine>
+   <SourceLine>If destinationPath.Right(1) &lt;&gt; "/" Then destinationPath = destinationPath + "/"</SourceLine>
+   <SourceLine>destinationPath = destinationPath + file.Name</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Use `mv` to do the moving.</SourceLine>
+   <SourceLine>Dim s As New Shell</SourceLine>
+   <SourceLine>s.Mode = 0</SourceLine>
+   <SourceLine>Dim command As String = "mv -f " + kQuote + file.NativePath + kQuote + " " + _</SourceLine>
+   <SourceLine>kQuote + destinationPath + kQuote</SourceLine>
+   <SourceLine>s.Execute(command)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return mv's error code (if any).</SourceLine>
+   <SourceLine>If s.ErrorCode = 0 Then</SourceLine>
+   <SourceLine>Return Error.None</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return Error.MoveError</SourceLine>
+   <SourceLine>End</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>file As FolderItem, destination As FolderItem</ItemParams>
+  <ItemResult>Error</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>UnixMoveFolder</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>451958783</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function UnixMoveFolder(folder As FolderItem, destination As FolderItem) As Error</SourceLine>
+   <SourceLine>// macOS and Linux only..</SourceLine>
+   <SourceLine>// Moves the `source` folder to the `destination` folder using the shell and the `mv` command.</SourceLine>
+   <SourceLine>// `source` is the folder to move.</SourceLine>
+   <SourceLine>// `destination` specifies the folder that will become the parent of `source`.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The method assumes that checks have already been made for the following conditions:</SourceLine>
+   <SourceLine>// `source` &lt;&gt; Nil and `source` exists</SourceLine>
+   <SourceLine>// `destination` &lt;&gt; Nil and `destination` exists and `destination` is a folder and </SourceLine>
+   <SourceLine>// `destination` does NOT contain an identically named folder as `source`.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Use `mv` to do the moving.</SourceLine>
+   <SourceLine>Dim s As New Shell</SourceLine>
+   <SourceLine>s.Mode = 0</SourceLine>
+   <SourceLine>Dim command As String = "mv -f " + kQuote + folder.NativePath + kQuote + " " + _</SourceLine>
+   <SourceLine>kQuote + destination.NativePath + kQuote</SourceLine>
+   <SourceLine>s.Execute(command)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return mv's error code (if any).</SourceLine>
+   <SourceLine>If s.ErrorCode = 0 Then</SourceLine>
+   <SourceLine>Return Error.None</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return Error.MoveError</SourceLine>
+   <SourceLine>End</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>folder As FolderItem, destination As FolderItem</ItemParams>
+  <ItemResult>Error</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>WindowsCopyFile</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>20023295</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function WindowsCopyFile(file As FolderItem, destination As FolderItem) As Error</SourceLine>
+   <SourceLine>// Windows-only.</SourceLine>
+   <SourceLine>// Copies the `source` file to the `destination` folder using the shell and the `xcopy` command.</SourceLine>
+   <SourceLine>// `source` is the file to copy.</SourceLine>
+   <SourceLine>// `destination` specifies the folder that will become the parent of `source`.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The method assumes that checks have already been made for the following conditions:</SourceLine>
+   <SourceLine>// `source` &lt;&gt; Nil and `source` exists</SourceLine>
+   <SourceLine>// `destination` &lt;&gt; Nil and `destination` exists and `destination` does NOT contain an identically </SourceLine>
+   <SourceLine>// named file as `source`.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Use xcopy to do the copy.</SourceLine>
+   <SourceLine>Dim s As New Shell</SourceLine>
+   <SourceLine>s.Mode = 0</SourceLine>
+   <SourceLine>Dim command As String = "xcopy " + kQuote + file.NativePath + kQuote + " " + _</SourceLine>
+   <SourceLine>kQuote + destination.NativePath + kQuote + " /i /y"</SourceLine>
+   <SourceLine>s.Execute(command)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return xcopy's error code (if any).</SourceLine>
+   <SourceLine>Select Case s.ErrorCode</SourceLine>
+   <SourceLine>Case 5</SourceLine>
+   <SourceLine>Return Error.XcopyDiskWriteError</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return Error.None</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>file As FolderItem, destination As FolderItem</ItemParams>
+  <ItemResult>Error</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>WindowsCopyFolder</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>338731007</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function WindowsCopyFolder(folder As FolderItem, destination As FolderItem) As Error</SourceLine>
+   <SourceLine>// Windows-only.</SourceLine>
+   <SourceLine>// Copies the `source` folder to the `destination` folder using the shell and the `xcopy` command.</SourceLine>
+   <SourceLine>// `source` is the folder to copy.</SourceLine>
+   <SourceLine>// `destination` specifies the folder that will become the parent of `source`.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The method assumes that checks have already been made for the following conditions:</SourceLine>
+   <SourceLine>// `source` &lt;&gt; Nil and `source` exists</SourceLine>
+   <SourceLine>// `destination` &lt;&gt; Nil and `destination` exists and `destination` is a folder and </SourceLine>
+   <SourceLine>// `destination` does NOT contain an identically named folder as `source`.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// We need to create a folder at the destination with the same name as the source folder.</SourceLine>
+   <SourceLine>Dim d As FolderItem = destination.Child(folder.Name)</SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine>d.CreateAsFolder</SourceLine>
+   <SourceLine>If d.LastErrorCode &lt;&gt; FolderItem.NoError Then Return Error.UnableToCreateDestinationFolder</SourceLine>
+   <SourceLine>Catch err</SourceLine>
+   <SourceLine>Return Error.UnableToCreateDestinationFolder</SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Ensure that there is no trailing slash in the source folder's path.</SourceLine>
+   <SourceLine>Dim sourcePath As String = folder.NativePath</SourceLine>
+   <SourceLine>If sourcePath.Right(1) = "\" Then sourcePath = sourcePath.Left(sourcePath.Len - 1)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Use xcopy to do the copy.</SourceLine>
+   <SourceLine>Dim s As New Shell</SourceLine>
+   <SourceLine>s.Mode = 0</SourceLine>
+   <SourceLine>Dim command As String = "xcopy " + kQuote + sourcePath + kQuote + " " + _</SourceLine>
+   <SourceLine>kQuote + d.NativePath + kQuote + " /i /e /s /y"</SourceLine>
+   <SourceLine>s.Execute(command)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return xcopy's error code (if any).</SourceLine>
+   <SourceLine>Select Case s.ErrorCode</SourceLine>
+   <SourceLine>Case 5</SourceLine>
+   <SourceLine>Return Error.XcopyDiskWriteError</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return Error.None</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>folder As FolderItem, destination As FolderItem</ItemParams>
+  <ItemResult>Error</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>WindowsMoveFile</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1282400255</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function WindowsMoveFile(file As FolderItem, destination As FolderItem) As Error</SourceLine>
+   <SourceLine>// Windows-only.</SourceLine>
+   <SourceLine>// Moves the `source` file to the `destination` folder using the shell and the `move` command.</SourceLine>
+   <SourceLine>// `source` is the file to move.</SourceLine>
+   <SourceLine>// `destination` specifies the folder that will become the parent of `source`.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The method assumes that checks have already been made for the following conditions:</SourceLine>
+   <SourceLine>// `source` &lt;&gt; Nil and `source` exists</SourceLine>
+   <SourceLine>// `destination` &lt;&gt; Nil and `destination` exists and `destination` does NOT contain an identically </SourceLine>
+   <SourceLine>// named file as `source`.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Use the `move` command to actually move the file.</SourceLine>
+   <SourceLine>Dim s As New Shell</SourceLine>
+   <SourceLine>s.Mode = 0</SourceLine>
+   <SourceLine>Dim command As String = "move /Y " + kQuote + file.NativePath + kQuote + " " + _</SourceLine>
+   <SourceLine>kQuote + destination.NativePath + kQuote</SourceLine>
+   <SourceLine>s.Execute(command)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return move's error code (if any).</SourceLine>
+   <SourceLine>If s.ErrorCode = 0 Then</SourceLine>
+   <SourceLine>Return Error.None</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return Error.MoveError</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>file As FolderItem, destination As FolderItem</ItemParams>
+  <ItemResult>Error</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoCwd</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>766664703</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoCwd(where As RooToken) As Variant</SourceLine>
+   <SourceLine>// FileSystem.cwd as File or Nothing</SourceLine>
+   <SourceLine>// Returns the current working directory (cwd) as a FileSystem.Item object.</SourceLine>
+   <SourceLine>// If Roo is executing a script then the cwd will be the folder containing the script file.</SourceLine>
+   <SourceLine>// If Roo is in REPL mode or is simply interpreting direct input then cwd will be Nothing.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If where.File = Nil Or where.File.Parent = Nil Then Return New RooNothing</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim cwd As FolderItem = New FolderItem(where.File.Parent.NativePath, FolderItem.PathTypeNative)</SourceLine>
+   <SourceLine>Return New RooSLFileSystemItem(Self, cwd)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err</SourceLine>
+   <SourceLine>Return New RooNothing</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoCwdPath</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1244696575</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoCwdPath(where As RooToken) As Variant</SourceLine>
+   <SourceLine>// FileSystem.cwd_path as Text or Nothing</SourceLine>
+   <SourceLine>// Returns the current working directory (cwd) as a Roo text path.</SourceLine>
+   <SourceLine>// If Roo is executing a script then the cwd will be the path to the folder containing </SourceLine>
+   <SourceLine>// the script file.</SourceLine>
+   <SourceLine>// If Roo is in REPL mode or is simply interpreting direct input then cwd_path </SourceLine>
+   <SourceLine>// will return Nothing.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If where.File = Nil Or where.File.Parent = Nil Then Return New RooNothing</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim cwd As FolderItem = New FolderItem(where.File.Parent.NativePath, FolderItem.PathTypeNative)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim path As String = Roo.FolderItemToRooPath(cwd)</SourceLine>
+   <SourceLine>If path = "" Then Return New RooNothing</SourceLine>
+   <SourceLine>Return New RooText(path)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Property>
+  <ItemName>Classes</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>597901311</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Classes As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Classes As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Getters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1939165183</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Getters As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Getters As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Methods</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1044344831</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Methods As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Methods As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>ProtectedFolderItems</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1346762751</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>ProtectedFolderItems As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>ProtectedFolderItems As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>SafeMode</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1703829503</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>SafeMode As Boolean = True</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>SafeMode As Boolean = True</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>mInterpreter</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>964591615</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>mInterpreter As RooInterpreter</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>mInterpreter As RooInterpreter</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Interpreter</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>610795519</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Interpreter As RooInterpreter</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Interpreter As RooInterpreter</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <SetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Set</SourceLine>
+   <SourceLine>// Read only.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Set</SourceLine>
+  </SetAccessor>
+  <GetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Get</SourceLine>
+   <SourceLine>Return mInterpreter</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Get</SourceLine>
+  </GetAccessor>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>SafeMode</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <PropertyValue>True</PropertyValue>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+ <Constant>
+  <ItemName>kQuote</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1173295103</PartID>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemType>0</ItemType>
+  <ItemDef>"</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+ <Enumeration>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>Error</ItemName>
+  <ItemFlags>0</ItemFlags>
+  <ItemType>Integer</ItemType>
+  <ItemName>Error</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>330995711</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Aborted</SourceLine>
+   <SourceLine>AttemptToDeleteProtectedFolderItem</SourceLine>
+   <SourceLine>CpError</SourceLine>
+   <SourceLine>DestinationDoesNotExist</SourceLine>
+   <SourceLine>DestinationIsNil</SourceLine>
+   <SourceLine>MoveError</SourceLine>
+   <SourceLine>None</SourceLine>
+   <SourceLine>SourceDoesNotExist</SourceLine>
+   <SourceLine>SourceIsNil</SourceLine>
+   <SourceLine>UnableToCreateDestinationFolder</SourceLine>
+   <SourceLine>UnableToDeleteFile</SourceLine>
+   <SourceLine>UnableToDeleteFolder</SourceLine>
+   <SourceLine>Unknown</SourceLine>
+   <SourceLine>XcopyDiskWriteError</SourceLine>
+  </ItemSource>
+ </Enumeration>
+</block>
+</RBProject>

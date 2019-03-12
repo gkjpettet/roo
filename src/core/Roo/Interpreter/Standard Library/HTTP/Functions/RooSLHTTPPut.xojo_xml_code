@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="761087999">
+ <ObjName>RooSLHTTPPut</ObjName>
+ <ObjContainerID>0</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Interfaces>Invokable, Stringable</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Arity</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1097574399</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Arity() As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine>// The HTTP.put() method takes either 2 or 3 parameters.</SourceLine>
+   <SourceLine>// HTTP.put(url, content) or HTTP.put(url, content, timeout)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Array(2, 3)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Invoke</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>134215679</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Invoke(interpreter As RooInterpreter, args() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine>// HTTP.put(url, content) or HTTP.put(url, content, timeout)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the url.</SourceLine>
+   <SourceLine>Roo.AssertIsStringable(where, args(0))</SourceLine>
+   <SourceLine>Dim url As String = Stringable(args(0)).StringValue</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the content.</SourceLine>
+   <SourceLine>Roo.AssertIsStringable(where, args(1))</SourceLine>
+   <SourceLine>Dim content As String = Stringable(args(1)).StringValue</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the timeout.</SourceLine>
+   <SourceLine>Dim timeout As Integer = RooSLHTTP.kDefaultRequestTimeout</SourceLine>
+   <SourceLine>If args.Ubound = 2 Then</SourceLine>
+   <SourceLine>Roo.AssertIsPositiveInteger(where, args(2))</SourceLine>
+   <SourceLine>timeout = RooNumber(args(2)).Value</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create a basic HTTP.Request object to make the request.</SourceLine>
+   <SourceLine>Dim r As New RooSLHTTPRequest(interpreter)</SourceLine>
+   <SourceLine>r.URL = url</SourceLine>
+   <SourceLine>r.Content = content</SourceLine>
+   <SourceLine>r.Timeout = timeout</SourceLine>
+   <SourceLine>r.Method = RooSLHTTP.MethodType.PUT</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Send the request.</SourceLine>
+   <SourceLine>Return r.Send(where)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter, args() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1010921471</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>// Part of the Stringable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return "&lt;function: HTTP.put&gt;"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

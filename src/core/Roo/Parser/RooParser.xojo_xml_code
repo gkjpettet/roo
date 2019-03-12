@@ -1,0 +1,1706 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="1490538495">
+ <ObjName>RooParser</ObjName>
+ <ObjContainerID>1661949951</ObjContainerID>
+ <IsClass>1</IsClass>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Parse</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1768955903</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Parse(source as String) As RooStmt()</SourceLine>
+   <SourceLine>// Builds an abstract syntax tree AST and returns it as an array of RooStmts.</SourceLine>
+   <SourceLine>// If a scanning error occurs we fire the ScannerError event and return an empty array.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Initialise a scanner with this source code.</SourceLine>
+   <SourceLine>Scanner = New RooScanner(source)</SourceLine>
+   <SourceLine>AddHandler Scanner.Error, AddressOf ScannerErrorDelegate</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Now parse.</SourceLine>
+   <SourceLine>Return ActuallyParse</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>source as String</ItemParams>
+  <ItemResult>RooStmt()</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ActuallyParse</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>653041663</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ActuallyParse() As RooStmt()</SourceLine>
+   <SourceLine>// This method actually does the parsing. It's called from one of the two Parse() methods after </SourceLine>
+   <SourceLine>// those methods have correctly setup the scanner.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Redim Tokens(-1)</SourceLine>
+   <SourceLine>Current = 0</SourceLine>
+   <SourceLine>HasError = False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim statements() As RooStmt</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Tokenise the source code.</SourceLine>
+   <SourceLine>Tokens = scanner.Scan</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If a error occurred whilst scanning, it will have already fired our custom </SourceLine>
+   <SourceLine>// ScanningError event and set HasError to True.</SourceLine>
+   <SourceLine>If HasError Then Return statements</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Bail early if there is only an EOF token.</SourceLine>
+   <SourceLine>If Tokens.Ubound = 0 Then Return statements</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Parse the tokens.</SourceLine>
+   <SourceLine>Dim s As RooStmt</SourceLine>
+   <SourceLine>While Tokens(Current).Type &lt;&gt; Roo.TokenType.EOF</SourceLine>
+   <SourceLine>s = Declaration</SourceLine>
+   <SourceLine>If s &lt;&gt; Nil Then statements.Append(s)</SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return the AST.</SourceLine>
+   <SourceLine>Return statements</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err As RooParserError</SourceLine>
+   <SourceLine>HasError = True</SourceLine>
+   <SourceLine>ParsingError(err.Token, err.Message)</SourceLine>
+   <SourceLine>Return statements // Return what we managed to successfully parse.</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooStmt()</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Parse</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1511825407</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Parse(sourceFile As FolderItem) As RooStmt()</SourceLine>
+   <SourceLine>// Takes a file containing Roo code, builds an abstract syntax tree AST and returns it as an </SourceLine>
+   <SourceLine>// array of RooStmts.</SourceLine>
+   <SourceLine>// If a scanning error occurs we fire the ScannerError event and return an empty array.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Initialise a scanner with this source code.</SourceLine>
+   <SourceLine>Scanner = New RooScanner(sourceFile)</SourceLine>
+   <SourceLine>AddHandler Scanner.Error, AddressOf ScannerErrorDelegate</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Now parse.</SourceLine>
+   <SourceLine>Return ActuallyParse</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>sourceFile As FolderItem</ItemParams>
+  <ItemResult>RooStmt()</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ScannerErrorDelegate</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>337131519</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub ScannerErrorDelegate(sender As RooScanner, file As FolderItem, message As String, line As Integer, position As Integer)</SourceLine>
+   <SourceLine>#Pragma Unused sender</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>HasError = True</SourceLine>
+   <SourceLine>ScanningError(file, message, line, position)</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>sender As RooScanner, file As FolderItem, message As String, line As Integer, position As Integer</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Declaration</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2063081471</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Declaration() As RooStmt</SourceLine>
+   <SourceLine>// Declaration → VarDeclaration | FunctionDeclaration </SourceLine>
+   <SourceLine>//             | ClassDeclaration | ModuleDeclaration</SourceLine>
+   <SourceLine>//             | Statement</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Match(Roo.TokenType.VAR) Then Return VarDeclaration</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.DEF_KEYWORD) Then Return FunctionDeclaration("function")</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.CLASS_KEYWORD) Then Return ClassDeclaration</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.MODULE_KEYWORD) Then Return ModuleDeclaration</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Statement</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooStmt</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>VarDeclaration</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1956018175</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function VarDeclaration() As RooStmt</SourceLine>
+   <SourceLine>// VarDeclaration → VAR IDENTIFIER ( EQUAL Expression )? TERMINATOR</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim name As RooToken = Consume(Roo.TokenType.IDENTIFIER, "Expected a variable name.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Is there an initialiser for this variable (e.g: a = 10)?</SourceLine>
+   <SourceLine>Dim initialiser As RooExpr = Nil</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.EQUAL) Then initialiser = Expression</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Consume(Roo.TokenType.TERMINATOR, "Expected either a new line or semicolon after variable declaration.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooVarStmt(name, initialiser)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooStmt</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>FunctionDeclaration</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1259206655</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function FunctionDeclaration(kind As String) As RooFunctionStmt</SourceLine>
+   <SourceLine>// FunctionStmt → IDENTIFIER (LPAREN parameters? RPAREN)? COLON (PASS | INDENT Block)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// A method (NOT a function) can be declared without parentheses to signify that it is a getter method.</SourceLine>
+   <SourceLine>// Getter declarations are represented in the FunctionStmt by setting the `parameters` array to Nil. </SourceLine>
+   <SourceLine>// Methods that take no parameters will set `parameters` to an empty array. This is a very important</SourceLine>
+   <SourceLine>// distinction and we must be careful to check for Nil when utilising the `parameters` property in the </SourceLine>
+   <SourceLine>// Resolver and the Interpeter. </SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim name As RooToken = Consume(Roo.TokenType.IDENTIFIER, "Expected a " + kind + " name. ")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim parameters() As RooToken</SourceLine>
+   <SourceLine>If kind &lt;&gt; "method" Or Check(Roo.TokenType.LPAREN) Then</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.LPAREN, "Expected `(` after " + kind + " name.")</SourceLine>
+   <SourceLine>If Not Check(Roo.TokenType.RPAREN) Then</SourceLine>
+   <SourceLine>Do</SourceLine>
+   <SourceLine>If parameters.Ubound = 7 Then</SourceLine>
+   <SourceLine>' Limit the number of parameters to 8 (simplifies things in our future VM implementation).</SourceLine>
+   <SourceLine>HasError = True</SourceLine>
+   <SourceLine>Raise New RooParserError(Tokens(Current), "Cannot have more than 8 parameters.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>parameters.Append(Consume(Roo.TokenType.IDENTIFIER, "Expected parameter name."))</SourceLine>
+   <SourceLine>Loop Until Not Match(Roo.TokenType.COMMA)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.RPAREN, "Expected a `)` after parameters.")</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>parameters = Nil</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Consume(Roo.TokenType.COLON, "Expected a `:` before " + kind + " body.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim body() As RooStmt</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.PASS_KEYWORD) Then</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.TERMINATOR, "Expected a new line or semicolon after the `pass` statement.")</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.INDENT, "Expected an indentation before " + kind + " body.")</SourceLine>
+   <SourceLine>body = Block</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooFunctionStmt(name, parameters, body)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>kind As String</ItemParams>
+  <ItemResult>RooFunctionStmt</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Match</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1700763647</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Match(ParamArray types As Roo.TokenType) As Boolean</SourceLine>
+   <SourceLine>// Checks to see if the current token is any of the passed types. If it is then the token is </SourceLine>
+   <SourceLine>// consumed and we return True. Otherwise we leave the token where it is and return False.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>For Each type As Roo.TokenType In types</SourceLine>
+   <SourceLine>If Check(type) Then</SourceLine>
+   <SourceLine>If Tokens(Current).Type &lt;&gt; Roo.TokenType.EOF Then Current = Current + 1</SourceLine>
+   <SourceLine>Return True</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next type</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>ParamArray types As Roo.TokenType</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Check</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>840509439</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Check(type As Roo.TokenType) As Boolean</SourceLine>
+   <SourceLine>// Returns True if the current token type matches `type`, otherwise we return False. </SourceLine>
+   <SourceLine>// Unlike Match(), it doesn't consume the token.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return If(Tokens(Current).Type = type, True, False)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>type As Roo.TokenType</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ClassDeclaration</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1002094591</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ClassDeclaration() As RooClassStmt</SourceLine>
+   <SourceLine>// ClassDeclaration → CLASS IDENTIFIER ( LESS IDENTIFIER )? COLON (PASS | INDENT (PASS | FunctionDeclaration*) DEDENT)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim name As RooToken = Consume(Roo.TokenType.IDENTIFIER, "Expected a class name.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Has a superclass been defined?</SourceLine>
+   <SourceLine>Dim superclass As RooVariableExpr = Nil</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.LESS) Then</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.IDENTIFIER, "Expected a superclass name.")</SourceLine>
+   <SourceLine>superclass = New RooVariableExpr(Tokens(Current - 1))</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check for the colon.</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.COLON, "Expected a `:` before class body.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim staticMethods(), methods() As RooFunctionStmt</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.PASS_KEYWORD) Then</SourceLine>
+   <SourceLine>// There is no substance to this class definition.</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.TERMINATOR, "Expected a new line or semicolon after the `pass` statement.")</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// There is a body to the definition - get it.</SourceLine>
+   <SourceLine>// Get any static and instance methods.</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.INDENT, "Expected an indentation after class declaration.")</SourceLine>
+   <SourceLine>While Not Check(Roo.TokenType.DEDENT) And Tokens(Current).Type &lt;&gt; Roo.TokenType.EOF</SourceLine>
+   <SourceLine>If Tokens(Current).Type = Roo.TokenType.STATIC_KEYWORD Then</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>staticMethods.Append(FunctionDeclaration("method"))</SourceLine>
+   <SourceLine>ElseIf Tokens(Current).Type = Roo.TokenType.DEF_KEYWORD Then</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>methods.Append(FunctionDeclaration("method"))</SourceLine>
+   <SourceLine>ElseIf Tokens(Current).Type = Roo.TokenType.PASS_KEYWORD Then</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.TERMINATOR, "Expected a new line or semicolon after the `pass` statement.")</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Raise New RooParserError(Tokens(Current), "Expected a method name.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.DEDENT, "Expected dedentation after class body.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooClassStmt(name, superclass, staticMethods, methods)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooClassStmt</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ModuleDeclaration</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1056247807</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ModuleDeclaration() As RooModuleStmt</SourceLine>
+   <SourceLine>// ModuleDeclaration → MODULE IDENTIFIER COLON (PASS | INDENT (PASS | ModuleDeclaration | ClassDeclaration | FunctionDeclaration)* DEDENT)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim name As RooToken = Consume(Roo.TokenType.IDENTIFIER, "Expected a module name.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check for the colon.</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.COLON, "Expected a `:` before module body.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim modules() As RooModuleStmt</SourceLine>
+   <SourceLine>Dim classes() As RooClassStmt</SourceLine>
+   <SourceLine>Dim methods() As RooFunctionStmt</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.PASS_KEYWORD) Then</SourceLine>
+   <SourceLine>// There is no substance to this module definition.</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.TERMINATOR, "Expected a new line or semicolon after the `pass` statement.")</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// There is a body to this module definition. Get it.</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.INDENT, "Expected indentation before module body.")</SourceLine>
+   <SourceLine>// Get any modules, classes and methods defined within the module.</SourceLine>
+   <SourceLine>While Not Check(Roo.TokenType.DEDENT) And Tokens(Current).Type &lt;&gt; Roo.TokenType.EOF</SourceLine>
+   <SourceLine>If Check(Roo.TokenType.CLASS_KEYWORD) Then</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>classes.Append(ClassDeclaration)</SourceLine>
+   <SourceLine>ElseIf Check(Roo.TokenType.MODULE_KEYWORD) Then</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>modules.Append(ModuleDeclaration)</SourceLine>
+   <SourceLine>ElseIf Check(Roo.TokenType.DEF_KEYWORD) Then</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>methods.Append(FunctionDeclaration("method"))</SourceLine>
+   <SourceLine>ElseIf Check(Roo.TokenType.PASS_KEYWORD) Then</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.TERMINATOR, "Expected a new line or semicolon after the `pass` statement.")</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Raise New RooParserError(Tokens(Current), "Expected a module, class or method definition.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.DEDENT, "Expected dedentation after module body.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooModuleStmt(name, modules, classes, methods)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooModuleStmt</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Statement</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>871112703</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Statement() As RooStmt</SourceLine>
+   <SourceLine>// Statement → ExpressionStatement </SourceLine>
+   <SourceLine>//           | Pass</SourceLine>
+   <SourceLine>//           | Block</SourceLine>
+   <SourceLine>//           | BreakStmt</SourceLine>
+   <SourceLine>//           | ExitStmt</SourceLine>
+   <SourceLine>//           | ForStmt</SourceLine>
+   <SourceLine>//           | IfStmt</SourceLine>
+   <SourceLine>//           | QuitStmt</SourceLine>
+   <SourceLine>//           | ReturnStmt</SourceLine>
+   <SourceLine>//           | WhileStmt</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Match(Roo.TokenType.PASS_KEYWORD) Then Return PassStatement</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.INDENT) Then Return New RooBlockStmt(Block)</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.BREAK_KEYWORD) Then Return BreakStatement</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.EXIT_KEYWORD) Then Return ExitStatement</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.IF_KEYWORD) Then Return IfStatement</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.QUIT_KEYWORD) Then Return QuitStatement</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.FOR_KEYWORD) Then Return ForStatement</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.RETURN_KEYWORD) Then Return ReturnStatement</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.WHILE_KEYWORD) Then Return WhileStatement</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Match(Roo.TokenType.TERMINATOR) Then Return Nil // Empty statement.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return ExpressionStatement</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooStmt</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Block</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>67311615</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Block() As RooStmt()</SourceLine>
+   <SourceLine>// Block → Declaration* DEDENT</SourceLine>
+   <SourceLine>// Remember that this method assumes that the INDENT has already been matched.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim statements() As RooStmt</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>While Not Check(Roo.TokenType.DEDENT) And Tokens(Current).Type &lt;&gt; Roo.TokenType.EOF</SourceLine>
+   <SourceLine>statements.Append(Declaration)</SourceLine>
+   <SourceLine>If statements(statements.Ubound) = Nil Then</SourceLine>
+   <SourceLine>// Something has gone wrong parsing this block. </SourceLine>
+   <SourceLine>HasError = True</SourceLine>
+   <SourceLine>Exit</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If HasError Then Raise New RooParserError(Tokens(Current), "Unable to parse block.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Consume(Roo.TokenType.DEDENT, "Expected dedentation after block.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return statements</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooStmt()</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>BreakStatement</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>931995647</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function BreakStatement() As RooStmt</SourceLine>
+   <SourceLine>// BreakStmt → BREAK TERMINATOR</SourceLine>
+   <SourceLine>// BreakStmt → BREAK (IF Expression)? TERMINATOR</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim condition As RooExpr</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get a reference to the triggering `break` token in case we encounter an error and need</SourceLine>
+   <SourceLine>// to inform the user of it's position in the source code.</SourceLine>
+   <SourceLine>Dim keyword As RooToken = Tokens(Current - 1)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Is there a break condition?</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.IF_KEYWORD) Then condition = Expression</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Consume(Roo.TokenType.TERMINATOR, "Expected a new line or semicolon after the `break` keyword.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooBreakStmt(keyword, condition)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooStmt</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ExitStatement</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1532747775</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ExitStatement() As RooStmt</SourceLine>
+   <SourceLine>// ExitStmt → EXIT TERMINATOR</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get a reference to the triggering `exit` token in case we encounter an error and need</SourceLine>
+   <SourceLine>// to inform the user of it's position in the source code.</SourceLine>
+   <SourceLine>Dim keyword As RooToken = Tokens(Current - 1)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Consume(Roo.TokenType.TERMINATOR, "Expected a new line or semicolon after the `exit` keyword.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooExitStmt(keyword)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooStmt</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>IfStatement</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2134054911</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function IfStatement() As RooStmt</SourceLine>
+   <SourceLine>// IfStmt → IF Expression COLON Statement</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the primary condition.</SourceLine>
+   <SourceLine>Dim condition As RooExpr = Expression</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.COLON, "Expected a `:` after `if` condition.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the primary if statement.</SourceLine>
+   <SourceLine>Dim thenBranch As RooStmt = Statement</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get any `or` clauses.</SourceLine>
+   <SourceLine>Dim orClauses(-1) As RooOrStmt</SourceLine>
+   <SourceLine>Dim tmpExpr As RooExpr</SourceLine>
+   <SourceLine>Dim tmpStmt As RooStmt</SourceLine>
+   <SourceLine>While Check(Roo.TokenType.OR_KEYWORD)</SourceLine>
+   <SourceLine>// Move past the `or` keyword we know is present.</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>// Get this `or` clause's condition.</SourceLine>
+   <SourceLine>tmpExpr = Expression</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.COLON, "Expected a `:` after `or` condition.")</SourceLine>
+   <SourceLine>// Get the statement to execute if this `or` clause is true.</SourceLine>
+   <SourceLine>tmpStmt = Statement</SourceLine>
+   <SourceLine>orClauses.Append(New RooOrStmt(tmpExpr, tmpStmt))</SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Is there an optional `else` clause?</SourceLine>
+   <SourceLine>Dim elseBranch As RooStmt = Nil</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.ELSE_KEYWORD) Then</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.COLON, "Expected a `:` after `else` keyword")</SourceLine>
+   <SourceLine>elseBranch = Statement</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooIfStmt(condition, thenBranch, orClauses, elseBranch)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooStmt</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>QuitStatement</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1690789887</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function QuitStatement() As RooStmt</SourceLine>
+   <SourceLine>// QuitStmt → QUIT TERMINATOR</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get a reference to the triggering `quit` token in case we encounter an error and need</SourceLine>
+   <SourceLine>// to inform the user of it's position in the source code.</SourceLine>
+   <SourceLine>Dim keyword As RooToken = Tokens(Current - 1)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Consume(Roo.TokenType.TERMINATOR, "Expected a new line or semicolon after the quit keyword.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooQuitStmt(keyword)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooStmt</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ForStatement</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1273833471</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ForStatement() As RooStmt</SourceLine>
+   <SourceLine>// ForStmt → FOR LPAREN (VarDeclaration | ExpressionStmt | TERMINATOR ) </SourceLine>
+   <SourceLine>//           Expression? TERMINATOR Expression? RPAREN COLON Block</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// E.g: for (var i = 0; i &lt; 10; i = i + 1) print(i)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Consume(Roo.TokenType.LPAREN, "Expected `(` after for keyword.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the initialiser (if defined).</SourceLine>
+   <SourceLine>Dim initialiser As RooStmt</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.TERMINATOR) Then</SourceLine>
+   <SourceLine>initialiser = Nil // The initialiser has been omitted.</SourceLine>
+   <SourceLine>ElseIf Match(Roo.TokenType.VAR) Then</SourceLine>
+   <SourceLine>initialiser = VarDeclaration</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>initialiser = ExpressionStatement</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the loop condition (if defined).</SourceLine>
+   <SourceLine>Dim condition As RooExpr = Nil</SourceLine>
+   <SourceLine>If Not Check(Roo.TokenType.TERMINATOR) Then condition = Expression</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.TERMINATOR, "Expected `;` after for loop condition.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the increment (if defined).</SourceLine>
+   <SourceLine>Dim increment As RooExpr = Nil</SourceLine>
+   <SourceLine>If Not Check(Roo.TokenType.RPAREN) Then increment = Expression</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.RPAREN, "Expected `)` after for loop clauses.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check for a colon.</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.COLON, "Expected a `:` before for loop block.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the loop body.</SourceLine>
+   <SourceLine>Dim body As RooStmt = Statement</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Desugar to a while loop.</SourceLine>
+   <SourceLine>// The increment, if there is one, executes after the body in each iteration of the loop.</SourceLine>
+   <SourceLine>// We do that by replacing the body with a little block that contains the original body</SourceLine>
+   <SourceLine>// followed by an expression statement that evaluates the increment.</SourceLine>
+   <SourceLine>If increment &lt;&gt; Nil Then</SourceLine>
+   <SourceLine>Dim blockStatements() As RooStmt // HACK: Xojo can't create an array of subclasses using the `Array` keyword.</SourceLine>
+   <SourceLine>blockStatements.Append(body)</SourceLine>
+   <SourceLine>blockStatements.Append(New RooExpressionStmt(increment))</SourceLine>
+   <SourceLine>body = New RooBlockStmt(blockStatements)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Next, we take the condition and the body and build the loop using a primitive while loop.</SourceLine>
+   <SourceLine>// If the condition is omitted, we jam in True to make an infinite loop.</SourceLine>
+   <SourceLine>If condition = Nil Then condition = New RooBooleanLiteralExpr(True)</SourceLine>
+   <SourceLine>body = New RooWhileStmt(condition, body)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Finally, if there's an initializer, it runs once before the entire loop. We do that by,</SourceLine>
+   <SourceLine>// again, replacing the whole statement with a block that runs the initializer and then executes the loop.</SourceLine>
+   <SourceLine>If initialiser &lt;&gt; Nil Then body = New RooBlockStmt(Array(initialiser, body))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return body</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooStmt</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ReturnStatement</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>536137727</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ReturnStatement() As RooStmt</SourceLine>
+   <SourceLine>// ReturnStmt → RETURN TERMINATOR</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get a reference to the `return` keyword for prettier error reporting later (if one occurs).</SourceLine>
+   <SourceLine>Dim keyword As RooToken = Tokens(Current - 1)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Is there a return value? We default to Nothing if there isn't.</SourceLine>
+   <SourceLine>Dim value As RooExpr = New RooNothingExpr</SourceLine>
+   <SourceLine>If Not Check(Roo.TokenType.TERMINATOR) Then value = Expression</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Consume(Roo.TokenType.TERMINATOR, "Expected a new line or semicolon after return value.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooReturnStmt(keyword, value)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooStmt</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>WhileStatement</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2069417983</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function WhileStatement() As RooStmt</SourceLine>
+   <SourceLine>// WhileStmt → WHILE Expression Statement</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim condition As RooExpr = Expression</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.COLON, "Expected a `:` after `while` condition.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim body As RooStmt = Statement</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooWhileStmt(condition, body)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooStmt</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ExpressionStatement</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1979432959</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ExpressionStatement() As RooStmt</SourceLine>
+   <SourceLine>Dim expr As RooExpr = Expression</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Consume(Roo.TokenType.TERMINATOR, "Expected a new line or semicolon after expression.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If expr &lt;&gt; Nil Then</SourceLine>
+   <SourceLine>Return New RooExpressionStmt(expr)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return Nil</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooStmt</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Advance</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1163208703</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Advance()</SourceLine>
+   <SourceLine>// Consumes the current token WITHOUT returning it.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Tokens(Current).Type &lt;&gt; Roo.TokenType.EOF Then Current = Current + 1</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Advance</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1520140287</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Advance() As RooToken</SourceLine>
+   <SourceLine>// Consumes the current token and returns it.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Tokens(Current).Type &lt;&gt; Roo.TokenType.EOF Then Current = Current + 1</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Tokens(Current - 1)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooToken</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Consume</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1962766335</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Consume(type As Roo.TokenType, message As String) As RooToken</SourceLine>
+   <SourceLine>// Checks to see if the current token's type is `type`. If so we return the current token.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma BreakOnExceptions False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Check(type) Then Return Advance</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Houston, we have a problem.</SourceLine>
+   <SourceLine>HasError = True</SourceLine>
+   <SourceLine>Raise New RooParserError(Tokens(Current), message)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>type As Roo.TokenType, message As String</ItemParams>
+  <ItemResult>RooToken</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Consume</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>898609151</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Consume(type As Roo.TokenType, message As String)</SourceLine>
+   <SourceLine>// Checks to see if the current token's type is `type`. If so we consume the current token and </SourceLine>
+   <SourceLine>// return. Otherwise we raise an error.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma BreakOnExceptions False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Check(type) Then</SourceLine>
+   <SourceLine>Advance</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Houston, we have a problem.</SourceLine>
+   <SourceLine>HasError = True</SourceLine>
+   <SourceLine>Raise New RooParserError(Tokens(Current), message)</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>type As Roo.TokenType, message As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Expression</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>925157375</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Expression() As RooExpr</SourceLine>
+   <SourceLine>// Expression → Assignment</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Assignment</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooExpr</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Assignment</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>60901375</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Assignment() As RooExpr</SourceLine>
+   <SourceLine>// Assignment → ( CALL DOT )? IDENTIFIER </SourceLine>
+   <SourceLine>//          (EQUAL | PLUS_EQUAL | MINUS_EQUAL | STAR_EQUAL | SLASH_EQUAL | PERCENT_EQUAL) Assignment</SourceLine>
+   <SourceLine>//            | Ternary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim expr As RooExpr = Ternary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Match(Roo.TokenType.EQUAL, Roo.TokenType.PLUS_EQUAL, Roo.TokenType.MINUS_EQUAL, _</SourceLine>
+   <SourceLine>Roo.TokenType.STAR_EQUAL, Roo.TokenType.SLASH_EQUAL, Roo.TokenType.PERCENT_EQUAL) Then</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim operator As RooToken = Tokens(Current - 1)</SourceLine>
+   <SourceLine>Dim value As RooExpr = Assignment</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If expr IsA RooVariableExpr Then</SourceLine>
+   <SourceLine>Dim name As RooToken = RooVariableExpr(expr).Name</SourceLine>
+   <SourceLine>Return New RooAssignExpr(name, value, operator)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>ElseIf expr IsA RooGetExpr Then</SourceLine>
+   <SourceLine>Dim get As RooGetExpr = RooGetExpr(expr)</SourceLine>
+   <SourceLine>Return New RooSetExpr(get.Obj, get.Name, value, operator)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>ElseIf expr IsA RooArrayExpr Then</SourceLine>
+   <SourceLine>Dim name As RooToken = RooArrayExpr(expr).Name</SourceLine>
+   <SourceLine>Dim index As RooExpr = RooArrayExpr(expr).Index</SourceLine>
+   <SourceLine>Return New RooArrayAssignExpr(name, index, value, operator)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>ElseIf expr IsA RooHashExpr Then</SourceLine>
+   <SourceLine>Dim name As RooToken = RooHashExpr(expr).Name</SourceLine>
+   <SourceLine>Dim key As RooExpr = RooHashExpr(expr).Key</SourceLine>
+   <SourceLine>Return New RooHashAssignExpr(name, key, value, operator)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Raise New RooParserError(operator, "Invalid assignment target.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return expr</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooExpr</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Ternary</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1420220415</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Ternary() As RooExpr</SourceLine>
+   <SourceLine>// Ternary → LogicOr (QUERY Expression COLON Ternary)?</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim expr As RooExpr = LogicOr</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Match(Roo.TokenType.QUERY) Then</SourceLine>
+   <SourceLine>Dim thenBranch As RooExpr = Expression</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.COLON, "Expected a `:` after `then` condition in ternary operator.")</SourceLine>
+   <SourceLine>Dim elseBranch As RooExpr = Ternary</SourceLine>
+   <SourceLine>expr = New RooTernaryExpr(expr, thenBranch, elseBranch)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return expr</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooExpr</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>LogicOr</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>628795391</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function LogicOr() As RooExpr</SourceLine>
+   <SourceLine>// LogicOr → LogicAnd ( OR LogicAnd )*</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim operator As RooToken</SourceLine>
+   <SourceLine>Dim right As RooExpr</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim expr As RooExpr = LogicAnd</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>While Match(Roo.TokenType.OR_KEYWORD)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>operator = Tokens(Current - 1)</SourceLine>
+   <SourceLine>right = LogicAnd</SourceLine>
+   <SourceLine>expr = New RooLogicalExpr(expr, operator, right)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return expr</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooExpr</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>LogicAnd</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>3071999</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function LogicAnd() As RooExpr</SourceLine>
+   <SourceLine>// LogicAnd → Equality ( AND Equality )*</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim operator As RooToken</SourceLine>
+   <SourceLine>Dim right As RooExpr</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim expr As RooExpr = Equality</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>While Match(Roo.TokenType.AND_KEYWORD)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>operator = Tokens(Current - 1)</SourceLine>
+   <SourceLine>right = Equality</SourceLine>
+   <SourceLine>expr = New RooLogicalExpr(expr, operator, right)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return expr</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooExpr</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Equality</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>534124543</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Equality() As RooExpr</SourceLine>
+   <SourceLine>// Equality → Comparison ( ( NOT_EQUAL | EQUAL_EQUAL ) Comparison )*</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim operator As RooToken</SourceLine>
+   <SourceLine>Dim right As RooExpr</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim expr As RooExpr = Comparison</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>While Match(Roo.TokenType.NOT_EQUAL, Roo.TokenType.EQUAL_EQUAL)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>operator = Previous</SourceLine>
+   <SourceLine>right = Comparison</SourceLine>
+   <SourceLine>expr = New RooBinaryExpr(expr, operator, right)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return expr</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooExpr</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Comparison</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1348675583</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Comparison() As RooExpr</SourceLine>
+   <SourceLine>// Comparison → Bitwise ( ( GREATER | GREATER_EQUAL | LESS | LESS_EQUAL ) Bitwise )*</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim operator As RooToken</SourceLine>
+   <SourceLine>Dim right As RooExpr</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim expr As RooExpr = Bitwise</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>While Match(Roo.TokenType.GREATER, Roo.TokenType.GREATER_EQUAL, Roo.TokenType.LESS, _</SourceLine>
+   <SourceLine>Roo.TokenType.LESS_EQUAL)</SourceLine>
+   <SourceLine>operator = Tokens(Current - 1)</SourceLine>
+   <SourceLine>right = Bitwise</SourceLine>
+   <SourceLine>expr = New RooBinaryExpr(expr, operator, right)</SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return expr</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooExpr</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Previous</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1741088767</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Previous() As RooToken</SourceLine>
+   <SourceLine>// Returns the most recently consumed token.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Tokens(Current - 1)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooToken</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Addition</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1421275135</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Addition() As RooExpr</SourceLine>
+   <SourceLine>// Addition → Multiplication ( ( MINUS | PLUS ) Multiplication )*</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim operator As RooToken</SourceLine>
+   <SourceLine>Dim right As RooExpr</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim expr As RooExpr = Multiplication</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>While Match(Roo.TokenType.MINUS, Roo.TokenType.PLUS)</SourceLine>
+   <SourceLine>operator = Tokens(Current - 1)</SourceLine>
+   <SourceLine>right = Multiplication</SourceLine>
+   <SourceLine>expr = New RooBinaryExpr(expr, operator, right)</SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return expr</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooExpr</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Multiplication</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1816055807</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Multiplication() As RooExpr</SourceLine>
+   <SourceLine>// Multiplication → Unary ((SLASH|STAR|PERCENT|CARET) Unary)*</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim operator As RooToken</SourceLine>
+   <SourceLine>Dim right As RooExpr</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim expr As RooExpr = Unary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>While Match(Roo.TokenType.SLASH, Roo.TokenType.STAR, Roo.TokenType.PERCENT, _</SourceLine>
+   <SourceLine>Roo.TokenType.CARET)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>operator = Tokens(Current - 1)</SourceLine>
+   <SourceLine>right = Unary</SourceLine>
+   <SourceLine>expr = New RooBinaryExpr(expr, operator, right)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return expr</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooExpr</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Unary</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1395957759</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Unary() As RooExpr</SourceLine>
+   <SourceLine>// Unary → (BANG|NOT|MINUS) Unary</SourceLine>
+   <SourceLine>//         | Invoke</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Match(Roo.TokenType.BANG, Roo.TokenType.NOT_KEYWORD, Roo.TokenType.MINUS) Then</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim operator As RooToken = Tokens(Current - 1)</SourceLine>
+   <SourceLine>Dim right as RooExpr = Unary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooUnaryExpr(operator, right)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Invoke</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooExpr</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Invoke</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>784756735</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Invoke() As RooExpr</SourceLine>
+   <SourceLine>// Invoke → Primary ( LPAREN arguments? RPAREN | DOT IDENTIFIER )*</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim expr As RooExpr = Primary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>While True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Match(Roo.TokenType.LPAREN) Then</SourceLine>
+   <SourceLine>// Each time we find a `(`, use FinishInvoke() to parse the Invoke expression using the </SourceLine>
+   <SourceLine>// previously parsed expression as the invokee. The returned expression becomes the new </SourceLine>
+   <SourceLine>// expr and then loop to see if the result is itself called.</SourceLine>
+   <SourceLine>expr = FinishInvoke(expr)</SourceLine>
+   <SourceLine>ElseIf Match(Roo.TokenType.DOT) Then</SourceLine>
+   <SourceLine>Dim name As RooToken = Consume(Roo.TokenType.IDENTIFIER, "Expected a property name after `.`.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Is the identifier an array or hash?</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.LSQUARE) Then // Array.</SourceLine>
+   <SourceLine>Dim index As RooExpr = Expression</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.RSQUARE, "Expected a `]` after an array index.")</SourceLine>
+   <SourceLine>expr = New RooGetExpr(expr, name, index)</SourceLine>
+   <SourceLine>ElseIf Peek.Type = Roo.TokenType.LCURLY Then // Hash.</SourceLine>
+   <SourceLine>Advance // Move past the `{` we just checked and know is present.</SourceLine>
+   <SourceLine>Dim key As RooExpr = Expression</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.RCURLY, "Expected a `}` after a hash key.")</SourceLine>
+   <SourceLine>expr = New RooGetExpr(expr, name, key)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>expr = New RooGetExpr(expr, name)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Exit</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return expr</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooExpr</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Peek</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1807208447</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Peek() As RooToken</SourceLine>
+   <SourceLine>// Returns the current token we have yet to consume.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Tokens(Current)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooToken</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Primary</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>510455807</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Primary() As RooExpr</SourceLine>
+   <SourceLine>// Primary → BOOLEAN | NOTHING | SELF | NUMBER | TEXT</SourceLine>
+   <SourceLine>//         | LPAREN Expression RPAREN </SourceLine>
+   <SourceLine>//         | IDENTIFIER</SourceLine>
+   <SourceLine>//         | SUPER DOT IDENTIFIER </SourceLine>
+   <SourceLine>//         | LSQUARE arguments? RSQUARE</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Simple literals (booleans, numbers, nothing and text).</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.Boolean) Then</SourceLine>
+   <SourceLine>Return New RooBooleanLiteralExpr(StringToBoolean(Tokens(Current - 1).Lexeme))</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.NUMBER) Then</SourceLine>
+   <SourceLine>Return MakeNumberLiteral(Tokens(Current - 1).Lexeme, Tokens(Current - 1).Base)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.NOTHING) Then Return New RooNothingExpr</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.TEXT) Then Return New RooTextLiteralExpr(Tokens(Current - 1).Lexeme)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Array literal? (E.g: [1, 3, "a"]).</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.LSQUARE) Then</SourceLine>
+   <SourceLine>Dim elements() As RooExpr</SourceLine>
+   <SourceLine>If Tokens(Current).Type = Roo.TokenType.RSQUARE Then // Empty array []</SourceLine>
+   <SourceLine>Current = Current + 1 // Consume the `]`</SourceLine>
+   <SourceLine>Return New RooArrayLiteralExpr(elements)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Do</SourceLine>
+   <SourceLine>elements.Append(Expression)</SourceLine>
+   <SourceLine>Loop Until Not Match(Roo.TokenType.COMMA)</SourceLine>
+   <SourceLine>If Not Match(Roo.TokenType.RSQUARE) Then</SourceLine>
+   <SourceLine>Raise New RooParserError(Tokens(Current - 1), _</SourceLine>
+   <SourceLine>"Expected a closing square bracket after an array literal list.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Return New RooArrayLiteralExpr(elements)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Hash literal? (E.g: {"a" =&gt; 1, "b" =&gt; 2}).</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.LCURLY) Then</SourceLine>
+   <SourceLine>Dim keyValues() As Pair</SourceLine>
+   <SourceLine>If Tokens(Current).Type = Roo.TokenType.RCURLY Then // Empty hash {}</SourceLine>
+   <SourceLine>Current = Current + 1 // Consume the `}`</SourceLine>
+   <SourceLine>Return New RooHashLiteralExpr(keyValues)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Do</SourceLine>
+   <SourceLine>keyValues.Append(KeyValue)</SourceLine>
+   <SourceLine>Loop Until Not Match(Roo.TokenType.COMMA)</SourceLine>
+   <SourceLine>If Not Match(Roo.TokenType.RCURLY) Then</SourceLine>
+   <SourceLine>Raise New RooParserError(Tokens(Current - 1), _</SourceLine>
+   <SourceLine>"Expected a closing `}` after a hash literal list.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Return New RooHashLiteralExpr(keyValues)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Self.</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.SELF_KEYWORD) Then Return New RooSelfExpr(Tokens(Current - 1))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Super.</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.SUPER_KEYWORD) Then</SourceLine>
+   <SourceLine>Dim keyword As RooToken = Tokens(Current - 1)</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.DOT, "Expected superclass method name after `super.`.")</SourceLine>
+   <SourceLine>Dim method As RooToken = Consume(Roo.TokenType.IDENTIFIER, "Expected superclass method name.")</SourceLine>
+   <SourceLine>Return New RooSuperExpr(keyword, method)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Grouping expression.</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.LPAREN) Then</SourceLine>
+   <SourceLine>Dim expr As RooExpr = Expression</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.RPAREN, "Expected ')' after expression.")</SourceLine>
+   <SourceLine>Return New RooGroupingExpr(expr)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Variable, array and hash access.</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.IDENTIFIER) Then</SourceLine>
+   <SourceLine>Dim identifier As RooToken = Tokens(Current - 1)</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.LSQUARE) Then // Array? (e.g: a[3])</SourceLine>
+   <SourceLine>Dim index As RooExpr = Expression</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.RSQUARE, "Expected a closing `]` after an array index.")</SourceLine>
+   <SourceLine>Return New RooArrayExpr(identifier, index)</SourceLine>
+   <SourceLine>ElseIf Match(Roo.TokenType.LCURLY) Then // Hash? (e.g: a{"name"})</SourceLine>
+   <SourceLine>Dim key As RooExpr = Expression</SourceLine>
+   <SourceLine>Consume(Roo.TokenType.RCURLY, "Expected a closing `}` after a hash key.")</SourceLine>
+   <SourceLine>Return New RooHashExpr(identifier, key)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return New RooVariableExpr(Tokens(Current - 1))</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Houston, we have a problem.</SourceLine>
+   <SourceLine>HasError = True</SourceLine>
+   <SourceLine>#Pragma BreakOnExceptions False</SourceLine>
+   <SourceLine>Raise New RooParserError(Tokens(Current), "Syntax error. Unexpected token: " + _</SourceLine>
+   <SourceLine>RooToken.TypeToString(Tokens(Current).Type))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooExpr</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>FinishInvoke</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1685291007</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function FinishInvoke(invokee As RooExpr) As RooExpr</SourceLine>
+   <SourceLine>// Used in conjunction with Invoke() to parse the (optional) arguments list.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim arguments() As RooExpr</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Not Check(Roo.TokenType.RPAREN) Then</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Do</SourceLine>
+   <SourceLine>If arguments.Ubound = 7 Then</SourceLine>
+   <SourceLine>// Limit the number of arguments to 8 (simplifies things in our future VM implementation).</SourceLine>
+   <SourceLine>HasError = True</SourceLine>
+   <SourceLine>Raise new RooParserError(Tokens(Current), "Cannot have more than 8 arguments.")</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>arguments.Append(Expression)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Loop Until Not Match(Roo.TokenType.COMMA)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim paren As RooToken = Consume(Roo.TokenType.RPAREN, "Expected `)` after arguments.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooInvokeExpr(invokee, paren, arguments)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>invokee As RooExpr</ItemParams>
+  <ItemResult>RooExpr</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>KeyValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>705341439</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function KeyValue() As Pair</SourceLine>
+   <SourceLine>// Return the next key-value pair.</SourceLine>
+   <SourceLine>// Valid format is:</SourceLine>
+   <SourceLine>// KEY =&gt; VALUE</SourceLine>
+   <SourceLine>// Where KEY and VALUE are both valid expressions.</SourceLine>
+   <SourceLine>// Returns a Pair where Left is the key and Right is the value.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim key As RooExpr = Expression</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Consume(Roo.TokenType.ARROW, "Expected `=&gt;` operator after hash key.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim value As RooExpr = Expression</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return new Pair(key, value)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Pair</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringToBoolean</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>270606335</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringToBoolean(s As String) As Boolean</SourceLine>
+   <SourceLine>Return If(s.Lowercase = "true", True, False)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>s As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>PassStatement</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1840941055</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function PassStatement() As RooStmt</SourceLine>
+   <SourceLine>// PassStmt → PASS TERMINATOR</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get a reference to the triggering `pass` token in case we encounter an error and need</SourceLine>
+   <SourceLine>// to inform the user of it's position in the source code.</SourceLine>
+   <SourceLine>Dim keyword As RooToken = Tokens(Current - 1)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Consume(Roo.TokenType.TERMINATOR, "Expected a new line or semicolon after the `pass` keyword.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooPassStmt(keyword)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooStmt</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Bitwise</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>607674367</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Bitwise() As RooExpr</SourceLine>
+   <SourceLine>// Bitwise → Addition ( ( AMPERSAND | PIPE | LESS_LESS | GREATER_GREATER) Addition )*</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim operator As RooToken</SourceLine>
+   <SourceLine>Dim right As RooExpr</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim expr As RooExpr = Addition</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>While Match(Roo.TokenType.AMPERSAND, Roo.TokenType.PIPE, _</SourceLine>
+   <SourceLine>Roo.TokenType.LESS_LESS, Roo.TokenType.GREATER_GREATER)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>operator = Tokens(Current - 1)</SourceLine>
+   <SourceLine>right = Addition</SourceLine>
+   <SourceLine>expr = New RooBitwiseExpr(expr, operator, right)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Wend</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return expr</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooExpr</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>MakeNumberLiteral</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>327690239</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function MakeNumberLiteral(lexeme As String, base As RooToken.BaseType) As RooNumberLiteralExpr</SourceLine>
+   <SourceLine>// Creates a new RooNumberLiteralExpr from the passed lexeme and base type.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case base</SourceLine>
+   <SourceLine>Case RooToken.BaseType.Decimal</SourceLine>
+   <SourceLine>Return New RooNumberLiteralExpr(lexeme.Val)</SourceLine>
+   <SourceLine>Case RooToken.BaseType.Hexadecimal</SourceLine>
+   <SourceLine>Dim hexValue As Text = lexeme.Replace("0x", "").ToText</SourceLine>
+   <SourceLine>Return New RooNumberLiteralExpr(Integer.FromHex(hexValue))</SourceLine>
+   <SourceLine>Case RooToken.BaseType.Binary</SourceLine>
+   <SourceLine>Dim binaryValue As Text = lexeme.Replace("0b", "").ToText</SourceLine>
+   <SourceLine>Return New RooNumberLiteralExpr(Integer.FromBinary(binaryValue))</SourceLine>
+   <SourceLine>Case RooToken.BaseType.Octal</SourceLine>
+   <SourceLine>Dim octalValue As Text = lexeme.Replace("0o", "").ToText</SourceLine>
+   <SourceLine>Return New RooNumberLiteralExpr(Integer.FromOctal(octalValue))</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>lexeme As String, base As RooToken.BaseType</ItemParams>
+  <ItemResult>RooNumberLiteralExpr</ItemResult>
+ </Method>
+ <Hook>
+  <ItemName>ScanningError</ItemName>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemFlags>33</ItemFlags>
+  <SystemFlags>0</SystemFlags>
+  <ItemParams>file As FolderItem, message As String, line As Integer, position As Integer</ItemParams>
+  <ItemResult></ItemResult>
+ </Hook>
+ <Hook>
+  <ItemName>ParsingError</ItemName>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemFlags>33</ItemFlags>
+  <SystemFlags>0</SystemFlags>
+  <ItemParams>where As RooToken, message As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Hook>
+ <Property>
+  <ItemName>Scanner</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1373310975</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Scanner As RooScanner</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Scanner As RooScanner</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Tokens()</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>779790335</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Tokens() As RooToken</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Tokens() As RooToken</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Current</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>139950079</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Current As Integer = 0</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Current As Integer = 0</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>HasError</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>172054527</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>HasError As Boolean = False</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>HasError As Boolean = False</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>HasError</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <PropertyValue>False</PropertyValue>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

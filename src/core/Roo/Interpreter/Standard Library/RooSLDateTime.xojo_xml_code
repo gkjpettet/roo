@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20070100">
+<block type="Module" ID="123561983">
+ <ObjName>RooSLDateTime</ObjName>
+ <ObjContainerID>0</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Interfaces>Invokable, Stringable</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Arity</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1153626111</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Arity() As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine>// There are four DateTime constructor function signatures:</SourceLine>
+   <SourceLine>// var d1 = DateTime()</SourceLine>
+   <SourceLine>// var d2 = DateTime(UNIX Time)</SourceLine>
+   <SourceLine>// var d3 = DateTime(y, m, d)</SourceLine>
+   <SourceLine>// var d4 = DateTime(y, m, d, h, min, s)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Array(0, 1, 3, 6)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Invoke</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>636731391</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Invoke(interpreter As RooInterpreter, arguments() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine>// Create a new DateTime object instance.</SourceLine>
+   <SourceLine>// There are four DateTime constructor function signatures:</SourceLine>
+   <SourceLine>// Sig 1: var d1 = DateTime()</SourceLine>
+   <SourceLine>// Sig 2: var d2 = DateTime(UNIX time)</SourceLine>
+   <SourceLine>// Sig 3: var d3 = DateTime(y, m, d)</SourceLine>
+   <SourceLine>// Sig 4: var d4 = DateTime(y, m, d, h, min, s)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused interpreter</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If arguments.Ubound = -1 Then // DateTime()</SourceLine>
+   <SourceLine>Return DoDateTimeNow</SourceLine>
+   <SourceLine>ElseIf arguments.Ubound = 0 Then // DateTime(UNIX time)</SourceLine>
+   <SourceLine>Return DoFromUNIX(arguments(0), where)</SourceLine>
+   <SourceLine>ElseIf arguments.Ubound = 2 then // DateTime(y, m, d)</SourceLine>
+   <SourceLine>Return DoFromDateValues(arguments, where)</SourceLine>
+   <SourceLine>Else// DateTime(y, m, d, h, min, s)</SourceLine>
+   <SourceLine>Return DoFromDateTimeValues(arguments, where)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter, arguments() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1012996095</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>// Part of the Stringable interface.</SourceLine>
+   <SourceLine>// Return this function's name.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return "&lt;function: DateTime&gt;"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoDateTimeNow</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>712175615</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoDateTimeNow() As RooDateTime</SourceLine>
+   <SourceLine>// Return a new DateTime object, instantiated to the current date and time.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooDateTime(Xojo.Core.Date.Now)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooDateTime</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoFromUNIX</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1184344063</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoFromUNIX(argument As Variant, where As RooToken) As RooDateTime</SourceLine>
+   <SourceLine>// Returns a new DateTime object, instantiated to the specified UNIX time.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that the passed argument is an integer.</SourceLine>
+   <SourceLine>Roo.AssertAreIntegers(where, argument)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the UNIX time.</SourceLine>
+   <SourceLine>Dim unixTime As Double = RooNumber(argument).Value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure it's positive.</SourceLine>
+   <SourceLine>If unixTime &lt; 0 Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "The parameter passed to the DateTime constructor must be a " +_</SourceLine>
+   <SourceLine>"positive integer.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create and return the new object.</SourceLine>
+   <SourceLine>Return New RooDateTime(New Xojo.Core.Date(unixTime, Xojo.Core.TimeZone.Current))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>argument As Variant, where As RooToken</ItemParams>
+  <ItemResult>RooDateTime</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoFromDateValues</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1070487551</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoFromDateValues(arguments() As Variant, where As RooToken) As RooDateTime</SourceLine>
+   <SourceLine>// Returns a new DateTime object instantiated to the time specified by the passed arguments.</SourceLine>
+   <SourceLine>// The method signature is: DateTime(year, month, day)</SourceLine>
+   <SourceLine>// The year, month and day arguments must be positive integers. </SourceLine>
+   <SourceLine>// Implicitly sets the hour, minute and second to 0.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// We don't need to check the number of arguments as this will have been done previously.</SourceLine>
+   <SourceLine>// Check the individual arguments.</SourceLine>
+   <SourceLine>// YEAR</SourceLine>
+   <SourceLine>Roo.AssertArePositiveIntegers(where, arguments(0))</SourceLine>
+   <SourceLine>Dim year As Integer = RooNumber(arguments(0)).Value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// MONTH</SourceLine>
+   <SourceLine>Roo.AssertArePositiveIntegers(where, arguments(1))</SourceLine>
+   <SourceLine>Dim month As Integer = RooNumber(arguments(1)).Value</SourceLine>
+   <SourceLine>If month &lt; 1 Or month &gt; 12 Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "The DateTime constructor, DateTime(y, m, d), expects " + _</SourceLine>
+   <SourceLine>"the month parameter to be an integer between 1 and 12. Instead got `" + Str(month) + "`.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// DAY</SourceLine>
+   <SourceLine>Roo.AssertArePositiveIntegers(where, arguments(2))</SourceLine>
+   <SourceLine>Dim day As Integer = RooNumber(arguments(2)).Value</SourceLine>
+   <SourceLine>If day &lt; 1 Or day &gt; 31 Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "The DateTime constructor, DateTime(y, m, d), expects " + _</SourceLine>
+   <SourceLine>"the day parameter to be an integer between 1 and 31. Instead got `" + Str(day) + "`.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>// Make sure a valid day for the specified month has been passed.</SourceLine>
+   <SourceLine>Select Case month</SourceLine>
+   <SourceLine>Case 2 // Feb.</SourceLine>
+   <SourceLine>If day &gt; 29 Or (day = 29 And Not RooDateTime.IsLeapYear(year)) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Invalid day parameter (" + Str(day) + _</SourceLine>
+   <SourceLine>" passed to the DateTime constructor. There are only 28 days in February in the year " + _</SourceLine>
+   <SourceLine>Str(year) + ".")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Case 9, 4, 6, 11 // Sep, Apr, Jun, Nov have 30 days.</SourceLine>
+   <SourceLine>If day &gt; 30 Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Invalid day parameter (" + Str(day) + _</SourceLine>
+   <SourceLine>" passed to the DateTime constructor. There are only 30 days in " + _</SourceLine>
+   <SourceLine>Roo.LongMonthFromInteger(month) + ".")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>//Return the new DateTime object.</SourceLine>
+   <SourceLine>Return New RooDateTime(New Xojo.Core.Date(year, month, day, Xojo.Core.TimeZone.Current))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>arguments() As Variant, where As RooToken</ItemParams>
+  <ItemResult>RooDateTime</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoFromDateTimeValues</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>514152447</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoFromDateTimeValues(arguments() As Variant, where As RooToken) As RooDateTime</SourceLine>
+   <SourceLine>// Returns a new DateTime object instantiated to the time specified by the passed arguments. </SourceLine>
+   <SourceLine>//The method signature is: DateTime(year, month, day, hour, minute, second)</SourceLine>
+   <SourceLine>// The arguments must be positive integers. </SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// We don't need to check the number of arguments as this will have been done previously.</SourceLine>
+   <SourceLine>// Check the individual arguments.</SourceLine>
+   <SourceLine>// YEAR</SourceLine>
+   <SourceLine>Roo.AssertArePositiveIntegers(where, arguments(0))</SourceLine>
+   <SourceLine>Dim year As Integer = RooNumber(arguments(0)).Value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// MONTH</SourceLine>
+   <SourceLine>Roo.AssertArePositiveIntegers(where, arguments(1))</SourceLine>
+   <SourceLine>Dim month As Integer = RooNumber(arguments(1)).Value</SourceLine>
+   <SourceLine>If month &lt; 1 Or month &gt; 12 Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "The DateTime constructor, DateTime(y, m, d, h, min, s), expects " + _</SourceLine>
+   <SourceLine>"the month parameter to be an integer between 1 and 12. Instead got `" + Str(month) + "`.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// DAY</SourceLine>
+   <SourceLine>Roo.AssertArePositiveIntegers(where, arguments(2))</SourceLine>
+   <SourceLine>Dim day As Integer = RooNumber(arguments(2)).Value</SourceLine>
+   <SourceLine>If day &lt; 1 Or day &gt; 31 Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "The DateTime constructor, DateTime(y, m, d, h, min, s), expects " + _</SourceLine>
+   <SourceLine>"the day parameter to be an integer between 1 and 31. Instead got `" + Str(day) + "`.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>// Make sure a valid day for the specified month has been passed.</SourceLine>
+   <SourceLine>Select Case month</SourceLine>
+   <SourceLine>Case 2 // Feb.</SourceLine>
+   <SourceLine>If day &gt; 29 Or (day = 29 And Not RooDateTime.IsLeapYear(year)) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Invalid day parameter (" + Str(day) + _</SourceLine>
+   <SourceLine>" passed to the DateTime constructor. There are only 28 days in February in the year " + _</SourceLine>
+   <SourceLine>Str(year) + ".")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Case 9, 4, 6, 11 // Sep, Apr, Jun, Nov have 30 days.</SourceLine>
+   <SourceLine>If day &gt; 30 Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Invalid day parameter (" + Str(day) + _</SourceLine>
+   <SourceLine>" passed to the DateTime constructor. There are only 30 days in " + _</SourceLine>
+   <SourceLine>Roo.LongMonthFromInteger(month) + ".")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// HOUR</SourceLine>
+   <SourceLine>Roo.AssertArePositiveIntegers(where, arguments(3))</SourceLine>
+   <SourceLine>Dim hour As Integer = RooNumber(arguments(3)).Value</SourceLine>
+   <SourceLine>If hour &gt; 23 Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "The DateTime constructor, DateTime(y, m, d, h, min, s), expects " + _</SourceLine>
+   <SourceLine>"the hour parameter to be an integer between 0 and 23. Instead got `" + Str(hour) + "`.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// MINUTE</SourceLine>
+   <SourceLine>Roo.AssertArePositiveIntegers(where, arguments(4))</SourceLine>
+   <SourceLine>Dim minute As Integer = RooNumber(arguments(4)).Value</SourceLine>
+   <SourceLine>If minute &gt; 59 Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "The DateTime constructor, DateTime(y, m, d, h, min, s), expects " + _</SourceLine>
+   <SourceLine>"the minute parameter to be an integer between 0 and 59. Instead got `" + Str(minute) + "`.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// SECOND</SourceLine>
+   <SourceLine>Roo.AssertArePositiveIntegers(where, arguments(5))</SourceLine>
+   <SourceLine>Dim sec As Integer = RooNumber(arguments(5)).Value</SourceLine>
+   <SourceLine>If sec &gt; 59 Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "The DateTime constructor, DateTime(y, m, d, h, min, s), expects " + _</SourceLine>
+   <SourceLine>"the seconds parameter to be an integer between 0 and 59. Instead got `" + Str(sec) + "`.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return the new DateTime object.</SourceLine>
+   <SourceLine>Return New RooDateTime(New Xojo.Core.Date(year, month, day, _</SourceLine>
+   <SourceLine>hour, minute, sec, Xojo.Core.TimeZone.Current))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>arguments() As Variant, where As RooToken</ItemParams>
+  <ItemResult>RooDateTime</ItemResult>
+ </Method>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

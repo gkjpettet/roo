@@ -1,0 +1,1228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="376817663">
+ <ObjName>RooArrayMethod</ObjName>
+ <ObjContainerID>929968127</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Interfaces>Invokable, Stringable</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Arity</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>187494399</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Arity() As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine>// Return the arity of this method. This is stored in the cached ArrayMethods dictionary.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return RooSLCache.ArrayMethods.Value(Name)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Invoke</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1635973119</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Invoke(interpreter As RooInterpreter, arguments() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case Name</SourceLine>
+   <SourceLine>Case "contains?"</SourceLine>
+   <SourceLine>Return DoContains(arguments)</SourceLine>
+   <SourceLine>Case "delete_at!"</SourceLine>
+   <SourceLine>Return DoDeleteAt(arguments, where)</SourceLine>
+   <SourceLine>Case "each"</SourceLine>
+   <SourceLine>Return DoEach(arguments, where, interpreter)</SourceLine>
+   <SourceLine>Case "each_index"</SourceLine>
+   <SourceLine>Return DoEachIndex(arguments, where, interpreter)</SourceLine>
+   <SourceLine>Case "fetch"</SourceLine>
+   <SourceLine>Return DoFetch(arguments, where)</SourceLine>
+   <SourceLine>Case "find"</SourceLine>
+   <SourceLine>Return DoFind(arguments)</SourceLine>
+   <SourceLine>Case "first"</SourceLine>
+   <SourceLine>Return DoFirst(arguments, where, False)</SourceLine>
+   <SourceLine>Case "first!"</SourceLine>
+   <SourceLine>Return DoFirst(arguments, where, True)</SourceLine>
+   <SourceLine>Case "insert!"</SourceLine>
+   <SourceLine>Return DoInsert(arguments, where)</SourceLine>
+   <SourceLine>Case "join"</SourceLine>
+   <SourceLine>Return DoJoin(arguments, where)</SourceLine>
+   <SourceLine>Case "keep"</SourceLine>
+   <SourceLine>Return DoKeep(arguments, where, interpreter, False)</SourceLine>
+   <SourceLine>Case "keep!"</SourceLine>
+   <SourceLine>Return DoKeep(arguments, where, interpreter, True)</SourceLine>
+   <SourceLine>Case "last"</SourceLine>
+   <SourceLine>Return DoLast(arguments, where)</SourceLine>
+   <SourceLine>Case "map"</SourceLine>
+   <SourceLine>Return DoMap(arguments, where, interpreter, False)</SourceLine>
+   <SourceLine>Case "map!"</SourceLine>
+   <SourceLine>Return DoMap(arguments, where, interpreter, True)</SourceLine>
+   <SourceLine>Case "push!"</SourceLine>
+   <SourceLine>Return DoPush(arguments)</SourceLine>
+   <SourceLine>Case "reject"</SourceLine>
+   <SourceLine>Return DoReject(arguments, where, interpreter, False)</SourceLine>
+   <SourceLine>Case "reject!"</SourceLine>
+   <SourceLine>Return DoReject(arguments, where, interpreter, True)</SourceLine>
+   <SourceLine>Case "shift!"</SourceLine>
+   <SourceLine>Return DoShift(arguments, where)</SourceLine>
+   <SourceLine>Case "slice"</SourceLine>
+   <SourceLine>Return DoSlice(arguments, where, False)</SourceLine>
+   <SourceLine>Case "slice!"</SourceLine>
+   <SourceLine>Return DoSlice(arguments, where, True)</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter, arguments() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1007970303</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>// Part of the Stringable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return "&lt;function " + Name + "&gt;"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1165494271</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(owner As RooArray, name As String)</SourceLine>
+   <SourceLine>Self.Owner = owner</SourceLine>
+   <SourceLine>Self.Name = name</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>owner As RooArray, name As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoContains</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1086996479</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoContains(args() As Variant) As RooBoolean</SourceLine>
+   <SourceLine>// Array.contains(obj As Object) As Boolean object.</SourceLine>
+   <SourceLine>// Searches the array for the passed object. Returns True if found, False if not.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Quick check for an empty array.</SourceLine>
+   <SourceLine>If Owner.Elements.Ubound &lt; 0 Then Return New RooBoolean(False)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// First see if we can find the actual object in the array using Xojo's built-in method.</SourceLine>
+   <SourceLine>If Owner.Elements.IndexOf(args(0)) &lt;&gt; -1 Then Return New RooBoolean(True)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim element As Variant</SourceLine>
+   <SourceLine>// Didn't find an object match. Check literal types. </SourceLine>
+   <SourceLine>// Start with Text.</SourceLine>
+   <SourceLine>// We can't use Xojo's built-in Array.IndexOf() method if `obj` is text because Xojo does a </SourceLine>
+   <SourceLine>// case-insensitive search so we'll have to traverse the array ourselves.</SourceLine>
+   <SourceLine>If args(0) IsA RooText Then</SourceLine>
+   <SourceLine>Dim query As String = RooText(args(0)).Value</SourceLine>
+   <SourceLine>For Each element In Owner.Elements</SourceLine>
+   <SourceLine>If element IsA RooText And StrComp(RooText(element).Value, query, 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooBoolean(True)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next element</SourceLine>
+   <SourceLine>Return New RooBoolean(False) // Not found.</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Number?</SourceLine>
+   <SourceLine>If args(0) IsA RooNumber Then</SourceLine>
+   <SourceLine>Dim num As Double = RooNumber(args(0)).Value</SourceLine>
+   <SourceLine>For Each element In Owner.Elements</SourceLine>
+   <SourceLine>If element IsA RooNumber And RooNumber(element).Value = num Then Return New RooBoolean(True)</SourceLine>
+   <SourceLine>Next element</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Boolean?</SourceLine>
+   <SourceLine>If args(0) IsA RooBoolean Then</SourceLine>
+   <SourceLine>Dim b As Boolean = RooBoolean(args(0)).Value</SourceLine>
+   <SourceLine>For Each element In Owner.Elements</SourceLine>
+   <SourceLine>If element IsA RooBoolean And RooBoolean(element).Value = b Then Return New RooBoolean(True)</SourceLine>
+   <SourceLine>Next element</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Nothing?</SourceLine>
+   <SourceLine>If args(0) IsA RooNothing Then</SourceLine>
+   <SourceLine>For Each element In Owner.Elements</SourceLine>
+   <SourceLine>If element IsA RooNothing Then Return New RooBoolean(True)</SourceLine>
+   <SourceLine>Next element</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Not found.</SourceLine>
+   <SourceLine>Return New RooBoolean(False)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant</ItemParams>
+  <ItemResult>RooBoolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoDeleteAt</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1657710591</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoDeleteAt(args() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Array.delete_at!(index As Integer) As Object</SourceLine>
+   <SourceLine>// Deletes the object at the specified index.</SourceLine>
+   <SourceLine>// Returns the deleted object or Nothing if index is out of range.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that `index` is an integer.</SourceLine>
+   <SourceLine>Roo.AssertArePositiveIntegers(where, args(0))</SourceLine>
+   <SourceLine>Dim index As Integer = RooNumber(args(0)).Value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Out of range?</SourceLine>
+   <SourceLine>If index &gt; Owner.Elements.Ubound Then Return New RooNothing</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the element to remove.</SourceLine>
+   <SourceLine>Dim removed As Variant = Owner.Elements(index)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Remove the element.</SourceLine>
+   <SourceLine>Owner.Elements.Remove(index)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return it.</SourceLine>
+   <SourceLine>Return removed</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoEach</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1389684735</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoEach(args() As Variant, where As RooToken, interpreter As RooInterpreter) As RooArray</SourceLine>
+   <SourceLine>// Array.each(func As Invokable, optional arguments As Array) As Array</SourceLine>
+   <SourceLine>// Invokes the passed function for each element of this array, passing to the function the </SourceLine>
+   <SourceLine>// element as the first argument.</SourceLine>
+   <SourceLine>// Optionally can take a second argument in the form of an Array. The elements of this</SourceLine>
+   <SourceLine>// Array will be passed to the function as additional arguments.</SourceLine>
+   <SourceLine>// Returns this array (unaltered).</SourceLine>
+   <SourceLine>// E.g: </SourceLine>
+   <SourceLine>' def stars(e):</SourceLine>
+   <SourceLine>'   print("*" + e + "*")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' def prefix(e, what):</SourceLine>
+   <SourceLine>'  print(what + e)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' var a = ["a", "b", "c"]</SourceLine>
+   <SourceLine>' a.each(stars)</SourceLine>
+   <SourceLine>' # Prints:</SourceLine>
+   <SourceLine>' # *a*</SourceLine>
+   <SourceLine>' # *b*</SourceLine>
+   <SourceLine>' # *c*</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' a.each(prefix, ["-&gt;"])</SourceLine>
+   <SourceLine>' # Prints:</SourceLine>
+   <SourceLine>' # -&gt;a</SourceLine>
+   <SourceLine>' # -&gt;b</SourceLine>
+   <SourceLine>' # -&gt;c</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim funcArgs() As Variant</SourceLine>
+   <SourceLine>Dim func As Invokable</SourceLine>
+   <SourceLine>Dim i, elementsUbound As Integer</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that `func` is invokable.</SourceLine>
+   <SourceLine>Roo.AssertIsInvokable(where, args(0))</SourceLine>
+   <SourceLine>func = args(0)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If a second argument has been passed, check that it's an Array object.</SourceLine>
+   <SourceLine>If args.Ubound = 1 Then</SourceLine>
+   <SourceLine>Roo.AssertIsArray(where, args(1))</SourceLine>
+   <SourceLine>// Get an array of the additional arguments to pass to the function we will invoke.</SourceLine>
+   <SourceLine>For Each v As Variant In RooArray(args(1)).Elements</SourceLine>
+   <SourceLine>funcArgs.Append(v)</SourceLine>
+   <SourceLine>Next v</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that we have the correct number of arguments for `func`.</SourceLine>
+   <SourceLine>// NB: +2 as we will pass in each element as the first argument.</SourceLine>
+   <SourceLine>If Not Interpreter.CorrectArity(func, funcArgs.Ubound + 2) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Incorrect number of arguments passed to the " +_</SourceLine>
+   <SourceLine>Stringable(func).StringValue + " function.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>elementsUbound = Owner.Elements.Ubound</SourceLine>
+   <SourceLine>For i = 0 To elementsUbound</SourceLine>
+   <SourceLine>funcArgs.Insert(0, Owner.Elements(i)) // Inject the element as the first argument to `func`.</SourceLine>
+   <SourceLine>call func.Invoke(interpreter, funcArgs, where)</SourceLine>
+   <SourceLine>funcArgs.Remove(0) // Remove this element from the argument list prior to the next iteration.</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return this array.</SourceLine>
+   <SourceLine>Return Owner</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken, interpreter As RooInterpreter</ItemParams>
+  <ItemResult>RooArray</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoEachIndex</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2101325823</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoEachIndex(args() As Variant, where As RooToken, interpreter As RooInterpreter) As RooArray</SourceLine>
+   <SourceLine>// Array.each_index(func as Invokable, optional arguments as Array) as Array</SourceLine>
+   <SourceLine>// Invokes the passed function for each index of this array, passing to the function the </SourceLine>
+   <SourceLine>// element index as the first argument.</SourceLine>
+   <SourceLine>// Optionally can take a second argument in the form of an Array. The elements of this</SourceLine>
+   <SourceLine>// array will be passed to the function as additional arguments.</SourceLine>
+   <SourceLine>// Returns this array (unaltered).</SourceLine>
+   <SourceLine>// E.g: </SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' def squared(e):</SourceLine>
+   <SourceLine>'   print("*" + e*e + "*")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' def prefix(e, what):</SourceLine>
+   <SourceLine>'   print(what + e)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' var a = ["a", "b", "c", "d"]</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' a.each_index(squared)</SourceLine>
+   <SourceLine>' # Prints:</SourceLine>
+   <SourceLine>' # *0*</SourceLine>
+   <SourceLine>' # *1*</SourceLine>
+   <SourceLine>' # *4*</SourceLine>
+   <SourceLine>' # *0*</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' a.each_index(prefix, ["-&gt;"])</SourceLine>
+   <SourceLine>' # Prints:</SourceLine>
+   <SourceLine>' # -&gt;0</SourceLine>
+   <SourceLine>' # -&gt;1</SourceLine>
+   <SourceLine>' # -&gt;2</SourceLine>
+   <SourceLine>' # -&gt;3</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' # You can also pass standard library functions to each_index:</SourceLine>
+   <SourceLine>' a.each_index(print)</SourceLine>
+   <SourceLine>' # Prints:</SourceLine>
+   <SourceLine>' # 0</SourceLine>
+   <SourceLine>' # 1</SourceLine>
+   <SourceLine>' # 2</SourceLine>
+   <SourceLine>' # 3</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' print(a) # Unchanged (["a", "b", "c", "d"])</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim funcArgs() As Variant</SourceLine>
+   <SourceLine>Dim func As Invokable</SourceLine>
+   <SourceLine>Dim i, elementsUbound As Integer</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that `func` is invokable.</SourceLine>
+   <SourceLine>Roo.AssertIsInvokable(where, args(0))</SourceLine>
+   <SourceLine>func = args(0)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If a second argument has been passed, check that it's an Array object.</SourceLine>
+   <SourceLine>If args.Ubound = 1 Then</SourceLine>
+   <SourceLine>Roo.AssertIsArray(where, args(1))</SourceLine>
+   <SourceLine>// Get an array of the additional arguments to pass to the function we will invoke.</SourceLine>
+   <SourceLine>For Each v As Variant In RooArray(args(1)).Elements</SourceLine>
+   <SourceLine>funcArgs.Append(v)</SourceLine>
+   <SourceLine>Next v</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that we have the correct number of arguments for `func`.</SourceLine>
+   <SourceLine>// NB: +2 as we will pass in each element index as the first argument.</SourceLine>
+   <SourceLine>If Not Interpreter.CorrectArity(func, funcArgs.Ubound + 2) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Incorrect number of arguments passed to the " +_</SourceLine>
+   <SourceLine>Stringable(func).StringValue + " function.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>elementsUbound = Owner.Elements.Ubound</SourceLine>
+   <SourceLine>For i = 0 To elementsUbound</SourceLine>
+   <SourceLine>funcArgs.Insert(0, New RooNumber(i)) // Inject the element index as the first argument to `func`.</SourceLine>
+   <SourceLine>Call func.Invoke(interpreter, funcArgs, where)</SourceLine>
+   <SourceLine>funcArgs.Remove(0) // Remove this element from the argument list prior to the next iteration.</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return this array.</SourceLine>
+   <SourceLine>Return Owner</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken, interpreter As RooInterpreter</ItemParams>
+  <ItemResult>RooArray</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoFetch</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>31277055</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoFetch(args() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Array.fetch(index as Integer, default as Object) as Object</SourceLine>
+   <SourceLine>// Returns the element at `index`. If `index` is negative then we count backwards from the end </SourceLine>
+   <SourceLine>// of the array. An index of -1 is the end of the array.</SourceLine>
+   <SourceLine>// If `index` is out of range then we return `default`.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that `index` is an integer.</SourceLine>
+   <SourceLine>Roo.AssertAreIntegers(where, args(0))</SourceLine>
+   <SourceLine>Dim index As Integer = RooNumber(args(0)).Value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check bounds. Return `default` if out of range.</SourceLine>
+   <SourceLine>If index &gt;=0 And index &gt; Owner.Elements.Ubound Then</SourceLine>
+   <SourceLine>Return args(1)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>If Abs(index) &gt; Owner.Elements.Ubound + 1 Then Return args(1)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return the requested element.</SourceLine>
+   <SourceLine>If index &gt;= 0 Then</SourceLine>
+   <SourceLine>Return Owner.Elements(index)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// Count backwards from the upper limit of the array (-1 is the last element).</SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine>Return Owner.Elements((Owner.Elements.Ubound + 1) + index)</SourceLine>
+   <SourceLine>Catch OutOfBoundsException</SourceLine>
+   <SourceLine>#Pragma BreakOnExceptions False</SourceLine>
+   <SourceLine>Return args(1)</SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoFirst</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1257543679</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoFirst(args() As Variant, where As RooToken, destructive As Boolean) As Variant</SourceLine>
+   <SourceLine>// Array.first() as Object or Nothing  |  Array.first(n as Integer) as Array.</SourceLine>
+   <SourceLine>// If no arguments are passed then we return the first element of this array (or Nothing </SourceLine>
+   <SourceLine>// if the array is empty).</SourceLine>
+   <SourceLine>// If a single argument is passed then we return the first `n` elements of this array. Returns </SourceLine>
+   <SourceLine>// an empty array if this array is empty. Returns the original array if n &gt; Array.length.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim limit As Integer</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If args.Ubound &lt; 0 Then</SourceLine>
+   <SourceLine>// No arguments passed.</SourceLine>
+   <SourceLine>If Owner.Elements.Ubound &lt; 0 Then</SourceLine>
+   <SourceLine>Return New RooNothing</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Dim obj As Variant = Owner.Elements(0)</SourceLine>
+   <SourceLine>If destructive Then Owner.Elements.Remove(0)</SourceLine>
+   <SourceLine>Return obj</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// A single argument has been passed. Check that it's a positive integer.</SourceLine>
+   <SourceLine>Roo.AssertIsPositiveInteger(where, args(0))</SourceLine>
+   <SourceLine>Dim n As Integer = RooNumber(args(0)).Value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If this array is empty, return a new empty array.</SourceLine>
+   <SourceLine>If Owner.Elements.Ubound &lt; 0 Then Return New RooArray</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Has the user asked for more elements than there are? If so, we return this array if `first()` or </SourceLine>
+   <SourceLine>// if `first!()` we return a copy of the original array and then we remove all elements from this array.</SourceLine>
+   <SourceLine>If n &gt; (Owner.Elements.Ubound + 1) Then</SourceLine>
+   <SourceLine>If destructive Then</SourceLine>
+   <SourceLine>Dim newArray As New RooArray</SourceLine>
+   <SourceLine>limit = Owner.Elements.Ubound</SourceLine>
+   <SourceLine>For i As Integer = 0 To limit</SourceLine>
+   <SourceLine>newArray.Elements.Insert(0, Owner.Elements.Pop)</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>return newArray</SourceLine>
+   <SourceLine>Else // Non-destructive.</SourceLine>
+   <SourceLine>Return Owner</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the first n elements and store them in `result`.</SourceLine>
+   <SourceLine>Dim result() As Variant</SourceLine>
+   <SourceLine>limit = n - 1</SourceLine>
+   <SourceLine>For i As Integer = 0 To limit</SourceLine>
+   <SourceLine>result.Append(Owner.Elements(i))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If this is a destructive operation, we need to remove the first `n` elements from this array.</SourceLine>
+   <SourceLine>If destructive Then</SourceLine>
+   <SourceLine>Dim keep() As Variant</SourceLine>
+   <SourceLine>limit = Owner.Elements.Ubound</SourceLine>
+   <SourceLine>For i As Integer = n To limit</SourceLine>
+   <SourceLine>keep.Append(Owner.Elements(i))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>Owner.Elements = keep</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooArray(result)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken, destructive As Boolean</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoFind</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>950659071</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoFind(args() As Variant) As Variant</SourceLine>
+   <SourceLine>// Array.find(obj as Object) as Number object or Nothing.</SourceLine>
+   <SourceLine>// Searches the array for the passed object. If found, it returns its index in the array. </SourceLine>
+   <SourceLine>// Returns Nothing if obj is not in the array.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Quick check for an empty array.</SourceLine>
+   <SourceLine>If Owner.Elements.Ubound &lt; 0 Then Return New RooNothing</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim i, limit As Integer</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// First see if we can find the actual in-memory object in the array using Xojo's built-in method.</SourceLine>
+   <SourceLine>Dim index As Integer = Owner.Elements.IndexOf(args(0))</SourceLine>
+   <SourceLine>If index &lt;&gt; -1 Then Return New RooNumber(index)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Didn't find an object match. Check literal types. </SourceLine>
+   <SourceLine>// First we check Text.</SourceLine>
+   <SourceLine>If args(0) IsA RooText Then</SourceLine>
+   <SourceLine>Dim query As String = RooText(args(0)).Value</SourceLine>
+   <SourceLine>limit = Owner.Elements.Ubound</SourceLine>
+   <SourceLine>For i = 0 To limit</SourceLine>
+   <SourceLine>If Owner.Elements(i) IsA RooText Then // Do a case-sensitive comparison.</SourceLine>
+   <SourceLine>If StrComp(RooText(Owner.Elements(i)).Value, query, 0) = 0 Then Return New RooNumber(i)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>Return New RooNothing // Not found.</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Number?</SourceLine>
+   <SourceLine>If args(0) IsA RooNumber Then</SourceLine>
+   <SourceLine>Dim n As Double = RooNumber(args(0)).Value</SourceLine>
+   <SourceLine>limit = Owner.Elements.Ubound</SourceLine>
+   <SourceLine>For i = 0 To limit</SourceLine>
+   <SourceLine>If Owner.Elements(i) IsA RooNumber Then</SourceLine>
+   <SourceLine>If RooNumber(Owner.Elements(i)).Value = n Then Return New RooNumber(i)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Boolean?</SourceLine>
+   <SourceLine>If args(0) IsA RooBoolean Then</SourceLine>
+   <SourceLine>Dim b As Boolean = RooBoolean(args(0)).Value</SourceLine>
+   <SourceLine>limit = Owner.Elements.Ubound</SourceLine>
+   <SourceLine>For i = 0 To limit</SourceLine>
+   <SourceLine>If Owner.Elements(i) IsA RooBoolean Then</SourceLine>
+   <SourceLine>If RooBoolean(Owner.Elements(i)).Value = b Then Return New RooNumber(i)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Nothing?</SourceLine>
+   <SourceLine>If args(0) IsA RooNothing Then</SourceLine>
+   <SourceLine>limit = Owner.Elements.Ubound</SourceLine>
+   <SourceLine>For i = 0 To limit</SourceLine>
+   <SourceLine>If Owner.Elements(i) IsA RooNothing Then Return New RooNumber(i)</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Not found.</SourceLine>
+   <SourceLine>Return New RooNothing</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoInsert</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1776877567</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoInsert(args() As Variant, where As RooToken) As RooArray</SourceLine>
+   <SourceLine>// Array.insert!(index as Integer, obj as Object) as Array</SourceLine>
+   <SourceLine>// Inserts `obj` into this array and returns the modified array.</SourceLine>
+   <SourceLine>// Negative indices count backwards from the end of the array. Therefore an index of -1 will append </SourceLine>
+   <SourceLine>// the object to the end of the array.</SourceLine>
+   <SourceLine>// If the passed `index` is greater than the current size of the array then we fill the missing </SourceLine>
+   <SourceLine>// elements with Nothing.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that `index` is an integer.</SourceLine>
+   <SourceLine>Roo.AssertIsInteger(where, args(0))</SourceLine>
+   <SourceLine>Dim index As Integer = RooNumber(args(0)).Value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check bounds.</SourceLine>
+   <SourceLine>If index &lt; 0 And index &lt; -(Owner.Elements.Ubound + 2) Then</SourceLine>
+   <SourceLine>Dim min As Integer = Owner.Elements.Ubound + 2</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "The " + Name + "(index, obj) method `index` parameter ( " + _</SourceLine>
+   <SourceLine>Str(index) + ") is too small for the array (minimum permitted is -" + Str(min) + ").")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Do the insertion.</SourceLine>
+   <SourceLine>If index &gt;= 0 And index &lt;= Owner.Elements.Ubound Then</SourceLine>
+   <SourceLine>// Insert `obj` into an existing index and move everything in the array up one.</SourceLine>
+   <SourceLine>Owner.Elements.Insert(index, args(1))</SourceLine>
+   <SourceLine>ElseIf index &gt; Owner.Elements.Ubound Then</SourceLine>
+   <SourceLine>// Insert `obj` into the specified index, filling the missing elements with Nothing.</SourceLine>
+   <SourceLine>Dim numNothing As Integer = index - Owner.Elements.Ubound - 1</SourceLine>
+   <SourceLine>For i As Integer = 1 To numNothing</SourceLine>
+   <SourceLine>Owner.Elements.Append(New RooNothing)</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>Owner.Elements.Append(args(1))</SourceLine>
+   <SourceLine>ElseIf index &lt; 0 Then</SourceLine>
+   <SourceLine>// Count backwards from the upper limit of the array (-1 is the last element).</SourceLine>
+   <SourceLine>Owner.Elements.Insert(Owner.Elements.Ubound + index + 2, args(1))</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return this array.</SourceLine>
+   <SourceLine>Return Owner</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken</ItemParams>
+  <ItemResult>RooArray</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoJoin</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1319247871</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoJoin(args() As Variant, where As RooToken) As RooText</SourceLine>
+   <SourceLine>// Array.join() as Text  |  Array.join(separator as Text) as Text</SourceLine>
+   <SourceLine>// Returns a new Text object created by converting each element of the array to its </SourceLine>
+   <SourceLine>// text representation, separated by the optional separator. If separator is not specified </SourceLine>
+   <SourceLine>// then we use empty text ("").</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim separator As String = ""</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If args.Ubound = 0 Then separator = Stringable(args(0)).StringValue</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Do the join.</SourceLine>
+   <SourceLine>Return Owner.Join(separator)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Catch err As IllegalCastException</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "An element in the array did not have a text representation.")</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken</ItemParams>
+  <ItemResult>RooText</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoKeep</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>497723391</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoKeep(args() As Variant, where As RooToken, interpreter As RooInterpreter, destructive As Boolean) As RooArray</SourceLine>
+   <SourceLine>// Array.keep(func as Invokable, optional arguments as Array) as Array</SourceLine>
+   <SourceLine>// Array.keep!(func as Invokable, optional arguments as Array) as Array</SourceLine>
+   <SourceLine>// Invokes the passed `func` for each element of this array, passing to `func` the </SourceLine>
+   <SourceLine>// element as the first argument. Optionally, `keep` can take a second argument in the form </SourceLine>
+   <SourceLine>// of a RooArray. The elements of this array will be passed to `func` as additional arguments.</SourceLine>
+   <SourceLine>// If `func` returns True then that element is kept, otherwise the element is rejected from the array.</SourceLine>
+   <SourceLine>// We return a new array of kept elements</SourceLine>
+   <SourceLine>// Can be destructive and mutate the original array.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim answer, toKeep(), funcArgs() As Variant</SourceLine>
+   <SourceLine>Dim elementsUbound, i As Integer</SourceLine>
+   <SourceLine>Dim func As Invokable</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that `func` is invokable.</SourceLine>
+   <SourceLine>Roo.AssertIsInvokable(where, args(0))</SourceLine>
+   <SourceLine>func = args(0)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if args.Ubound = 1 then</SourceLine>
+   <SourceLine>// A second argument has been passed - check that it's a RooArray.</SourceLine>
+   <SourceLine>Roo.AssertIsArray(where, args(1))</SourceLine>
+   <SourceLine>// Get an array of the additional arguments to pass to the function we will invoke.</SourceLine>
+   <SourceLine>Dim limit As Integer = RooArray(args(1)).Elements.Ubound</SourceLine>
+   <SourceLine>For i = 0 To limit</SourceLine>
+   <SourceLine>funcArgs.Append(RooArray(args(1)).Elements(i))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that we have the correct number of arguments for `func`.</SourceLine>
+   <SourceLine>// NB: +2 as we will pass in each element as the first argument.</SourceLine>
+   <SourceLine>If Not Interpreter.CorrectArity(func, funcArgs.Ubound + 2) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Incorrect number of arguments passed to the " +_</SourceLine>
+   <SourceLine>Stringable(func).StringValue + " function.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Do the keep.</SourceLine>
+   <SourceLine>elementsUbound = Owner.Elements.Ubound</SourceLine>
+   <SourceLine>For i = 0 To elementsUbound</SourceLine>
+   <SourceLine>funcArgs.Insert(0, Owner.Elements(i)) // Inject the element as the first argument to `func`.</SourceLine>
+   <SourceLine>answer = func.Invoke(interpreter, funcArgs, where)</SourceLine>
+   <SourceLine>If answer IsA RooBoolean and RooBoolean(answer).Value Then toKeep.Append(Owner.Elements(i))</SourceLine>
+   <SourceLine>funcArgs.Remove(0) // Remove this element from the argument list prior to the next iteration.</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If destructive Then Owner.Elements = toKeep</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooArray(toKeep)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken, interpreter As RooInterpreter, destructive As Boolean</ItemParams>
+  <ItemResult>RooArray</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoLast</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>862543871</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoLast(args() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Array.last() as Object or Nothing  |  Array.last(n as Integer) as Array.</SourceLine>
+   <SourceLine>// If no arguments are passed then we return the last element of this array (or Nothing </SourceLine>
+   <SourceLine>// if the array is empty).</SourceLine>
+   <SourceLine>// If a single argument is passed then we return the last `n` elements of this array. Returns </SourceLine>
+   <SourceLine>// an empty array if this array is empty. Returns the original array if n &gt; Array.length.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If args.Ubound &lt; 0 Then</SourceLine>
+   <SourceLine>// No arguments passed.</SourceLine>
+   <SourceLine>If Owner.Elements.Ubound &lt; 0 Then</SourceLine>
+   <SourceLine>Return New RooNothing</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return Owner.Elements(Owner.Elements.Ubound)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that `n` is a positive Integer.</SourceLine>
+   <SourceLine>Roo.AssertIsPositiveInteger(where, args(0))</SourceLine>
+   <SourceLine>Dim n As Integer = RooNumber(args(0)).Value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If this array is empty, return a new empty array.</SourceLine>
+   <SourceLine>If Owner.Elements.Ubound &lt; 0 Then Return New RooArray</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Has the user asked for more elements than there are? If so, return the original array.</SourceLine>
+   <SourceLine>If n &gt; (Owner.Elements.Ubound + 1) Then Return Owner</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get and return the last `n` elements.</SourceLine>
+   <SourceLine>Dim result() As Variant</SourceLine>
+   <SourceLine>Dim limit, start As Integer</SourceLine>
+   <SourceLine>limit = Owner.Elements.Ubound</SourceLine>
+   <SourceLine>start = (limit + 1) - n</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>For i As Integer = start To limit</SourceLine>
+   <SourceLine>result.Append(Owner.Elements(i))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooArray(result)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoMap</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>72175615</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoMap(args() As Variant, where As RooToken, interpreter As RooInterpreter, destructive As Boolean) As RooArray</SourceLine>
+   <SourceLine>// Array.map(func as Invokable, optional arguments as Array) as Array</SourceLine>
+   <SourceLine>// Array.map!(func as Invokable, optional arguments as Array) as Array</SourceLine>
+   <SourceLine>// Invokes the passed `func` for each element of this array, passing to `func` the element </SourceLine>
+   <SourceLine>// as the first argument. Optionally, `map` can take a second argument in the form of an Array object. </SourceLine>
+   <SourceLine>// The elements of this array will be passed to `func` as additional arguments.</SourceLine>
+   <SourceLine>// Returns a new array containing the values returned by `func`.</SourceLine>
+   <SourceLine>// Can be destructive and mutate this array.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim funcArgs(), result() As Variant</SourceLine>
+   <SourceLine>Dim elementsUbound, i As Integer</SourceLine>
+   <SourceLine>Dim func As Invokable</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that `func` is invokable.</SourceLine>
+   <SourceLine>Roo.AssertIsInvokable(where, args(0))</SourceLine>
+   <SourceLine>func = args(0)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If a second argument has been passed, check that it's an Array object.</SourceLine>
+   <SourceLine>if args.Ubound = 1 then</SourceLine>
+   <SourceLine>Roo.AssertIsArray(where, args(1))</SourceLine>
+   <SourceLine>// Get an array of the additional arguments to pass to the function we will invoke.</SourceLine>
+   <SourceLine>Dim limit As Integer = RooArray(args(1)).Elements.Ubound</SourceLine>
+   <SourceLine>For i = 0 To limit</SourceLine>
+   <SourceLine>funcArgs.Append(RooArray(args(1)).Elements(i))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that we have the correct number of arguments for `func`.</SourceLine>
+   <SourceLine>// NB: +2 as we will pass in each element as the first argument.</SourceLine>
+   <SourceLine>If Not Interpreter.CorrectArity(func, funcArgs.Ubound + 2) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Incorrect number of arguments passed to the " +_</SourceLine>
+   <SourceLine>Stringable(func).StringValue + " function.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>elementsUbound = Owner.Elements.Ubound</SourceLine>
+   <SourceLine>For i = 0 To elementsUbound</SourceLine>
+   <SourceLine>funcArgs.Insert(0, Owner.Elements(i)) // Inject this element as the first argument to `func`.</SourceLine>
+   <SourceLine>result.Append(func.Invoke(interpreter, funcArgs, where))</SourceLine>
+   <SourceLine>funcArgs.Remove(0) // Remove this element from the argument list prior to the next iteration.</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If destructive Then Owner.Elements = result</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooArray(result)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken, interpreter As RooInterpreter, destructive As Boolean</ItemParams>
+  <ItemResult>RooArray</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoPush</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>737959935</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoPush(args() As Variant) As RooArray</SourceLine>
+   <SourceLine>// Array.push(obj as Object) as Array</SourceLine>
+   <SourceLine>// Appends the passed object to this array. Returns the amended array afterwards.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Owner.Elements.Append(args(0))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Owner</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant</ItemParams>
+  <ItemResult>RooArray</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoReject</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>906110975</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoReject(args() As Variant, where As RooToken, interpreter As RooInterpreter, destructive As Boolean) As RooArray</SourceLine>
+   <SourceLine>// Array.reject(func as Invokable, optional arguments as Array) as Array</SourceLine>
+   <SourceLine>// Array.reject!(func as Invokable, optional arguments as Array) as Array</SourceLine>
+   <SourceLine>// Invokes the passed `func` for each element of this array, passing to `func` the element </SourceLine>
+   <SourceLine>// as the first argument. Optionally, `reject` can take a second argument in the form </SourceLine>
+   <SourceLine>// of an Array object. The elements of this array will be passed to `func` as additional arguments.</SourceLine>
+   <SourceLine>// If `func` returns True then that element is discarded, otherwise the element is kept in the array.</SourceLine>
+   <SourceLine>// We return a new array of kept elements</SourceLine>
+   <SourceLine>// Can be destructive and mutate the original array.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim answer, toKeep(), funcArgs() As Variant</SourceLine>
+   <SourceLine>Dim elementsUbound, i As Integer</SourceLine>
+   <SourceLine>Dim func As Invokable</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that `func` is invokable.</SourceLine>
+   <SourceLine>Roo.AssertIsInvokable(where, args(0))</SourceLine>
+   <SourceLine>func = args(0)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If a second argument has been passed, check that it's an Array object.</SourceLine>
+   <SourceLine>If args.Ubound = 1 Then</SourceLine>
+   <SourceLine>// Get an array of the additional arguments to pass to the function we will invoke.</SourceLine>
+   <SourceLine>Dim limit As Integer = RooArray(args(1)).Elements.Ubound</SourceLine>
+   <SourceLine>For i = 0 To limit</SourceLine>
+   <SourceLine>funcArgs.Append(RooArray(args(1)).Elements(i))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that we have the correct number of arguments for `func`.</SourceLine>
+   <SourceLine>// NB: +2 as we will pass in each element as the first argument.</SourceLine>
+   <SourceLine>If Not Interpreter.CorrectArity(func, funcArgs.Ubound + 2) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Incorrect number of arguments passed to the " +_</SourceLine>
+   <SourceLine>Stringable(func).StringValue + " function.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Do the rejection.</SourceLine>
+   <SourceLine>elementsUbound = Owner.Elements.Ubound</SourceLine>
+   <SourceLine>For i = 0 To elementsUbound</SourceLine>
+   <SourceLine>funcArgs.Insert(0, Owner.Elements(i)) // Inject the element as the first argument to `func`.</SourceLine>
+   <SourceLine>answer = func.Invoke(interpreter, funcArgs, where)</SourceLine>
+   <SourceLine>If answer IsA RooBoolean And Not RooBoolean(answer).Value Then toKeep.Append(Owner.elements(i))</SourceLine>
+   <SourceLine>funcArgs.Remove(0) // Remove this element from the argument list prior to the next iteration.</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If destructive Then Owner.Elements = toKeep</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return New RooArray(toKeep)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken, interpreter As RooInterpreter, destructive As Boolean</ItemParams>
+  <ItemResult>RooArray</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoShift</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2040506367</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoShift(args() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Array.shift!() as Object</SourceLine>
+   <SourceLine>// Array.shift!(n as Integer) as Array</SourceLine>
+   <SourceLine>// If no arguments are passed then it removes the first element of this array and returns </SourceLine>
+   <SourceLine>// it (shifting all other elements down by one). </SourceLine>
+   <SourceLine>// If the optional `n` parameter is specified then we return an array of the first `n` elements </SourceLine>
+   <SourceLine>// just like Array.slice(0, n), leaving self containing only the remaining elements.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim obj, tmp() As Variant</SourceLine>
+   <SourceLine>Dim i, limit As Integer</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// No arguments? Just remove the first element and return it.</SourceLine>
+   <SourceLine>If args().Ubound &lt; 0 Then</SourceLine>
+   <SourceLine>If Owner.Elements.Ubound &lt; 0 Then Return New RooNothing</SourceLine>
+   <SourceLine>obj = Owner.Elements(0)</SourceLine>
+   <SourceLine>Owner.Elements.Remove(0)</SourceLine>
+   <SourceLine>Return obj</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that `n` is a positive integer.</SourceLine>
+   <SourceLine>Roo.AssertIsPositiveInteger(where, args(0))</SourceLine>
+   <SourceLine>dim n as Integer = RooNumber(args(0)).Value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Clear out the array if n = 0.</SourceLine>
+   <SourceLine>If n = 0 Then</SourceLine>
+   <SourceLine>tmp = Owner.Elements</SourceLine>
+   <SourceLine>Redim Owner.Elements(-1)</SourceLine>
+   <SourceLine>Return New RooArray(tmp)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If n &gt; Owner.Elements.Ubound + 1 Then</SourceLine>
+   <SourceLine>// Return all elements of this array as a new array and clear out this array.</SourceLine>
+   <SourceLine>limit = Owner.Elements.Ubound</SourceLine>
+   <SourceLine>For i = 0 To limit // Need to do a manual copy.</SourceLine>
+   <SourceLine>tmp.Append(Owner.Elements(i))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>Redim Owner.Elements(-1)</SourceLine>
+   <SourceLine>Return New RooArray(tmp)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>// Get the first `n` elements as a new array.</SourceLine>
+   <SourceLine>limit = n - 1</SourceLine>
+   <SourceLine>For i = 0 To limit</SourceLine>
+   <SourceLine>tmp.Append(Owner.Elements(i))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>// Now remove these elements from this array.</SourceLine>
+   <SourceLine>For i = 1 To n</SourceLine>
+   <SourceLine>Owner.Elements.Remove(0)</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>Return New RooArray(tmp)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoSlice</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>519383039</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoSlice(args() As Variant, where As RooToken, destructive As Boolean) As Variant</SourceLine>
+   <SourceLine>// Wrapper method for the multiple Array.slice() methods.</SourceLine>
+   <SourceLine>// Either slice(index) or slice(start, length).</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Roo.AssertIsInteger(where, args(0)) </SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If args.Ubound = 0 Then</SourceLine>
+   <SourceLine>Return DoSliceIndex(RooNumber(args(0)).Value, destructive)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Roo.AssertIsInteger(where, args(1))</SourceLine>
+   <SourceLine>Return DoSliceStartLength(RooNumber(args(0)).Value, RooNumber(args(1)).Value, destructive)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>args() As Variant, where As RooToken, destructive As Boolean</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoSliceIndex</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1258721279</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoSliceIndex(index As Integer, destructive As Boolean) As Variant</SourceLine>
+   <SourceLine>// Array.slice(index as Integer) as Object</SourceLine>
+   <SourceLine>// Array.slice!(index as Integer) as Object</SourceLine>
+   <SourceLine>// Negative indices count backwards from the end of the array (-1 is the last element).</SourceLine>
+   <SourceLine>// Returns the element at the specified index.</SourceLine>
+   <SourceLine>// slice() leaves this array alone. slice!() additionally removes the returned element from the array.</SourceLine>
+   <SourceLine>// If `Abs(index &gt; Array.length)` then returns Nothing. Additionally in this scenario, it will NOT affect </SourceLine>
+   <SourceLine>// this array if slice!() is called.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim result As Variant</SourceLine>
+   <SourceLine>Dim length As Integer = Owner.Elements.Ubound + 1</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If index &gt;= 0 And index &gt; Owner.Elements.Ubound Then</SourceLine>
+   <SourceLine>result = New RooNothing</SourceLine>
+   <SourceLine>ElseIf index &lt; 0 And Abs(index) &gt; length Then</SourceLine>
+   <SourceLine>result = New RooNothing</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>If index &lt; 0 Then</SourceLine>
+   <SourceLine>result = Owner.Elements(length + index)</SourceLine>
+   <SourceLine>If destructive Then Owner.Elements.Remove(length + index)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>result = Owner.Elements(index)</SourceLine>
+   <SourceLine>If destructive Then Owner.Elements.Remove(index)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return result</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>index As Integer, destructive As Boolean</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoSliceStartLength</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1722355711</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoSliceStartLength(start As Integer, length As Integer, destructive As Boolean) As Variant</SourceLine>
+   <SourceLine>// Array.slice(start as Integer, length as Integer) as Array or Nothing</SourceLine>
+   <SourceLine>// Array.slice!(start as Integer, length as Integer) as Array or Nothing</SourceLine>
+   <SourceLine>// If `start` is negative, we count backwards from the end of the array (-1 is the last element).</SourceLine>
+   <SourceLine>// `length` should be positive or else we return Nothing</SourceLine>
+   <SourceLine>// Returns a new subarray formed from the elements `start` to `length`.</SourceLine>
+   <SourceLine>// slice() leaves this array alone. slice!() additionally removes the returned elements from the array.</SourceLine>
+   <SourceLine>// If `Abs(index &gt; Array.length)` then we return Nothing. Additionally in this scenario, it </SourceLine>
+   <SourceLine>// will NOT affect this array if slice!() is called.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim result(), keep() As Variant</SourceLine>
+   <SourceLine>Dim finish, i, elementsUbound As Integer</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>elementsUbound = Owner.Elements.Ubound</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Edge cases.</SourceLine>
+   <SourceLine>If elementsUbound &lt; 0 Then Return New RooArray</SourceLine>
+   <SourceLine>If length = 0 Then Return New RooArray</SourceLine>
+   <SourceLine>If length &lt; 0 Then Return New RooNothing</SourceLine>
+   <SourceLine>If start &gt; elementsUbound Then Return New RooNothing</SourceLine>
+   <SourceLine>If start &lt; 0 And Abs(start) &gt; elementsUbound + 1 Then Return New RooNothing</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Calculate the correct start index.</SourceLine>
+   <SourceLine>If start &lt; 0 Then start = elementsUbound + 1 + start</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Calculate the finishing index.</SourceLine>
+   <SourceLine>finish = If(start + length &gt; elementsUbound + 1, elementsUbound, start + length - 1)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Do the slicing.</SourceLine>
+   <SourceLine>If destructive Then</SourceLine>
+   <SourceLine>// We not only need to get the elements to create a new array but we need to remove </SourceLine>
+   <SourceLine>// them from this array.</SourceLine>
+   <SourceLine>For i = 0 To elementsUbound</SourceLine>
+   <SourceLine>If i &gt;= start And i &lt;= finish Then</SourceLine>
+   <SourceLine>result.Append(Owner.Elements(i))</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>keep.Append(Owner.Elements(i))</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>Owner.Elements = keep</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>For i = start To finish</SourceLine>
+   <SourceLine>result.Append(Owner.Elements(i))</SourceLine>
+   <SourceLine>Next i</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' Return the sliced elements as a new array.</SourceLine>
+   <SourceLine>Return New RooArray(result)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>start As Integer, length As Integer, destructive As Boolean</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Property>
+  <ItemName>Name</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1986975743</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Name As String</SourceLine>
+   <SourceLine>The name of this Array object method.</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Name As String</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Owner</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1210433535</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Owner As RooArray</SourceLine>
+   <SourceLine>The RooArray object that owns this method.</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Owner As RooArray</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

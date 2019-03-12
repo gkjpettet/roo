@@ -1,0 +1,1089 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="1736947711">
+ <ObjName>RooSLCache</ObjName>
+ <ObjContainerID>1516281855</ObjContainerID>
+ <IsClass>0</IsClass>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>InitialiseTextGetters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2079113215</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InitialiseTextGetters()</SourceLine>
+   <SourceLine>TextGetters = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>TextGetters.Value("capitalise") = True</SourceLine>
+   <SourceLine>TextGetters.Value("capitalise!") = True</SourceLine>
+   <SourceLine>TextGetters.Value("chars") = True</SourceLine>
+   <SourceLine>TextGetters.Value("define_utf8") = True</SourceLine>
+   <SourceLine>TextGetters.Value("define_utf8!") = True</SourceLine>
+   <SourceLine>TextGetters.Value("empty?") = True</SourceLine>
+   <SourceLine>TextGetters.Value("length") = True</SourceLine>
+   <SourceLine>TextGetters.Value("lowercase") = True</SourceLine>
+   <SourceLine>TextGetters.Value("lowercase!") = True</SourceLine>
+   <SourceLine>TextGetters.Value("lstrip") = True</SourceLine>
+   <SourceLine>TextGetters.Value("lstrip!") = True</SourceLine>
+   <SourceLine>TextGetters.Value("reverse") = True</SourceLine>
+   <SourceLine>TextGetters.Value("reverse!") = True</SourceLine>
+   <SourceLine>TextGetters.Value("rstrip") = True</SourceLine>
+   <SourceLine>TextGetters.Value("rstrip!") = True</SourceLine>
+   <SourceLine>TextGetters.Value("strip") = True</SourceLine>
+   <SourceLine>TextGetters.Value("strip!") = True</SourceLine>
+   <SourceLine>TextGetters.Value("swapcase") = True</SourceLine>
+   <SourceLine>TextGetters.Value("swapcase!") = True</SourceLine>
+   <SourceLine>TextGetters.Value("to_date") = True</SourceLine>
+   <SourceLine>TextGetters.Value("to_number") = True</SourceLine>
+   <SourceLine>TextGetters.Value("uppercase") = True</SourceLine>
+   <SourceLine>TextGetters.Value("uppercase!") = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InitialiseTextMethods</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>484585471</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InitialiseTextMethods()</SourceLine>
+   <SourceLine>// The key is the name of the Text object method. The value is the arity of the method.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>TextMethods = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>TextMethods.Value("each_char") = Array(1, 2)</SourceLine>
+   <SourceLine>TextMethods.Value("ends_with?") = 1</SourceLine>
+   <SourceLine>TextMethods.Value("first_match") = Array(1, 2)</SourceLine>
+   <SourceLine>TextMethods.Value("include?") = 1</SourceLine>
+   <SourceLine>TextMethods.Value("index") = 1</SourceLine>
+   <SourceLine>TextMethods.Value("lpad") = Array(1, 2)</SourceLine>
+   <SourceLine>TextMethods.Value("lpad!") = Array(1, 2)</SourceLine>
+   <SourceLine>TextMethods.Value("match") = Array(1, 2)</SourceLine>
+   <SourceLine>TextMethods.Value("matches?") = 1</SourceLine>
+   <SourceLine>TextMethods.Value("replace_all") = 2</SourceLine>
+   <SourceLine>TextMethods.Value("replace_all!") = 2</SourceLine>
+   <SourceLine>TextMethods.Value("replace_first") = 2</SourceLine>
+   <SourceLine>TextMethods.Value("replace_first!") = 2</SourceLine>
+   <SourceLine>TextMethods.Value("rpad") = Array(1, 2)</SourceLine>
+   <SourceLine>TextMethods.Value("rpad!") = Array(1, 2)</SourceLine>
+   <SourceLine>TextMethods.Value("slice") = Array(1, 2)</SourceLine>
+   <SourceLine>TextMethods.Value("slice!") = Array(1, 2)</SourceLine>
+   <SourceLine>TextMethods.Value("starts_with?") = 1</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Initialise</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1037201407</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Initialise()</SourceLine>
+   <SourceLine>If mInitialised Then Return</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Generic object getters and methods.</SourceLine>
+   <SourceLine>InitialiseGenericGetters</SourceLine>
+   <SourceLine>InitialiseGenericMethods</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Array object getters and methods.</SourceLine>
+   <SourceLine>InitialiseArrayGetters</SourceLine>
+   <SourceLine>InitialiseArrayMethods</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// DateTime object getters and methods.</SourceLine>
+   <SourceLine>InitialiseDateTimeGetters</SourceLine>
+   <SourceLine>InitialiseDateTimeMethods</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Hash object getters and methods.</SourceLine>
+   <SourceLine>InitialiseHashGetters</SourceLine>
+   <SourceLine>InitialiseHashMethods</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Number object getters and methods.</SourceLine>
+   <SourceLine>InitialiseNumberGetters</SourceLine>
+   <SourceLine>InitialiseNumberMethods</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Regex object getters and methods.</SourceLine>
+   <SourceLine>InitialiseRegexGetters</SourceLine>
+   <SourceLine>InitialiseRegexMethods</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// RegexMatch object getters and methods.</SourceLine>
+   <SourceLine>InitialiseRegexMatchGetters</SourceLine>
+   <SourceLine>InitialiseRegexMatchMethods</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Text object getters and methods.</SourceLine>
+   <SourceLine>InitialiseTextGetters</SourceLine>
+   <SourceLine>InitialiseTextMethods</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// FileSystem module.</SourceLine>
+   <SourceLine>// FileSystem.Item object getters and methods.</SourceLine>
+   <SourceLine>InitialiseFileSystemItemGetters</SourceLine>
+   <SourceLine>InitialiseFileSystemItemMethods</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// HTTP module.</SourceLine>
+   <SourceLine>// HTTP.Request object getters.</SourceLine>
+   <SourceLine>InitialiseHTTPRequestGetters</SourceLine>
+   <SourceLine>// HTTP.Response object getters.</SourceLine>
+   <SourceLine>InitialiseHTTPResponseGetters</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>mInitialised = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InitialiseGenericGetters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1558208511</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InitialiseGenericGetters()</SourceLine>
+   <SourceLine>GenericGetters = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>GenericGetters.Value("nothing?") = True</SourceLine>
+   <SourceLine>GenericGetters.Value("number?") = True</SourceLine>
+   <SourceLine>GenericGetters.Value("to_text") = True</SourceLine>
+   <SourceLine>GenericGetters.Value("type") = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InitialiseGenericMethods</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1908901887</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InitialiseGenericMethods()</SourceLine>
+   <SourceLine>// The key is the name of the generic object method. The value is the arity of the method.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>GenericMethods = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>GenericMethods.Value("responds_to?") = 1</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InitialiseNumberGetters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>262973439</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InitialiseNumberGetters()</SourceLine>
+   <SourceLine>NumberGetters = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>NumberGetters.Value("abs") = True</SourceLine>
+   <SourceLine>NumberGetters.Value("acos") = True</SourceLine>
+   <SourceLine>NumberGetters.Value("asin") = True</SourceLine>
+   <SourceLine>NumberGetters.Value("atan") = True</SourceLine>
+   <SourceLine>NumberGetters.Value("ceil") = True</SourceLine>
+   <SourceLine>NumberGetters.Value("cos") = True</SourceLine>
+   <SourceLine>NumberGetters.Value("digits") = True</SourceLine>
+   <SourceLine>NumberGetters.Value("even?") = True</SourceLine>
+   <SourceLine>NumberGetters.Value("floor") = True</SourceLine>
+   <SourceLine>NumberGetters.Value("integer?") = True</SourceLine>
+   <SourceLine>NumberGetters.Value("odd?") = True</SourceLine>
+   <SourceLine>NumberGetters.Value("round") = True</SourceLine>
+   <SourceLine>NumberGetters.Value("sign") = True</SourceLine>
+   <SourceLine>NumberGetters.Value("sin") = True</SourceLine>
+   <SourceLine>NumberGetters.Value("sqrt") = True</SourceLine>
+   <SourceLine>NumberGetters.Value("tan") = True</SourceLine>
+   <SourceLine>NumberGetters.Value("to_degrees") = True</SourceLine>
+   <SourceLine>NumberGetters.Value("to_radians") = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InitialiseDateTimeGetters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>338153471</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InitialiseDateTimeGetters()</SourceLine>
+   <SourceLine>DateTimeGetters = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>DateTimeGetters.Value("day_name") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("friday?") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("hour") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("leap?") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("long_month") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("mday") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("meridiem") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("minute") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("monday?") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("month") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("nanosecond") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("saturday?") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("second") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("short_month") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("sunday?") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("thursday?") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("time") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("to_http_header") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("today?") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("tomorrow?") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("tuesday?") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("two_digit_hour") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("two_digit_minute") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("two_digit_second") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("unix_time") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("wday") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("wednesday?") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("yday") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("year") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("yesterday?") = True</SourceLine>
+   <SourceLine>DateTimeGetters.Value("") = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InitialiseDateTimeMethods</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1670275071</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InitialiseDateTimeMethods()</SourceLine>
+   <SourceLine>// The key is the name of the DateTime object method. The value is the arity of the method.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>DateTimeMethods = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>DateTimeMethods.Value("add_days") = 1</SourceLine>
+   <SourceLine>DateTimeMethods.Value("add_hours") = 1</SourceLine>
+   <SourceLine>DateTimeMethods.Value("add_months") = 1 </SourceLine>
+   <SourceLine>DateTimeMethods.Value("add_nanoseconds") = 1</SourceLine>
+   <SourceLine>DateTimeMethods.Value("add_seconds") = 1</SourceLine>
+   <SourceLine>DateTimeMethods.Value("add_years") = 1</SourceLine>
+   <SourceLine>DateTimeMethods.Value("sub_days") = 1</SourceLine>
+   <SourceLine>DateTimeMethods.Value("sub_hours") = 1</SourceLine>
+   <SourceLine>DateTimeMethods.Value("sub_months") = 1</SourceLine>
+   <SourceLine>DateTimeMethods.Value("sub_nanoseconds") = 1</SourceLine>
+   <SourceLine>DateTimeMethods.Value("sub_seconds") = 1</SourceLine>
+   <SourceLine>DateTimeMethods.Value("sub_years") = 1</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InitialiseArrayGetters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>540422143</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InitialiseArrayGetters()</SourceLine>
+   <SourceLine>ArrayGetters = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>ArrayGetters.Value("empty?") = True</SourceLine>
+   <SourceLine>ArrayGetters.Value("length") = True</SourceLine>
+   <SourceLine>ArrayGetters.Value("pop!") = True</SourceLine>
+   <SourceLine>ArrayGetters.Value("reverse!") = True</SourceLine>
+   <SourceLine>ArrayGetters.Value("shuffle!") = True</SourceLine>
+   <SourceLine>ArrayGetters.Value("unique") = True</SourceLine>
+   <SourceLine>ArrayGetters.Value("unique!") = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InitialiseArrayMethods</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>467304447</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InitialiseArrayMethods()</SourceLine>
+   <SourceLine>// The key is the name of the Array object method. The value is the arity of the method.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>ArrayMethods = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>ArrayMethods.Value("contains?") = 1</SourceLine>
+   <SourceLine>ArrayMethods.Value("delete_at!") = 1</SourceLine>
+   <SourceLine>ArrayMethods.Value("each") = Array(1, 2)</SourceLine>
+   <SourceLine>ArrayMethods.Value("each_index") = Array(1, 2)</SourceLine>
+   <SourceLine>ArrayMethods.Value("fetch") = 2</SourceLine>
+   <SourceLine>ArrayMethods.Value("find") = 1</SourceLine>
+   <SourceLine>ArrayMethods.Value("first") = Array(0, 1)</SourceLine>
+   <SourceLine>ArrayMethods.Value("first!") = Array(0, 1)</SourceLine>
+   <SourceLine>ArrayMethods.Value("insert!") = 2</SourceLine>
+   <SourceLine>ArrayMethods.Value("join") = Array(0, 1)</SourceLine>
+   <SourceLine>ArrayMethods.Value("keep") = Array(1, 2)</SourceLine>
+   <SourceLine>ArrayMethods.Value("keep!") = Array(1, 2)</SourceLine>
+   <SourceLine>ArrayMethods.Value("last") = Array(0, 1)</SourceLine>
+   <SourceLine>ArrayMethods.Value("map") = Array(1, 2)</SourceLine>
+   <SourceLine>ArrayMethods.Value("map!") = Array(1, 2)</SourceLine>
+   <SourceLine>ArrayMethods.Value("push!") = 1</SourceLine>
+   <SourceLine>ArrayMethods.Value("reject") = Array(1, 2)</SourceLine>
+   <SourceLine>ArrayMethods.Value("reject!") = Array(1, 2)</SourceLine>
+   <SourceLine>ArrayMethods.Value("shift!") = Array(0, 1)</SourceLine>
+   <SourceLine>ArrayMethods.Value("slice") = Array(1, 2)</SourceLine>
+   <SourceLine>ArrayMethods.Value("slice!") = Array(1, 2)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InitialiseHashGetters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>243881983</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InitialiseHashGetters()</SourceLine>
+   <SourceLine>HashGetters = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>HashGetters.Value("clear!") = True</SourceLine>
+   <SourceLine>HashGetters.Value("invert") = True</SourceLine>
+   <SourceLine>HashGetters.Value("invert!") = True</SourceLine>
+   <SourceLine>HashGetters.Value("keys") = True</SourceLine>
+   <SourceLine>HashGetters.Value("length") = True</SourceLine>
+   <SourceLine>HashGetters.Value("values") = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InitialiseHashMethods</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1396983807</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InitialiseHashMethods()</SourceLine>
+   <SourceLine>// The key is the name of the Hash object method. The value is the arity of the method.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>HashMethods = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>HashMethods.Value("delete!") = 1</SourceLine>
+   <SourceLine>HashMethods.Value("each") = Array(1, 2)</SourceLine>
+   <SourceLine>HashMethods.Value("each_key") = Array(1, 2)</SourceLine>
+   <SourceLine>HashMethods.Value("each_value") = Array(1, 2)</SourceLine>
+   <SourceLine>HashMethods.Value("fetch") = 2</SourceLine>
+   <SourceLine>HashMethods.Value("fetch_values") = 1</SourceLine>
+   <SourceLine>HashMethods.Value("has_key?") = 1</SourceLine>
+   <SourceLine>HashMethods.Value("has_value?") = 1</SourceLine>
+   <SourceLine>HashMethods.Value("keep") = Array(1, 2)</SourceLine>
+   <SourceLine>HashMethods.Value("keep!") = Array(1, 2)</SourceLine>
+   <SourceLine>HashMethods.Value("merge") = Array(1, 2)</SourceLine>
+   <SourceLine>HashMethods.Value("merge!") = Array(1, 2)</SourceLine>
+   <SourceLine>HashMethods.Value("reject") = Array(1, 2)</SourceLine>
+   <SourceLine>HashMethods.Value("reject!") = Array(1, 2)</SourceLine>
+   <SourceLine>HashMethods.Value("value") = 1</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InitialiseRegexMethods</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1104058367</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InitialiseRegexMethods()</SourceLine>
+   <SourceLine>// The key is the name of the Regex object method. The value is the arity of the method.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>RegexMethods = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>RegexMethods.Value("first_match") = Array(1, 2)</SourceLine>
+   <SourceLine>RegexMethods.Value("match") = Array(1, 2) </SourceLine>
+   <SourceLine>RegexMethods.Value("matches?") = 1</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InitialiseRegexGetters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>619796479</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InitialiseRegexGetters()</SourceLine>
+   <SourceLine>RegexGetters = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>RegexGetters.Value("case_sensitive") = True</SourceLine>
+   <SourceLine>RegexGetters.Value("dot_matches_all") = True</SourceLine>
+   <SourceLine>RegexGetters.Value("greedy") = True</SourceLine>
+   <SourceLine>RegexGetters.Value("match_empty") = True</SourceLine>
+   <SourceLine>RegexGetters.Value("multiline") = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InitialiseRegexMatchGetters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>565565439</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InitialiseRegexMatchGetters()</SourceLine>
+   <SourceLine>RegexMatchGetters = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>RegexMatchGetters.Value("groups") = True</SourceLine>
+   <SourceLine>RegexMatchGetters.Value("length") = True</SourceLine>
+   <SourceLine>RegexMatchGetters.Value("start") = True</SourceLine>
+   <SourceLine>RegexMatchGetters.Value("value") = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InitialiseRegexMatchMethods</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>441110527</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InitialiseRegexMatchMethods()</SourceLine>
+   <SourceLine>// The key is the name of the RegexMatch object method. The value is the arity of the method.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>RegexMatchMethods = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>RegexMatchMethods.Value("group") = 1</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InitialiseHTTPRequestGetters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>482670591</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InitialiseHTTPRequestGetters()</SourceLine>
+   <SourceLine>HTTPRequestGetters = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>HTTPRequestGetters.Value("content") = True</SourceLine>
+   <SourceLine>HTTPRequestGetters.Value("content_type") = True</SourceLine>
+   <SourceLine>HTTPRequestGetters.Value("cookies") = True</SourceLine>
+   <SourceLine>HTTPRequestGetters.Value("headers") = True</SourceLine>
+   <SourceLine>HTTPRequestGetters.Value("host") = True</SourceLine>
+   <SourceLine>HTTPRequestGetters.Value("if_modified_since") = True</SourceLine>
+   <SourceLine>HTTPRequestGetters.Value("method") = True</SourceLine>
+   <SourceLine>HTTPRequestGetters.Value("referer") = True</SourceLine>
+   <SourceLine>HTTPRequestGetters.Value("send") = True</SourceLine>
+   <SourceLine>HTTPRequestGetters.Value("timeout") = True</SourceLine>
+   <SourceLine>HTTPRequestGetters.Value("url") = True</SourceLine>
+   <SourceLine>HTTPRequestGetters.Value("user_agent") = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InitialiseHTTPResponseGetters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>67876863</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InitialiseHTTPResponseGetters()</SourceLine>
+   <SourceLine>HTTPResponseGetters = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>HTTPResponseGetters.Value("content") = True</SourceLine>
+   <SourceLine>HTTPResponseGetters.Value("content_disposition") = True</SourceLine>
+   <SourceLine>HTTPResponseGetters.Value("content_encoding") = True</SourceLine>
+   <SourceLine>HTTPResponseGetters.Value("content_length") = True</SourceLine>
+   <SourceLine>HTTPResponseGetters.Value("content_type") = True</SourceLine>
+   <SourceLine>HTTPResponseGetters.Value("cookies") = True</SourceLine>
+   <SourceLine>HTTPResponseGetters.Value("headers") = True</SourceLine>
+   <SourceLine>HTTPResponseGetters.Value("last_modified") = True</SourceLine>
+   <SourceLine>HTTPResponseGetters.Value("location") = True</SourceLine>
+   <SourceLine>HTTPResponseGetters.Value("status") = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InitialiseFileSystemItemGetters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1965414399</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InitialiseFileSystemItemGetters()</SourceLine>
+   <SourceLine>FileSystemItemGetters = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>FileSystemItemGetters.Value("count") = True</SourceLine>
+   <SourceLine>FileSystemItemGetters.Value("delete!") = True</SourceLine>
+   <SourceLine>FileSystemItemGetters.Value("directory?") = True</SourceLine>
+   <SourceLine>FileSystemItemGetters.Value("exists?") = True</SourceLine>
+   <SourceLine>FileSystemItemGetters.Value("file?") = True</SourceLine>
+   <SourceLine>FileSystemItemGetters.Value("name") = True</SourceLine>
+   <SourceLine>FileSystemItemGetters.Value("path") = True</SourceLine>
+   <SourceLine>FileSystemItemGetters.Value("read_all") = True</SourceLine>
+   <SourceLine>FileSystemItemGetters.Value("readable?") = True</SourceLine>
+   <SourceLine>FileSystemItemGetters.Value("writeable?") = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InitialiseFileSystemItemMethods</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1851762687</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InitialiseFileSystemItemMethods()</SourceLine>
+   <SourceLine>FileSystemItemMethods = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>FileSystemItemMethods.Value("append") = 1</SourceLine>
+   <SourceLine>FileSystemItemMethods.Value("append_line") = 1</SourceLine>
+   <SourceLine>FileSystemItemMethods.Value("copy_to") = 2</SourceLine>
+   <SourceLine>FileSystemItemMethods.Value("each_char") = Array(1, 2)</SourceLine>
+   <SourceLine>FileSystemItemMethods.Value("each_line") = Array(1, 2)</SourceLine>
+   <SourceLine>FileSystemItemMethods.Value("move_to") = 2</SourceLine>
+   <SourceLine>FileSystemItemMethods.Value("write") = 1</SourceLine>
+   <SourceLine>FileSystemItemMethods.Value("write_line") = 1</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InitialiseNumberMethods</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1726892031</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InitialiseNumberMethods()</SourceLine>
+   <SourceLine>// The key is the name of the Number object method. The value is the arity of the method.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>NumberMethods = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>NumberMethods.Value("each_digit") = Array(1, 2)</SourceLine>
+   <SourceLine>NumberMethods.Value("ends_with?") = 1</SourceLine>
+   <SourceLine>NumberMethods.Value("starts_with?") = 1</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Note>
+  <ItemName>About</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1688979455</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <NoteLine>About</NoteLine>
+   <NoteLine>Roo Standard Library (SL) Cache</NoteLine>
+   <NoteLine>-------------------------------</NoteLine>
+   <NoteLine>This module provides a cache of the available getters and methods on Roo's built-in types.</NoteLine>
+   <NoteLine>We do this rather than have the types themselves do it because it means we only need to </NoteLine>
+   <NoteLine>maintain two dictionaries for each class (one for their getters and one for their methods) rather </NoteLine>
+   <NoteLine>than have two dictionaries in memory for every instance of each type. </NoteLine>
+   <NoteLine></NoteLine>
+  </ItemSource>
+  <ItemFlags>0</ItemFlags>
+ </Note>
+ <Property>
+  <ItemName>mInitialised</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2091212799</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>mInitialised As Boolean = False</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>mInitialised As Boolean = False</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>TextGetters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>541437951</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>TextGetters As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine>Key = name of Text getter</SourceLine>
+   <SourceLine>Value = True</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>TextGetters As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>TextMethods</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2017191935</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>TextMethods As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine>Key = name of Text method</SourceLine>
+   <SourceLine>Value = method Arity (either an Integer or an Integer Array)</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>TextMethods As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>GenericGetters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>400875519</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>GenericGetters As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>GenericGetters As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>GenericMethods</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1597802495</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>GenericMethods As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>GenericMethods As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>NumberGetters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1945837567</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>NumberGetters As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>NumberGetters As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>DateTimeGetters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>751638527</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>DateTimeGetters As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine>Key = name of DateTime getter</SourceLine>
+   <SourceLine>Value = True</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>DateTimeGetters As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>DateTimeMethods</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1925304319</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>DateTimeMethods As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine>Key = name of DateTime method</SourceLine>
+   <SourceLine>Value = method Arity (either an Integer or an Integer Array)</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>DateTimeMethods As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>ArrayGetters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1561757695</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>ArrayGetters As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine>Key = name of Array getter</SourceLine>
+   <SourceLine>Value = True</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>ArrayGetters As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>ArrayMethods</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>236351487</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>ArrayMethods As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine>Key = name of Array method</SourceLine>
+   <SourceLine>Value = method Arity (either an Integer or an Integer Array)</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>ArrayMethods As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>HashGetters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>651657215</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>HashGetters As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine>Key = name of Hash getter</SourceLine>
+   <SourceLine>Value = True</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>HashGetters As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>HashMethods</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>99305471</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>HashMethods As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine>Key = name of Hash method</SourceLine>
+   <SourceLine>Value = method Arity (either an Integer or an Integer Array)</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>HashMethods As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>RegexMethods</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>629780479</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>RegexMethods As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine>Key = name of Regex method</SourceLine>
+   <SourceLine>Value = method Arity (either an Integer or an Integer Array)</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>RegexMethods As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>RegexGetters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>317921279</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>RegexGetters As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine>Key = name of Regex getter</SourceLine>
+   <SourceLine>Value = True</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>RegexGetters As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>RegexMatchGetters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1359828991</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>RegexMatchGetters As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine>Key = name of RegexMatch getter</SourceLine>
+   <SourceLine>Value = True</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>RegexMatchGetters As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>RegexMatchMethods</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>885073919</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>RegexMatchMethods As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine>Key = name of RegexMatch method</SourceLine>
+   <SourceLine>Value = method Arity (either an Integer or an Integer Array)</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>RegexMatchMethods As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>HTTPRequestGetters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1960542207</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>HTTPRequestGetters As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>HTTPRequestGetters As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>HTTPResponseGetters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1397610495</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>HTTPResponseGetters As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>HTTPResponseGetters As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>FileSystemItemMethods</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>691073023</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>FileSystemItemMethods As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>FileSystemItemMethods As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>FileSystemItemGetters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2097971199</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>FileSystemItemGetters As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>FileSystemItemGetters As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>NumberMethods</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>251043839</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>NumberMethods As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine>Key = name of Number method</SourceLine>
+   <SourceLine>Value = method Arity (either an Integer or an Integer Array)</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>NumberMethods As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

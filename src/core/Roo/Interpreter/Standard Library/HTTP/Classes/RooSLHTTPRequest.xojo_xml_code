@@ -1,0 +1,1373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="1680502783">
+ <ObjName>RooSLHTTPRequest</ObjName>
+ <ObjContainerID>902287359</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Superclass>RooInstance</Superclass>
+ <Interfaces>RooNativeClass,  RooNativeSettable</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Type</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1231054847</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Type() As String</SourceLine>
+   <SourceLine>// Part of the RooNativeClass interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return "HTTP.Request"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasGetterWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>673507327</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasGetterWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Part of the RooNativeClass interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return RooSLCache.HTTPRequestGetters.HasKey(name)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasMethodWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>443463679</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasMethodWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Part of the RooNativeClass interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused name</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The HTTP.Request class has no methods.</SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>GetterWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1825501183</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function GetterWithName(name As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the RooNativeClass interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If StrComp(name.Lexeme, "content", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooText(Content)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "content_type", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooText(ContentType)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "cookies", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Cookies</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "headers", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Headers</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "host", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooText(Host)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "if_modified_since", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooText(IfModifiedSince)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "method", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooText(RooSLHTTP.MethodTypeAsString(Method))</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "referer", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooText(Referer)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "send", 0) = 0 Then</SourceLine>
+   <SourceLine>Return Send(name)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "timeout", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(Timeout)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "url", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooText(URL)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "user_agent", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooText(UserAgent)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>MethodWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1214017535</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function MethodWithName(name As RooToken) As Invokable</SourceLine>
+   <SourceLine>// Part of the RooNativeClass interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Raise New RooRuntimeError(name, "The HTTP.Request object has no method named `" + _</SourceLine>
+   <SourceLine>name.Lexeme + "`.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>Invokable</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Arity</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1912690687</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Arity() As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The HTTP.Request constructor takes no parameters.</SourceLine>
+   <SourceLine>Return 0</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Invoke</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1598406655</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Invoke(interpreter As RooInterpreter, arguments() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused arguments</SourceLine>
+   <SourceLine>#Pragma Unused interpreter</SourceLine>
+   <SourceLine>#Pragma Unused where</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// A script has called the HTTP.Request constructor. Just return this instance.</SourceLine>
+   <SourceLine>Return Self</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter, arguments() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>673361919</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>// Part of the Stringable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return "&lt;HTTP.Request instance&gt;"</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1899802623</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(interpreter As RooInterpreter)</SourceLine>
+   <SourceLine>Super.Constructor(Nil) // No metaclass.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Self.Interpreter = interpreter</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Connection = New URLConnection</SourceLine>
+   <SourceLine>AddHandler Connection.ContentReceived, AddressOf ContentReceived</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Headers = New RooHash</SourceLine>
+   <SourceLine>Cookies = New RooHash</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Defaults.</SourceLine>
+   <SourceLine>AwaitingResponse = False</SourceLine>
+   <SourceLine>mTimeout = RooSLHTTP.kDefaultRequestTimeout</SourceLine>
+   <SourceLine>URL = ""</SourceLine>
+   <SourceLine>Content = ""</SourceLine>
+   <SourceLine>MIMEType = "application/json" // Default to JSON.</SourceLine>
+   <SourceLine>Method = RooSLHTTP.MethodType.GET</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Send</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1419309055</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Send(where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Request.send() as HTTP.Response</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Check that the interpreter will allow network access for this URL.</SourceLine>
+   <SourceLine>If Not Interpreter.ShouldAllowNetworkAccess(URL) Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "Network access for the url `" + URL + _</SourceLine>
+   <SourceLine>"` has been prevented by the interpreter.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Store the location in the script of the invoking token.</SourceLine>
+   <SourceLine>SendLocation = where</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Build the request.</SourceLine>
+   <SourceLine>SetRequestHeaders</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Set the request content and type.</SourceLine>
+   <SourceLine>Connection.SetRequestContent(Content, MIMEType)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Reset the Response object we will return.</SourceLine>
+   <SourceLine>Response = New RooSLHTTPResponse</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Flag that we're waiting for a response.</SourceLine>
+   <SourceLine>AwaitingResponse = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create a timer that will set AwaitingResponse to False after the specified </SourceLine>
+   <SourceLine>// timeout period.</SourceLine>
+   <SourceLine>Xojo.Core.Timer.CallLater(Timeout * 1000, AddressOf RequestTimedOut)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Asynchronously send the request.</SourceLine>
+   <SourceLine>Connection.Send(RooSLHTTP.MethodTypeAsString(Method), URL, Timeout)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Since Xojo sends the request asynchronously, we'll go into a holding pattern...</SourceLine>
+   <SourceLine>Do Until Not AwaitingResponse</SourceLine>
+   <SourceLine>// AwaitingResponse will be set to False by the ContentReceived event or the </SourceLine>
+   <SourceLine>// Timer above after Timeout seconds (in case a response is never received).</SourceLine>
+   <SourceLine>App.DoEvents // HACK: I hate this.</SourceLine>
+   <SourceLine>Loop</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Tell the interpreter that the network was accessed.</SourceLine>
+   <SourceLine>Interpreter.DidAccessNetwork(URL, response.Status)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return the Response object populated by the ContentReceived method.</SourceLine>
+   <SourceLine>Return Response</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>SetRequestHeaders</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1244878847</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub SetRequestHeaders()</SourceLine>
+   <SourceLine>// Internal helper method.</SourceLine>
+   <SourceLine>// Sets the headers defined in this request object's Headers dictionary to this </SourceLine>
+   <SourceLine>// request's Connection object.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Connection.ClearRequestHeaders</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim key, value As String</SourceLine>
+   <SourceLine>For Each entry As Xojo.Core.DictionaryEntry In Headers.Dict</SourceLine>
+   <SourceLine>// Convert the key to a String.</SourceLine>
+   <SourceLine>Select Case Roo.AutoType(entry.Key)</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoString, Roo.ObjectType.XojoText</SourceLine>
+   <SourceLine>key = entry.Key</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoDouble</SourceLine>
+   <SourceLine>Dim d As Double = entry.Key</SourceLine>
+   <SourceLine>key = Str(d)</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoInteger</SourceLine>
+   <SourceLine>Dim i As Integer = entry.Key</SourceLine>
+   <SourceLine>key = Str(i)</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoBoolean</SourceLine>
+   <SourceLine>key = If(entry.Key, "True", "False")</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>key = Stringable(entry.Key).StringValue</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert the value to a String.</SourceLine>
+   <SourceLine>If entry.Value IsA RooDateTime then</SourceLine>
+   <SourceLine>value = RooDateTime(entry.Value).ToHTTPHeaderFormat</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>value = Stringable(entry.Value).StringValue</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Assign this header to this connection.</SourceLine>
+   <SourceLine>Connection.RequestHeader(key) = value</SourceLine>
+   <SourceLine>Next entry</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Set any cookies.</SourceLine>
+   <SourceLine>SetRequestCookies</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>SetRequestCookies</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1120061439</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub SetRequestCookies()</SourceLine>
+   <SourceLine>// Internal helper method.</SourceLine>
+   <SourceLine>// Sets any cookies that are to be passed with this request.</SourceLine>
+   <SourceLine>// Cookies are concatenated with semicolons separating pairs in the form &lt;name&gt;=&lt;value&gt;;</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Bail if no cookies defined.</SourceLine>
+   <SourceLine>If Cookies = Nil Or Cookies.Dict.Count = 0 Then Return</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim name, result, value As String</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>For Each entry as Xojo.Core.DictionaryEntry In Cookies.Dict</SourceLine>
+   <SourceLine>// Convert the key (which is the cookie's name) to a String.</SourceLine>
+   <SourceLine>Select Case Roo.AutoType(entry.Key)</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoString, Roo.ObjectType.XojoText</SourceLine>
+   <SourceLine>name = entry.Key</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoDouble</SourceLine>
+   <SourceLine>Dim d As Double = entry.Key</SourceLine>
+   <SourceLine>name = Str(d)</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoInteger</SourceLine>
+   <SourceLine>Dim i As Integer = entry.Key</SourceLine>
+   <SourceLine>name = Str(i)</SourceLine>
+   <SourceLine>Case Roo.ObjectType.XojoBoolean</SourceLine>
+   <SourceLine>name = If(entry.Key, "True", "False")</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>name = Stringable(entry.Key).StringValue</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Convert the value to a String.</SourceLine>
+   <SourceLine>If entry.Value IsA RooDateTime then</SourceLine>
+   <SourceLine>value = RooDateTime(entry.Value).ToHTTPHeaderFormat</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>value = Stringable(entry.Value).StringValue</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Concatenate the cookie.</SourceLine>
+   <SourceLine>result = result + name + "=" + value + ";"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Next entry</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Remove any superfluous semicolon.</SourceLine>
+   <SourceLine>result = If(result.Right(1) = ";", result.Left(result.Len - 1), result)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Set the request cookie(s).</SourceLine>
+   <SourceLine>Connection.RequestHeader("Cookie") = result</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ContentReceived</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1094725631</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub ContentReceived(sender As URLConnection, theURL As String, status As Integer, responseContent As String)</SourceLine>
+   <SourceLine>// The contents of a page has been received.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused sender</SourceLine>
+   <SourceLine>#Pragma Unused theURL</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Build the HTTP.Response object.</SourceLine>
+   <SourceLine>Response = New RooSLHTTPResponse</SourceLine>
+   <SourceLine>Response.Status = status</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Parse the response headers (including cookies).</SourceLine>
+   <SourceLine>ParseResponseHeaders</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Assign the response content.</SourceLine>
+   <SourceLine>Response.Content = New RooText(responseContent)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Flag that we've got a response, to break the loop in Send().</SourceLine>
+   <SourceLine>AwaitingResponse = False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>sender As URLConnection, theURL As String, status As Integer, responseContent As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>RequestTimedOut</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1557784575</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub RequestTimedOut()</SourceLine>
+   <SourceLine>// This method is called by the Timer that starts when a request is made after </SourceLine>
+   <SourceLine>// Timeout seconds.</SourceLine>
+   <SourceLine>// It's used as a fail safe so we don't get stuck in an infinite loop if no </SourceLine>
+   <SourceLine>// response is received.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>AwaitingResponse = False</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ParseResponseHeaders</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1089437695</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub ParseResponseHeaders()</SourceLine>
+   <SourceLine>// Takes the response received by the Connection object and parses the </SourceLine>
+   <SourceLine>// response headers.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Until Xojo provides a way to iterate through the headers, we'll just check for the most common</SourceLine>
+   <SourceLine>// response headers.</SourceLine>
+   <SourceLine>// See: https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Standard_response_fields and</SourceLine>
+   <SourceLine>// https://code.tutsplus.com/tutorials/http-headers-for-dummies--net-8039</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Standard response fields.</SourceLine>
+   <SourceLine>AddResponseHeader("Age")</SourceLine>
+   <SourceLine>AddResponseHeader("Allow")</SourceLine>
+   <SourceLine>AddResponseHeader("Cache-Control")</SourceLine>
+   <SourceLine>AddResponseHeader("Connection")</SourceLine>
+   <SourceLine>AddResponseHeader("Content-Disposition")</SourceLine>
+   <SourceLine>AddResponseHeader("Content-Encoding")</SourceLine>
+   <SourceLine>AddResponseHeader("Content-Language")</SourceLine>
+   <SourceLine>AddResponseHeader("Content-Length")</SourceLine>
+   <SourceLine>AddResponseHeader("Content-Location")</SourceLine>
+   <SourceLine>AddResponseHeader("Content-MD5")</SourceLine>
+   <SourceLine>AddResponseHeader("Content-Range")</SourceLine>
+   <SourceLine>AddResponseHeader("Date")</SourceLine>
+   <SourceLine>AddResponseHeader("ETag")</SourceLine>
+   <SourceLine>AddResponseHeader("Expires")</SourceLine>
+   <SourceLine>AddResponseHeader("Last-Modified")</SourceLine>
+   <SourceLine>AddResponseHeader("Link")</SourceLine>
+   <SourceLine>AddResponseHeader("Location")</SourceLine>
+   <SourceLine>AddResponseHeader("Pragma")</SourceLine>
+   <SourceLine>AddResponseHeader("Proxy-Authenticate")</SourceLine>
+   <SourceLine>AddResponseHeader("Public-Key-Pins")</SourceLine>
+   <SourceLine>AddResponseHeader("Retry-After")</SourceLine>
+   <SourceLine>AddResponseHeader("Server")</SourceLine>
+   <SourceLine>AddResponseHeader("Strict-Transport-Security")</SourceLine>
+   <SourceLine>AddResponseHeader("Trailer")</SourceLine>
+   <SourceLine>AddResponseHeader("Transfer-Encoding")</SourceLine>
+   <SourceLine>AddResponseHeader("Tk")</SourceLine>
+   <SourceLine>AddResponseHeader("Upgrade")</SourceLine>
+   <SourceLine>AddResponseHeader("Vary")</SourceLine>
+   <SourceLine>AddResponseHeader("Via")</SourceLine>
+   <SourceLine>AddResponseHeader("Warning")</SourceLine>
+   <SourceLine>AddResponseHeader("WWW-Authenticate")</SourceLine>
+   <SourceLine>AddResponseHeader("X-Frame-Options")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Content-Type is a little special.</SourceLine>
+   <SourceLine>AddResponseHeader("Content-Type")</SourceLine>
+   <SourceLine>Response.ContentType = Connection.ResponseHeader("Content-Type")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Common non-standard response fields.</SourceLine>
+   <SourceLine>AddResponseHeader("Access-Control-Allow-Credentials")</SourceLine>
+   <SourceLine>AddResponseHeader("Access-Control-Allow-Origin")</SourceLine>
+   <SourceLine>AddResponseHeader("Content-Security-Policy")</SourceLine>
+   <SourceLine>AddResponseHeader("X-Content-Security-Policy")</SourceLine>
+   <SourceLine>AddResponseHeader("X-WebKit-CSP")</SourceLine>
+   <SourceLine>AddResponseHeader("Refresh")</SourceLine>
+   <SourceLine>AddResponseHeader("Status")</SourceLine>
+   <SourceLine>AddResponseHeader("Timing-Allow-Origin")</SourceLine>
+   <SourceLine>AddResponseHeader("X-Content-Duration")</SourceLine>
+   <SourceLine>AddResponseHeader("X-Content-Type-Options")</SourceLine>
+   <SourceLine>AddResponseHeader("X-Powered-By")</SourceLine>
+   <SourceLine>AddResponseHeader("X-Request-ID")</SourceLine>
+   <SourceLine>AddResponseHeader("X-Correlation-ID")</SourceLine>
+   <SourceLine>AddResponseHeader("X-UA-Compatible")</SourceLine>
+   <SourceLine>AddResponseHeader("X-XSS-Protection")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Handle cookies.</SourceLine>
+   <SourceLine>AddResponseCookies</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AddResponseHeader</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1142255615</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AddResponseHeader(headerName As String)</SourceLine>
+   <SourceLine>// Internal helper method.</SourceLine>
+   <SourceLine>// Adds the passed response header to our Response object's Headers Hash object.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Response.Headers.Dict.Value(headerName) = New RooText(Connection.ResponseHeader(headerName))</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>headerName As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>AddResponseCookies</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>187863039</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AddResponseCookies()</SourceLine>
+   <SourceLine>// Internal helper method.</SourceLine>
+   <SourceLine>// Parses the content of this request's response's Set-Cookie header (if present).</SourceLine>
+   <SourceLine>// If the Set-Cookie header is present then cookies are represented as name=value pairs, separated </SourceLine>
+   <SourceLine>// by `;`.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim rawCookies As String = Connection.ResponseHeader("Set-Cookie")</SourceLine>
+   <SourceLine>If rawCookies = "" Then Return</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim cookiePairs() As String = rawCookies.Split(";")</SourceLine>
+   <SourceLine>Dim cookieParts() As String</SourceLine>
+   <SourceLine>For Each cookie As String In cookiePairs</SourceLine>
+   <SourceLine>cookieParts = cookie.Split("=")</SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine>Response.Cookies.Dict.Value(cookieParts(0).Trim) = New RooText(cookieParts(1).Trim)</SourceLine>
+   <SourceLine>Catch err</SourceLine>
+   <SourceLine>// Invalid cookie format. Ignore.</SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine>Next cookie</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Set</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>958963711</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Set(name As RooToken, value As Variant)</SourceLine>
+   <SourceLine>// Part of the RooNativeSettable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If StrComp(name.Lexeme, "content", 0) = 0 Then</SourceLine>
+   <SourceLine>SetContent(name, value)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "content_type", 0) = 0 Then</SourceLine>
+   <SourceLine>SetContentType(name, value)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "cookies", 0) = 0 Then</SourceLine>
+   <SourceLine>SetCookies(name, value)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "headers", 0) = 0 Then</SourceLine>
+   <SourceLine>SetHeaders(name, value)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "host", 0) = 0 Then</SourceLine>
+   <SourceLine>SetHost(name, value)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "if_modified_since", 0) = 0 Then</SourceLine>
+   <SourceLine>SetIfModifiedSince(name, value)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "method", 0) = 0 Then</SourceLine>
+   <SourceLine>SetMethod(name, value)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "referer", 0) = 0 Then</SourceLine>
+   <SourceLine>SetReferer(name, value)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "timeout", 0) = 0 Then</SourceLine>
+   <SourceLine>SetTimeout(name, value)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "url", 0) = 0 Then</SourceLine>
+   <SourceLine>SetURL(name, value)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "user_agent", 0) = 0 Then</SourceLine>
+   <SourceLine>SetUserAgent(name, value)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(name, "The HTTP.Request data type has no property named `" + _</SourceLine>
+   <SourceLine>name.Lexeme + "`.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken, value As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>SetContent</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1016104959</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub SetContent(where As RooToken, value As Variant)</SourceLine>
+   <SourceLine>// Request.content = Text</SourceLine>
+   <SourceLine>// Sets the content (body) for this request.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure that the passed value is a Text object.</SourceLine>
+   <SourceLine>Content = Stringable(value).StringValue</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "The HTTP.Request.content property must be " + _</SourceLine>
+   <SourceLine>"assigned an object with a text representation.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken, value As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>SetContentType</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>991561727</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub SetContentType(where As RooToken, value As Variant)</SourceLine>
+   <SourceLine>// HTTP.Request.content_type = Text</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Set the content type property and value in the headers Hash.</SourceLine>
+   <SourceLine>ContentType = Stringable(value).StringValue</SourceLine>
+   <SourceLine>Headers.Dict.Value("Content-Type") = New RooText(ContentType)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "The HTTP.Request.content_type property must be " + _</SourceLine>
+   <SourceLine>"assigned an object with a text representation.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken, value As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>SetCookies</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>784400383</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub SetCookies(where As RooToken, value As Variant)</SourceLine>
+   <SourceLine>// HTTP.Request.cookies = Hash</SourceLine>
+   <SourceLine>// Sets this request's cookies. Accepts a Hash object.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Roo.AssertIsHash(where, value)</SourceLine>
+   <SourceLine>Cookies = value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken, value As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>SetHeaders</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>391036927</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub SetHeaders(where As Rootoken, value As Variant)</SourceLine>
+   <SourceLine>// HTTP.Request.headers = Hash</SourceLine>
+   <SourceLine>// Sets this request's headers. Accepts a Hash object.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Roo.AssertIsHash(where, value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Set the headers Hash.</SourceLine>
+   <SourceLine>Headers = value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>//Update our quick-access headers.</SourceLine>
+   <SourceLine>//Content-Type.</SourceLine>
+   <SourceLine>If Headers.Dict.HasKey("Content-Type") Then</SourceLine>
+   <SourceLine>ContentType = RooText(Headers.Dict.Value("Content-Type")).Value</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Host.</SourceLine>
+   <SourceLine>If Headers.Dict.HasKey("Host") Then</SourceLine>
+   <SourceLine>Host = RooText(Headers.Dict.Value("Host")).Value</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// If-Modified-Since.</SourceLine>
+   <SourceLine>If Headers.Dict.HasKey("If-Modified-Since") Then</SourceLine>
+   <SourceLine>IfModifiedSince = RooText(Headers.Dict.Value("If-Modified-Since")).Value</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Referer.</SourceLine>
+   <SourceLine>If Headers.Dict.HasKey("Referer") Then</SourceLine>
+   <SourceLine>IfModifiedSince = RooText(Headers.Dict.Value("Referer")).Value</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// User-Agent.</SourceLine>
+   <SourceLine>If Headers.Dict.HasKey("User-Agent") Then</SourceLine>
+   <SourceLine>UserAgent = RooText(Headers.Dict.Value("User-Agent")).Value</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As Rootoken, value As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>SetHost</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1382039551</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub SetHost(where As RooToken, value As Variant)</SourceLine>
+   <SourceLine>// Request.host = Text</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure that the passed value is a Text object.</SourceLine>
+   <SourceLine>Roo.AssertIsStringable(where, value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Host = Stringable(value).StringValue</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Update the headers Hash.</SourceLine>
+   <SourceLine>Headers.Dict.Value("Host") = New RooText(Host)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken, value As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>SetIfModifiedSince</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1687091199</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub SetIfModifiedSince(where As RooToken, value As Variant)</SourceLine>
+   <SourceLine>// HTTP.Request.if_modified_since = Text or Date</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim ims As String</SourceLine>
+   <SourceLine>If value IsA RooDateTime Then</SourceLine>
+   <SourceLine>ims = RooDateTime(value).ToHTTPHeaderFormat</SourceLine>
+   <SourceLine>Else // Stringable object.</SourceLine>
+   <SourceLine>ims = Stringable(value).StringValue</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Set the content type property and value in the headers Hash.</SourceLine>
+   <SourceLine>IfModifiedSince = ims</SourceLine>
+   <SourceLine>Headers.Dict.Value("If-Modified-Since") = New RooText(IfModifiedSince)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "The HTTP.Request.if_modified_since property " + _</SourceLine>
+   <SourceLine>"must be assigned an object with a text representation.")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken, value As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>SetMethod</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>611192831</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub SetMethod(where As RooToken, value As Variant)</SourceLine>
+   <SourceLine>// Request.method = Text</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure that the passed value is a Text object.</SourceLine>
+   <SourceLine>Roo.AssertIsStringable(where, value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Dim m As String = Stringable(value).StringValue</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure that `m` is an acceptable HTTP verb.</SourceLine>
+   <SourceLine>Dim methodType As RooSLHTTP.MethodType</SourceLine>
+   <SourceLine>methodType = RooSLHTTP.MethodStringToType(m)</SourceLine>
+   <SourceLine>If methodType = RooSLHTTP.MethodType.Unknown Then</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(where, "The HTTP.Request.method setter expects an " + _</SourceLine>
+   <SourceLine>"HTTP request method (such as `GET` or `PUT`. Instead got `" + m + "`.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Do the assignment.</SourceLine>
+   <SourceLine>Method = methodType</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken, value As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>SetReferer</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1025300479</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub SetReferer(where As RooToken, value As Variant)</SourceLine>
+   <SourceLine>// HTTP.Request.referer = Text</SourceLine>
+   <SourceLine>// Sets the referring URL for this request.</SourceLine>
+   <SourceLine>// Referer is deliberately mispelt - https://en.wikipedia.org/wiki/HTTP_referer</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure that the passed value has a text representation.</SourceLine>
+   <SourceLine>Roo.AssertIsStringable(where, value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Set the referer property and value in the headers Hash.</SourceLine>
+   <SourceLine>Referer = Stringable(value).StringValue</SourceLine>
+   <SourceLine>Headers.Dict.Value("Referer") = New RooText(Referer)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken, value As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>SetTimeout</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2042925055</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub SetTimeout(where As RooToken, value As Variant)</SourceLine>
+   <SourceLine>// HTTP.Request.timeout As integer Number object.</SourceLine>
+   <SourceLine>// Specifies how many seconds the Request object should wait after making a </SourceLine>
+   <SourceLine>// `Send` request before it assumes the request timed out.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure that the passed value is an integer Number object.</SourceLine>
+   <SourceLine>Roo.AssertIsPositiveInteger(where, value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Constrain the value to be &gt; 0 and &lt;= 60.</SourceLine>
+   <SourceLine>Dim n As Integer = RooNumber(value).Value</SourceLine>
+   <SourceLine>If n &lt; 1 Then</SourceLine>
+   <SourceLine>n = 1</SourceLine>
+   <SourceLine>ElseIf n &gt; 60 Then</SourceLine>
+   <SourceLine>n = 60</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Set the timeout.</SourceLine>
+   <SourceLine>Timeout = n</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken, value As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>SetURL</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>111044607</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub SetURL(where As RooToken, value As Variant)</SourceLine>
+   <SourceLine>// Sets this Request object's URL.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure that the passed value has a text representation.</SourceLine>
+   <SourceLine>Roo.AssertIsStringable(where, value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>URL = Stringable(value).StringValue</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken, value As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>SetUserAgent</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1751248895</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub SetUserAgent(where As RooToken, value As Variant)</SourceLine>
+   <SourceLine>// HTTP.Request.user_agent = Text</SourceLine>
+   <SourceLine>// Sets the user agent for this request.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Make sure that the passed value has a text representation.</SourceLine>
+   <SourceLine>Roo.AssertIsStringable(where, value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Set the user agent property and value in the headers Hash.</SourceLine>
+   <SourceLine>UserAgent = Stringable(value).StringValue</SourceLine>
+   <SourceLine>Headers.Dict.Value("User-Agent") = New RooText(UserAgent)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken, value As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Property>
+  <ItemName>mTimeout</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1039450111</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>mTimeout As Integer</SourceLine>
+   <SourceLine>Timeout is in seconds.</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>mTimeout As Integer</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>URL</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1211453439</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>URL As String</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>URL As String</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Method</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>456771583</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Method As RooSLHTTP.MethodType = RooSLHTTP.MethodType.GET</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Method As RooSLHTTP.MethodType = RooSLHTTP.MethodType.GET</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Interpreter</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>337080319</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Interpreter As RooInterpreter</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Interpreter As RooInterpreter</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Headers</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>166430719</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Headers As RooHash</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Headers As RooHash</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Cookies</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>107661311</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Cookies As RooHash</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Cookies As RooHash</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Connection</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>259839999</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Connection As URLConnection</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Connection As URLConnection</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>SendLocation</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>860659711</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>SendLocation As RooToken</SourceLine>
+   <SourceLine>Stores a reference to the token in the script that invoked this request's send method.</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>SendLocation As RooToken</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Content</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1929928703</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Content As String</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Content As String</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>MIMEType</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1061208063</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>MIMEType As String</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>MIMEType As String</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Response</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>34625535</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Response As RooSLHTTPResponse</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Response As RooSLHTTPResponse</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>AwaitingResponse</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>426569727</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>AwaitingResponse As Boolean</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>AwaitingResponse As Boolean</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Timeout</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1299830783</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Timeout As Integer</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Timeout As Integer</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <SetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Set</SourceLine>
+   <SourceLine>// Constrain the timeout period to between 1 and 60 seconds.</SourceLine>
+   <SourceLine>If value &lt; 1 Then</SourceLine>
+   <SourceLine>mTimeout = 1</SourceLine>
+   <SourceLine>ElseIf value &gt; 60 Then</SourceLine>
+   <SourceLine>mTimeout = 60</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>mTimeout = value</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Set</SourceLine>
+  </SetAccessor>
+  <GetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Get</SourceLine>
+   <SourceLine>Return mTimeout</SourceLine>
+   <SourceLine>End Get</SourceLine>
+  </GetAccessor>
+ </Property>
+ <Property>
+  <ItemName>ContentType</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>963375103</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>ContentType As String</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>ContentType As String</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Host</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>463779839</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Host As String</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Host As String</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>IfModifiedSince</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>669978623</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>IfModifiedSince As String</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>IfModifiedSince As String</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Referer</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>492705791</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Referer As String</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Referer As String</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>UserAgent</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>419692543</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>UserAgent As String</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>UserAgent As String</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>URL</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>String</ItemType>
+   <EditorType>MultiLineEditor</EditorType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Method</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <PropertyValue>RooSLHTTP.MethodType.GET</PropertyValue>
+   <ItemType>RooSLHTTP.MethodType</ItemType>
+   <EditorType>Enum</EditorType>
+   <Enumeration>
+    <ItemDef>0 - CONNECT</ItemDef>
+    <ItemDef>1 - DELETE</ItemDef>
+    <ItemDef>2 - GET</ItemDef>
+    <ItemDef>3 - HEAD</ItemDef>
+    <ItemDef>4 - OPTIONS</ItemDef>
+    <ItemDef>5 - PATCH</ItemDef>
+    <ItemDef>6 - POST</ItemDef>
+    <ItemDef>7 - PUT</ItemDef>
+    <ItemDef>8 - TRACE</ItemDef>
+    <ItemDef>9 - UNKNOWN</ItemDef>
+   </Enumeration>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Content</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>String</ItemType>
+   <EditorType>MultiLineEditor</EditorType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>MIMEType</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>String</ItemType>
+   <EditorType>MultiLineEditor</EditorType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Timeout</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

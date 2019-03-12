@@ -1,0 +1,689 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="1691643903">
+ <ObjName>RooSLFileSystemItem</ObjName>
+ <ObjContainerID>55437311</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Superclass>RooInstance</Superclass>
+ <Interfaces>RooNativeClass,  RooNativeSettable</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>Type</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1548234751</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Type() As String</SourceLine>
+   <SourceLine>// Part of the RooNativeClass interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return "FileSystem.Item"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasGetterWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1746376703</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasGetterWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Part of the RooNativeClass interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return RooSLCache.FileSystemItemGetters.HasKey(name)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasMethodWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>38021119</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasMethodWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Part of the RooNativeClass interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return RooSLCache.FileSystemItemMethods.HasKey(name)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>GetterWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>353189887</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function GetterWithName(name As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the RooNativeClass interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If StrComp(name.Lexeme, "count", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoCount</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "delete!", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoDelete(name)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "directory?", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoDirectory</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "exists?", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoExists</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "file?", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoFile</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "name", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoName</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "path", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoPath</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "read_all", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoReadAll(True)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "readable?", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoReadable</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "writeable?", 0) = 0 Then</SourceLine>
+   <SourceLine>Return DoWriteable</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>MethodWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>346243071</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function MethodWithName(name As RooToken) As Invokable</SourceLine>
+   <SourceLine>// Part of the RooNativeClass interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return a new instance of a FileSystem.Item object method initialised with the name </SourceLine>
+   <SourceLine>// of the method being called. That way, when the returned method is invoked, it will know what operation </SourceLine>
+   <SourceLine>// to perform.</SourceLine>
+   <SourceLine>Return New RooSLFileSystemItemMethod(Self, name.Lexeme)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>Invokable</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Set</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1249560575</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Set(name As RooToken, value As Variant)</SourceLine>
+   <SourceLine>// Part of the RooNativeSettable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Strcomp(name.Lexeme, "name", 0) = 0 Then</SourceLine>
+   <SourceLine>SetName(value, name)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "path", 0) = 0 Then</SourceLine>
+   <SourceLine>SetPath(value, name)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(name, "The FileSystem.Item object has no property named `" + _</SourceLine>
+   <SourceLine>name.Lexeme + "`.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken, value As Variant</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Arity</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>66009087</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Arity() As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The FileSystem.Item constructor takes one parameter.</SourceLine>
+   <SourceLine>Return 1</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Invoke</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>700102655</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Invoke(interpreter As RooInterpreter, args() As Variant, where As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the Invokable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Create a new FileSystem.Item object instance.</SourceLine>
+   <SourceLine>// Takes as its parameter the native path to the file.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Ensure the passed parameter has a text representation.</SourceLine>
+   <SourceLine>Roo.AssertIsStringable(where, args(0))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Get the Roo path as a String.</SourceLine>
+   <SourceLine>Dim path As String</SourceLine>
+   <SourceLine>path = Stringable(args(0)).StringValue</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Try to convert this Roo path to a FolderItem</SourceLine>
+   <SourceLine>Self.File = interpreter.RooPathToFolderItem(path, where.File)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Self</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter, args() As Variant, where As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>752097279</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>// Part of the Stringable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return If(File = Nil, "Nothing", File.NativePath)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>816693247</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(owner As RooSLFileSystem, f As FolderItem)</SourceLine>
+   <SourceLine>Super.Constructor(Nil) // No metaclass.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Self.Owner = owner</SourceLine>
+   <SourceLine>Self.File = f</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>owner As RooSLFileSystem, f As FolderItem</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>564627455</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoName() As Variant</SourceLine>
+   <SourceLine>// FileSystem.Item.name as Text or Nothing.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If File = Nil Then</SourceLine>
+   <SourceLine>Return New RooNothing</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return New RooText(File.Name)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoExists</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1761234943</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoExists() As RooBoolean</SourceLine>
+   <SourceLine>// FileSystem.Item.exists? as Boolean object.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If File &lt;&gt; Nil And File.Exists Then</SourceLine>
+   <SourceLine>Return New RooBoolean(True)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return New RooBoolean(False)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooBoolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoCount</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>822489087</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoCount() As RooNumber</SourceLine>
+   <SourceLine>// FileSystem.Item.count as Number object.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If File = Nil Or Not File.Directory Then</SourceLine>
+   <SourceLine>Return New RooNumber(0)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return New RooNumber(File.Count)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooNumber</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoDirectory</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>655708159</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoDirectory() As RooBoolean</SourceLine>
+   <SourceLine>// FileSystem.Item.directory? as Boolean object.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If File = Nil Or Not File.Directory Then</SourceLine>
+   <SourceLine>Return New RooBoolean(False)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return New RooBoolean(True)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooBoolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoPath</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>459753471</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoPath() As Variant</SourceLine>
+   <SourceLine>// FileSystem.Item.path as Text object or Nothing.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If File = Nil Then</SourceLine>
+   <SourceLine>Return New RooNothing</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return New RooText(File.NativePath)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoFile</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1673687039</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoFile() As RooBoolean</SourceLine>
+   <SourceLine>// FileSystem.Item.file?</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If File = Nil Or File.Directory Then</SourceLine>
+   <SourceLine>Return New RooBoolean(False)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return New RooBoolean(True)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooBoolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoReadable</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1294866431</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoReadable() As RooBoolean</SourceLine>
+   <SourceLine>// FileSystem.Item.readable?</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If File = Nil Or Not File.IsReadable Then</SourceLine>
+   <SourceLine>Return New RooBoolean(False)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return New RooBoolean(True)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooBoolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoWriteable</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1005789183</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoWriteable() As RooBoolean</SourceLine>
+   <SourceLine>// FileSystem.Item.writeable?</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If File = Nil Or Not File.IsWriteable Then</SourceLine>
+   <SourceLine>Return New RooBoolean(False)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return New RooBoolean(True)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>RooBoolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ValidFile</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>105771007</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ValidFile(checkWriteable As Boolean) As Boolean</SourceLine>
+   <SourceLine>// Makes sure that this FileSystem.Item object has a valid file on disk.</SourceLine>
+   <SourceLine>// Returns True if it is or False if not.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If File = Nil Then Return False</SourceLine>
+   <SourceLine>If Not File.Exists Then Return False</SourceLine>
+   <SourceLine>If Not File.IsReadable Then Return False</SourceLine>
+   <SourceLine>If checkWriteable And Not File.IsWriteable Then Return False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>checkWriteable As Boolean</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoReadAll</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2006583295</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoReadAll(defineAsUTF8 As Boolean) As Variant</SourceLine>
+   <SourceLine>// FileSystem.Item.read_all</SourceLine>
+   <SourceLine>// Returns the contents of this file as Text and then closes the file.</SourceLine>
+   <SourceLine>// Returns Nothing if the File object's file is invalid.</SourceLine>
+   <SourceLine>// If defineAsUTF8 is True then we will attempt to define the read bytes as UTF-8 encoded.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If Not ValidFile(False) Then Return New RooNothing</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Open the file.</SourceLine>
+   <SourceLine>Dim result As String</SourceLine>
+   <SourceLine>Dim tin As TextInputStream</SourceLine>
+   <SourceLine>tin = TextInputStream.Open(File)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Define as UTF-8 if requested.</SourceLine>
+   <SourceLine>result = tin.ReadAll(If(defineAsUTF8, Encodings.UTF8, Nil))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Close the stream.</SourceLine>
+   <SourceLine>tin.Close</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Return the result.</SourceLine>
+   <SourceLine>Return New RooText(result)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception</SourceLine>
+   <SourceLine>Return New RooNothing</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>defineAsUTF8 As Boolean</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>SetPath</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2002341887</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub SetPath(value As Variant, where As RooToken)</SourceLine>
+   <SourceLine>// Set the path of this FileSystem.Item object's file to the passed value.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Roo.AssertIsStringable(where, value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine>File = New FolderItem(Stringable(value).StringValue, FolderItem.PathTypeNative)</SourceLine>
+   <SourceLine>Catch</SourceLine>
+   <SourceLine>File = Nil</SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>value As Variant, where As RooToken</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DoDelete</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1497673727</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function DoDelete(where As RooToken) As RooBoolean</SourceLine>
+   <SourceLine>// Deletes this File object's file or folder from the file system.</SourceLine>
+   <SourceLine>// Returns True if the file/folder was successfully removed, False if not. </SourceLine>
+   <SourceLine>// NB: Returning False is not always an error. For instance, the file may not exist on disk already.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Sanity checks.</SourceLine>
+   <SourceLine>If File = Nil Or Not File.Exists Then Return New RooBoolean(False)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Delete the file.</SourceLine>
+   <SourceLine>Dim result As Integer = Owner.ReallyDelete(File)</SourceLine>
+   <SourceLine>Return New RooBoolean(If(result = 0, True, False))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err As RooSLFileSystemException</SourceLine>
+   <SourceLine>// The interpreter prevented deletion of this file. Fire the interpreter's</SourceLine>
+   <SourceLine>// DeletionPrevented event via its delegate method.</SourceLine>
+   <SourceLine>Owner.Interpreter.DeletionPreventedDelegate(File, where)</SourceLine>
+   <SourceLine>// Return False.</SourceLine>
+   <SourceLine>Return New RooBoolean(False)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>where As RooToken</ItemParams>
+  <ItemResult>RooBoolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>SetName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1537429503</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub SetName(value As Variant, where As RooToken)</SourceLine>
+   <SourceLine>// Change the name of this FileSystem.Item object's file to the passed value.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Roo.AssertIsStringable(where, value)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Attempt to change the name.</SourceLine>
+   <SourceLine>Try</SourceLine>
+   <SourceLine>File.Name = Stringable(value).StringValue</SourceLine>
+   <SourceLine>Catch err</SourceLine>
+   <SourceLine>Return</SourceLine>
+   <SourceLine>End Try</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>value As Variant, where As RooToken</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Property>
+  <ItemName>File</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1894891519</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>File As FolderItem</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>File As FolderItem</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Owner</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>707340287</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Owner As RooSLFileSystem</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Owner As RooSLFileSystem</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+</block>
+</RBProject>

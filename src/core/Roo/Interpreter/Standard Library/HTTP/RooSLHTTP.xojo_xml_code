@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<block type="Module" ID="65296383">
+ <ObjName>RooSLHTTP</ObjName>
+ <ObjContainerID>1665863679</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Superclass>RooInstance</Superclass>
+ <Interfaces>RooNativeModule</Interfaces>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <Method>
+  <ItemName>GetterWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2057289727</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function GetterWithName(name As RooToken) As Variant</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If StrComp(name.Lexeme, "TIMEOUT", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(kDefaultRequestTimeout)</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Raise New RooRuntimeError(name, "The HTTP module has no getter named `" + name.Lexeme + "`.")</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>Variant</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasGetterWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1713868799</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasGetterWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Getters.HasKey(name)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasMethodWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>674019327</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasMethodWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Methods.HasKey(name)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>MethodWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>328237055</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function MethodWithName(name As RooToken) As Invokable</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Methods.Value(name.Lexeme)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Exception err As KeyNotFoundException</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(name, "Cannot find a method named `" + name.Lexeme + _</SourceLine>
+   <SourceLine>"` for the HTTP module.")</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>Invokable</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Type</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>146524159</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Type() As String</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return "Module"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ClassWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>188065791</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ClassWithName(name As RooToken) As RooNativeClass</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If StrComp(name.Lexeme, "Request", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooSLHTTPRequest(Interpreter)</SourceLine>
+   <SourceLine>ElseIf StrComp(name.Lexeme, "Response", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooSLHTTPResponse</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Unknown class.</SourceLine>
+   <SourceLine>Return Nil</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>RooNativeClass</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ModuleWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1518561279</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ModuleWithName(name As RooToken) As RooNativeModule</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused name</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The HTTP module has no submodules.</SourceLine>
+   <SourceLine>Return Nil</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As RooToken</ItemParams>
+  <ItemResult>RooNativeModule</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasClassWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>305879039</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasClassWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return Classes.HasKey(name)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>HasModuleWithName</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>708751359</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function HasModuleWithName(name As String) As Boolean</SourceLine>
+   <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma Unused name</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// The HTTP module has no submodules.</SourceLine>
+   <SourceLine>Return False</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As String</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>StringValue</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>479178751</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function StringValue() As String</SourceLine>
+   <SourceLine>// Part of the Stringable interface.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return "HTTP module"</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>722677759</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor(interpreter As RooInterpreter)</SourceLine>
+   <SourceLine>Super.Constructor(Nil)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Self.Interpreter = interpreter</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Add getters.</SourceLine>
+   <SourceLine>Getters = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine>Getters.Value("TIMEOUT") = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Add methods.</SourceLine>
+   <SourceLine>Methods = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine>Methods.Value("delete") = New RooSLHTTPDelete</SourceLine>
+   <SourceLine>Methods.Value("get") = New RooSLHTTPGet</SourceLine>
+   <SourceLine>Methods.Value("post") = New RooSLHTTPPost</SourceLine>
+   <SourceLine>Methods.Value("put") = New RooSLHTTPPut</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Add classes.</SourceLine>
+   <SourceLine>Classes = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine>Classes.Value("Request") = True</SourceLine>
+   <SourceLine>Classes.Value("Response") = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>interpreter As RooInterpreter</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>MethodTypeAsString</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1782650879</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Shared Function MethodTypeAsString(method As RooSLHTTP.MethodType) As String</SourceLine>
+   <SourceLine>Select Case method</SourceLine>
+   <SourceLine>Case RooSLHTTP.MethodType.CONNECT</SourceLine>
+   <SourceLine>Return "CONNECT"</SourceLine>
+   <SourceLine>Case RooSLHTTP.MethodType.DELETE</SourceLine>
+   <SourceLine>Return "DELETE"</SourceLine>
+   <SourceLine>Case RooSLHTTP.MethodType.GET</SourceLine>
+   <SourceLine>Return "GET"</SourceLine>
+   <SourceLine>Case RooSLHTTP.MethodType.HEAD</SourceLine>
+   <SourceLine>Return "HEAD"</SourceLine>
+   <SourceLine>Case RooSLHTTP.MethodType.OPTIONS</SourceLine>
+   <SourceLine>Return "OPTIONS"</SourceLine>
+   <SourceLine>Case RooSLHTTP.MethodType.PATCH</SourceLine>
+   <SourceLine>Return "PATCH"</SourceLine>
+   <SourceLine>Case RooSLHTTP.MethodType.POST</SourceLine>
+   <SourceLine>Return "POST"</SourceLine>
+   <SourceLine>Case RooSLHTTP.MethodType.PUT</SourceLine>
+   <SourceLine>Return "PUT"</SourceLine>
+   <SourceLine>Case RooSLHTTP.MethodType.TRACE</SourceLine>
+   <SourceLine>Return "TRACE"</SourceLine>
+   <SourceLine>Case RooSLHTTP.MethodType.UNKNOWN</SourceLine>
+   <SourceLine>Return "UNKNOWN"</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>1</IsShared>
+  <ItemParams>method As RooSLHTTP.MethodType</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>MethodStringToType</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>38971391</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Shared Function MethodStringToType(s As String) As RooSLHTTP.MethodType</SourceLine>
+   <SourceLine>// Takes a String and converts it to a MethodType enumeration.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Select Case Uppercase(s)</SourceLine>
+   <SourceLine>Case "CONNECT"</SourceLine>
+   <SourceLine>Return RooSLHTTP.MethodType.CONNECT</SourceLine>
+   <SourceLine>Case "DELETE"</SourceLine>
+   <SourceLine>Return RooSLHTTP.MethodType.DELETE</SourceLine>
+   <SourceLine>Case "GET"</SourceLine>
+   <SourceLine>Return RooSLHTTP.MethodType.GET</SourceLine>
+   <SourceLine>Case "HEAD"</SourceLine>
+   <SourceLine>Return RooSLHTTP.MethodType.HEAD</SourceLine>
+   <SourceLine>Case "OPTIONS"</SourceLine>
+   <SourceLine>Return RooSLHTTP.MethodType.OPTIONS</SourceLine>
+   <SourceLine>Case "PATCH"</SourceLine>
+   <SourceLine>Return RooSLHTTP.MethodType.PATCH</SourceLine>
+   <SourceLine>Case "POST"</SourceLine>
+   <SourceLine>Return RooSLHTTP.MethodType.POST</SourceLine>
+   <SourceLine>Case "PUT"</SourceLine>
+   <SourceLine>Return RooSLHTTP.MethodType.PUT</SourceLine>
+   <SourceLine>Case "TRACE"</SourceLine>
+   <SourceLine>Return RooSLHTTP.MethodType.TRACE</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return RooSLHTTP.MethodType.UNKNOWN</SourceLine>
+   <SourceLine>End Select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>1</IsShared>
+  <ItemParams>s As String</ItemParams>
+  <ItemResult>RooSLHTTP.MethodType</ItemResult>
+ </Method>
+ <Property>
+  <ItemName>Classes</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>363919359</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Classes As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Classes As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Methods</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1940944895</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Methods As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Methods As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Interpreter</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1802035199</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Interpreter As RooInterpreter</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Interpreter As RooInterpreter</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Getters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1869520895</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Getters As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Getters As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <PropertyValue>-2147483648</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+ <Constant>
+  <ItemName>kDefaultRequestTimeout</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>33439743</PartID>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemType>2</ItemType>
+  <ItemDef>10</ItemDef>
+  <ItemFlags>0</ItemFlags>
+ </Constant>
+ <Enumeration>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>MethodType</ItemName>
+  <ItemFlags>0</ItemFlags>
+  <ItemType>Integer</ItemType>
+  <ItemName>MethodType</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>591728639</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>CONNECT</SourceLine>
+   <SourceLine>DELETE</SourceLine>
+   <SourceLine>GET</SourceLine>
+   <SourceLine>HEAD</SourceLine>
+   <SourceLine>OPTIONS</SourceLine>
+   <SourceLine>PATCH</SourceLine>
+   <SourceLine>POST</SourceLine>
+   <SourceLine>PUT</SourceLine>
+   <SourceLine>TRACE</SourceLine>
+   <SourceLine>UNKNOWN</SourceLine>
+  </ItemSource>
+ </Enumeration>
+</block>
+</RBProject>
