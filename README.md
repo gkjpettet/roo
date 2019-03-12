@@ -69,9 +69,7 @@ I use a Mac and if I wasn't using Homebrew I would place `roo` and `roo Libs/` i
 ### 3. Build the intepreter from source
 **Note: Requires a Xojo license**
 
-To successfully build the intepreter you will need the **core Roo classes** which are maintained in a separate repo: [https://github.com/gkjpettet/roo-core](https://github.com/gkjpettet/roo-core).
-
-Clone this repo and the core classes repo above. The Xojo IDE will likely prompt you to resolve some path issues regarding the core classes so you will have to manually tell the IDE where the core classes are located on your system. After this, build the app from within the Xojo IDE for your platform of choice. Remember to place the `roo` executable in your PATH (and make sure the dependency folder/files are in the same place). The interpreter is written entirely in native Xojo code and no external plugins are required.
+Clone this repo. The Xojo IDE may prompt you to resolve some path issues regarding the core classes so you will have to manually tell the IDE where the core classes are located on your system. They are found within `src/core/Roo`. After this, build the app from within the Xojo IDE for your platform of choice. Remember to place the `roo` executable in your PATH (and make sure the dependency folder/files are in the same place). The interpreter is written entirely in native Xojo code and no external plugins are required.
 
 Once the `roo` interpreter is installed, you can start a REPL session by typing `roo` in the Terminal. This will give you a prompt and allow you to enter Roo code line by line and have it interpreted as you enter it. Good for playing around. It's worth noting that you don't have to terminate statements with semicolons a REPL session. To run a script, simply type `roo [script.roo]` where `script.roo` is the full path to the script to run.
 
