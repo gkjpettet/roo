@@ -5,11 +5,6 @@
  */
 Rainbow.extend('roo', [
     {
-        name: 'comment',
-        pattern: /(\#).*?$/gm
-    },
-
-    {
         name: 'operator',
         pattern: /&(gt|lt|amp);|[+-/*%&=<>|!^:?]/g
     },
@@ -38,9 +33,13 @@ Rainbow.extend('roo', [
     },
     {
         name: 'string',
-        //pattern: /".*?"|'.*?'/gm
         pattern: /"(?:.|\s)*?[^\\]"|'(?:.|\s)*?[^\\]'/gm
     },
+
+    {
+        name: 'comment',
+        pattern: /(\#).*?$/gm
+    },    
 
     // Invokable entities (followed by brackets)
     {
