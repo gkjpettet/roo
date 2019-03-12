@@ -1,0 +1,45 @@
+@import "_init.sass"
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
+
+pre
+    background-color: #fff
+    word-wrap: break-word
+    margin: 0px
+    padding: 10px
+    color: #000
+    font-size: 14px
+    margin-bottom: 20px
+
+pre, code
+    font-family: 'Source Code Pro', 'Monaco', 'Menlo', courier, monospace
+
+pre
+	.comment
+		color: #536579
+
+	.keyword
+		color: #9b2393
+
+	.string
+		color: #c41a16
+
+	.number
+		color: #1c00cf
+
+	.invokable
+		&.ucase
+			color: #326d74
+		&.lcase
+			color: #3900a0
+
+	.identifier
+		&.ucase
+			color: #326d74
+		&.lcase
+			color: #000
+
+	.getter
+		color: #3900a0
+
+	.operator
+		color: #000
