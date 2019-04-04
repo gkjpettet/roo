@@ -477,6 +477,7 @@
    <SourceLine>Case "e"</SourceLine>
    <SourceLine>GoTo gExponentPart</SourceLine>
    <SourceLine>Else</SourceLine>
+   <SourceLine>number = "0"</SourceLine>
    <SourceLine>pointer = pointer - 1</SourceLine>
    <SourceLine>GoTo gFinish</SourceLine>
    <SourceLine>End Select</SourceLine>
@@ -708,10 +709,13 @@
    <TextEncoding>134217984</TextEncoding>
    <SourceLine>Function ParseValue() As Variant</SourceLine>
    <SourceLine>// Boolean?</SourceLine>
+   <SourceLine></SourceLine>
    <SourceLine>Try</SourceLine>
    <SourceLine>Dim tmp As Text = jsonText.Mid(pointer, 4)</SourceLine>
    <SourceLine>Select Case tmp</SourceLine>
    <SourceLine>Case "true"</SourceLine>
+   <SourceLine>// Advance the pointer.</SourceLine>
+   <SourceLine>pointer = pointer + 4</SourceLine>
    <SourceLine>Return New RooBoolean(True)</SourceLine>
    <SourceLine>Case "fals"</SourceLine>
    <SourceLine>Try</SourceLine>
@@ -724,6 +728,8 @@
    <SourceLine>// Ignore.</SourceLine>
    <SourceLine>End Try</SourceLine>
    <SourceLine>Case "null"</SourceLine>
+   <SourceLine>// Advance the pointer.</SourceLine>
+   <SourceLine>pointer = pointer + 4</SourceLine>
    <SourceLine>Return New RooNothing</SourceLine>
    <SourceLine>End Select</SourceLine>
    <SourceLine>Catch err</SourceLine>
