@@ -289,8 +289,12 @@
    <SourceLine>Raise New RooRuntimeError(expr.Operator, "Cannot set fields on native classes or types.")</SourceLine>
    <SourceLine>End If</SourceLine>
    <SourceLine>ElseIf obj IsA RooNativeModule Then</SourceLine>
+   <SourceLine>// Like classes, we give a special dispensation to RooNativeSettable modules </SourceLine>
+   <SourceLine>// that handle their own property setting.</SourceLine>
+   <SourceLine>If obj IsA RooNativeSettable = False Then</SourceLine>
    <SourceLine>#Pragma BreakOnExceptions False</SourceLine>
    <SourceLine>Raise New RooRuntimeError(expr.Operator, "Cannot set fields on native modules.")</SourceLine>
+   <SourceLine>End If</SourceLine>
    <SourceLine>End If</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>// Evaluate the value that we will assign and set the field.</SourceLine>
