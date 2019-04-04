@@ -2,7 +2,7 @@
 <RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
 <block type="Module" ID="838467583">
  <ObjName>RooInstance</ObjName>
- <ObjContainerID>532322303</ObjContainerID>
+ <ObjContainerID>1945964543</ObjContainerID>
  <IsClass>1</IsClass>
  <Interfaces>Stringable</Interfaces>
  <ItemFlags>1</ItemFlags>
@@ -99,7 +99,25 @@
    <SourceLine></SourceLine>
    <SourceLine>// Handle get requests differently for native types and classes.</SourceLine>
    <SourceLine>If Self IsA RooNativeClass Then</SourceLine>
-   <SourceLine>If RooNativeClass(Self).HasGetterWithName(name.Lexeme) Then Return RooNativeClass(Self).GetterWithName(name)</SourceLine>
+   <SourceLine>If RooNativeClass(Self).HasGetterWithName(name.Lexeme) Then</SourceLine>
+   <SourceLine>Dim prop As Variant = RooNativeClass(Self).GetterWithName(name)</SourceLine>
+   <SourceLine>If IndexOrKey &lt;&gt; Nil Then</SourceLine>
+   <SourceLine>// This property is either an array or a hash object.</SourceLine>
+   <SourceLine>If prop IsA RooArray Then</SourceLine>
+   <SourceLine>// Return the element at the specified index.</SourceLine>
+   <SourceLine>Return ArrayElementAtIndex(prop, name)</SourceLine>
+   <SourceLine>ElseIf prop IsA RooHash Then</SourceLine>
+   <SourceLine>// Return the value of the specified key.</SourceLine>
+   <SourceLine>Return HashValueForKey(prop)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(name, "You are treating `" + name.Lexeme + "` like an array " + _</SourceLine>
+   <SourceLine>"or hash but it's not one.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return prop</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
    <SourceLine>If RooNativeClass(Self).HasMethodWithName(name.Lexeme) Then Return RooNativeClass(Self).MethodWithName(name)</SourceLine>
    <SourceLine>// This native class doesn't have the requested getter or method.</SourceLine>
    <SourceLine>Raise New RooRuntimeError(name, "Undefined property `" + _</SourceLine>
@@ -110,8 +128,27 @@
    <SourceLine>If Self IsA RooNativeModule Then</SourceLine>
    <SourceLine>If RooNativeModule(Self).HasModuleWithName(name.Lexeme) Then Return RooNativeModule(Self).ModuleWithName(name)</SourceLine>
    <SourceLine>If RooNativeModule(Self).HasClassWithName(name.Lexeme) Then Return RooNativeModule(Self).ClassWithName(name)</SourceLine>
-   <SourceLine>If RooNativeModule(Self).HasGetterWithName(name.Lexeme) Then Return RooNativeModule(Self).GetterWithName(name)</SourceLine>
    <SourceLine>If RooNativeModule(Self).HasMethodWithName(name.Lexeme) Then Return RooNativeModule(Self).MethodWithName(name)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>If RooNativeModule(Self).HasGetterWithName(name.Lexeme) Then</SourceLine>
+   <SourceLine>Dim prop As Variant = RooNativeModule(Self).GetterWithName(name)</SourceLine>
+   <SourceLine>If IndexOrKey &lt;&gt; Nil Then</SourceLine>
+   <SourceLine>// This property is either an array or a hash object.</SourceLine>
+   <SourceLine>If prop IsA RooArray Then</SourceLine>
+   <SourceLine>// Return the element at the specified index.</SourceLine>
+   <SourceLine>Return ArrayElementAtIndex(prop, name)</SourceLine>
+   <SourceLine>ElseIf prop IsA RooHash Then</SourceLine>
+   <SourceLine>// Return the value of the specified key.</SourceLine>
+   <SourceLine>Return HashValueForKey(prop)</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Raise New RooRuntimeError(name, "You are treating `" + name.Lexeme + "` like an array " + _</SourceLine>
+   <SourceLine>"or hash but it's not one.")</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>Else</SourceLine>
+   <SourceLine>Return prop</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine>End If</SourceLine>
+   <SourceLine></SourceLine>
    <SourceLine>// This native module doesn't have the requested field.</SourceLine>
    <SourceLine>Raise New RooRuntimeError(name, "Undefined field `" + _</SourceLine>
    <SourceLine>name.Lexeme + "` on " + Stringable(Self).StringValue)</SourceLine>
