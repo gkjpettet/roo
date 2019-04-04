@@ -21,8 +21,8 @@
    <SourceLine>// current scope but its value is False, that means we have declared it but not yet defined it. </SourceLine>
    <SourceLine>// We report that error.</SourceLine>
    <SourceLine></SourceLine>
-   <SourceLine>If Scopes.Ubound &gt;= 0 And Scopes(Scopes.Ubound).HasKey(expr.Name.Lexeme) And _</SourceLine>
-   <SourceLine>Scopes(Scopes.Ubound).Value(expr.Name.Lexeme) = False Then</SourceLine>
+   <SourceLine>If Scopes.Ubound &gt;= 0 And Scopes(Scopes.Ubound).HasKey(expr.Name.Lexeme.ToText) And _</SourceLine>
+   <SourceLine>Scopes(Scopes.Ubound).Value(expr.Name.Lexeme.ToText) = False Then</SourceLine>
    <SourceLine>HasError = True</SourceLine>
    <SourceLine>Raise New RooAnalyserError(expr.Name, "Cannot read a local variable in its own initialiser.")</SourceLine>
    <SourceLine>End If</SourceLine>
@@ -952,7 +952,7 @@
    <SourceLine>Dim i As Integer</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>For i = top DownTo 0</SourceLine>
-   <SourceLine>If Scopes(i).HasKey(name.Lexeme) Then</SourceLine>
+   <SourceLine>If Scopes(i).HasKey(name.Lexeme.ToText) Then</SourceLine>
    <SourceLine>interpreter.Resolve(expr, top - i)</SourceLine>
    <SourceLine>Return</SourceLine>
    <SourceLine>End If</SourceLine>
@@ -1091,13 +1091,13 @@
    <SourceLine>If Scopes.Ubound &lt; 0 Then Return</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>// Make sure the user doesn't try to re-declare a variable within the current scope.</SourceLine>
-   <SourceLine>If Scopes(Scopes.Ubound).HasKey(name.Lexeme) Then</SourceLine>
+   <SourceLine>If Scopes(Scopes.Ubound).HasKey(name.Lexeme.ToText) Then</SourceLine>
    <SourceLine>HasError = True</SourceLine>
    <SourceLine>Raise New RooAnalyserError(name, "A variable named `" + name.Lexeme + _</SourceLine>
    <SourceLine>"` has already been declared in the current scope.")</SourceLine>
    <SourceLine>End If</SourceLine>
    <SourceLine></SourceLine>
-   <SourceLine>Scopes(Scopes.Ubound).Value(name.Lexeme) = False</SourceLine>
+   <SourceLine>Scopes(Scopes.Ubound).Value(name.Lexeme.ToText) = False</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>End Sub</SourceLine>
   </ItemSource>
@@ -1120,7 +1120,7 @@
    <SourceLine></SourceLine>
    <SourceLine>If Scopes.Ubound &lt; 0 Then Return</SourceLine>
    <SourceLine></SourceLine>
-   <SourceLine>Scopes(Scopes.Ubound).Value(name.Lexeme) = True</SourceLine>
+   <SourceLine>Scopes(Scopes.Ubound).Value(name.Lexeme.ToText) = True</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>End Sub</SourceLine>
   </ItemSource>

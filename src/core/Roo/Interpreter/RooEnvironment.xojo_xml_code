@@ -47,8 +47,8 @@
    <SourceLine></SourceLine>
    <SourceLine>#Pragma BreakOnExceptions False</SourceLine>
    <SourceLine></SourceLine>
-   <SourceLine>If Self.Values.HasKey(name.Lexeme) Then </SourceLine>
-   <SourceLine>Self.Values.Value(name.Lexeme) = value</SourceLine>
+   <SourceLine>If Self.Values.HasKey(name.Lexeme.ToText) Then </SourceLine>
+   <SourceLine>Self.Values.Value(name.Lexeme.ToText) = value</SourceLine>
    <SourceLine>Return</SourceLine>
    <SourceLine>End If</SourceLine>
    <SourceLine></SourceLine>
@@ -75,7 +75,7 @@
   <ItemSource>
    <TextEncoding>134217984</TextEncoding>
    <SourceLine>Sub AssignAt(distance As Integer, name As RooToken, value As Variant)</SourceLine>
-   <SourceLine>Ancestor(distance).Values.Value(name.Lexeme) = value</SourceLine>
+   <SourceLine>Ancestor(distance).Values.Value(name.Lexeme.ToText) = value</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>End Sub</SourceLine>
   </ItemSource>
@@ -132,7 +132,7 @@
   <ItemSource>
    <TextEncoding>134217984</TextEncoding>
    <SourceLine>Sub Define(name As String, value As Variant)</SourceLine>
-   <SourceLine>Self.Values.Value(name) = value</SourceLine>
+   <SourceLine>Self.Values.Value(name.ToText) = value</SourceLine>
    <SourceLine>End Sub</SourceLine>
   </ItemSource>
   <TextEncoding>134217984</TextEncoding>
@@ -152,7 +152,7 @@
    <SourceLine>Function Get(name As RooToken) As Variant</SourceLine>
    <SourceLine>#Pragma BreakOnExceptions False</SourceLine>
    <SourceLine></SourceLine>
-   <SourceLine>If Values.HasKey(name.Lexeme) Then Return Values.Lookup(name.Lexeme, Nil)</SourceLine>
+   <SourceLine>If Values.HasKey(name.Lexeme.ToText) Then Return Values.Lookup(name.Lexeme.ToText, Nil)</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>If Enclosing &lt;&gt; Nil Then Return Enclosing.Get(name)</SourceLine>
    <SourceLine></SourceLine>
@@ -174,7 +174,7 @@
   <ItemSource>
    <TextEncoding>134217984</TextEncoding>
    <SourceLine>Function GetAt(distance As Integer, name As String) As Variant</SourceLine>
-   <SourceLine>Return Ancestor(distance).Values.Value(name)</SourceLine>
+   <SourceLine>Return Ancestor(distance).Values.Value(name.ToText)</SourceLine>
    <SourceLine>End Function</SourceLine>
   </ItemSource>
   <TextEncoding>134217984</TextEncoding>
