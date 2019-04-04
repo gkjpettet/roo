@@ -1520,7 +1520,7 @@
    <SourceLine>mIsRunning = False</SourceLine>
    <SourceLine>Globals = New RooEnvironment(Natives) // Note that global classes, functions, etc will shadow Natives.</SourceLine>
    <SourceLine>Environment = globals</SourceLine>
-   <SourceLine>Locals = New Dictionary // Stores resolution information from the Analyser.</SourceLine>
+   <SourceLine>Locals = Roo.CaseSensitiveDictionary // Stores resolution information from the Analyser.</SourceLine>
    <SourceLine>Nothing = New RooNothing // The global Nothing object.</SourceLine>
    <SourceLine>Custom = New Dictionary</SourceLine>
    <SourceLine>REPL = False</SourceLine>
@@ -2564,14 +2564,14 @@
   <PartID>1096308735</PartID>
   <ItemSource>
    <TextEncoding>134217984</TextEncoding>
-   <SourceLine>Locals As Dictionary</SourceLine>
-   <SourceLine>This Dictionary stores resolution information passed to the Interpreter from the Analyser during</SourceLine>
+   <SourceLine>Locals As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine>This case sensitive Dictionary stores resolution information passed to the Interpreter from the Analyser during</SourceLine>
    <SourceLine>static analysis.</SourceLine>
    <SourceLine>Key = RooExpr</SourceLine>
    <SourceLine>Value = Integer (depth)</SourceLine>
   </ItemSource>
   <TextEncoding>134217984</TextEncoding>
-  <ItemDeclaration>Locals As Dictionary</ItemDeclaration>
+  <ItemDeclaration>Locals As Xojo.Core.Dictionary</ItemDeclaration>
   <ItemFlags>33</ItemFlags>
   <IsShared>0</IsShared>
  </Property>

@@ -2,7 +2,7 @@
 <RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
 <block type="Module" ID="852336639">
  <ObjName>RooAnalyser</ObjName>
- <ObjContainerID>0</ObjContainerID>
+ <ObjContainerID>27959295</ObjContainerID>
  <IsClass>1</IsClass>
  <Interfaces>RooExprVisitor, RooStmtVisitor</Interfaces>
  <ItemFlags>1</ItemFlags>
@@ -977,8 +977,8 @@
   <ItemSource>
    <TextEncoding>134217984</TextEncoding>
    <SourceLine>Sub BeginScope()</SourceLine>
-   <SourceLine>// Create a new scope (represented by a Dictionary) by pushing it to our scope stack.</SourceLine>
-   <SourceLine>Scopes.Append(New Dictionary) // &lt;Key: String, Value: Boolean&gt;</SourceLine>
+   <SourceLine>// Create a new scope (represented by a case sensitive Dictionary) by pushing it to our scope stack.</SourceLine>
+   <SourceLine>Scopes.Append(Roo.CaseSensitiveDictionary) // &lt;Key: String, Value: Boolean&gt;</SourceLine>
    <SourceLine>End Sub</SourceLine>
   </ItemSource>
   <TextEncoding>134217984</TextEncoding>
@@ -1240,14 +1240,14 @@
   <PartID>2019850239</PartID>
   <ItemSource>
    <TextEncoding>134217984</TextEncoding>
-   <SourceLine>Scopes() As Dictionary</SourceLine>
+   <SourceLine>Scopes() As Xojo.Core.Dictionary</SourceLine>
    <SourceLine>Keeps track of the stack of scopes currently in scope.</SourceLine>
    <SourceLine>Each element in the stack is a Dictionary representing a single block scope.</SourceLine>
    <SourceLine>Key = variable name.</SourceLine>
    <SourceLine>Value = Boolean. True means the variable is finished being initialised.</SourceLine>
   </ItemSource>
   <TextEncoding>134217984</TextEncoding>
-  <ItemDeclaration>Scopes() As Dictionary</ItemDeclaration>
+  <ItemDeclaration>Scopes() As Xojo.Core.Dictionary</ItemDeclaration>
   <ItemFlags>33</ItemFlags>
   <IsShared>0</IsShared>
  </Property>
