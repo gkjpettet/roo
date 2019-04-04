@@ -2,7 +2,7 @@
 <RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
 <block type="Module" ID="1674647551">
  <ObjName>RooSLJSON</ObjName>
- <ObjContainerID>1512333311</ObjContainerID>
+ <ObjContainerID>2084405247</ObjContainerID>
  <IsClass>1</IsClass>
  <Superclass>RooInstance</Superclass>
  <Interfaces>RooNativeModule</Interfaces>
@@ -715,7 +715,11 @@
    <SourceLine>Return New RooBoolean(True)</SourceLine>
    <SourceLine>Case "fals"</SourceLine>
    <SourceLine>Try</SourceLine>
-   <SourceLine>If jsonText.Mid(pointer + 4, 1) = "e" Then Return New RooBoolean(False)</SourceLine>
+   <SourceLine>If jsonText.Mid(pointer + 4, 1) = "e" Then</SourceLine>
+   <SourceLine>// Advance the pointer.</SourceLine>
+   <SourceLine>pointer = pointer + 5</SourceLine>
+   <SourceLine>Return New RooBoolean(False)</SourceLine>
+   <SourceLine>End If</SourceLine>
    <SourceLine>Catch err</SourceLine>
    <SourceLine>// Ignore.</SourceLine>
    <SourceLine>End Try</SourceLine>
