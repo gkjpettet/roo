@@ -2,7 +2,7 @@
 <RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
 <block type="Module" ID="65296383">
  <ObjName>RooSLHTTP</ObjName>
- <ObjContainerID>1665863679</ObjContainerID>
+ <ObjContainerID>1614903295</ObjContainerID>
  <IsClass>1</IsClass>
  <Superclass>RooInstance</Superclass>
  <Interfaces>RooNativeModule</Interfaces>
@@ -260,6 +260,7 @@
    <SourceLine>Methods.Value("get") = New RooSLHTTPGet</SourceLine>
    <SourceLine>Methods.Value("post") = New RooSLHTTPPost</SourceLine>
    <SourceLine>Methods.Value("put") = New RooSLHTTPPut</SourceLine>
+   <SourceLine>Methods.Value("url_encode") = New RooSLHTTPURLEncode</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>// Add classes.</SourceLine>
    <SourceLine>Classes = Roo.CaseSensitiveDictionary</SourceLine>
