@@ -54,25 +54,6 @@ Inherits ConsoleApplication
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub AnalyserError(sender As RooInterpreter, token As RooToken, message As String)
-		  // An error occurred during static analysis of the source code.
-		  
-		  Using Rainbow
-		  
-		  #Pragma Unused sender
-		  
-		  // Report that an error has occurred and its location.
-		  Print Colourise("Static analysis error (line " + Str(token.Line) + ", pos " + _
-		  Str(token.Start) + ").", Colour.Red)
-		  Print "Token: " + token.Lexeme
-		  
-		  // Print the actual error message.
-		  Print(message)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
 		Private Sub DeletionPrevented(sender As RooInterpreter, f As FolderItem, where As RooToken)
 		  // The interpreter has prevented the deletion of a file or folder.
 		  
@@ -91,6 +72,42 @@ Inherits ConsoleApplication
 		  " was prevented by the interpreter." + EndOfLine
 		  
 		  Print Colourise(message, Colour.Red)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ErrorOccurred(sender As RooInterpreter, type As RooInterpreter.ErrorType, where As RooToken, message As String)
+		  #Pragma Unused sender
+		  
+		  Using Rainbow
+		  
+		  // What kind of error occurred?
+		  Select Case type
+		  Case RooInterpreter.ErrorType.Analyser
+		    Print Colourise("Static analysis error (line " + Str(where.Line) + ", pos " + _
+		    Str(where.Start) + ").", Colour.Red)
+		    Print "Token: " + where.Lexeme
+		    
+		  Case RooInterpreter.ErrorType.Parser
+		    Print Colourise("Parser error (line " + Str(where.Line) + ", pos " + Str(where.Start) + ").", Colour.Red)
+		    Print "Token: " + where.Lexeme
+		    
+		  Case RooInterpreter.ErrorType.Runtime
+		    Print Colourise("Runtime error (line " + Str(where.Line) + ", pos " + _
+		    Str(where.Start) + ").", Colour.Red)
+		    Print "Token: " + where.Lexeme
+		    
+		  Case RooInterpreter.ErrorType.Scanner
+		    Print Colourise("Scanner error.", Colour.Red)
+		    If where.File <> Nil Then Print("File: " + where.File.NativePath)
+		    Print("Location: line " + Str(where.Line) + ", position " + Str(where.Start))
+		    
+		  End Select
+		  
+		  // Print the actual error message.
+		  Print(message)
+		  
+		  Quit(0)
 		End Sub
 	#tag EndMethod
 
@@ -130,10 +147,7 @@ Inherits ConsoleApplication
 		Private Sub Initialise()
 		  // Create and configure an interpreter.
 		  Interpreter = New RooInterpreter
-		  AddHandler Interpreter.ScannerError, AddressOf Self.ScannerError
-		  AddHandler Interpreter.ParserError, AddressOf Self.ParserError
-		  AddHandler Interpreter.AnalyserError, AddressOf Self.AnalyserError
-		  AddHandler Interpreter.RuntimeError, AddressOf Self.RuntimeError
+		  AddHandler Interpreter.ErrorOccurred, AddressOf Self.ErrorOccurred
 		  AddHandler Interpreter.Print, AddressOf Self.PrintDelegate
 		  AddHandler Interpreter.Input, AddressOf Self.InputDelegate
 		  AddHandler Interpreter.AllowNetworkAccess, AddressOf AllowNetworkAccessDelegate
@@ -182,24 +196,6 @@ Inherits ConsoleApplication
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub ParserError(sender As RooInterpreter, where As RooToken, message As String)
-		  // An error occurred during the parsing process.
-		  
-		  Using Rainbow
-		  
-		  #Pragma Unused sender
-		  
-		  // Report that an error has occurred and its location.
-		  Print Colourise("Parser error (line " + Str(where.Line) + ", pos " + Str(where.Start) + ").", Colour.Red)
-		  Print "Token: " + where.Lexeme
-		  
-		  // Print the actual error message.
-		  Print(message)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
 		Private Sub PrintDelegate(sender As RooInterpreter, what As String)
 		  // The interpreter's native print() function has been called.
 		  
@@ -243,44 +239,6 @@ Inherits ConsoleApplication
 		  Return Str(Roo.kVersionMajor) + "." + Str(Roo.kVersionMinor) + "." + Str(Roo.kVersionBug)
 		  
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub RuntimeError(sender As RooInterpreter, where As RooToken, message As String)
-		  // An error has occurred during interpretation.
-		  
-		  Using Rainbow
-		  
-		  #Pragma Unused sender
-		  
-		  // Report that a runtime error has occurred and its location.
-		  Print Colourise("Runtime error (line " + Str(where.Line) + ", pos " + _
-		  Str(where.Start) + ").", Colour.Red)
-		  Print "Token: " + where.Lexeme
-		  
-		  // Print the actual error message.
-		  Print(message)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub ScannerError(sender As RooInterpreter, file As FolderItem, message As String, line As Integer, position As Integer)
-		  // An error occurred during the scanning process.
-		  
-		  #Pragma Unused sender
-		  
-		  Using Rainbow
-		  
-		  // Report the type of error and its location.
-		  Print Colourise("Scanner error.", Colour.Red)
-		  if file <> Nil then Print("File: " + file.NativePath)
-		  Print("Location: line " + Str(line) + ", position " + Str(position))
-		  
-		  // Print the actual error message.
-		  Print(message)
-		  
-		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
@@ -333,7 +291,7 @@ Inherits ConsoleApplication
 	#tag Constant, Name = kAppName, Type = String, Dynamic = False, Default = \"Roo", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = kRunCount, Type = String, Dynamic = False, Default = \"56", Scope = Public
+	#tag Constant, Name = kRunCount, Type = String, Dynamic = False, Default = \"59", Scope = Public
 	#tag EndConstant
 
 

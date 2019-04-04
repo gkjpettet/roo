@@ -2,7 +2,7 @@
 <RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
 <block type="Module" ID="1234921471">
  <ObjName>RooInterpreter</ObjName>
- <ObjContainerID>532322303</ObjContainerID>
+ <ObjContainerID>1945964543</ObjContainerID>
  <IsClass>1</IsClass>
  <Interfaces>RooExprVisitor, RooStmtVisitor</Interfaces>
  <ItemFlags>1</ItemFlags>
@@ -1560,7 +1560,7 @@
    <SourceLine>// Catch any runtime errors and fire our custom event.</SourceLine>
    <SourceLine>Exception err As RooRuntimeError</SourceLine>
    <SourceLine>mIsRunning = False</SourceLine>
-   <SourceLine>RuntimeError(err.Token, err.Message)</SourceLine>
+   <SourceLine>ErrorOccurred(ErrorType.Runtime, err.Token, err.Message)</SourceLine>
    <SourceLine>Return</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>// Exit gracefully if the `quit` statement is encountered in non-REPL</SourceLine>
@@ -2147,7 +2147,12 @@
    <SourceLine>#Pragma Unused sender</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>// An error occurred during source code scanning.</SourceLine>
-   <SourceLine>ScannerError(file, message, line, position)</SourceLine>
+   <SourceLine>Dim where As New RooToken</SourceLine>
+   <SourceLine>where.File = file</SourceLine>
+   <SourceLine>where.Line = line</SourceLine>
+   <SourceLine>where.Start = position</SourceLine>
+   <SourceLine>ErrorOccurred(ErrorType.Scanner, where, message)</SourceLine>
+   <SourceLine></SourceLine>
    <SourceLine>End Sub</SourceLine>
   </ItemSource>
   <TextEncoding>134217984</TextEncoding>
@@ -2168,7 +2173,7 @@
    <SourceLine>#Pragma Unused sender</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>// An error occurred whilst parsing the source code.</SourceLine>
-   <SourceLine>ParserError(where, message)</SourceLine>
+   <SourceLine>ErrorOccurred(ErrorType.Parser, where, message)</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>End Sub</SourceLine>
   </ItemSource>
@@ -2190,7 +2195,8 @@
    <SourceLine>#Pragma Unused sender</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>// An error occurred during the analysis of the parse tree.</SourceLine>
-   <SourceLine>AnalyserError(token, message)</SourceLine>
+   <SourceLine>ErrorOccurred(ErrorType.Analyser, token, message)</SourceLine>
+   <SourceLine></SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>End Sub</SourceLine>
   </ItemSource>
@@ -2455,38 +2461,6 @@
   <ItemResult>String</ItemResult>
  </Hook>
  <Hook>
-  <ItemName>ScannerError</ItemName>
-  <TextEncoding>134217984</TextEncoding>
-  <ItemFlags>33</ItemFlags>
-  <SystemFlags>0</SystemFlags>
-  <ItemParams>file As FolderItem, message As String, line As Integer, position As Integer</ItemParams>
-  <ItemResult></ItemResult>
- </Hook>
- <Hook>
-  <ItemName>ParserError</ItemName>
-  <TextEncoding>134217984</TextEncoding>
-  <ItemFlags>33</ItemFlags>
-  <SystemFlags>0</SystemFlags>
-  <ItemParams>where As RooToken, message As String</ItemParams>
-  <ItemResult></ItemResult>
- </Hook>
- <Hook>
-  <ItemName>AnalyserError</ItemName>
-  <TextEncoding>134217984</TextEncoding>
-  <ItemFlags>33</ItemFlags>
-  <SystemFlags>0</SystemFlags>
-  <ItemParams>token As RooToken, message As String</ItemParams>
-  <ItemResult></ItemResult>
- </Hook>
- <Hook>
-  <ItemName>RuntimeError</ItemName>
-  <TextEncoding>134217984</TextEncoding>
-  <ItemFlags>33</ItemFlags>
-  <SystemFlags>0</SystemFlags>
-  <ItemParams>where As RooToken, message As String</ItemParams>
-  <ItemResult></ItemResult>
- </Hook>
- <Hook>
   <ItemName>AllowNetworkAccess</ItemName>
   <TextEncoding>134217984</TextEncoding>
   <ItemFlags>33</ItemFlags>
@@ -2508,6 +2482,14 @@
   <ItemFlags>33</ItemFlags>
   <SystemFlags>0</SystemFlags>
   <ItemParams>f As FolderItem, where As RooToken</ItemParams>
+  <ItemResult></ItemResult>
+ </Hook>
+ <Hook>
+  <ItemName>ErrorOccurred</ItemName>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemFlags>33</ItemFlags>
+  <SystemFlags>0</SystemFlags>
+  <ItemParams>type As ErrorType, where As RooToken, message As String</ItemParams>
   <ItemResult></ItemResult>
  </Hook>
  <Property>
@@ -2841,5 +2823,22 @@
   <ItemDef>False</ItemDef>
   <ItemFlags>0</ItemFlags>
  </Constant>
+ <Enumeration>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>ErrorType</ItemName>
+  <ItemFlags>0</ItemFlags>
+  <ItemType>Integer</ItemType>
+  <ItemName>ErrorType</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2052655103</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Analyser</SourceLine>
+   <SourceLine>Parser</SourceLine>
+   <SourceLine>Runtime</SourceLine>
+   <SourceLine>Scanner</SourceLine>
+  </ItemSource>
+ </Enumeration>
 </block>
 </RBProject>

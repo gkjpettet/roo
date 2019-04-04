@@ -2,7 +2,7 @@
 <RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
 <block type="Module" ID="1988868095">
  <ObjName>RooScanner</ObjName>
- <ObjContainerID>675903487</ObjContainerID>
+ <ObjContainerID>272916479</ObjContainerID>
  <IsClass>1</IsClass>
  <ItemFlags>1</ItemFlags>
  <IsInterface>0</IsInterface>
@@ -959,6 +959,7 @@
    <SourceLine></SourceLine>
    <SourceLine>// Did the user terminate the text?</SourceLine>
    <SourceLine>If Current &gt; SourceLength Then</SourceLine>
+   <SourceLine>#Pragma BreakOnExceptions False</SourceLine>
    <SourceLine>Raise New RooScannerError(sourceFile, "Unterminated text literal", Line, Start)</SourceLine>
    <SourceLine>End If</SourceLine>
    <SourceLine></SourceLine>
