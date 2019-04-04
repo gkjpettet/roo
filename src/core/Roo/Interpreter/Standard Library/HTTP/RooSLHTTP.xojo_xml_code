@@ -260,6 +260,7 @@
    <SourceLine>Methods.Value("get") = New RooSLHTTPGet</SourceLine>
    <SourceLine>Methods.Value("post") = New RooSLHTTPPost</SourceLine>
    <SourceLine>Methods.Value("put") = New RooSLHTTPPut</SourceLine>
+   <SourceLine>Methods.Value("url_decode") = New RooSLHTTPURLDecode</SourceLine>
    <SourceLine>Methods.Value("url_encode") = New RooSLHTTPURLEncode</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>// Add classes.</SourceLine>
