@@ -291,7 +291,7 @@ Inherits ConsoleApplication
 	#tag Constant, Name = kAppName, Type = String, Dynamic = False, Default = \"Roo", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = kRunCount, Type = String, Dynamic = False, Default = \"59", Scope = Public
+	#tag Constant, Name = kRunCount, Type = String, Dynamic = False, Default = \"64", Scope = Public
 	#tag EndConstant
 
 
