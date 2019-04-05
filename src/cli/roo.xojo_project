@@ -1,5 +1,5 @@
 Type=Console
-RBProjectVersion=2018.04
+RBProjectVersion=2019.01
 MinIDEVersion=20070100
 Class=App;App.xojo_code;&h0000000034BA17FF;&h0000000000000000;false
 Module=Rainbow;Rainbow.xojo_code;&h000000007D6087FF;&h0000000000000000;false
@@ -152,6 +152,8 @@ Interface=Dateable;../core/Roo/Interfaces/Dateable.xojo_xml_code;&h00000000461BD
 Interface=Stringable;../core/Roo/Interfaces/Stringable.xojo_xml_code;&h00000000265C57FF;&h00000000645947FF;false
 Interface=RooNativeModule;../core/Roo/Interfaces/RooNativeModule.xojo_xml_code;&h000000007B64EFFF;&h00000000645947FF;false
 Interface=RooExprVisitor;../core/Roo/Interfaces/RooExprVisitor.xojo_xml_code;&h000000000046AFFF;&h00000000645947FF;false
+Class=RooSLHTTPURLDecode;../core/Roo/Interpreter/Standard Library/HTTP/Functions/RooSLHTTPURLDecode.xojo_xml_code;&h000000006A137FFF;&h0000000039DDFFFF;false
+Class=RooSLHTTPURLEncode;../core/Roo/Interpreter/Standard Library/HTTP/Functions/RooSLHTTPURLEncode.xojo_xml_code;&h000000005A9177FF;&h0000000039DDFFFF;false
 MajorVersion=3
 MinorVersion=0
 SubVersion=1
