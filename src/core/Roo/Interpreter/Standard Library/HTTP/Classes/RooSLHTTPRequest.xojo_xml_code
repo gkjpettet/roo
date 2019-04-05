@@ -2,7 +2,7 @@
 <RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
 <block type="Module" ID="1680502783">
  <ObjName>RooSLHTTPRequest</ObjName>
- <ObjContainerID>902287359</ObjContainerID>
+ <ObjContainerID>1701402623</ObjContainerID>
  <IsClass>1</IsClass>
  <Superclass>RooInstance</Superclass>
  <Interfaces>RooNativeClass,  RooNativeSettable</Interfaces>
@@ -593,6 +593,8 @@
    <SourceLine>// Parses the content of this request's response's Set-Cookie header (if present).</SourceLine>
    <SourceLine>// If the Set-Cookie header is present then cookies are represented as name=value pairs, separated </SourceLine>
    <SourceLine>// by `;`.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#Pragma BreakOnExceptions False</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>Dim rawCookies As String = Connection.ResponseHeader("Set-Cookie")</SourceLine>
    <SourceLine>If rawCookies = "" Then Return</SourceLine>
