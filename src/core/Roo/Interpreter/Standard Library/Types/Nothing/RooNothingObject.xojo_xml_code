@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<RBProject version="2019r1" FormatVersion="2" MinIDEVersion="20150400">
 <block type="Module" ID="979648511">
  <ObjName>RooNothing</ObjName>
- <ObjContainerID>658958335</ObjContainerID>
+ <ObjContainerID>1404237823</ObjContainerID>
  <IsClass>1</IsClass>
  <Superclass>RooInstance</Superclass>
  <Interfaces> RooNativeClass</Interfaces>
@@ -72,11 +72,12 @@
   <ItemSource>
    <TextEncoding>134217984</TextEncoding>
    <SourceLine>Function GetterWithName(name As RooToken) As Variant</SourceLine>
-   <SourceLine>// Nothing objects have no getters (apart from inherited generic ones).</SourceLine>
+   <SourceLine>// Nothing object only have one getter (in addition to the generic ones).</SourceLine>
    <SourceLine></SourceLine>
-   <SourceLine>#Pragma Unused name</SourceLine>
+   <SourceLine>If StrComp(name.Lexeme, "to_number", 0) = 0 Then</SourceLine>
+   <SourceLine>Return New RooNumber(0)</SourceLine>
+   <SourceLine>End If</SourceLine>
    <SourceLine></SourceLine>
-   <SourceLine>Return Nil</SourceLine>
    <SourceLine>End Function</SourceLine>
   </ItemSource>
   <TextEncoding>134217984</TextEncoding>
@@ -94,11 +95,10 @@
   <ItemSource>
    <TextEncoding>134217984</TextEncoding>
    <SourceLine>Function HasGetterWithName(name As String) As Boolean</SourceLine>
-   <SourceLine>// Nothing objects have no getters (apart from the inherited generic object ones).</SourceLine>
+   <SourceLine>// Query the global Roo dictionary of Nothing object getters for the existence of a getter </SourceLine>
+   <SourceLine>// with the passed name.</SourceLine>
    <SourceLine></SourceLine>
-   <SourceLine>#Pragma Unused name</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>Return False</SourceLine>
+   <SourceLine>Return RooSLCache.NothingGetters.HasKey(name)</SourceLine>
    <SourceLine>End Function</SourceLine>
   </ItemSource>
   <TextEncoding>134217984</TextEncoding>

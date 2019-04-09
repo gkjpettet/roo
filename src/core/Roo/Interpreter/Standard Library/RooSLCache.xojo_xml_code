@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<RBProject version="2019r1" FormatVersion="2" MinIDEVersion="20150400">
 <block type="Module" ID="1736947711">
  <ObjName>RooSLCache</ObjName>
- <ObjContainerID>1516281855</ObjContainerID>
+ <ObjContainerID>328652799</ObjContainerID>
  <IsClass>0</IsClass>
  <ItemFlags>1</ItemFlags>
  <IsInterface>0</IsInterface>
@@ -115,6 +115,9 @@
    <SourceLine>// Hash object getters and methods.</SourceLine>
    <SourceLine>InitialiseHashGetters</SourceLine>
    <SourceLine>InitialiseHashMethods</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Nothing getters.</SourceLine>
+   <SourceLine>InitialiseNothingGetters</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>// Number object getters and methods.</SourceLine>
    <SourceLine>InitialiseNumberGetters</SourceLine>
@@ -704,6 +707,27 @@
   <ItemParams></ItemParams>
   <ItemResult></ItemResult>
  </Method>
+ <Method>
+  <ItemName>InitialiseNothingGetters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>2087958527</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InitialiseNothingGetters()</SourceLine>
+   <SourceLine>NothingGetters = Roo.CaseSensitiveDictionary</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>NothingGetters.Value("to_number") = True</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
  <Note>
   <ItemName>About</ItemName>
   <Compatibility></Compatibility>
@@ -1047,6 +1071,21 @@
   </ItemSource>
   <TextEncoding>134217984</TextEncoding>
   <ItemDeclaration>NumberMethods As Xojo.Core.Dictionary</ItemDeclaration>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>NothingGetters</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <PartID>1837955071</PartID>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>NothingGetters As Xojo.Core.Dictionary</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>NothingGetters As Xojo.Core.Dictionary</ItemDeclaration>
   <ItemFlags>1</ItemFlags>
   <IsShared>0</IsShared>
  </Property>
