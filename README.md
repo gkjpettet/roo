@@ -99,6 +99,6 @@ Contains a custom syntax definition for the Roo programming language to allow yo
 Contains a syntax definition file to enable Roo syntax highlighting in [Sublime Text 3](https://www.sublimetext.com/3). It also contains light and dark colour themes.
 
 [homebrew]: https://brew.sh
-[homepage]: https://roolang.org
+[homepage]: https://garrypettet.com/roo
 [scoop]: https://scoop.sh
 [xojo]: https://xojo.com
