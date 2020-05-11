@@ -86,6 +86,11 @@ Whilst there is no interactive debugger for Roo (yet), `roo` does provide reason
 
 To quit a REPL session type `CTRL-C` or `CTRL-D` or `CTRL-X` (depending on your operating system). Or you can simply use the global `quit` statement.
 
+
+### 4. Load the binary project
+
+To simplify getting started with the project, I have also included the project saved in Xojo's binary file format. This can be found in `/binary project/roo-cli.xojo_binary_project`. Simply launch this is Xojo 2019 Release 1.1 or later and you're good to go.
+
 ## Extras
 
 You'll notices that this repo has an `extras/` folder which contains goodies additional to the source code. These are detailed below:
