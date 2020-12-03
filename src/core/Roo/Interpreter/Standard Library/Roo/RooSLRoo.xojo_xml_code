@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<RBProject version="2020r2" FormatVersion="2" MinIDEVersion="20070100">
 <block type="Module" ID="790329343">
  <ObjName>RooSLRoo</ObjName>
- <ObjContainerID>119207935</ObjContainerID>
+ <ObjContainerID>653228031</ObjContainerID>
  <IsClass>1</IsClass>
  <Superclass>RooInstance</Superclass>
  <Interfaces>RooNativeModule</Interfaces>
@@ -20,7 +20,7 @@
    <SourceLine>// Part of the RooNativeModule interface.</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>If StrComp(name.Lexeme, "clock", 0) = 0 Then</SourceLine>
-   <SourceLine>Return New RooNumber(Microseconds)</SourceLine>
+   <SourceLine>Return New RooNumber(System.Microseconds)</SourceLine>
    <SourceLine>ElseIf StrComp(name.Lexeme, "version", 0) = 0 Then</SourceLine>
    <SourceLine>Return New RooText(Roo.Version)</SourceLine>
    <SourceLine>End If</SourceLine>

@@ -10,4 +10,4 @@ var n = 20
 print("Fibonacci entry " + n + " is:")
 print(fibonacci(n))
 
-print("Time: " + (Roo.clock - start) + " microseconds.")
+print("Took: " + ((Roo.clock - start)/1000) + " ms.")
