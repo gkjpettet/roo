@@ -1,4 +1,4 @@
-# Prints out the first 15 numbers in the Fibonacci sequence.
+# Prints out the nth Fibonacci sequence and the time taken to compute.
 
 def fibonacci(n):
 	if n < 2: return n
@@ -6,10 +6,8 @@ def fibonacci(n):
 
 var start = Roo.clock
 
-var count = 20
-print("Here are the first " + count + " fibonacci numbers:")
-
-for (var i = 0; i < count; i = i + 1):
-	print(fibonacci(i))
+var n = 20
+print("Fibonacci entry " + n + " is:")
+print(fibonacci(n))
 
 print("Time: " + (Roo.clock - start) + " microseconds.")
