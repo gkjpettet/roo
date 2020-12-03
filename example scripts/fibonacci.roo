@@ -6,9 +6,10 @@ def fibonacci(n):
 
 var start = Roo.clock
 
-print("Here are the first 15 fibonacci numbers:")
+var count = 20
+print("Here are the first " + count + " fibonacci numbers:")
 
-for (var i = 0; i < 15; i = i + 1):
+for (var i = 0; i < count; i = i + 1):
 	print(fibonacci(i))
 
 print("Time: " + (Roo.clock - start) + " microseconds.")
