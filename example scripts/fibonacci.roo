@@ -6,7 +6,7 @@ def fibonacci(n):
 
 var start = Roo.clock
 
-var n = 30
+var n = 20
 print("Fibonacci entry " + n + " is:")
 print(fibonacci(n))
 
