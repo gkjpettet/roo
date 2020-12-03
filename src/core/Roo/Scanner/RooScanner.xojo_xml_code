@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<RBProject version="2020r2" FormatVersion="2" MinIDEVersion="20070100">
 <block type="Module" ID="1988868095">
  <ObjName>RooScanner</ObjName>
- <ObjContainerID>272916479</ObjContainerID>
+ <ObjContainerID>348391423</ObjContainerID>
  <IsClass>1</IsClass>
  <ItemFlags>1</ItemFlags>
  <IsInterface>0</IsInterface>
@@ -242,7 +242,7 @@
    <SourceLine>ElseIf StrComp(lexeme, "super", 0) = 0 Then</SourceLine>
    <SourceLine>Return Roo.TokenType.SUPER_KEYWORD</SourceLine>
    <SourceLine>ElseIf StrComp(lexeme, "var", 0) = 0 Then</SourceLine>
-   <SourceLine>Return Roo.TokenType.VAR</SourceLine>
+   <SourceLine>Return Roo.TokenType.VAR_KEYWORD</SourceLine>
    <SourceLine>ElseIf StrComp(lexeme, "while", 0) = 0 Then</SourceLine>
    <SourceLine>Return Roo.TokenType.WHILE_KEYWORD</SourceLine>
    <SourceLine>Else</SourceLine>

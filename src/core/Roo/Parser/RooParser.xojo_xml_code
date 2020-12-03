@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<RBProject version="2020r2" FormatVersion="2" MinIDEVersion="20070100">
 <block type="Module" ID="1490538495">
  <ObjName>RooParser</ObjName>
- <ObjContainerID>1661949951</ObjContainerID>
+ <ObjContainerID>884615167</ObjContainerID>
  <IsClass>1</IsClass>
  <ItemFlags>1</ItemFlags>
  <IsInterface>0</IsInterface>
@@ -143,7 +143,7 @@
    <SourceLine>//             | ClassDeclaration | ModuleDeclaration</SourceLine>
    <SourceLine>//             | Statement</SourceLine>
    <SourceLine></SourceLine>
-   <SourceLine>If Match(Roo.TokenType.VAR) Then Return VarDeclaration</SourceLine>
+   <SourceLine>If Match(Roo.TokenType.VAR_KEYWORD) Then Return VarDeclaration</SourceLine>
    <SourceLine>If Match(Roo.TokenType.DEF_KEYWORD) Then Return FunctionDeclaration("function")</SourceLine>
    <SourceLine>If Match(Roo.TokenType.CLASS_KEYWORD) Then Return ClassDeclaration</SourceLine>
    <SourceLine>If Match(Roo.TokenType.MODULE_KEYWORD) Then Return ModuleDeclaration</SourceLine>
@@ -640,7 +640,7 @@
    <SourceLine>Dim initialiser As RooStmt</SourceLine>
    <SourceLine>If Match(Roo.TokenType.TERMINATOR) Then</SourceLine>
    <SourceLine>initialiser = Nil // The initialiser has been omitted.</SourceLine>
-   <SourceLine>ElseIf Match(Roo.TokenType.VAR) Then</SourceLine>
+   <SourceLine>ElseIf Match(Roo.TokenType.VAR_KEYWORD) Then</SourceLine>
    <SourceLine>initialiser = VarDeclaration</SourceLine>
    <SourceLine>Else</SourceLine>
    <SourceLine>initialiser = ExpressionStatement</SourceLine>

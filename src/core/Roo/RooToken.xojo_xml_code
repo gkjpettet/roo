@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RBProject version="2018r4" FormatVersion="2" MinIDEVersion="20150400">
+<RBProject version="2020r2" FormatVersion="2" MinIDEVersion="20070100">
 <block type="Module" ID="1209081855">
  <ObjName>RooToken</ObjName>
- <ObjContainerID>339822591</ObjContainerID>
+ <ObjContainerID>1399269375</ObjContainerID>
  <IsClass>1</IsClass>
  <ItemFlags>1</ItemFlags>
  <IsInterface>0</IsInterface>
@@ -184,7 +184,7 @@
    <SourceLine>Return "TEXT"</SourceLine>
    <SourceLine>Case Roo.TokenType.TILDE</SourceLine>
    <SourceLine>Return "TILDE"</SourceLine>
-   <SourceLine>Case Roo.TokenType.VAR</SourceLine>
+   <SourceLine>Case Roo.TokenType.VAR_KEYWORD</SourceLine>
    <SourceLine>Return "VAR"</SourceLine>
    <SourceLine>Case Roo.TokenType.WHILE_KEYWORD</SourceLine>
    <SourceLine>Return "WHILE"</SourceLine>
@@ -454,6 +454,11 @@
    <ObjName>Start</ObjName>
    <PropertyGroup>Behavior</PropertyGroup>
    <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Base</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>RooToken.BaseType</ItemType>
   </ViewProperty>
  </ViewBehavior>
  <Enumeration>
