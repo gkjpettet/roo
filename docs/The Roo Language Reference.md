@@ -15,7 +15,7 @@ This reference document describes the syntax and core semantics of the Roo progr
 	- [Delimiters](#scanning-delimiters)
 	- [Programs With Multiple Source Files](#scanning-multiple-source-files)
 - [Mathematical operators](#mathematical-operators)
-	- [Basic Aritmetic](#basic-arithmetic)
+	- [Basic Arithmetic](#basic-arithmetic)
 	- [Modulo Operator](#modulo-operator)
 	- [Exponention Operator](#exponention-operator)
 	- [Unary Negation](#unary-negation)
